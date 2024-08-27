@@ -7,10 +7,10 @@ export default defineNuxtConfig({
   },
 
   extends: [
-    'app/layers/about',
-    'app/layers/profile',
-    'app/layers/settings',
-    'app/layers/users'
+    './app/layers/about',
+    './app/layers/profile',
+    './app/layers/settings',
+    './app/layers/users'
   ],
 
 
@@ -55,10 +55,6 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: 'vercel-edge',
-    vercel: {
-      regions: ['iad1'],
-    },
     prerender: {
       routes: ['/index.html', '/404.html'],
     },

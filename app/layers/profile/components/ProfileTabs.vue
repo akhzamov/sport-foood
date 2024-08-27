@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { useProfileStore } from '~/layers/profile/stores/profile';
-import ChartsBarLine from '~/layers/profile/components/Сharts/BarLine.vue'
-
 
 const profileStore = useProfileStore()
 const daysFilter = reactive([
@@ -64,7 +62,7 @@ onMounted(() => {
             </div>
         </div>
         <div class="mt-4">
-            <ChartsBarLine />
+            <ChartBarLine />
         </div>
     </div>
 </template>
