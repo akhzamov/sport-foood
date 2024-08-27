@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useProfileStore } from '../stores/profile';
-import ChartsBarLine from './Сharts/BarLine.vue'
+import { useProfileStore } from '~/layers/profile/stores/profile';
+import ChartsBarLine from '~/layers/profile/components/Сharts/BarLine.vue'
 
 
 const profileStore = useProfileStore()

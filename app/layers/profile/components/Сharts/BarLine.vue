@@ -19,7 +19,7 @@ import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip }
 import type { ChartOptions, TooltipItem } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import datalabels from 'chartjs-plugin-datalabels';
-import { useProfileStore } from '../../stores/profile';
+import { useProfileStore } from '~/layers/profile/stores/profile';
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, annotationPlugin, datalabels);
 
