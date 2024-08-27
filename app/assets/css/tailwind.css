@@ -175,4 +175,5 @@
 
 body {
 	@apply bg-dark-eerie-black-color;
+	font-family: 'Roboto Flex' !important;
 }

@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { useProfileStore } from '../stores/profile';
+
+
+const profileStore = useProfileStore()
 const branches = reactive([
     { id: 1, label: 'Ozon', value: '1' },
     { id: 2, label: 'Wildberries', value: '2' },
@@ -13,11 +17,12 @@ const tabs = reactive([
     { id: 4, title: 'Логистика', icon: 'IconRoute', active: false },
     { id: 5, title: 'Реклама', icon: 'IconTrendUp', active: false },
 ])
-const activeTab = (id) => {
+const activeTab = (id: number) => {
     tabs.forEach((item) => {
         item.active = false
         if (item.id == id) {
             item.active = true
+            profileStore.activeTab = id
         }
     })
 }

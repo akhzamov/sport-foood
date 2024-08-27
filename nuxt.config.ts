@@ -43,8 +43,8 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      Roboto: {
-        wght: [400, 500, 600, 700]
+      "Roboto Flex": {
+        wght: [200, 400, 500, 600, 700]
       }
     }
   },
@@ -55,6 +55,10 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    preset: 'vercel-edge',
+    vercel: {
+      regions: ['iad1'],
+    },
     prerender: {
       routes: ['/index.html', '/404.html'],
     },

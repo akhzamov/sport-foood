@@ -6,7 +6,7 @@ useSeoMeta({
 
 <template>
   <ProfileHeader />
-  <div class="text-purple-600 text-2xl">Profile</div>
+  <ProfileTabs />
 </template>
 
 <style scoped></style>

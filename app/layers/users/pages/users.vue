@@ -1,4 +1,8 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+useSeoMeta({
+  title: "Sport Food | Users"
+})
+</script>
 
 <template>
   <h4 class="text-32-bold text-center py-8 text-secondary-color">Страница "Пользователи" в режиме разработке</h4>
