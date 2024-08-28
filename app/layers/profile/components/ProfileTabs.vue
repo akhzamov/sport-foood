@@ -61,7 +61,7 @@ onMounted(() => {
                     -</div>
             </div>
         </div>
-        <div class="mt-4">
+        <div class="mt-4 pb-16">
             <ChartBarLine />
         </div>
     </div>

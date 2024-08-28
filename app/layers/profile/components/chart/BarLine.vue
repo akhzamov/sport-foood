@@ -63,7 +63,6 @@ Chart.register({
                 const lineHeight = 20;
                 const separatorHeight = 1;
                 const separatorPaddingBottom = 12;
-                const letterSpacing = 6 + 1; // Уменьшенное межбуквенное расстояние
 
                 // Получаем данные
                 const daySales = profileStore.daySales;
@@ -98,45 +97,24 @@ Chart.register({
 
                 // Отрисовка текста
                 ctx.textBaseline = 'top';
-                ctx.font = '200 10px Roboto';
+                ctx.font = '200 12px Roboto Flex';
 
                 if (sale) {
-                    // Отрисовка текста "Все" с letterSpacing
+                    /// Отрисовка текста "Все"
                     ctx.fillStyle = textColorWhite40;
                     ctx.textAlign = 'left';
+                    ctx.font = '200 12px Roboto Flex';
+                    ctx.fillText('Все', tooltipX + padding, tooltipY + padding);
 
-                    // Отрисовка текста "Все" с letterSpacing
-                    const text = 'Все';
-                    let xOffset = tooltipX + padding;
-                    const textMetrics = [];
-
-                    // Измеряем ширину каждого символа и настраиваем отступ
-                    for (const char of text) {
-                        const metrics = ctx.measureText(char);
-                        textMetrics.push(metrics);
-                        ctx.fillText(char, xOffset, tooltipY + padding);
-                        xOffset += letterSpacing;
-                    }
+                    // Отрисовка точки между "Все" и "Общее количество"
+                    ctx.fillStyle = textColorWhite90;
+                    ctx.font = '400 14px Roboto Flex';
+                    ctx.fillText('.', tooltipX + padding + ctx.measureText('Все').width + 2, tooltipY + padding - 4);
 
                     // Отрисовка общего количества
-                    const total = sale.total.toString();
-                    const totalWidth = total.length * (letterSpacing); // Примерный расчет ширины текста с учетом letterSpacing
-
-                    // Вычисление позиции точки
-                    const dotPositionX = xOffset + totalWidth / 2;
-
-                    // Отрисовка точки между текстом и цифрой
                     ctx.fillStyle = textColorWhite90;
-                    ctx.fillText('.', dotPositionX - 3, tooltipY - 2 + padding);
-
-                    // Отрисовка общего количества с учетом letterSpacing
-                    const totalPositionX = dotPositionX + 3 + ctx.measureText('.').width / 2;
-                    let offsetX = totalPositionX;
-                    for (const char of total) {
-                        ctx.font = '400 10px Roboto'
-                        ctx.fillText(char, offsetX, tooltipY + padding);
-                        offsetX += letterSpacing; // Ширина символа + letterSpacing
-                    }
+                    ctx.font = '300 12px Roboto Flex';
+                    ctx.fillText(sale.total.toString(), tooltipX + padding + ctx.measureText('Все').width + 13, tooltipY + padding);
 
                     // Рисуем разделитель
                     ctx.fillStyle = textColorWhite90;
@@ -152,26 +130,17 @@ Chart.register({
 
                             // Отрисовка названия продукта
                             ctx.fillStyle = textColorWhite40;
-                            ctx.font = '200 10px Roboto'
-                            let productOffsetX = tooltipX + padding;
-                            for (const char of (product ?? '')) {
-                                ctx.fillText(char, productOffsetX, yOffset);
-                                productOffsetX += letterSpacing; // Ширина символа + letterSpacing
-                            }
+                            ctx.font = '200 12px Roboto Flex';
+                            ctx.fillText(product ?? '', tooltipX + padding, yOffset);
 
                             // Отрисовка точки между названием и количеством
-                            const productWidth = productOffsetX - (tooltipX + padding); // Ширина названия продукта
-                            const productDotPositionX = tooltipX + padding + productWidth + 1 + (ctx.measureText(quantity ?? '').width / 2);
                             ctx.fillStyle = textColorWhite90;
-                            ctx.fillText('.', productDotPositionX, yOffset - 2);
+                            ctx.font = '400 14px Roboto Flex';
+                            ctx.fillText('.', tooltipX + padding + ctx.measureText(product ?? '').width - 2, yOffset - 3.5);
 
                             // Отрисовка количества
-                            let quantityOffsetX = productDotPositionX + 10 + ctx.measureText('.').width / 2;
-                            for (const char of (quantity ?? '')) {
-                                ctx.font = '400 10px Roboto'
-                                ctx.fillText(char, quantityOffsetX, yOffset);
-                                quantityOffsetX += letterSpacing; // Ширина символа + letterSpacing
-                            }
+                            ctx.font = '300 12px Roboto Flex';
+                            ctx.fillText(quantity ?? '', tooltipX + padding + ctx.measureText(product ?? '').width + 13, yOffset);
 
                             yOffset += lineHeight; // Интервал между строками
                         }
@@ -205,12 +174,12 @@ Chart.register({
         const text = `${xLineValue}`;
 
         // Настройка шрифта и цвета текста
-        ctx.font = '600 12px Roboto';
+        ctx.font = '600 14px Roboto Flex';
         ctx.fillStyle = '#04ea6f';
         ctx.textAlign = 'center';
 
         // Отрисовка текста над линией
-        ctx.fillText(text, xPosition, yScale.top - 25);
+        ctx.fillText(text, xPosition, yScale.top - 20);
     }
 });
 
@@ -235,7 +204,7 @@ Chart.register({
                 const text = `${dataset.data[index]}`;
 
                 // Настройка текста
-                ctx.font = '600 10px Roboto';
+                ctx.font = '300 12px Roboto Flex';
                 ctx.fillStyle = '#fff';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
@@ -283,8 +252,8 @@ const chartOptions: ChartOptions<'bar'> = {
             title: {
                 text: "Количество",
                 font: {
-                    size: 8,
-                    weight: 500,
+                    size: 12,
+                    weight: 200,
                 },
                 color: '#FFFFFFBF',
                 align: 'center',
@@ -296,18 +265,33 @@ const chartOptions: ChartOptions<'bar'> = {
             ticks: {
                 color: '#FFFFFFBF',
                 font: {
-                    size: 8,
+                    size: 10,
                     weight: 200,
                 },
             },
-            beginAtZero: true
+            beginAtZero: true,
+            grid: {
+                color: 'rgba(255, 255, 255, 0.15)'
+            },
+            border: {
+                display: false,
+            },
+            ticks: {
+                stepSize: 120, // Интервал между метками
+            },
+            min: 0,
+            max: function () {
+                // Определите максимальное значение данных + 100
+                const maxDataValue = Math.max(...profileStore.daySales.map(sale => sale.total));
+                return maxDataValue + 120;
+            }
         },
         y: {
             title: {
                 text: "Август",
                 font: {
-                    size: 8,
-                    weight: 500,
+                    size: 12,
+                    weight: 200,
                 },
                 color: '#FFFFFFBF',
                 align: 'center',
@@ -318,11 +302,14 @@ const chartOptions: ChartOptions<'bar'> = {
             ticks: {
                 color: '#FFFFFFBF',
                 font: {
-                    size: 8,
+                    size: 10,
                     weight: 200,
                 }
             },
-            beginAtZero: true
+            beginAtZero: true,
+            grid: {
+                display: false
+            },
         }
     },
     elements: {
@@ -357,6 +344,7 @@ function createChart() {
                     hoverBackgroundColor: '#1abc9c',
                     hoverBorderColor: "#fff",
                     borderWidth: 2,
+                    borderColor: 'transparent',
                     barThickness: 17,
                     maxBarThickness: 195,
                 }
@@ -387,16 +375,23 @@ watch(activeDayFilter, async () => {
 </script>
 
 <style scoped>
+.chart-wrapper {
+    scrollbar-width: thin;
+    scrollbar-color: #6B7280 #2b2f33;
+}
+
 .chart-wrapper::-webkit-scrollbar {
     width: 8px;
 }
 
 .chart-wrapper::-webkit-scrollbar-track {
-    @apply bg-dark-gunmental-color rounded-lg;
+    background-color: #2b2f33;
+    border-radius: 8px !important;
 }
 
 .chart-wrapper::-webkit-scrollbar-thumb {
-    @apply bg-gray-15-color rounded-md;
+    background-color: #6B7280;
+    border-radius: 8px !important;
     border: 2px solid #2b2f33;
 }
 
