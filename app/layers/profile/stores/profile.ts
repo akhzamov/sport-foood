@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type { IProfileStore } from "../types/mainStore.type";
-import { daySalesData } from '../components/chart/BarLineData'
+import { daySalesData, monthAnnotation } from '~/layers/profile/components/chart/BarLineData'
 
 export const useProfileStore = defineStore('profile', {
     state: (): IProfileStore => ({
@@ -8,6 +8,7 @@ export const useProfileStore = defineStore('profile', {
         activeDayFilter: 1,
         activeDayFilterBlocked: false,
         daySales: daySalesData,
+        monthAnnotation: monthAnnotation
     }),
     actions: {
         async filterData() {

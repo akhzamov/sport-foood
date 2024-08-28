@@ -25,6 +25,7 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, a
 
 const profileStore = useProfileStore()
 const activeDayFilter = computed(() => profileStore.activeDayFilter)
+const monthAnnotation = computed(() => profileStore.monthAnnotation)
 
 const chart = ref<any>(null);
 
@@ -36,6 +37,17 @@ const calcHeight = computed(() => {
     let numLines = profileStore.daySales.length;
     return profileStore.daySales.length < 14 ? (lineHeight + borderWidth) * 14 + verticalPadding : (lineHeight + borderWidth) * numLines + verticalPadding;
 });
+
+const calculateDeviation = (currentValue, norm) => {
+    // Вычисляем разницу
+    const difference = Number(currentValue) - Number(norm);
+    const percentageDeviation = (difference / Number(norm)) * 100;
+    return `${Math.abs(percentageDeviation).toFixed(1)}%`
+}
+
+const formatPrice = (price) => {
+    return new Intl.NumberFormat('ru-RU').format(price);
+}
 
 Chart.register({
     id: 'customTooltip',
@@ -59,22 +71,39 @@ Chart.register({
                 const bgColor = '#2B2F33';
                 const textColorWhite40 = 'rgba(255, 255, 255, 0.40)';
                 const textColorWhite90 = 'rgba(255, 255, 255, 0.90)';
-                const tooltipWidth = 200; // Ширина контейнера
                 const lineHeight = 20;
                 const separatorHeight = 1;
                 const separatorPaddingBottom = 12;
+                const spaceBetween = 5; // Промежуток между элементами
+                const pointWidth = 8; // Ширина точки
 
                 // Получаем данные
                 const daySales = profileStore.daySales;
                 const sale = daySales[activePoint.index];
-                const itemsText = sale ? sale.products.map(item => `${item.product} ${item.quantity}`).join('\n') : '';
+                const itemsText = sale ? sale.products.map(item => ({
+                    productText: item.product,
+                    quantityText: item.quantity,
+                    priceText: formatPrice(item.totalPrice)
+                })) : [];
 
-                // Определяем высоту в зависимости от количества строк
-                const textLines = itemsText.split('\n').length + 1; // +1 для общего количества
-                const tooltipHeight = padding * 2 + (textLines * lineHeight); // padding сверху и снизу + высота текста
+                // Определяем максимальную ширину строки
+                const maxWidth = itemsText.reduce((max, item) => {
+                    const productWidth = ctx.measureText(item.productText).width;
+                    const quantityWidth = ctx.measureText(item.quantityText).width;
+                    const priceWidth = ctx.measureText(item.priceText).width;
+                    const totalWidth = productWidth + pointWidth + spaceBetween + quantityWidth + pointWidth + spaceBetween + priceWidth;
+                    return Math.max(max, totalWidth);
+                }, 0);
+
+                // Ширина контейнера для тултипа
+                const tooltipWidth = padding * 2 + maxWidth;
+
+                // Определяем высоту тултипа
+                const textLines = itemsText.length + 1; // +1 для общего количества
+                const tooltipHeight = padding * 2 + (textLines * lineHeight) + separatorHeight + separatorPaddingBottom; // padding сверху и снизу + высота текста
 
                 // Позиция тултипа фиксирована на 200 пикселей слева от диаграммы
-                const tooltipX = xPoint - 180;
+                const tooltipX = xPoint - (tooltipWidth / 2);
                 const tooltipY = Math.max(yPoint - tooltipHeight - padding, 0); // Убедитесь, что тултип не выходит за верх границы диаграммы
 
                 // Рисуем фон для диалогового окна
@@ -89,10 +118,10 @@ Chart.register({
                 ctx.fill();
 
                 // Рисуем линию указателя
-                ctx.strokeStyle = '#2B2F33';
+                ctx.strokeStyle = bgColor;
                 ctx.beginPath();
                 ctx.moveTo(xPoint, yPoint);
-                ctx.lineTo(tooltipX + tooltipWidth, yPoint);
+                ctx.lineTo(tooltipX + (tooltipWidth / 2), yPoint);
                 ctx.stroke();
 
                 // Отрисовка текста
@@ -100,47 +129,64 @@ Chart.register({
                 ctx.font = '200 12px Roboto Flex';
 
                 if (sale) {
-                    /// Отрисовка текста "Все"
+                    // Отрисовка текста "Все"
                     ctx.fillStyle = textColorWhite40;
                     ctx.textAlign = 'left';
-                    ctx.font = '200 12px Roboto Flex';
                     ctx.fillText('Все', tooltipX + padding, tooltipY + padding);
 
-                    // Отрисовка точки между "Все" и "Общее количество"
+                    // Отрисовка точки между "Все" и общим количеством
                     ctx.fillStyle = textColorWhite90;
-                    ctx.font = '400 14px Roboto Flex';
-                    ctx.fillText('.', tooltipX + padding + ctx.measureText('Все').width + 2, tooltipY + padding - 4);
+                    ctx.fillText('.', tooltipX + padding + ctx.measureText('Все').width + spaceBetween, tooltipY + padding - 3);
 
                     // Отрисовка общего количества
                     ctx.fillStyle = textColorWhite90;
-                    ctx.font = '300 12px Roboto Flex';
-                    ctx.fillText(sale.total.toString(), tooltipX + padding + ctx.measureText('Все').width + 13, tooltipY + padding);
+                    const totalTextWidth = ctx.measureText(sale.total.toString()).width;
+                    const totalPriceWidth = ctx.measureText(formatPrice(sale.totalPrice)).width;
+                    const totalLabelX = tooltipX + padding + ctx.measureText('Все').width + spaceBetween + ctx.measureText('.').width + spaceBetween;
+                    const totalPriceX = totalLabelX + totalTextWidth + spaceBetween + pointWidth;
+
+                    ctx.fillText(sale.total.toString(), totalLabelX, tooltipY + padding);
+
+                    // Отрисовка точки после количества
+                    ctx.fillStyle = textColorWhite90;
+                    ctx.fillText('.', totalLabelX + totalTextWidth + spaceBetween, tooltipY + padding - 3);
+
+                    // Отрисовка цены
+                    ctx.fillStyle = '#1ABC9C';
+                    ctx.fillText(formatPrice(sale.totalPrice), totalLabelX + totalTextWidth - 6 + spaceBetween + ctx.measureText('.').width + spaceBetween + pointWidth, tooltipY + padding);
 
                     // Рисуем разделитель
                     ctx.fillStyle = textColorWhite90;
                     ctx.fillRect(tooltipX + padding, tooltipY + padding + lineHeight, tooltipWidth - padding * 2, separatorHeight);
 
                     // Отрисовка продуктов
-                    const lines = itemsText.split('\n');
                     let yOffset = tooltipY + padding + lineHeight + separatorHeight + separatorPaddingBottom; // Начальная позиция для текста
 
-                    lines.forEach(line => {
+                    itemsText.forEach(item => {
                         if (yOffset + lineHeight <= tooltipY + tooltipHeight - padding) {
-                            const [product, quantity] = line.split(' ');
+                            const productWidth = ctx.measureText(item.productText).width;
+                            const quantityWidth = ctx.measureText(item.quantityText).width;
+                            const priceWidth = ctx.measureText(item.priceText).width;
 
                             // Отрисовка названия продукта
                             ctx.fillStyle = textColorWhite40;
-                            ctx.font = '200 12px Roboto Flex';
-                            ctx.fillText(product ?? '', tooltipX + padding, yOffset);
+                            ctx.fillText(item.productText, tooltipX + padding, yOffset);
 
                             // Отрисовка точки между названием и количеством
                             ctx.fillStyle = textColorWhite90;
-                            ctx.font = '400 14px Roboto Flex';
-                            ctx.fillText('.', tooltipX + padding + ctx.measureText(product ?? '').width - 2, yOffset - 3.5);
+                            ctx.fillText('.', tooltipX + padding + productWidth + spaceBetween, yOffset - 3);
 
                             // Отрисовка количества
-                            ctx.font = '300 12px Roboto Flex';
-                            ctx.fillText(quantity ?? '', tooltipX + padding + ctx.measureText(product ?? '').width + 13, yOffset);
+                            ctx.fillStyle = textColorWhite90;
+                            ctx.fillText(item.quantityText, tooltipX + padding + productWidth - 5 + spaceBetween + pointWidth + spaceBetween, yOffset);
+
+                            // Отрисовка точки между количеством и ценой
+                            ctx.fillStyle = textColorWhite90;
+                            ctx.fillText('.', tooltipX + padding + productWidth + pointWidth + spaceBetween + quantityWidth + spaceBetween, yOffset - 3);
+
+                            // Отрисовка цены
+                            ctx.fillStyle = '#1ABC9C';
+                            ctx.fillText(item.priceText, tooltipX + padding + productWidth - 5 + quantityWidth + 2 * pointWidth + 3 * spaceBetween, yOffset);
 
                             yOffset += lineHeight; // Интервал между строками
                         }
@@ -152,6 +198,7 @@ Chart.register({
         }
     },
 });
+
 
 
 Chart.register({
@@ -167,7 +214,7 @@ Chart.register({
         }
 
         // Координаты линии
-        const xLineValue = 155;
+        const xLineValue = monthAnnotation.value;
         const xPosition = xScale.getPixelForValue(xLineValue);
 
         // Текстовое значение
@@ -190,7 +237,8 @@ Chart.register({
         const datasets = chart.data.datasets;
 
         // Параметры для текста
-        const letterSpacing = 5 + 1; // Расстояние между буквами
+        const letterSpacing = 6 + 1; // Расстояние между буквами
+        const spaceBetween = 5; // Промежуток между значением и отклонением
 
         datasets.forEach((dataset, datasetIndex) => {
             const meta = chart.getDatasetMeta(datasetIndex);
@@ -199,26 +247,44 @@ Chart.register({
             dataPoints.forEach((point, index) => {
                 const x = point.x;
                 const y = point.y;
-
-                // Получаем значение для текста
-                const text = `${dataset.data[index]}`;
+                const value = dataset.data[index];
+                const deviation = calculateDeviation(value, monthAnnotation.value);
 
                 // Настройка текста
                 ctx.font = '300 12px Roboto Flex';
-                ctx.fillStyle = '#fff';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
 
-                // Отрисовка текста с учетом letterSpacing
+                // Получаем значение для текста
+                const text = `${value}`;
+
+                // Измеряем ширину текста
+                const valueWidth = ctx.measureText(text).width;
+
+                // Отрисовка основного значения
+                ctx.fillStyle = '#fff'; // Белый цвет
                 let textOffsetX = x + 14; // Начальная позиция X
                 for (const char of text) {
                     ctx.fillText(char, textOffsetX, y);
                     textOffsetX += letterSpacing; // Ширина символа + letterSpacing
                 }
+
+                // Отрисовка отклонения
+                const deviationText = `(${deviation})`;
+                const deviationColor = value < monthAnnotation.value ? '#F04438 ' : '#04EA6F'; // Красный если меньше нормы, зеленый если больше нормы
+
+                // Расчет позиции X для отклонения с учетом промежутка и ширины основного значения
+                const deviationOffsetX = x + 30 + valueWidth + spaceBetween;
+
+                ctx.fillStyle = deviationColor;
+                ctx.font = '200 12px Roboto Flex';
+                ctx.fillText(deviationText, deviationOffsetX, y);
             });
         });
     }
 });
+
+
 
 const chartOptions: ChartOptions<'bar'> = {
     indexAxis: 'y',
@@ -235,8 +301,8 @@ const chartOptions: ChartOptions<'bar'> = {
             annotations: {
                 line1: {
                     type: 'line',
-                    xMin: 155,
-                    xMax: 155,
+                    xMin: monthAnnotation.value,
+                    xMax: monthAnnotation.value,
                     borderColor: '#04ea6f',
                     borderWidth: 2,
                     borderDash: [5, 5],
