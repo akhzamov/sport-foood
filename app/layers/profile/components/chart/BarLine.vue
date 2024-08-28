@@ -63,7 +63,7 @@ Chart.register({
                 const lineHeight = 20;
                 const separatorHeight = 1;
                 const separatorPaddingBottom = 12;
-                const letterSpacing = 8 + 0.5; // Уменьшенное межбуквенное расстояние
+                const letterSpacing = 6 + 1; // Уменьшенное межбуквенное расстояние
 
                 // Получаем данные
                 const daySales = profileStore.daySales;
@@ -98,7 +98,7 @@ Chart.register({
 
                 // Отрисовка текста
                 ctx.textBaseline = 'top';
-                ctx.font = '200 12px Roboto Flex';
+                ctx.font = '200 10px Roboto';
 
                 if (sale) {
                     // Отрисовка текста "Все" с letterSpacing
@@ -127,12 +127,13 @@ Chart.register({
 
                     // Отрисовка точки между текстом и цифрой
                     ctx.fillStyle = textColorWhite90;
-                    ctx.fillText('.', dotPositionX - 5, tooltipY - 3 + padding);
+                    ctx.fillText('.', dotPositionX - 3, tooltipY - 2 + padding);
 
                     // Отрисовка общего количества с учетом letterSpacing
-                    const totalPositionX = dotPositionX + 5 + ctx.measureText('.').width / 2;
+                    const totalPositionX = dotPositionX + 3 + ctx.measureText('.').width / 2;
                     let offsetX = totalPositionX;
                     for (const char of total) {
+                        ctx.font = '400 10px Roboto'
                         ctx.fillText(char, offsetX, tooltipY + padding);
                         offsetX += letterSpacing; // Ширина символа + letterSpacing
                     }
@@ -151,6 +152,7 @@ Chart.register({
 
                             // Отрисовка названия продукта
                             ctx.fillStyle = textColorWhite40;
+                            ctx.font = '200 10px Roboto'
                             let productOffsetX = tooltipX + padding;
                             for (const char of (product ?? '')) {
                                 ctx.fillText(char, productOffsetX, yOffset);
@@ -159,13 +161,14 @@ Chart.register({
 
                             // Отрисовка точки между названием и количеством
                             const productWidth = productOffsetX - (tooltipX + padding); // Ширина названия продукта
-                            const productDotPositionX = tooltipX + padding + productWidth + 3 + (ctx.measureText(quantity ?? '').width / 2);
+                            const productDotPositionX = tooltipX + padding + productWidth + 1 + (ctx.measureText(quantity ?? '').width / 2);
                             ctx.fillStyle = textColorWhite90;
-                            ctx.fillText('.', productDotPositionX, yOffset - 3);
+                            ctx.fillText('.', productDotPositionX, yOffset - 2);
 
                             // Отрисовка количества
                             let quantityOffsetX = productDotPositionX + 10 + ctx.measureText('.').width / 2;
                             for (const char of (quantity ?? '')) {
+                                ctx.font = '400 10px Roboto'
                                 ctx.fillText(char, quantityOffsetX, yOffset);
                                 quantityOffsetX += letterSpacing; // Ширина символа + letterSpacing
                             }
@@ -202,12 +205,12 @@ Chart.register({
         const text = `${xLineValue}`;
 
         // Настройка шрифта и цвета текста
-        ctx.font = '200 14px Roboto Flex';
+        ctx.font = '600 12px Roboto';
         ctx.fillStyle = '#04ea6f';
         ctx.textAlign = 'center';
 
         // Отрисовка текста над линией
-        ctx.fillText(text, xPosition, yScale.top - 35);
+        ctx.fillText(text, xPosition, yScale.top - 25);
     }
 });
 
@@ -218,7 +221,7 @@ Chart.register({
         const datasets = chart.data.datasets;
 
         // Параметры для текста
-        const letterSpacing = 8 + 0.5; // Расстояние между буквами
+        const letterSpacing = 5 + 1; // Расстояние между буквами
 
         datasets.forEach((dataset, datasetIndex) => {
             const meta = chart.getDatasetMeta(datasetIndex);
@@ -232,7 +235,7 @@ Chart.register({
                 const text = `${dataset.data[index]}`;
 
                 // Настройка текста
-                ctx.font = '200 12px Roboto Flex';
+                ctx.font = '600 10px Roboto';
                 ctx.fillStyle = '#fff';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
@@ -280,8 +283,8 @@ const chartOptions: ChartOptions<'bar'> = {
             title: {
                 text: "Количество",
                 font: {
-                    size: 14,
-                    weight: 200,
+                    size: 8,
+                    weight: 500,
                 },
                 color: '#FFFFFFBF',
                 align: 'center',
@@ -293,7 +296,7 @@ const chartOptions: ChartOptions<'bar'> = {
             ticks: {
                 color: '#FFFFFFBF',
                 font: {
-                    size: 12,
+                    size: 8,
                     weight: 200,
                 },
             },
@@ -303,8 +306,8 @@ const chartOptions: ChartOptions<'bar'> = {
             title: {
                 text: "Август",
                 font: {
-                    size: 14,
-                    weight: 200,
+                    size: 8,
+                    weight: 500,
                 },
                 color: '#FFFFFFBF',
                 align: 'center',
@@ -315,7 +318,7 @@ const chartOptions: ChartOptions<'bar'> = {
             ticks: {
                 color: '#FFFFFFBF',
                 font: {
-                    size: 12,
+                    size: 8,
                     weight: 200,
                 }
             },

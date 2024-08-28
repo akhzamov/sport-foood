@@ -43,7 +43,7 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      "Roboto Flex": {
+      "Roboto": {
         wght: [200, 400, 500, 600, 700]
       }
     }
