@@ -29,8 +29,8 @@ const monthAnnotation = computed(() => profileStore.monthAnnotation)
 
 const chart = ref<any>(null);
 
-const lineHeight = 20;
-const borderWidth = 2;
+const lineHeight = 22;
+const borderWidth = 4;
 const verticalPadding = 7;
 
 const calcHeight = computed(() => {
@@ -382,7 +382,7 @@ const chartOptions: ChartOptions<'bar'> = {
         bar: {
             borderWidth: 2,
             borderSkipped: false,
-            borderRadius: 4,
+            borderRadius: 0,
         }
     }
 };
@@ -409,9 +409,8 @@ function createChart() {
                     backgroundColor: '#1abc9c',
                     hoverBackgroundColor: '#1abc9c',
                     hoverBorderColor: "#fff",
-                    borderWidth: 2,
-                    borderColor: 'transparent',
-                    barThickness: 17,
+                    borderColor: '#1abc9c',
+                    barThickness: 18,
                     maxBarThickness: 195,
                 }
             ]
