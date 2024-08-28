@@ -251,7 +251,7 @@ Chart.register({
                 const deviation = calculateDeviation(value, monthAnnotation.value);
 
                 // Настройка текста
-                ctx.font = '300 12px Roboto Flex';
+                ctx.font = '400 12px Roboto Flex';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
 
@@ -263,7 +263,7 @@ Chart.register({
 
                 // Отрисовка основного значения
                 ctx.fillStyle = '#fff'; // Белый цвет
-                let textOffsetX = x + 14; // Начальная позиция X
+                let textOffsetX = x + 8; // Начальная позиция X
                 for (const char of text) {
                     ctx.fillText(char, textOffsetX, y);
                     textOffsetX += letterSpacing; // Ширина символа + letterSpacing
@@ -274,11 +274,11 @@ Chart.register({
                 const deviationColor = value < monthAnnotation.value ? '#F04438 ' : '#04EA6F'; // Красный если меньше нормы, зеленый если больше нормы
 
                 // Расчет позиции X для отклонения с учетом промежутка и ширины основного значения
-                const deviationOffsetX = x + 30 + valueWidth + spaceBetween;
+                const deviationOffsetX = x + 24 + valueWidth + spaceBetween;
 
                 ctx.fillStyle = deviationColor;
                 ctx.font = '200 12px Roboto Flex';
-                ctx.fillText(deviationText, deviationOffsetX, y);
+                ctx.fillText(deviationText, deviationOffsetX, y - 0.5);
             });
         });
     }

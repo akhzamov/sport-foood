@@ -61,8 +61,10 @@ onMounted(() => {
                     -</div>
             </div>
         </div>
-        <div class="mt-4 pb-16">
+        <div class="w-full grid grid-cols-custom-3-390 gap-6 justify-between mt-4 pb-16">
             <ChartBarLine />
+            <RatingMarketplaces />
+            <GraphFirst />
         </div>
     </div>
 </template>

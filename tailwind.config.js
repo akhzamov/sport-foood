@@ -35,6 +35,12 @@ export default {
 			},
 			backgroundImage: {
 				'profile-header-bg-liner': 'var(--profile-header-bg-liner)',
+				'marketplace-line-bg-liner-left': 'var(--line-bg-liner-left)',
+				'marketplace-line-bg-liner-right': 'var(--line-bg-liner-right)',
+				'marketplace-line-bg-top-liner': 'var(--line-bg-top-liner)',
+			},
+			gridTemplateColumns: {
+				'custom-3-390': 'repeat(3, 390px)',
 			},
 		},
 	},
