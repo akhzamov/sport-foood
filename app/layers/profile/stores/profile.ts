@@ -8,27 +8,12 @@ export const useProfileStore = defineStore('profile', {
         activeDayFilter: 1,
         activeDayFilterBlocked: false,
         daySales: daySalesData,
-        monthAnnotation: monthAnnotation
+        monthAnnotation: monthAnnotation,
+        activeMoreInfo: false,
     }),
     actions: {
         async filterData() {
-            switch (this.activeDayFilter) {
-                case 1:
-                    this.daySales = daySalesData.slice(0, 30);
-                    break;
-                case 2:
-                    this.daySales = daySalesData.slice(0, 14);
-                    break;
-                case 3:
-                    this.daySales = daySalesData.slice(0, 7);
-                    break;
-                case 4:
-                    this.daySales = daySalesData.slice(0, 1);
-                    break;
-                default:
-                    this.daySales = daySalesData;
-                    break;
-            }
+            console.log('filtered');
         }
     },
 })

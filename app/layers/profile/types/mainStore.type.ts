@@ -17,4 +17,5 @@ export interface IProfileStore {
     activeDayFilterBlocked: boolean,
     daySales: IDaySales[] | [],
     monthAnnotation: number,
+    activeMoreInfo: boolean,
 }
