@@ -1,0 +1,1 @@
+export const baseUrl = 'http://crm-api.autosale.pw/api'

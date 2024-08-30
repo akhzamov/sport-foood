@@ -2,6 +2,9 @@
 useSeoMeta({
   title: "Sport Food | Profile"
 })
+definePageMeta({
+  middleware: 'auth'
+})
 </script>
 
 <template>

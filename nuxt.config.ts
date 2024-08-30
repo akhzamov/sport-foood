@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     './app/layers/about',
     './app/layers/profile',
     './app/layers/settings',
-    './app/layers/users'
+    './app/layers/users',
+    './app/layers/auth'
   ],
 
 
