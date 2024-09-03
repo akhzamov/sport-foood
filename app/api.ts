@@ -1,1 +1,1 @@
-export const baseUrl = 'http://crm-api.autosale.pw/api'
+export const baseUrl = 'https://crm-api.autosale.pw/api'
