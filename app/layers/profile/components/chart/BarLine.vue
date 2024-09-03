@@ -3,11 +3,8 @@
         <h4 class="px-5 h-[40px] flex items-center bg-dark-gunmental-color text-14-bold text-gray-90-color">
             План продаж
         </h4>
-        <div class="chart-wrapper flex overflow-y-auto h-[360px] bg-dark-charcoal-color ">
-            <canvas id="sales-chart" v-if="profileStore.activeDayFilter == 1"></canvas>
-            <canvas id="sales-chart-2" v-if="profileStore.activeDayFilter == 2"></canvas>
-            <canvas id="sales-chart-3" v-if="profileStore.activeDayFilter == 3"></canvas>
-            <canvas id="sales-chart-4" v-if="profileStore.activeDayFilter == 4"></canvas>
+        <div class="chart-wrapper flex overflow-y-auto h-[360px] bg-dark-charcoal-color">
+            <canvas id="sales-chart"></canvas>
         </div>
     </div>
 </template>
@@ -21,13 +18,17 @@ import datalabels from 'chartjs-plugin-datalabels';
 import { useProfileStore } from '~/layers/profile/stores/profile';
 import { chartData } from '~/layers/profile/components/chart/BarLineData'
 import type { IChartDataDays } from '~/layers/profile/components/chart/BarLineData'
+import type { ISalesPlanDays, ISalesPlanProducts } from '../../types/salesPlan.type';
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, annotationPlugin, datalabels);
 
 const profileStore = useProfileStore()
 const activeDayFilter = computed(() => profileStore.activeDayFilter)
-const monthAnnotation = computed(() => chartData.monthAnnotation)
-const chartDataArr = computed(() => chartData.monthData.days)
+const monthAnnotation = computed(() => profileStore.monthAnnotation)
+const chartDataArr = computed(() => profileStore.salesPlan ? profileStore.salesPlan.days : {})
+const chartLoader = computed(() => profileStore.chartLoader)
+const isChartCreated = ref(false)
+// const chartDataArr = computed(() => chartData.monthData.days)
 
 const chart = ref<any>(null);
 
@@ -36,8 +37,13 @@ const borderWidth = 4;
 const verticalPadding = 7;
 
 const calcHeight = computed(() => {
-    let numLines = profileStore.daySales.length;
-    return profileStore.daySales.length < 14 ? (lineHeight + borderWidth) * 14 + verticalPadding : (lineHeight + borderWidth) * numLines + verticalPadding;
+    // Подсчитываем количество дней (объектов) в days
+    let numLines = profileStore.salesPlan?.days ? Object.keys(profileStore.salesPlan.days).length : 0;
+
+    // Возвращаем вычисленную высоту в зависимости от количества строк
+    return numLines < 14
+        ? (lineHeight + borderWidth) * 14 + verticalPadding
+        : (lineHeight + borderWidth) * numLines + verticalPadding;
 });
 
 const calculateDeviation = (currentValue: number | null | undefined, norm: string | number) => {
@@ -84,12 +90,12 @@ Chart.register({
 
                 const daySalesKey = Object.keys(chartDataArr.value)[dataPoint] as string | undefined;
                 if (daySalesKey) {
-                    const sale: IChartDataDays | null | undefined = chartDataArr.value[daySalesKey];
+                    const sale: ISalesPlanDays | null | undefined = chartDataArr.value[daySalesKey];
                     if (sale) {
                         const itemsText = sale.products.map(item => ({
                             productText: item.product,
                             quantityText: String(item.quantity),
-                            priceText: formatPrice(item.totalPrice)
+                            priceText: formatPrice(item.price)
                         }));
 
                         const maxWidth = itemsText.reduce((max, item) => {
@@ -344,7 +350,7 @@ const chartOptions: ChartOptions<'bar'> = {
             },
             position: 'top',
             ticks: {
-                stepSize: 120,
+                stepSize: 30,
                 color: '#FFFFFFBF',
                 font: {
                     size: 10,
@@ -362,7 +368,7 @@ const chartOptions: ChartOptions<'bar'> = {
                 display: false,
             },
             min: 0,
-            max: maxDataValue + 250
+            max: maxDataValue + (maxDataValue / 100 * 50)
         },
         y: {
             title: {
@@ -405,34 +411,43 @@ const chartOptions: ChartOptions<'bar'> = {
 };
 
 function createChart() {
-    const canvasId = activeDayFilter.value == 1 ? 'sales-chart' : activeDayFilter.value == 2 ? 'sales-chart-2' : activeDayFilter.value == 3 ? 'sales-chart-3' : 'sales-chart-4';
+    const dataEntries = Object.entries(chartDataArr.value || {});
 
-    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
-    if (!canvas) {
-        console.error(`Canvas element with ID ${canvasId} not found.`);
-        return;
-    }
-
-    canvas.height = calcHeight.value;
-
-    if (!chartDataArr.value) {
-        console.error("chartDataArr is undefined.");
+    if (dataEntries.length === 0) {
+        console.warn('No data available to create the chart.');
         return;
     }
 
     const labels = Object.keys(chartDataArr.value).map(date => {
-        // Преобразуем дату в формат "день.месяц"
-        const [day, month] = date.split('.').slice(0, 2);
+        const [year, month, day] = date.split('-').slice(0, 3);
         return `${day}.${month}`;
     });
 
+    const data = dataEntries.map(([_, value]) => value?.total || 0);
+
+    const canvasId = 'sales-chart';
+    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    if (!canvas) {
+        return;
+    }
+
+    console.log(data);
+    
+    canvas.height = calcHeight.value;
+
+    // Проверяем, создан ли уже график
+    if (chart.value) {
+        chart.value.destroy(); // Уничтожаем предыдущий график
+    }
+
+    // Создаем новый график
     chart.value = new Chart(canvas, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [
                 {
-                    data: Object.keys(chartDataArr.value).map(date => chartDataArr.value?.[date]?.total || 0),
+                    data: data,
                     backgroundColor: '#1abc9c',
                     hoverBackgroundColor: '#1abc9c',
                     hoverBorderColor: "#fff",
@@ -444,6 +459,8 @@ function createChart() {
         },
         options: chartOptions
     });
+
+    isChartCreated.value = true; // Устанавливаем флаг, что график создан
 }
 
 function destroyAndRecreateChart() {
@@ -454,15 +471,38 @@ function destroyAndRecreateChart() {
     createChart();
 }
 
+function updateChart() {
+    // Проверяем, есть ли данные
+    if (Object.keys(chartDataArr.value).length > 0) {
+        if (!isChartCreated.value) {
+            createChart(); // Создаем график, если он еще не создан
+        } else {
+            // Если график уже создан, можно обновить его
+            destroyAndRecreateChart();
+        }
+    } else {
+        console.warn('No data available to update the chart.');
+    }
+}
+
+watch(chartDataArr, updateChart, { immediate: true });
+
+watch(chartDataArr, (newValue) => {
+    if (Object.keys(newValue).length > 0) {
+        destroyAndRecreateChart();
+    }
+}, { immediate: true });
+
+watch(activeDayFilter, (newValue) => {
+    if (activeDayFilter) {
+        destroyAndRecreateChart();
+    }
+}, { immediate: true });
+
 onMounted(() => {
-    profileStore.filterData()
-    createChart();
-
-});
-
-watch(activeDayFilter, async () => {
-    await profileStore.filterData();
-    destroyAndRecreateChart();
+    if (profileStore.salesPlan) {
+        updateChart();
+    }
 });
 </script>
 

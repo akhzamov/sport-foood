@@ -1,29 +1,34 @@
 <script lang="ts" setup>
 import { useProfileStore } from '~/layers/profile/stores/profile';
+import { getSalesPlan } from '~/layers/profile/components/Header/profileHeader.data'
 
 const profileStore = useProfileStore()
 const activeMoreInfo = computed(() => profileStore.activeMoreInfo)
 const activeDayFilterBlocked = computed(() => profileStore.activeDayFilterBlocked)
+const chartLoader = computed(() => profileStore.chartLoader)
+const salesPlan = computed(() => profileStore.salesPlan)
 const daysFilter = reactive([
     { id: 1, title: '30 д', value: 30, active: true },
     { id: 2, title: '14 д', value: 14, active: false },
     { id: 3, title: '7 д', value: 7, active: false },
     { id: 4, title: '24 ч', value: 0, active: false },
 ])
-const activeTab = (id: number) => {
+const activeTab = (value: number) => {
     if (!profileStore.activeDayFilterBlocked) {
         daysFilter.forEach((item) => {
             item.active = false
-            if (item.id == id) {
+            if (item.value == value) {
                 item.active = true
-                profileStore.activeDayFilter = id
+                profileStore.activeDayFilter = value
                 profileStore.activeDayFilterBlocked = true
                 setTimeout(() => {
                     profileStore.activeDayFilterBlocked = false
                 }, 1000);
+                getSalesPlan()
             }
         })
     }
+
 }
 
 const moreInfo = ref<HTMLElement | null>(null)
@@ -43,8 +48,7 @@ watch(activeMoreInfo, (newValue) => {
 }, { immediate: true });
 
 onMounted(() => {
-    activeTab(1)
-    profileStore.activeDayFilter = 1
+    profileStore.activeDayFilter = 30
 })
 </script>
 
@@ -61,7 +65,7 @@ onMounted(() => {
                         'cursor-pointer': !activeDayFilterBlocked,
                         'cursor-not-allowed': activeDayFilterBlocked,
                         'bg-transparent': !day.active,
-                    }" @click="activeTab(day.id)">
+                    }" @click="activeTab(day.value)">
                     <span class="text-14-med" :class="{
                         'text-dark-night-color': day.active && !activeDayFilterBlocked,
                         'text-gray-90-color': !day.active && !activeDayFilterBlocked,
@@ -73,34 +77,15 @@ onMounted(() => {
             </div>
         </div>
         <div class="w-full grid grid-cols-custom-3-390 gap-6 justify-center mt-4">
-            <ChartBarLine />
+            <ChartLoadChart v-if="!salesPlan" />
+            <ChartBarLine v-if="salesPlan" />
             <RatingMarketplaces />
-            <GraphFirst />
+            <!-- <GraphFirst /> -->
         </div>
         <div class="w-full grid grid-cols-1 mt-4 pb-16" ref="moreInfo">
-            <Transition name="more-info">
-                <div class="w-full rounded-lg overflow-hidden" v-if="profileStore.activeMoreInfo">
-                    <h4 class="px-5 h-[40px] flex items-center bg-dark-gunmental-color text-14-bold text-gray-90-color">
-                        План продаж
-                    </h4>
-                    <div class="chart-wrapper flex overflow-y-auto h-[360px] bg-dark-charcoal-color ">
-                    </div>
-                </div>
-            </Transition>
+            <GraphSalesRanking />
         </div>
     </div>
 </template>
 
-<style scoped>
-.more-info-enter-active,
-.more-info-leave-active {
-    height: 400px;
-    transition: height 0.5s linear;
-}
-
-.more-info-enter-from,
-.more-info-leave-to {
-    height: 0;
-    transition: height 0.5s linear;
-}
-</style>ter
+<style scoped></style>

@@ -1,3 +1,5 @@
+import type { ISalesPlanMonth } from "~/layers/profile/types/salesPlan.type"
+import type { IStore } from "~/layers/profile/types/stores.type"
 
 interface IDaySalesProducts {
     product: string,
@@ -18,4 +20,8 @@ export interface IProfileStore {
     daySales: IDaySales[] | [],
     monthAnnotation: number,
     activeMoreInfo: boolean,
+    stores: IStore[] | null,
+    selectedBranch: number | null,
+    salesPlan: ISalesPlanMonth | null,
+    chartLoader: boolean
 }

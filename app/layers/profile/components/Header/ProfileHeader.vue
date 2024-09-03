@@ -1,15 +1,9 @@
 <script lang="ts" setup>
 import { useProfileStore } from '~/layers/profile/stores/profile';
 
-
 const profileStore = useProfileStore()
-const branches = reactive([
-    { id: 1, label: 'Ozon', value: '1' },
-    { id: 2, label: 'Wildberries', value: '2' },
-    { id: 3, label: 'Пятёрочка', value: '3' },
-])
+const stores = computed(() => profileStore.stores)
 
-const selectedBranch = ref('')
 const tabs = reactive([
     { id: 1, title: 'Дашборд', icon: 'IconPieDash', active: true },
     { id: 2, title: 'Статистика продаж', icon: 'IconBarChart', active: false },
@@ -50,7 +44,7 @@ const activeTab = (id: number) => {
                     </div>
                     <UiSelect :mainTextColor="'text-gray-90-color'" :textColor="'text-dark-night-color'"
                         :textHoverColor="'text-white'" :selectBgColor="'bg-gray-15-color'"
-                        :menuBgColor="'bg-primary-color'" :array="branches" v-model="selectedBranch" />
+                        :menuBgColor="'bg-primary-color'" :array="stores" v-model="profileStore.selectedBranch" />
                 </div>
                 <div class="flex gap-8">
                     <div class="px-5 pt-5 cursor-pointer flex flex-col after:w-full after:h-[2px] after:rounded-t-[4px] after:bg-primary-color"

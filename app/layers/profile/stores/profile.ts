@@ -5,11 +5,15 @@ import { daySalesData, monthAnnotation } from '~/layers/profile/components/chart
 export const useProfileStore = defineStore('profile', {
     state: (): IProfileStore => ({
         activeTab: null,
-        activeDayFilter: 1,
+        activeDayFilter: null,
         activeDayFilterBlocked: false,
         daySales: daySalesData,
-        monthAnnotation: monthAnnotation,
+        monthAnnotation: 0,
         activeMoreInfo: false,
+        stores: null,
+        selectedBranch: null,
+        salesPlan: null,
+        chartLoader: false,
     }),
     actions: {
         async filterData() {
