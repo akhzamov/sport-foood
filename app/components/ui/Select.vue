@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useProfileStore } from '~/layers/profile/stores/profile';
-import type { IStore } from '~/layers/profile/types/stores.type';
-import { getSalesPlan } from '~/layers/profile/components/Header/profileHeader.data'
+import { useProfileStore } from '~/modules/profile/stores/profile';
+import type { IStore } from '~/modules/profile/types/stores.type';
+import { getSalesPlan } from '~/modules/profile/components/Header/profileHeader.data'
 
 
 const profileStore = useProfileStore()

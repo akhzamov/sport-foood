@@ -7,11 +7,11 @@ export default defineNuxtConfig({
   },
 
   extends: [
-    './app/layers/about',
-    './app/layers/profile',
-    './app/layers/settings',
-    './app/layers/users',
-    './app/layers/auth'
+    './app/modules/about',
+    './app/modules/profile',
+    './app/modules/settings',
+    './app/modules/users',
+    './app/modules/auth'
   ],
 
 
@@ -24,7 +24,6 @@ export default defineNuxtConfig({
         id: 'body'
       }
     },
-
   },
 
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxtjs/google-fonts'],
@@ -51,7 +50,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: true },
+    '/': { prerender: true, redirect: '/profile' },
     '/:pathMatch(.*)*': { prerender: true },
   },
 

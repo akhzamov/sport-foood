@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getStores } from '~/layers/profile/components/Header/profileHeader.data';
+import { getStores } from '~/modules/profile/components/Header/profileHeader.data';
 useSeoMeta({
   title: "Sport Food | Profile"
 })

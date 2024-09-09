@@ -27,7 +27,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
             // Если находимся на странице входа, перенаправляем на профиль
             if (to.path.startsWith('/sign-in')) {
-                return navigateTo('/profile');
+                return navigateTo('/');
             }
         } catch (error) {
             console.error('Token validation failed:', error);

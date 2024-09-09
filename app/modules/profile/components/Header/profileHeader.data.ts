@@ -1,7 +1,7 @@
-import type { IStore } from '~/layers/profile/types/stores.type'
-import type { ISalesPlan } from '~/layers/profile/types/salesPlan.type'
+import type { IStore } from '~/modules/profile/types/stores.type'
+import type { ISalesPlan } from '~/modules/profile/types/salesPlan.type'
 import axios from 'axios'
-import { useProfileStore } from '~/layers/profile/stores/profile'
+import { useProfileStore } from '~/modules/profile/stores/profile'
 import { baseUrl } from '~/api'
 
 

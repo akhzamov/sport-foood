@@ -3,60 +3,48 @@
         <h4 class="px-5 h-[40px] flex items-center bg-dark-gunmental-color text-14-bold text-gray-90-color">
             План продаж
         </h4>
-        <div class="chart-wrapper flex overflow-y-auto h-[360px] bg-dark-charcoal-color">
-            <canvas id="sales-chart"></canvas>
+        <div ref="chartWrapper" class="chart-wrapper w-full flex overflow-y-auto h-[360px] bg-dark-charcoal-color">
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, elements } from 'chart.js';
-import type { ChartOptions, TooltipItem } from 'chart.js';
+import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js';
+import type { ChartOptions, ChartConfiguration } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import datalabels from 'chartjs-plugin-datalabels';
-import { useProfileStore } from '~/layers/profile/stores/profile';
-import { chartData } from '~/layers/profile/components/chart/BarLineData'
-import type { IChartDataDays } from '~/layers/profile/components/chart/BarLineData'
-import type { ISalesPlanDays, ISalesPlanProducts } from '../../types/salesPlan.type';
+import { useProfileStore } from '~/modules/profile/stores/profile';
+import type { ISalesPlanDays } from '../../types/salesPlan.type';
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, annotationPlugin, datalabels);
 
 const profileStore = useProfileStore()
-const activeDayFilter = computed(() => profileStore.activeDayFilter)
-const monthAnnotation = computed(() => profileStore.monthAnnotation)
+const monthAnnotation = computed(() => profileStore.monthAnnotation / 30)
 const chartDataArr = computed(() => profileStore.salesPlan ? profileStore.salesPlan.days : {})
-const chartLoader = computed(() => profileStore.chartLoader)
-const isChartCreated = ref(false)
-// const chartDataArr = computed(() => chartData.monthData.days)
-
+const chartWrapper: Ref<HTMLDivElement | null> = ref(null);
 const chart = ref<any>(null);
-
 const lineHeight = 22;
 const borderWidth = 4;
 const verticalPadding = 7;
-
 const calcHeight = computed(() => {
     // Подсчитываем количество дней (объектов) в days
     let numLines = profileStore.salesPlan?.days ? Object.keys(profileStore.salesPlan.days).length : 0;
 
     // Возвращаем вычисленную высоту в зависимости от количества строк
-    return numLines < 14
+    return numLines <= 14
         ? (lineHeight + borderWidth) * 14 + verticalPadding
         : (lineHeight + borderWidth) * numLines + verticalPadding;
 });
-
 const calculateDeviation = (currentValue: number | null | undefined, norm: string | number) => {
     // Вычисляем разницу
     const difference = Number(currentValue) - Number(norm);
     const percentageDeviation = (difference / Number(norm)) * 100;
     return `${Math.abs(percentageDeviation).toFixed(1)}%`
 }
-
 const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ru-RU').format(price);
 }
-
 const maxDataValue = Math.floor(
     Math.max(...Object.keys(chartDataArr.value).map(date => chartDataArr.value?.[date]?.total || 0))
 );
@@ -65,10 +53,10 @@ Chart.register({
     id: 'customTooltip',
     afterDraw(chart, args, options) {
         const activeElement = chart.tooltip?.getActiveElements()[0];
-
         if (activeElement) {
             const { ctx } = chart;
-            ctx.save();
+            console.log('worked');
+
             const activePoint: any = chart.tooltip?.getActiveElements()[0];
             const dataPoint = activePoint.index;
             const datasetIndex = activePoint.datasetIndex;
@@ -76,6 +64,8 @@ Chart.register({
             const yPoint = chart.getDatasetMeta(datasetIndex).data[dataPoint]?.tooltipPosition(dataPoint).y;
 
             if (typeof xPoint === 'number' && typeof yPoint === 'number') {
+                ctx.save();
+
                 const padding = 18;
                 const borderRadius = 8;
                 const bgColor = '#2B2F33';
@@ -88,15 +78,20 @@ Chart.register({
                 const pointWidth = 8;
                 const tooltipMargin = 10;
 
-                const daySalesKey = Object.keys(chartDataArr.value)[dataPoint] as string | undefined;
+                const daySalesKey = Object.keys(profileStore.salesPlan ? profileStore.salesPlan.days : {})[dataPoint] as string | undefined;
+                console.log('dataPoint:', dataPoint);
+                console.log('daySalesKey:', daySalesKey);
                 if (daySalesKey) {
                     const sale: ISalesPlanDays | null | undefined = chartDataArr.value[daySalesKey];
+                    console.log('sale:', sale);
                     if (sale) {
                         const itemsText = sale.products.map(item => ({
                             productText: item.product,
                             quantityText: String(item.quantity),
                             priceText: formatPrice(item.price)
                         }));
+
+                        console.log('itemsText:', itemsText);
 
                         const maxWidth = itemsText.reduce((max, item) => {
                             const productWidth = ctx.measureText(item.productText).width;
@@ -112,7 +107,7 @@ Chart.register({
                         const tooltipHeight = padding * 2 + (textLines * lineHeight) + separatorHeight + separatorPaddingBottom;
 
                         const tooltipX = chart.width - tooltipWidth - tooltipMargin;
-                        const tooltipY = Math.max(yPoint - tooltipHeight - padding, 0);
+                        const tooltipY = Math.max(yPoint - tooltipHeight - padding, 0) + 100;
 
                         ctx.fillStyle = bgColor;
                         ctx.beginPath();
@@ -132,64 +127,62 @@ Chart.register({
                         ctx.textBaseline = 'top';
                         ctx.font = '12px Roboto Flex';
 
-                        if (sale) {
-                            // Отрисовка текста "Все"
-                            ctx.fillStyle = textColorWhite40;
-                            ctx.textAlign = 'left';
-                            ctx.fillText('Все', tooltipX + padding, tooltipY + padding);
+                        // Отрисовка текста "Все"
+                        ctx.fillStyle = textColorWhite40;
+                        ctx.textAlign = 'left';
+                        ctx.fillText('Все', tooltipX + padding, tooltipY + padding);
 
-                            // Отрисовка точки между "Все" и общим количеством
-                            ctx.fillStyle = textColorWhite90;
-                            ctx.fillText('.', tooltipX + padding + ctx.measureText('Все').width + spaceBetween, tooltipY + padding - 3);
+                        // Отрисовка точки между "Все" и общим количеством
+                        ctx.fillStyle = textColorWhite90;
+                        ctx.fillText('.', tooltipX + padding + ctx.measureText('Все').width + spaceBetween, tooltipY + padding - 3);
 
-                            // Отрисовка общего количества
-                            ctx.fillStyle = textColorWhite90;
-                            const totalTextWidth = ctx.measureText(sale.total.toString()).width;
-                            const totalPriceWidth = ctx.measureText(formatPrice(sale.totalPrice)).width;
-                            const totalLabelX = tooltipX + padding + ctx.measureText('Все').width + spaceBetween + ctx.measureText('.').width + spaceBetween;
-                            const totalPriceX = totalLabelX + totalTextWidth + spaceBetween + pointWidth;
+                        // Отрисовка общего количества
+                        ctx.fillStyle = textColorWhite90;
+                        const totalTextWidth = ctx.measureText(sale.total.toString()).width;
+                        const totalPriceWidth = ctx.measureText(formatPrice(sale.totalPrice)).width;
+                        const totalLabelX = tooltipX + padding + ctx.measureText('Все').width + spaceBetween + ctx.measureText('.').width + spaceBetween;
+                        const totalPriceX = totalLabelX + totalTextWidth + spaceBetween + pointWidth;
 
-                            ctx.fillText(sale.total.toString(), totalLabelX, tooltipY + padding);
+                        ctx.fillText(sale.total.toString(), totalLabelX, tooltipY + padding);
 
-                            // Отрисовка точки после количества
-                            ctx.fillStyle = textColorWhite90;
-                            ctx.fillText('.', totalLabelX + totalTextWidth + spaceBetween, tooltipY + padding - 3);
+                        // Отрисовка точки после количества
+                        ctx.fillStyle = textColorWhite90;
+                        ctx.fillText('.', totalLabelX + totalTextWidth + spaceBetween, tooltipY + padding - 3);
 
-                            // Отрисовка цены
-                            ctx.fillStyle = '#1ABC9C';
-                            ctx.fillText(formatPrice(sale.totalPrice), totalLabelX - 10 + totalTextWidth + spaceBetween + ctx.measureText('.').width + spaceBetween + pointWidth, tooltipY + padding);
+                        // Отрисовка цены
+                        ctx.fillStyle = '#1ABC9C';
+                        ctx.fillText(formatPrice(sale.totalPrice), totalLabelX - 10 + totalTextWidth + spaceBetween + ctx.measureText('.').width + spaceBetween + pointWidth, tooltipY + padding);
 
-                            ctx.fillStyle = textColorWhite90;
-                            ctx.fillRect(tooltipX + padding, tooltipY + padding + lineHeight, tooltipWidth - padding * 2, separatorHeight);
+                        ctx.fillStyle = textColorWhite90;
+                        ctx.fillRect(tooltipX + padding, tooltipY + padding + lineHeight, tooltipWidth - padding * 2, separatorHeight);
 
-                            let yOffset = tooltipY + padding + lineHeight + separatorHeight + separatorPaddingBottom;
+                        let yOffset = tooltipY + padding + lineHeight + separatorHeight + separatorPaddingBottom;
 
-                            itemsText.forEach(item => {
-                                if (yOffset + lineHeight <= tooltipY + tooltipHeight - padding) {
-                                    const productWidth = ctx.measureText(item.productText).width;
-                                    const quantityWidth = ctx.measureText(item.quantityText).width;
-                                    const priceWidth = ctx.measureText(item.priceText).width;
+                        itemsText.forEach(item => {
+                            if (yOffset + lineHeight <= tooltipY + tooltipHeight - padding) {
+                                const productWidth = ctx.measureText(item.productText).width;
+                                const quantityWidth = ctx.measureText(item.quantityText).width;
+                                const priceWidth = ctx.measureText(item.priceText).width;
 
-                                    ctx.fillStyle = textColorWhite40;
-                                    ctx.fillText(item.productText, tooltipX + padding, yOffset);
+                                ctx.fillStyle = textColorWhite40;
+                                ctx.fillText(item.productText, tooltipX + padding, yOffset);
 
-                                    ctx.fillStyle = textColorWhite90;
-                                    ctx.fillText('.', tooltipX + padding + productWidth + spaceBetween, yOffset - 3);
+                                ctx.fillStyle = textColorWhite90;
+                                ctx.fillText('.', tooltipX + padding + productWidth + spaceBetween, yOffset - 3);
 
-                                    ctx.fillStyle = textColorWhite90;
-                                    ctx.fillText(item.quantityText, tooltipX + padding + productWidth + pointWidth + spaceBetween, yOffset);
+                                ctx.fillStyle = textColorWhite90;
+                                ctx.fillText(item.quantityText, tooltipX + padding + productWidth + pointWidth + spaceBetween, yOffset);
 
-                                    ctx.fillStyle = textColorWhite90;
-                                    ctx.fillText('.', tooltipX + padding + productWidth + pointWidth + spaceBetween + quantityWidth + spaceBetween, yOffset - 3);
+                                ctx.fillStyle = textColorWhite90;
+                                ctx.fillText('.', tooltipX + padding + productWidth + pointWidth + spaceBetween + quantityWidth + spaceBetween, yOffset - 3);
 
-                                    ctx.fillStyle = '#1ABC9C';
-                                    ctx.fillText(item.priceText, tooltipX + padding + productWidth + pointWidth + quantityWidth + 3.5 * spaceBetween, yOffset);
+                                ctx.fillStyle = '#1ABC9C';
+                                ctx.fillText(item.priceText, tooltipX + padding + productWidth + pointWidth + quantityWidth + 3.5 * spaceBetween, yOffset);
 
-                                    yOffset += lineHeight;
-                                }
-                            });
-                        }
-
+                                yOffset += lineHeight;
+                            }
+                        });
+                        console.log('worked 2');
                         ctx.restore();
                     }
                 }
@@ -275,19 +268,19 @@ Chart.register({
                     const valueWidth = ctx.measureText(text).width;
 
                     // Отрисовка основного значения
-                    ctx.fillStyle = '#fff'; // Белый цвет
-                    let textOffsetX = x + 8; // Начальная позиция X
-                    for (const char of text) {
-                        ctx.fillText(char, textOffsetX, y);
-                        textOffsetX += letterSpacing; // Ширина символа + letterSpacing
-                    }
+                    // ctx.fillStyle = '#fff'; // Белый цвет
+                    // let textOffsetX = x + 8; // Начальная позиция X
+                    // for (const char of text) {
+                    //     ctx.fillText(char, textOffsetX, y);
+                    //     textOffsetX += letterSpacing; // Ширина символа + letterSpacing
+                    // }
 
                     // Отрисовка отклонения
                     const deviationText = `(${deviation})`;
                     const deviationColor = value < monthAnnotation.value ? '#F04438' : '#04EA6F'; // Красный если меньше нормы, зеленый если больше нормы
 
                     // Расчет позиции X для отклонения с учетом промежутка и ширины основного значения
-                    const deviationOffsetX = x + 24 + valueWidth + spaceBetween;
+                    const deviationOffsetX = x + valueWidth + spaceBetween;
 
                     ctx.fillStyle = deviationColor;
                     ctx.font = '200 12px Roboto Flex';
@@ -313,7 +306,7 @@ const chartOptions: ChartOptions<'bar'> = {
     maintainAspectRatio: false,
     plugins: {
         tooltip: {
-            enabled: false
+            enabled: false,
         },
         datalabels: {
             display: false
@@ -368,9 +361,10 @@ const chartOptions: ChartOptions<'bar'> = {
                 display: false,
             },
             min: 0,
-            max: maxDataValue + (maxDataValue / 100 * 50)
+            max: maxDataValue > 0 ? maxDataValue * 1.4 : 100
         },
         y: {
+            min: 0,
             title: {
                 text: "",
                 display: true,
@@ -392,30 +386,18 @@ const chartOptions: ChartOptions<'bar'> = {
     },
     elements: {
         bar: {
-            borderWidth: 2,
-            borderSkipped: false,
             borderRadius: 0,
+            borderWidth: 1,
         }
     },
-    onClick: (event, elements) => {
-        if (elements.length > 0) {
-            const element = elements[0];
-            const datasetIndex = element?.datasetIndex;
-            const index = element?.index;
-
-            console.log(`Clicked on dataset index ${datasetIndex}, data index ${index}`);
-            profileStore.activeMoreInfo = true
-
-        }
-    }
 };
 
-function createChart() {
-    const dataEntries = Object.entries(chartDataArr.value || {});
+function prepareData() {
+    const dataEntries = Object.entries(chartDataArr.value);
 
     if (dataEntries.length === 0) {
-        console.warn('No data available to create the chart.');
-        return;
+        console.warn('Нет данных для создания графика.');
+        return null;
     }
 
     const labels = Object.keys(chartDataArr.value).map(date => {
@@ -423,25 +405,26 @@ function createChart() {
         return `${day}.${month}`;
     });
 
-    const data = dataEntries.map(([_, value]) => value?.total || 0);
+    const data = dataEntries.map(([_, value]) => {
+        return typeof value?.total === 'number' ? value.total : 0;
+    });
 
-    const canvasId = 'sales-chart';
-    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
-    if (!canvas) {
-        return;
+    return { labels, data };
+}
+
+function createChart(labels: string[], data: number[]) {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'sales-chart';
+    canvas.style.width = '100%';
+    canvas.style.height = `${calcHeight.value}px`;
+
+    if (chartWrapper.value) {
+        chartWrapper.value.innerHTML = '';
+        chartWrapper.value.appendChild(canvas);
     }
 
-    console.log(data);
-    
-    canvas.height = calcHeight.value;
 
-    // Проверяем, создан ли уже график
-    if (chart.value) {
-        chart.value.destroy(); // Уничтожаем предыдущий график
-    }
-
-    // Создаем новый график
-    chart.value = new Chart(canvas, {
+    const config: ChartConfiguration<'bar', number[], string> = {
         type: 'bar',
         data: {
             labels: labels,
@@ -452,58 +435,41 @@ function createChart() {
                     hoverBackgroundColor: '#1abc9c',
                     hoverBorderColor: "#fff",
                     borderColor: '#1abc9c',
-                    barThickness: 18,
-                    maxBarThickness: 195,
                 }
             ]
         },
         options: chartOptions
-    });
+    };
 
-    isChartCreated.value = true; // Устанавливаем флаг, что график создан
+    chart.value = new Chart(canvas, config);
 }
 
-function destroyAndRecreateChart() {
+async function initializeChart() {
     if (chart.value) {
-        chart.value.destroy();
         chart.value = null;
     }
-    createChart();
+
+    const preparedData = prepareData();
+    if (!preparedData) return;
+
+    // Убедитесь, что старый canvas удален
+    const existingCanvas = document.getElementById('sales-chart');
+    if (existingCanvas) {
+        existingCanvas.remove();
+    }
+
+    createChart(preparedData.labels, preparedData.data);
 }
 
-function updateChart() {
-    // Проверяем, есть ли данные
-    if (Object.keys(chartDataArr.value).length > 0) {
-        if (!isChartCreated.value) {
-            createChart(); // Создаем график, если он еще не создан
-        } else {
-            // Если график уже создан, можно обновить его
-            destroyAndRecreateChart();
-        }
-    } else {
-        console.warn('No data available to update the chart.');
-    }
-}
 
-watch(chartDataArr, updateChart, { immediate: true });
-
-watch(chartDataArr, (newValue) => {
-    if (Object.keys(newValue).length > 0) {
-        destroyAndRecreateChart();
-    }
-}, { immediate: true });
-
-watch(activeDayFilter, (newValue) => {
-    if (activeDayFilter) {
-        destroyAndRecreateChart();
-    }
+watch(chartDataArr, async (newValue) => {
+    await nextTick();
+    await initializeChart();
 }, { immediate: true });
 
 onMounted(() => {
-    if (profileStore.salesPlan) {
-        updateChart();
-    }
-});
+    initializeChart();
+})
 </script>
 
 <style scoped>
@@ -527,10 +493,7 @@ onMounted(() => {
     border: 2px solid #2b2f33;
 }
 
-#sales-chart,
-#sales-chart-2,
-#sales-chart-3,
-#sales-chart-4 {
+#sales-chart {
     width: 100% !important;
 }
 </style>

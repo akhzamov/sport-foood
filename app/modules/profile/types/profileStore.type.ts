@@ -1,5 +1,5 @@
-import type { ISalesPlanMonth } from "~/layers/profile/types/salesPlan.type"
-import type { IStore } from "~/layers/profile/types/stores.type"
+import type { ISalesPlanMonth } from "~/modules/profile/types/salesPlan.type"
+import type { IStore } from "~/modules/profile/types/stores.type"
 
 interface IDaySalesProducts {
     product: string,

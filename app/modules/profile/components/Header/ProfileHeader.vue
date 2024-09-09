@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useProfileStore } from '~/layers/profile/stores/profile';
+import { useProfileStore } from '~/modules/profile/stores/profile';
 
 const profileStore = useProfileStore()
 const stores = computed(() => profileStore.stores)

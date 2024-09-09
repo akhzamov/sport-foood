@@ -1,4 +1,10 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const authCookie = useCookie('auth');
+
+function logOut() {
+  authCookie.value = null;
+};
+</script>
 
 <template>
   <nav class="flex flex-col">
@@ -51,9 +57,16 @@
           <ul class="flex items-center gap-4">
             <li>
               <NuxtLink to="/profile"
-                class="changed px-4 py-2 rounded-lg transition duration-100 flex items-center gap-2">
-                <IconUserSquare class="text-gray-75-color" />
-                <span class="text-14-semi text-gray-75-color">Мой профиль</span>
+                class="bg-primary-color px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2 hover:opacity-[0.8]">
+                <IconUserSquare class="text-dark-night-color" />
+                <span class="text-14-semi text-dark-night-color">Мой профиль</span>
+              </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink to="/sign-in" @click="logOut()"
+                class="bg-gray-15-color border border-gray-90-color px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2 hover:bg-gray-40-color">
+                <IconLogOut class="text-gray-75-color" />
+                <span class="text-14-semi text-gray-75-color">Выйти</span>
               </NuxtLink>
             </li>
           </ul>
@@ -63,16 +76,4 @@
   </nav>
 </template>
 
-<style scoped>
-.router-link-active.changed {
-  @apply bg-primary-color;
-}
-
-.router-link-active.changed svg {
-  @apply text-dark-night-color;
-}
-
-.router-link-active.changed span {
-  @apply text-dark-night-color;
-}
-</style>
+<style scoped></style>

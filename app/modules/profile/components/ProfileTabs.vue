@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { useProfileStore } from '~/layers/profile/stores/profile';
-import { getSalesPlan } from '~/layers/profile/components/Header/profileHeader.data'
+import { useProfileStore } from '~/modules/profile/stores/profile';
+import { getSalesPlan } from '~/modules/profile/components/Header/profileHeader.data'
 
 const profileStore = useProfileStore()
 const activeMoreInfo = computed(() => profileStore.activeMoreInfo)
 const activeDayFilterBlocked = computed(() => profileStore.activeDayFilterBlocked)
 const chartLoader = computed(() => profileStore.chartLoader)
 const salesPlan = computed(() => profileStore.salesPlan)
+const isChartReady = ref(false);
 const daysFilter = reactive([
     { id: 1, title: '30 д', value: 30, active: true },
     { id: 2, title: '14 д', value: 14, active: false },
@@ -47,6 +48,14 @@ watch(activeMoreInfo, (newValue) => {
     }
 }, { immediate: true });
 
+watch(salesPlan, async (newSalesPlan) => {
+    if (newSalesPlan) {
+        await nextTick();
+        isChartReady.value = true;
+    } else {
+        isChartReady.value = false;
+    }
+});
 onMounted(() => {
     profileStore.activeDayFilter = 30
 })
@@ -78,7 +87,7 @@ onMounted(() => {
         </div>
         <div class="w-full grid grid-cols-custom-3-390 gap-6 justify-center mt-4">
             <ChartLoadChart v-if="!salesPlan" />
-            <ChartBarLine v-if="salesPlan" />
+            <ChartBarLine v-if="salesPlan && isChartReady" />
             <RatingMarketplaces />
             <!-- <GraphFirst /> -->
         </div>

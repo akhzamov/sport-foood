@@ -5,7 +5,9 @@ export const useMainStore = defineStore('main', {
     state: (): IMainStore => ({
         user: null,
         marketplaces: null,
-        marketplaceById: null
+        marketplaceById: null,
+        errorMessage: '',
+        alertShow: false
     }),
     actions: {
     },

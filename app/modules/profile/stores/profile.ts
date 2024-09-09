@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import type { IProfileStore } from "~/layers/profile/types/profileStore.type";
-import { daySalesData, monthAnnotation } from '~/layers/profile/components/chart/BarLineData'
+import type { IProfileStore } from "~/modules/profile/types/profileStore.type";
+import { daySalesData, monthAnnotation } from '~/modules/profile/components/chart/BarLineData'
 
 export const useProfileStore = defineStore('profile', {
     state: (): IProfileStore => ({
