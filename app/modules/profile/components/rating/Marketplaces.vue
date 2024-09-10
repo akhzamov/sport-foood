@@ -123,7 +123,7 @@ const marketplaces = [
                         class="flex w-[80px] h-full flex-col items-center justify-between border-gray-40-color mr-1 p-[1px]">
                         <div class="flex items-center gap-[4px]">
                             <span class="text-10-ext text-gray-75-color text-right">Оборот</span>
-                            <span class="text-10-ext text-success-color">(13%)</span>
+                            <span class="text-10-ext text-success-500">(13%)</span>
                         </div>
                         <span class="text-12-reg text-gray-90-color">11 107 250</span>
                     </div>

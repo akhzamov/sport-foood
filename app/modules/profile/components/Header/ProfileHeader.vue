@@ -26,13 +26,13 @@ const activeTab = (id: number) => {
     <div class="w-full h-[338px] relative flex items-end justify-center">
         <div class="absolute top-0 left-0 w-full h-full bg-dark-charcoal-color z-[-1]">
             <div class="block w-full h-[280px] bg-profile-header-bg-liner absolute"></div>
-            <img src="~/assets/img/background.png" alt="profile-header-bg"
+            <img src="~/assets/img/background.webp" alt="profile-header-bg"
                 class="w-full h-[280px] object-cover object-center">
         </div>
         <div class="container-custom z-[20] px-8 h-[136px] flex gap-6">
-            <div class="w-[120px] h-[120px] overflow-hidden rounded-[50%] border-[3px]">
-                <img src="~/assets/img/avatar.png" alt="profile-header-avatar"
-                    class="w-full h-full object-center object-cover">
+            <div
+                class="w-[120px] h-[120px] flex items-center justify-center overflow-hidden rounded-[50%] border-[3px] bg-white">
+                <IconUser class="w-[42px] h-[48px] text-dark-charcoal-color" />
             </div>
             <div class="flex flex-col justify-between flex-grow">
                 <div class="flex justify-between">
@@ -47,7 +47,7 @@ const activeTab = (id: number) => {
                         :menuBgColor="'bg-primary-color'" :array="stores" v-model="profileStore.selectedBranch" />
                 </div>
                 <div class="flex gap-8">
-                    <div class="px-5 pt-5 cursor-pointer flex flex-col after:w-full after:h-[2px] after:rounded-t-[4px] after:bg-primary-color"
+                    <div class="px-5 pt-5 rounded-lg cursor-pointer flex flex-col after:w-full after:h-[2px] after:rounded-t-[4px] after:bg-primary-color hover:bg-warning-500-20"
                         v-for="tab in tabs" :key="tab.id" :class="tab.active ? 'after:block' : 'after:hidden'"
                         @click="activeTab(tab.id)">
                         <div class="flex items-center justify-center pb-4 gap-2">
