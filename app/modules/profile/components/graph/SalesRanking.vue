@@ -48,7 +48,8 @@ const totalPlan = (item: ISalesRankingProducts) => {
                     </div>
                     <div
                         class="h-full flex flex-col gap-3 px-1 py-2 bg-gray-15-color border-l border-dark-charcoal-color">
-                        <div class="flex items-center gap-[4px]" v-for="product in item.products">
+                        <div class="flex items-center gap-[4px] hover:bg-gray-25-color"
+                            v-for="product in item.products">
                             <p class="flex-grow text-12-reg text-gray-90-color">{{ product.name }}</p>
                             <div class="w-[170px]">
                                 <div class="totalPlan relative flex w-full h-2 bg-gray-40-color rounded-lg">
@@ -60,32 +61,74 @@ const totalPlan = (item: ISalesRankingProducts) => {
                                             @mouseleave="showProductItemID = null, showProductID = null"
                                             :key="product.id">
                                             <div
-                                                class="w-full h-full plan cursor-pointer border border-transparent hover:border-primary-color flex rounded-[1px] bg-success-400 ">
+                                                class="w-full h-full plan cursor-pointer flex rounded-[1px] bg-success-400 ">
                                             </div>
 
                                         </div>
 
                                     </div>
-                                    <div class="w-max absolute bottom-[100%] left-[50%] translate-x-[-50%] translate-y-[-8px] z-[20] bg-dark-eerie-black-color border border-gray-40-color rounded-lg p-3 flex flex-col items-start justify-start"
-                                        v-if="showProductItemID == item.id && showProductID == product.id">
-                                        <span class="text-10-ext text-gray-90-color">{{ product.name }}</span>
-                                        <div class="block w-full h-[1px] bg-gray-40-color mt-1"></div>
-                                        <div class="flex items-center gap-1 mt-2">
-                                            <div class="w-[10px] h-[10px] rounded-[50%] bg-white block"></div>
-                                            <span class="text-10-ext text-gray-75-color">План</span>
-                                            <span class="text-10-ext text-gray-90-color">{{
-                                                product.plan.toLocaleString() }}
-                                                гр</span>
-                                        </div>
-                                        <div class="flex items-center gap-1 mt-2">
-                                            <div class="w-[10px] h-[10px] rounded-[50%] bg-secondary-color">
+                                    <template v-if="showProductItemID == item.id && showProductID == product.id">
+                                        <div
+                                            class="w-max absolute bottom-[100%] left-[50%] translate-x-[-50%] translate-y-[-8px] z-[20] bg-dark-eerie-black-color border border-gray-40-color rounded-lg p-3 flex flex-col items-start justify-start">
+                                            <div class="w-max flex mb-2">
+                                                <p class="w-[65px] text-10-reg text-gray-90-color text-left">Фасовка</p>
+                                                <p class="w-[50px] text-10-reg text-gray-90-color text-right">Кол-во</p>
+                                                <p class="w-[80px] text-10-reg text-gray-90-color text-right">Вес</p>
+                                                <p class="w-[80px] text-10-reg text-gray-90-color text-right">Сумма</p>
                                             </div>
-                                            <span class="text-10-ext text-gray-75-color">Продано</span>
-                                            <span class="text-10-ext text-gray-90-color">{{
-                                                product.sold.toLocaleString() }}
-                                                гр</span>
+                                            <div class="w-full h-[1px] bg-dark-charcoal-color"></div>
+                                            <div class="w-max flex my-2">
+                                                <div class="w-[65px] flex gap-2 flex-col items-start justify-center">
+                                                    <p class="text-10-ext text-gray-40-color">100 гр</p>
+                                                    <p class="text-10-ext text-gray-40-color">200 гр</p>
+                                                    <p class="text-10-ext text-gray-40-color">500 гр</p>
+                                                </div>
+                                                <div class="w-[50px] flex gap-2 flex-col items-end justify-center">
+                                                    <p class="text-10-ext text-gray-90-color">13</p>
+                                                    <p class="text-10-ext text-gray-90-color">23</p>
+                                                    <p class="text-10-ext text-gray-90-color">4</p>
+                                                </div>
+                                                <div class="w-[80px] flex gap-2 flex-col items-end justify-center">
+                                                    <p class="text-10-ext text-gray-90-color">32 500,00 гр</p>
+                                                    <p class="text-10-ext text-gray-90-color">115 500,05 гр</p>
+                                                    <p class="text-10-ext text-gray-90-color">999 000,99 гр</p>
+                                                </div>
+                                                <div class="w-[80px] flex gap-2 flex-col items-end justify-center">
+                                                    <p class="text-10-ext text-secondary-color">24 600 000</p>
+                                                    <p class="text-10-ext text-secondary-color">115 000 000</p>
+                                                    <p class="text-10-ext text-secondary-color">999 999 009</p>
+                                                </div>
+                                            </div>
+                                            <div class="w-full h-[1px] bg-dark-charcoal-color"></div>
+                                            <div class="w-max flex my-2">
+                                                <div class="w-[65px] flex items-center justify-start">
+                                                    <p class="text-10-ext text-gray-90-color">Итого</p>
+                                                </div>
+                                                <div class="w-[50px] flex items-center justify-end">
+                                                    <p class="text-10-ext text-gray-90-color">40</p>
+                                                </div>
+                                                <div class="w-[80px] flex items-center justify-end">
+                                                    <p class="text-10-ext text-gray-90-color">999 009,05 гр</p>
+                                                </div>
+                                                <div class="w-[80px] flex items-center justify-end">
+                                                    <p class="text-10-ext text-secondary-color">999 000 000</p>
+                                                </div>
+                                            </div>
+                                            <div class="w-full h-[1px] bg-dark-charcoal-color"></div>
+                                            <div class="w-max flex mt-2">
+                                                <div class="w-[65px] flex items-center justify-start">
+                                                    <p class="text-10-ext text-secondary-color">План</p>
+                                                </div>
+                                                <div class="w-[50px] flex items-center justify-end">
+                                                </div>
+                                                <div class="w-[80px] flex items-center justify-end">
+                                                    <p class="text-10-ext text-secondary-color">999 009,05 гр</p>
+                                                </div>
+                                                <div class="w-[80px] flex items-center justify-end">
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </template>
                                 </div>
                             </div>
                             <div class="w-[140px] flex items-center justify-end gap-[7px]">
