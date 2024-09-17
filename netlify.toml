@@ -1,0 +1,9 @@
+[build]
+  command = "npm run generate"
+  publish = "dist"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://crm-api.autosale.pw/api/:splat"
+  status = 200
+  force = true
