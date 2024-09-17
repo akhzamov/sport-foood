@@ -1,15 +1,13 @@
 import type { IStore } from "~/modules/profile/types/stores.type";
 import type { ISalesPlan } from "~/modules/profile/types/salesPlan.type";
 import { useProfileStore } from "~/modules/profile/stores/profile";
-import { baseUrl } from "~/api";
-import apiClient from "~/apiClient";
-
+import axios from "axios";
 export async function getStores() {
 	const profileStore = useProfileStore();
 	const authCookie = useCookie("auth");
 	profileStore.salesPlan = null;
 	try {
-		const res = await apiClient.get<IStore[]>(`/api/stores`, {
+		const res = await axios.get<IStore[]>(`/api/stores`, {
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${authCookie.value}`,
@@ -32,7 +30,7 @@ export async function getSalesPlan() {
 	const authCookie = useCookie("auth");
 	profileStore.salesPlan = null;
 	try {
-		const res = await apiClient.get<ISalesPlan>(`/api/sales-plan`, {
+		const res = await axios.get<ISalesPlan>(`/api/sales-plan`, {
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${authCookie.value}`,

@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-	import { baseUrl } from "~/api";
 	import { useMainStore } from "~/stores/main";
 	import { useForm, useField } from "vee-validate";
 	import * as yup from "yup";
-	import apiClient from "~/apiClient";
+	import axios from "axios";
 
 	const schema = yup.object({
 		login: yup
@@ -38,7 +37,7 @@
 	const onSubmit = handleSubmit(async (values) => {
 		try {
 			if (!loginError.value && !passwordError.value) {
-				const res = await apiClient.post(
+				const res = await axios.post(
 					`/api/login`,
 					{
 						username: login.value,
