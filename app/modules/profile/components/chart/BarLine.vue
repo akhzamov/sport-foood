@@ -382,28 +382,13 @@
 									);
 
 									yOffset += lineHeight;
-								} else {
-									console.log(
-										"CustomTooltip: Tooltip exceeded available space"
-									);
 								}
 							});
 
-							console.log("CustomTooltip: Finished drawing tooltip");
 							ctx.restore();
-						} else {
-							console.warn(
-								"CustomTooltip: No sale data found for the day sales key"
-							);
 						}
-					} else {
-						console.warn("CustomTooltip: Day sales key not found");
 					}
-				} else {
-					console.warn("CustomTooltip: Tooltip position is invalid");
 				}
-			} else {
-				console.warn("CustomTooltip: No active element found");
 			}
 		},
 	});
