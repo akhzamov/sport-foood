@@ -1,16 +1,18 @@
 import type { IStore } from "~/modules/profile/types/stores.type";
 import type { ISalesPlan } from "~/modules/profile/types/salesPlan.type";
 import { useProfileStore } from "~/modules/profile/stores/profile";
+import { getAuthToken } from "~/utils/auth";
 import axios from "axios";
+
 export async function getStores() {
 	const profileStore = useProfileStore();
-	const authCookie = useCookie("auth");
+	const token = getAuthToken();
 	profileStore.salesPlan = null;
 	try {
 		const res = await axios.get<IStore[]>(`/api/stores`, {
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${authCookie.value}`,
+				Authorization: `Bearer ${token}`,
 			},
 		});
 		profileStore.stores = res.data;
@@ -27,13 +29,13 @@ export async function getStores() {
 
 export async function getSalesPlan() {
 	const profileStore = useProfileStore();
-	const authCookie = useCookie("auth");
+	const token = getAuthToken();
 	profileStore.salesPlan = null;
 	try {
 		const res = await axios.get<ISalesPlan>(`/api/sales-plan`, {
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${authCookie.value}`,
+				Authorization: `Bearer ${token}`,
 			},
 			params: {
 				store_id: profileStore.selectedBranch,

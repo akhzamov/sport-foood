@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import type { ISalesPlanDay } from "~/modules/profile/types/salesPlanDay.type";
+import { getAuthToken } from "~/utils/auth";
 
 export async function getSalesPlanDay() {
 	const profileStore = useProfileStore();
-	const authCookie = useCookie("auth");
+	const token = getAuthToken();
 	profileStore.salesPlanDay = null;
 	profileStore.salesPlanDayFirstRes = true;
 	try {
@@ -13,7 +14,7 @@ export async function getSalesPlanDay() {
 			{
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${authCookie.value}`,
+					Authorization: `Bearer ${token}`,
 				},
 				params: {
 					store_id: profileStore.selectedBranch,

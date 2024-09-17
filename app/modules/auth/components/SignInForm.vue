@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 	import { useMainStore } from "~/stores/main";
 	import { useForm, useField } from "vee-validate";
+	import { setAuthToken } from "~/utils/auth";
 	import * as yup from "yup";
 	import axios from "axios";
 
@@ -32,8 +33,6 @@
 	const passwordErrorText = ref("");
 	const showPassword = ref(false);
 
-	const authCookie = useCookie("auth");
-
 	const onSubmit = handleSubmit(async (values) => {
 		try {
 			if (!loginError.value && !passwordError.value) {
@@ -51,7 +50,7 @@
 				);
 
 				if (res.data.token) {
-					authCookie.value = res.data.token;
+					setAuthToken(res.data.token);
 					router.push("/");
 				}
 			}
