@@ -10,39 +10,47 @@
 	const chartLoader = computed(() => profileStore.chartLoader);
 	const salesPlan = computed(() => profileStore.salesPlan);
 	const isChartReady = ref(false);
+
 	const daysFilter = reactive([
 		{ id: 1, title: "30 д", value: 30, active: true },
 		{ id: 2, title: "14 д", value: 14, active: false },
 		{ id: 3, title: "7 д", value: 7, active: false },
 		{ id: 4, title: "24 ч", value: 0, active: false },
 	]);
-	const activeTab = (value: number) => {
+
+	const activeTab = async (value: number) => {
 		if (!profileStore.activeDayFilterBlocked) {
-			daysFilter.forEach((item) => {
-				item.active = false;
-				if (item.value == value) {
-					item.active = true;
-					profileStore.activeDayFilter = value;
-					profileStore.activeDayFilterBlocked = true;
-					setTimeout(() => {
-						profileStore.activeDayFilterBlocked = false;
-					}, 1000);
-					getSalesPlan();
-				}
-			});
+			const activeItem = daysFilter.find(
+				(item) => item.value === value
+			);
+
+			if (activeItem) {
+				activeItem.active = true;
+
+				profileStore.activeDayFilterBlocked = true;
+				profileStore.activeDayFilter = value;
+				await getSalesPlan();
+				profileStore.activeDayFilterBlocked = false;
+
+				daysFilter.forEach((item) => {
+					if (item !== activeItem) {
+						item.active = false;
+					}
+				});
+			}
 		}
 	};
 
 	const moreInfo = ref<HTMLElement | null>(null);
 
-	function scrollTo() {
+	const scrollTo = () => {
 		if (moreInfo.value) {
 			moreInfo.value.scrollIntoView({
 				behavior: "smooth",
 				block: "nearest",
 			});
 		}
-	}
+	};
 
 	watch(
 		activeMoreInfo,
@@ -64,6 +72,7 @@
 			isChartReady.value = false;
 		}
 	});
+
 	onMounted(() => {
 		profileStore.activeDayFilter = 30;
 	});
@@ -110,14 +119,15 @@
 				</div>
 			</div>
 		</div>
+
 		<div
 			class="w-full grid grid-cols-custom-3-390 gap-6 justify-center mt-4"
 		>
 			<ChartLoadChart v-if="!salesPlan" />
 			<ChartBarLine v-if="salesPlan && isChartReady" />
 			<RatingMarketplaces />
-			<!-- <GraphFirst /> -->
 		</div>
+
 		<div
 			class="w-full grid grid-cols-1 mt-4 pb-16"
 			ref="moreInfo"
@@ -126,5 +136,3 @@
 		</div>
 	</div>
 </template>
-
-<style scoped></style>

@@ -8,7 +8,24 @@
 		<div
 			ref="chartWrapper"
 			class="chart-wrapper w-full flex overflow-y-auto h-[360px] bg-dark-charcoal-color"
-		></div>
+		>
+			<canvas
+				id="chartFor30Days"
+				v-if="profileStore.activeDayFilter == 30"
+			/>
+			<canvas
+				id="chartFor14Days"
+				v-if="profileStore.activeDayFilter == 14"
+			/>
+			<canvas
+				id="chartFor7Days"
+				v-if="profileStore.activeDayFilter == 7"
+			/>
+			<canvas
+				id="chartFor1Days"
+				v-if="profileStore.activeDayFilter == 0"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -43,25 +60,29 @@
 	// const monthAnnotation = computed(
 	// 	() => profileStore.monthAnnotation / 30
 	// );
-	const monthAnnotation = ref(5950 / 30);
-	const chartDataArr = computed(() =>
+	let monthAnnotation = ref(5950 / 30);
+	let chartDataArr = computed(() =>
 		profileStore.salesPlan ? profileStore.salesPlan.days : {}
 	);
 	const chartWrapper: Ref<HTMLDivElement | null> = ref(null);
-	const chart = ref<any>(null);
-	const lineHeight = 22;
-	const borderWidth = 4;
-	const verticalPadding = 7;
+	let chart = ref<any>(null);
 	const calcHeight = computed(() => {
-		// Подсчитываем количество дней (объектов) в days
 		let numLines = profileStore.salesPlan?.days
 			? Object.keys(profileStore.salesPlan.days).length
 			: 0;
 
-		// Возвращаем вычисленную высоту в зависимости от количества строк
-		return numLines <= 14
-			? (lineHeight + borderWidth) * 14 + verticalPadding
-			: (lineHeight + borderWidth) * numLines + verticalPadding;
+		switch (numLines) {
+			case 30:
+				return 30 * 32; // 1012px
+			case 14:
+				return 14 * 32; // 468px
+			case 7:
+				return 360; // 230px
+			case 1:
+				return 360; // 26px
+			default:
+				return 0; // на случай, если данных нет
+		}
 	});
 	const calculateDeviation = (
 		currentValue: number | null | undefined,
@@ -85,7 +106,7 @@
 
 	Chart.register({
 		id: "customTooltip",
-		afterDraw(chart, args, options) {
+		afterDraw(chart) {
 			const activeElement = chart.tooltip?.getActiveElements()[0];
 			if (activeElement) {
 				const { ctx } = chart;
@@ -94,6 +115,7 @@
 					chart.tooltip?.getActiveElements()[0];
 				const dataPoint = activePoint.index;
 				const datasetIndex = activePoint.datasetIndex;
+
 				const xPoint = chart
 					.getDatasetMeta(datasetIndex)
 					.data[dataPoint]?.tooltipPosition(dataPoint).x;
@@ -122,9 +144,10 @@
 					const daySalesKey = Object.keys(
 						profileStore.salesPlan ? profileStore.salesPlan.days : {}
 					)[dataPoint] as string | undefined;
-					if (daySalesKey) {
+
+					if (daySalesKey && profileStore.salesPlan) {
 						const sale: ISalesPlanDays | null | undefined =
-							chartDataArr.value[daySalesKey];
+							profileStore.salesPlan.days[daySalesKey];
 						if (sale) {
 							const itemsText = sale.products.map((item) => ({
 								productText: item.product,
@@ -359,12 +382,28 @@
 									);
 
 									yOffset += lineHeight;
+								} else {
+									console.log(
+										"CustomTooltip: Tooltip exceeded available space"
+									);
 								}
 							});
+
+							console.log("CustomTooltip: Finished drawing tooltip");
 							ctx.restore();
+						} else {
+							console.warn(
+								"CustomTooltip: No sale data found for the day sales key"
+							);
 						}
+					} else {
+						console.warn("CustomTooltip: Day sales key not found");
 					}
+				} else {
+					console.warn("CustomTooltip: Tooltip position is invalid");
 				}
+			} else {
+				console.warn("CustomTooltip: No active element found");
 			}
 		},
 	});
@@ -638,16 +677,31 @@
 		return { labels, data };
 	}
 
-	function createChart(labels: string[], data: number[]) {
-		const canvas = document.createElement("canvas");
-		canvas.id = "sales-chart";
+	function createChart(
+		canvasId: string,
+		labels: string[],
+		data: number[]
+	) {
+		const canvas = document.getElementById(
+			canvasId
+		) as HTMLCanvasElement;
+
+		if (!canvas) {
+			console.error(`Canvas with id ${canvasId} not found.`);
+			return;
+		}
+
+		const ctx = canvas.getContext("2d");
+
+		if (!ctx) {
+			console.error("Failed to get canvas context.");
+			return;
+		}
+
 		canvas.style.width = "100%";
 		canvas.style.height = `${calcHeight.value}px`;
-
-		if (chartWrapper.value) {
-			chartWrapper.value.innerHTML = "";
-			chartWrapper.value.appendChild(canvas);
-		}
+		canvas.width = canvas.offsetWidth;
+		canvas.height = canvas.offsetHeight;
 
 		const config: ChartConfiguration<"bar", number[], string> = {
 			type: "bar",
@@ -660,36 +714,75 @@
 						hoverBackgroundColor: "#1abc9c",
 						hoverBorderColor: "#fff",
 						borderColor: "#1abc9c",
+						barThickness: 22,
+						maxBarThickness: 22,
 					},
 				],
 			},
 			options: chartOptions,
 		};
 
-		chart.value = new Chart(canvas, config).update();
+		if (chart.value != null || chartWrapper.value) {
+			chart.value = new Chart(ctx, config).destroy();
+			chart.value = null;
+		}
+
+		chart.value = new Chart(ctx, config);
 	}
 
 	async function initializeChart() {
-		if (chart.value) {
-			chart.value = null;
+		const activeFilter = profileStore.activeDayFilter;
+
+		let canvasId = "";
+		switch (activeFilter) {
+			case 30:
+				canvasId = "chartFor30Days";
+				break;
+			case 14:
+				canvasId = "chartFor14Days";
+				break;
+			case 7:
+				canvasId = "chartFor7Days";
+				break;
+			case 0:
+				canvasId = "chartFor1Days";
+				break;
+			default:
+				console.warn("Invalid day filter");
+				return;
 		}
 
 		const preparedData = prepareData();
 		if (!preparedData) return;
 
 		// Убедитесь, что старый canvas удален
-		const existingCanvas = document.getElementById("sales-chart");
+		const existingCanvas = document.getElementById(canvasId);
 		if (existingCanvas) {
 			existingCanvas.remove();
 		}
 
-		createChart(preparedData.labels, preparedData.data);
+		// Создаем новый canvas и устанавливаем его размер
+		const newCanvas = document.createElement("canvas");
+		newCanvas.id = canvasId;
+		newCanvas.style.width = "100%";
+		newCanvas.style.height = `${calcHeight.value}px`;
+
+		if (chartWrapper.value) {
+			chartWrapper.value.innerHTML = "";
+			chartWrapper.value.appendChild(newCanvas);
+		}
+
+		createChart(canvasId, preparedData.labels, preparedData.data);
 	}
 
 	watch(
-		chartDataArr,
-		async (newValue) => {
-			await nextTick();
+		() => profileStore.activeDayFilter,
+		async () => {
+			chart.value = null;
+
+			if (chartWrapper.value) {
+				chartWrapper.value.innerHTML = "";
+			}
 			await initializeChart();
 		},
 		{ immediate: true }
@@ -697,6 +790,14 @@
 
 	onMounted(() => {
 		initializeChart();
+	});
+
+	onUnmounted(() => {
+		chart.value = null;
+
+		if (chartWrapper.value) {
+			chartWrapper.value.innerHTML = "";
+		}
 	});
 </script>
 
@@ -723,5 +824,64 @@
 
 	#sales-chart {
 		width: 100% !important;
+	}
+
+	.lds-ripple,
+	.lds-ripple div {
+		box-sizing: border-box;
+		@apply text-primary-color;
+	}
+
+	.lds-ripple {
+		display: inline-block;
+		position: relative;
+		width: 80px;
+		height: 80px;
+	}
+
+	.lds-ripple div {
+		position: absolute;
+		border: 4px solid currentColor;
+		opacity: 1;
+		border-radius: 50%;
+		animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+	}
+
+	.lds-ripple div:nth-child(2) {
+		animation-delay: -0.5s;
+	}
+
+	@keyframes lds-ripple {
+		0% {
+			top: 36px;
+			left: 36px;
+			width: 8px;
+			height: 8px;
+			opacity: 0;
+		}
+
+		4.9% {
+			top: 36px;
+			left: 36px;
+			width: 8px;
+			height: 8px;
+			opacity: 0;
+		}
+
+		5% {
+			top: 36px;
+			left: 36px;
+			width: 8px;
+			height: 8px;
+			opacity: 1;
+		}
+
+		100% {
+			top: 0;
+			left: 0;
+			width: 80px;
+			height: 80px;
+			opacity: 0;
+		}
 	}
 </style>
