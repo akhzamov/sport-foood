@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://crm-api.autosale.pw/api/$1"
+    }
+  ]
+}
