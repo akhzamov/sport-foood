@@ -33,6 +33,7 @@
 	};
 
 	const totalPlan = (item: ISalesPlanDayProducts) => {
+		item.plan = 15;
 		if (item.plan > item.soldWeight) {
 			return item.plan;
 		} else {
