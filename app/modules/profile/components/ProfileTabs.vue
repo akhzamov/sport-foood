@@ -47,7 +47,7 @@
 		if (moreInfo.value) {
 			moreInfo.value.scrollIntoView({
 				behavior: "smooth",
-				block: "nearest",
+				block: "center",
 			});
 		}
 	};
@@ -132,7 +132,27 @@
 			class="w-full grid grid-cols-1 mt-4 pb-16"
 			ref="moreInfo"
 		>
-			<GraphSalesRanking />
+			<Transition name="salesRanking">
+				<GraphSalesRanking
+					v-if="profileStore.selectedDate.length > 0"
+				/>
+			</Transition>
 		</div>
 	</div>
 </template>
+
+<style>
+	.salesRanking-enter-active,
+	.salesRanking-leave-active {
+		height: 400px;
+		overflow: visible;
+		transition: height 0.5s linear;
+	}
+
+	.salesRanking-enter-from,
+	.salesRanking-leave-to {
+		height: 0;
+		overflow: hidden;
+		transition: height 0.5s linear;
+	}
+</style>

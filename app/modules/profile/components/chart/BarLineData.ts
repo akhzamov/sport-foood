@@ -7,7 +7,6 @@ export async function getSalesPlanDay() {
 	const profileStore = useProfileStore();
 	const token = getAuthToken();
 	profileStore.salesPlanDay = null;
-	profileStore.salesPlanDayFirstRes = true;
 	try {
 		const res = await axios.get<ISalesPlanDay>(
 			`/api/sales-plan/day/detail?`,
@@ -23,6 +22,7 @@ export async function getSalesPlanDay() {
 			}
 		);
 		profileStore.salesPlanDay = res.data;
+		profileStore.salesPlanDayFirstRes = true;
 	} catch (error) {
 		console.error(
 			"Не удалось получить /sales-plan/day/detail: ",

@@ -632,6 +632,7 @@
 						console.log("Полная дата:", fullDate);
 						profileStore.selectedDate = fullDate;
 						getSalesPlanDay();
+						profileStore.activeMoreInfo = true;
 					} else {
 						console.warn("Дата не найдена.");
 					}
