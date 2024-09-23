@@ -18,6 +18,7 @@ export interface IProfileStore {
 	activeTab: null | number;
 	activeDayFilter: null | number;
 	activeDayFilterBlocked: boolean;
+	activeStoresSelect: boolean;
 	monthAnnotation: number;
 	activeMoreInfo: boolean;
 	stores: IStore[] | null;

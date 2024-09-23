@@ -23,14 +23,14 @@
 						<li>
 							<NuxtLink
 								to="/"
-								class="text-14-semi text-gray-40-color"
+								class="text-14-semi text-gray-40-color hover:text-primary-color"
 								>Главная</NuxtLink
 							>
 						</li>
 						<li>
 							<NuxtLink
 								to="/about"
-								class="text-14-semi text-gray-40-color"
+								class="text-14-semi text-gray-40-color hover:text-primary-color"
 								>О нас</NuxtLink
 							>
 						</li>
@@ -38,14 +38,14 @@
 				</div>
 				<div class="flex items-center gap-4">
 					<div
-						class="flex item-center justify-center w-6 h-6 cursor-pointer"
+						class="flex item-center justify-center w-6 h-6 cursor-pointer text-gray-75-color hover:text-primary-color"
 					>
-						<IconBell class="text-gray-75-color w-full h-full" />
+						<IconBell class="w-full h-full" />
 					</div>
 					<div
-						class="flex item-center justify-center w-6 h-6 cursor-pointer"
+						class="flex item-center justify-center w-6 h-6 cursor-pointer text-gray-75-color hover:text-primary-color"
 					>
-						<IconSupport class="text-gray-75-color w-full h-full" />
+						<IconSupport class="w-full h-full" />
 					</div>
 				</div>
 			</div>
@@ -59,23 +59,19 @@
 						<li>
 							<NuxtLink
 								to="/users"
-								class="changed px-4 py-2 rounded-lg transition duration-100 flex items-center gap-2"
+								class="changed px-4 py-2 rounded-lg transition duration-100 flex items-center gap-2 text-gray-75-color hover:text-primary-color"
 							>
-								<IconUsersCheck class="text-gray-75-color" />
-								<span class="text-14-semi text-gray-75-color"
-									>Пользователи</span
-								>
+								<IconUsersCheck />
+								<span class="text-14-semi">Пользователи</span>
 							</NuxtLink>
 						</li>
 						<li>
 							<NuxtLink
 								to="/settings"
-								class="changed px-4 py-2 rounded-lg transition duration-100 flex items-center gap-2"
+								class="changed px-4 py-2 rounded-lg transition duration-100 flex items-center gap-2 text-gray-75-color hover:text-primary-color"
 							>
-								<IconSettings class="text-gray-75-color" />
-								<span class="text-14-semi text-gray-75-color"
-									>Настройки</span
-								>
+								<IconSettings />
+								<span class="text-14-semi">Настройки</span>
 							</NuxtLink>
 						</li>
 					</ul>

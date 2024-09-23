@@ -6,6 +6,7 @@ export const useProfileStore = defineStore("profile", {
 		activeTab: null,
 		activeDayFilter: null,
 		activeDayFilterBlocked: false,
+		activeStoresSelect: false,
 		monthAnnotation: 0,
 		activeMoreInfo: false,
 		stores: null,
