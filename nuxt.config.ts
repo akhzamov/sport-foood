@@ -34,6 +34,7 @@ export default defineNuxtConfig({
 				id: "body",
 			},
 		},
+		baseURL: "/sport-food-v2/",
 	},
 
 	modules: [
@@ -66,6 +67,12 @@ export default defineNuxtConfig({
 	routeRules: {
 		"/": { prerender: true, redirect: "/profile" },
 		"/:pathMatch(.*)*": { prerender: true },
+	},
+
+	router: {
+		options: {
+			hashMode: true,
+		},
 	},
 
 	nitro: {
