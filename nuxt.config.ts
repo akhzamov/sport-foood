@@ -6,16 +6,16 @@ export default defineNuxtConfig({
 		compatibilityVersion: 4,
 	},
 
-	// vite: {
-	// 	server: {
-	// 		proxy: {
-	// 			"/api": {
-	// 				target: "https://crm-api.autosale.pw",
-	// 				changeOrigin: true,
-	// 			},
-	// 		},
-	// 	},
-	// },
+	vite: {
+		server: {
+			proxy: {
+				"/api": {
+					target: "https://crm-api.autosale.pw",
+					changeOrigin: true,
+				},
+			},
+		},
+	},
 
 	extends: [
 		"./app/modules/about",
@@ -67,8 +67,6 @@ export default defineNuxtConfig({
 		"/": { prerender: true, redirect: "/profile" },
 		"/:pathMatch(.*)*": { prerender: true },
 	},
-
-	ssr: false,
 
 	nitro: {
 		prerender: {

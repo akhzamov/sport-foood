@@ -10,7 +10,7 @@ export async function getSalesPlanDay() {
 	profileStore.salesPlanDay = null;
 	try {
 		const res = await axios.get<ISalesPlanDay>(
-			`${baseUrl}/api/sales-plan/day/detail?`,
+			`/api/sales-plan/day/detail?`,
 			{
 				headers: {
 					"Content-Type": "application/json",

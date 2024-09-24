@@ -10,7 +10,7 @@ export async function getStores() {
 	const token = getAuthToken();
 	profileStore.salesPlan = null;
 	try {
-		const res = await axios.get<IStore[]>(`${baseUrl}/api/stores`, {
+		const res = await axios.get<IStore[]>(`/api/stores`, {
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
@@ -33,19 +33,16 @@ export async function getSalesPlan() {
 	const token = getAuthToken();
 	profileStore.salesPlan = null;
 	try {
-		const res = await axios.get<ISalesPlan>(
-			`${baseUrl}/api/sales-plan`,
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				params: {
-					store_id: profileStore.selectedBranch,
-					days: profileStore.activeDayFilter,
-				},
-			}
-		);
+		const res = await axios.get<ISalesPlan>(`/api/sales-plan`, {
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			params: {
+				store_id: profileStore.selectedBranch,
+				days: profileStore.activeDayFilter,
+			},
+		});
 		profileStore.salesPlan = res.data.data;
 		profileStore.monthAnnotation = res.data.salesPlan;
 	} catch (error) {

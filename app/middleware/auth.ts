@@ -14,7 +14,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		if (token) {
 			try {
 				// Отправляем запрос на сервер для проверки токена
-				const res = await axios.get(`${baseUrl}/api/user`, {
+				const res = await axios.get(`/api/user`, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 						"Content-Type": "application/json",

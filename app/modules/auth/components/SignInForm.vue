@@ -38,7 +38,7 @@
 		try {
 			if (!loginError.value && !passwordError.value) {
 				const res = await axios.post(
-					`${baseUrl}/api/login`,
+					`/api/login`,
 					{
 						username: login.value,
 						password: password.value,
