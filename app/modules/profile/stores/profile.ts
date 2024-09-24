@@ -3,7 +3,7 @@ import type { IProfileStore } from "~/modules/profile/types/profileStore.type";
 
 export const useProfileStore = defineStore("profile", {
 	state: (): IProfileStore => ({
-		activeTab: null,
+		activeTab: 1,
 		activeDayFilter: null,
 		activeDayFilterBlocked: false,
 		activeStoresSelect: false,

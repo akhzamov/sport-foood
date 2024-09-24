@@ -1,11 +1,6 @@
 <script lang="ts" setup>
-	// import { data } from "~/modules/profile/components/graph/SalesRanking.data";
-	import type { ISalesRankingProducts } from "~/modules/profile/types/salesRanking.type";
-	import type {
-		ISalesPlanDayProducts,
-		ISalesPlanDayPackages,
-	} from "~/modules/profile/types/salesPlanDay.type";
-	import { useProfileStore } from "../../stores/profile";
+	import type { ISalesPlanDayProducts } from "~/modules/profile/types/salesPlanDay.type";
+	import { useProfileStore } from "~/modules/profile/stores/profile";
 
 	const profileStore = useProfileStore();
 	const data = computed(() => profileStore.salesPlanDay);

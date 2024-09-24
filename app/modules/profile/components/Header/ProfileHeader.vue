@@ -11,13 +11,13 @@
 
 	const tabs = reactive([
 		{ id: 1, title: "Дашборд", icon: "IconPieDash", active: true },
+		{ id: 2, title: "Отчеты", icon: "IconBarLine", active: false },
 		{
-			id: 2,
+			id: 3,
 			title: "Статистика продаж",
 			icon: "IconBarChart",
 			active: false,
 		},
-		{ id: 3, title: "Отчеты", icon: "IconBarLine", active: false },
 		{ id: 4, title: "Логистика", icon: "IconRoute", active: false },
 		{ id: 5, title: "Реклама", icon: "IconTrendUp", active: false },
 	]);
@@ -124,7 +124,11 @@
 						class="px-5 pt-5 rounded-lg cursor-pointer flex flex-col after:w-full after:h-[2px] after:rounded-t-[4px] after:bg-primary-color text-gray-75-color hover:text-primary-color"
 						v-for="tab in tabs"
 						:key="tab.id"
-						:class="tab.active ? 'after:block' : 'after:hidden'"
+						:class="
+							tab.active && profileStore.activeTab == tab.id
+								? 'after:block'
+								: 'after:hidden'
+						"
 						@click="activeTab(tab.id)"
 					>
 						<div class="flex items-center justify-center pb-4 gap-2">
