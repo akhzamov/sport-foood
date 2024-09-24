@@ -18,7 +18,6 @@
     "chart.js": "^4.4.4",
     "chartjs-plugin-annotation": "^3.0.1",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "http-proxy-middleware": "^3.0.0",
     "nuxt": "^3.13.0",
     "pinia": "^2.2.2",
     "vee-validate": "^4.13.2",

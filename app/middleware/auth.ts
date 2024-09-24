@@ -2,6 +2,7 @@ import { defineNuxtRouteMiddleware, navigateTo } from "#app";
 import { useMainStore } from "~/stores/main";
 import { getAuthToken, removeAuthToken } from "~/utils/auth";
 import axios from "axios";
+import { baseUrl } from "~/api";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
 	const mainStore = useMainStore();
@@ -13,7 +14,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		if (token) {
 			try {
 				// Отправляем запрос на сервер для проверки токена
-				const res = await axios.get(`/api/user`, {
+				const res = await axios.get(`${baseUrl}/api/user`, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 						"Content-Type": "application/json",

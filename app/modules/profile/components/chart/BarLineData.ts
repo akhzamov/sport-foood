@@ -1,4 +1,5 @@
 import axios from "axios";
+import { baseUrl } from "~/api";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import type { ISalesPlanDay } from "~/modules/profile/types/salesPlanDay.type";
 import { getAuthToken } from "~/utils/auth";
@@ -9,7 +10,7 @@ export async function getSalesPlanDay() {
 	profileStore.salesPlanDay = null;
 	try {
 		const res = await axios.get<ISalesPlanDay>(
-			`/api/sales-plan/day/detail?`,
+			`${baseUrl}/api/sales-plan/day/detail?`,
 			{
 				headers: {
 					"Content-Type": "application/json",

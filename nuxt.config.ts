@@ -6,16 +6,16 @@ export default defineNuxtConfig({
 		compatibilityVersion: 4,
 	},
 
-	vite: {
-		server: {
-			proxy: {
-				"/api": {
-					target: "https://crm-api.autosale.pw",
-					changeOrigin: true,
-				},
-			},
-		},
-	},
+	// vite: {
+	// 	server: {
+	// 		proxy: {
+	// 			"/api": {
+	// 				target: "https://crm-api.autosale.pw",
+	// 				changeOrigin: true,
+	// 			},
+	// 		},
+	// 	},
+	// },
 
 	extends: [
 		"./app/modules/about",
@@ -34,7 +34,6 @@ export default defineNuxtConfig({
 				id: "body",
 			},
 		},
-		baseURL: "/sport-food-v2/",
 	},
 
 	modules: [
@@ -69,15 +68,12 @@ export default defineNuxtConfig({
 		"/:pathMatch(.*)*": { prerender: true },
 	},
 
-	router: {
-		options: {
-			hashMode: true,
-		},
-	},
+	ssr: false,
 
 	nitro: {
 		prerender: {
 			routes: ["/index.html", "/404.html"],
 		},
+		preset: "static",
 	},
 });

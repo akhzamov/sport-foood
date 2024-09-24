@@ -4,6 +4,7 @@
 	import { setAuthToken } from "~/utils/auth";
 	import * as yup from "yup";
 	import axios from "axios";
+	import { baseUrl } from "~/api";
 
 	const schema = yup.object({
 		login: yup
@@ -37,7 +38,7 @@
 		try {
 			if (!loginError.value && !passwordError.value) {
 				const res = await axios.post(
-					`/api/login`,
+					`${baseUrl}/api/login`,
 					{
 						username: login.value,
 						password: password.value,
