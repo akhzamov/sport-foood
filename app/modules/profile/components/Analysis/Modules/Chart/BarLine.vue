@@ -57,10 +57,10 @@
 	);
 
 	const profileStore = useProfileStore();
-	// const monthAnnotation = computed(
-	// 	() => profileStore.monthAnnotation / 30
-	// );
-	let monthAnnotation = ref(5950 / 30);
+	const monthAnnotation = computed(
+		() => profileStore.monthAnnotation / 30
+	);
+	// let monthAnnotation = ref(5950 / 30);
 	let chartDataArr = computed(() =>
 		profileStore.salesPlan ? profileStore.salesPlan.days : {}
 	);
@@ -81,7 +81,7 @@
 			case 1:
 				return 360; // 26px
 			default:
-				return 0; // на случай, если данных нет
+				return 360; // на случай, если данных нет
 		}
 	});
 	const calculateDeviation = (
@@ -149,32 +149,35 @@
 						const sale: ISalesPlanDays | null | undefined =
 							profileStore.salesPlan.days[daySalesKey];
 						if (sale) {
-							const itemsText = sale.products.map((item) => ({
+							const itemsText = sale.products.map((item: any) => ({
 								productText: item.product,
 								quantityText: String(item.quantity),
 								priceText: formatPrice(item.price),
 							}));
 
-							const maxWidth = itemsText.reduce((max, item) => {
-								const productWidth = ctx.measureText(
-									item.productText
-								).width;
-								const quantityWidth = ctx.measureText(
-									item.quantityText
-								).width;
-								const priceWidth = ctx.measureText(
-									item.priceText
-								).width;
-								const totalWidth =
-									productWidth +
-									pointWidth +
-									spaceBetween +
-									quantityWidth +
-									pointWidth +
-									spaceBetween +
-									priceWidth;
-								return Math.max(max, totalWidth);
-							}, 0);
+							const maxWidth = itemsText.reduce(
+								(max: any, item: any) => {
+									const productWidth = ctx.measureText(
+										item.productText
+									).width;
+									const quantityWidth = ctx.measureText(
+										item.quantityText
+									).width;
+									const priceWidth = ctx.measureText(
+										item.priceText
+									).width;
+									const totalWidth =
+										productWidth +
+										pointWidth +
+										spaceBetween +
+										quantityWidth +
+										pointWidth +
+										spaceBetween +
+										priceWidth;
+									return Math.max(max, totalWidth);
+								},
+								0
+							);
 
 							const tooltipWidth = padding * 2 + maxWidth;
 
@@ -184,11 +187,37 @@
 								textLines * lineHeight +
 								separatorHeight +
 								separatorPaddingBottom;
+							const chartHeight = chart.height; // Высота графика
+							const tooltipYBase = yPoint - tooltipHeight - padding;
 
 							const tooltipX =
 								chart.width - tooltipWidth - tooltipMargin;
-							const tooltipY =
-								Math.max(yPoint - tooltipHeight - padding, 0) + 100;
+							let tooltipY;
+
+							// Если тултип слишком близко к верхней границе (менее 100 пикселей)
+							if (tooltipYBase < 100) {
+								tooltipY = Math.max(tooltipYBase, 0) + 100; // Добавить 100 отступ сверху
+							}
+							// Если тултип слишком близко к нижней границе (ближе чем 100 пикселей до низа)
+							else if (
+								tooltipYBase >
+								chartHeight - tooltipHeight - 100
+							) {
+								tooltipY =
+									Math.max(tooltipYBase, 0) -
+									(tooltipYBase -
+										(chartHeight - tooltipHeight - 100)); // Убрать отступ снизу, но не ниже 0
+							}
+							// В любом другом случае
+							else {
+								tooltipY = Math.max(tooltipYBase, 0); // Никакие отступы не добавляются
+							}
+
+							// Убедитесь, что Y не выходит за пределы графика
+							tooltipY = Math.min(
+								tooltipY,
+								chartHeight - tooltipHeight - 100
+							);
 
 							ctx.fillStyle = bgColor;
 							ctx.beginPath();
@@ -316,7 +345,7 @@
 								separatorHeight +
 								separatorPaddingBottom;
 
-							itemsText.forEach((item) => {
+							itemsText.forEach((item: any) => {
 								if (
 									yOffset + lineHeight <=
 									tooltipY + tooltipHeight - padding

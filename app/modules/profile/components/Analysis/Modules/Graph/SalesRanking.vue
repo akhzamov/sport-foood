@@ -28,9 +28,8 @@
 	};
 
 	const totalPlan = (item: ISalesPlanDayProducts) => {
-		item.plan = 15;
-		if (item.plan > item.soldWeight) {
-			return item.plan;
+		if (Number(item.plan) > item.soldWeight) {
+			return Number(item.plan);
 		} else {
 			return item.soldWeight;
 		}
@@ -148,7 +147,8 @@
 										<div
 											class="min-w-[4px] w-[4px] min-h-[12px] h-[12px] absolute top-[50%] translate-y-[-50%] z-[2]"
 											:style="`left: calc(${
-												(product.plan / (product.soldWeight * 1.3)) *
+												(Number(product.plan) /
+													(product.soldWeight * 1.3)) *
 												100
 											}%)`"
 											:key="product.id"
@@ -323,7 +323,11 @@
 											class="w-[80px] flex items-center justify-end"
 										>
 											<p class="text-10-ext text-secondary-color">
-												{{ product.plan.toFixed(2).toLocaleString() }}
+												{{
+													Number(product.plan)
+														.toFixed(2)
+														.toLocaleString()
+												}}
 												кг
 											</p>
 										</div>
