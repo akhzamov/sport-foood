@@ -3,7 +3,6 @@
 	import { getSalesPlan } from "~/modules/profile/components/Header/profileHeader.data";
 
 	const profileStore = useProfileStore();
-	const stores = computed(() => profileStore.stores);
 	const headerSelect = ref<HTMLElement | null>(null);
 	const showSelectMenu = computed(
 		() => profileStore.activeStoresSelect
@@ -42,17 +41,9 @@
 		}
 	};
 
-	watch(
-		() => profileStore.selectedBranch,
-		async () => {
-			getSalesPlan();
-			profileStore.selectedDate = "";
-			profileStore.salesPlanDay = null;
-			profileStore.salesPlanDayFirstRes = false;
-			profileStore.activeMoreInfo = false;
-		},
-		{ immediate: true }
-	);
+	const handleGetStoreByID = (id: number) => {
+		getSalesPlan();
+	};
 
 	onMounted(() => {
 		document.addEventListener("click", handleClickOutsideSelect);
@@ -109,10 +100,11 @@
 							:textHoverColor="'text-white'"
 							:selectBgColor="'bg-gray-15-color'"
 							:menuBgColor="'bg-primary-color'"
-							:array="stores"
+							:array="profileStore.stores"
 							:showMenu="showSelectMenu"
 							defaultSelectText=""
 							v-model="profileStore.selectedBranch"
+							@click:selectItem="handleGetStoreByID($event)"
 							@update:showMenu="
 								profileStore.activeStoresSelect = $event
 							"

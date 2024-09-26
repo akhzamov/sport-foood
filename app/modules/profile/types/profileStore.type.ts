@@ -22,7 +22,7 @@ export interface IProfileStore {
 	monthAnnotation: number;
 	activeMoreInfo: boolean;
 	stores: IStore[] | null;
-	selectedBranch: number | null;
+	selectedBranch: number;
 	salesPlan: ISalesPlanMonth | null;
 	chartLoader: boolean;
 	selectedDate: string;

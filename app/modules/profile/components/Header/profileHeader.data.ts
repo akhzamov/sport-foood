@@ -3,7 +3,6 @@ import type { ISalesPlan } from "~/modules/profile/types/salesPlan.type";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import { getAuthToken } from "~/utils/auth";
 import axios from "axios";
-import { baseUrl } from "~/api";
 
 export async function getStores() {
 	const profileStore = useProfileStore();
@@ -17,9 +16,7 @@ export async function getStores() {
 			},
 		});
 		profileStore.stores = res.data;
-		profileStore.selectedBranch = res.data
-			? res.data[0]?.id || null
-			: null;
+		profileStore.selectedBranch = res.data ? res.data[0]?.id || 0 : 0;
 		if (res.data.length > 0) {
 			getSalesPlan();
 		}

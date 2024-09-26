@@ -10,7 +10,7 @@ export const useProfileStore = defineStore("profile", {
 		monthAnnotation: 0,
 		activeMoreInfo: false,
 		stores: null,
-		selectedBranch: null,
+		selectedBranch: 0,
 		salesPlan: null,
 		chartLoader: false,
 		selectedDate: "",

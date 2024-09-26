@@ -1,5 +1,4 @@
 import axios from "axios";
-import { baseUrl } from "~/api";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import type { ISalesPlanDay } from "~/modules/profile/types/salesPlanDay.type";
 import { getAuthToken } from "~/utils/auth";

@@ -43,7 +43,7 @@
 	import datalabels from "chartjs-plugin-datalabels";
 	import { useProfileStore } from "~/modules/profile/stores/profile";
 	import { getSalesPlanDay } from "./BarLineData";
-	import type { ISalesPlanDays } from "../../types/salesPlan.type";
+	import type { ISalesPlanDays } from "~/modules/profile/types/salesPlan.type";
 	import type { ChartOptions, ChartConfiguration } from "chart.js";
 
 	Chart.register(
@@ -58,7 +58,7 @@
 
 	const profileStore = useProfileStore();
 	const monthAnnotation = computed(
-		() => profileStore.monthAnnotation / 30
+		() => profileStore.monthAnnotation
 	);
 	// let monthAnnotation = ref(5950 / 30);
 	let chartDataArr = computed(() =>
@@ -140,80 +140,55 @@
 					const spaceBetween = 5;
 					const pointWidth = 8;
 					const tooltipMargin = 10;
+					const fixedTextWidth = 60; // Минимальная и максимальная ширина текста
 
 					const daySalesKey = Object.keys(
 						profileStore.salesPlan ? profileStore.salesPlan.days : {}
 					)[dataPoint] as string | undefined;
 
 					if (daySalesKey && profileStore.salesPlan) {
-						const sale: ISalesPlanDays | null | undefined =
-							profileStore.salesPlan.days[daySalesKey];
+						const sale = profileStore.salesPlan.days[daySalesKey];
 						if (sale) {
-							const itemsText = sale.products.map((item: any) => ({
+							const itemsText = sale.products.map((item) => ({
 								productText: item.product,
-								quantityText: String(item.quantity),
+								quantityText: `${formatPrice(item.quantity)} кг`, // Добавляем "кг"
 								priceText: formatPrice(item.price),
 							}));
 
-							const maxWidth = itemsText.reduce(
-								(max: any, item: any) => {
-									const productWidth = ctx.measureText(
-										item.productText
-									).width;
-									const quantityWidth = ctx.measureText(
-										item.quantityText
-									).width;
-									const priceWidth = ctx.measureText(
-										item.priceText
-									).width;
-									const totalWidth =
-										productWidth +
-										pointWidth +
-										spaceBetween +
-										quantityWidth +
-										pointWidth +
-										spaceBetween +
-										priceWidth;
-									return Math.max(max, totalWidth);
-								},
-								0
-							);
+							// Ширина тултипа рассчитывается на основе фиксированной ширины текста
+							const tooltipWidth =
+								padding * 2 +
+								fixedTextWidth * 3 + // ширина для продукта, количества и цены
+								pointWidth +
+								spaceBetween * 4; // пробелы между элементами
 
-							const tooltipWidth = padding * 2 + maxWidth;
-
-							const textLines = itemsText.length + 1;
+							const textLines = itemsText.length + 1; // +1 для "Всего"
 							const tooltipHeight =
 								padding * 2 +
 								textLines * lineHeight +
 								separatorHeight +
 								separatorPaddingBottom;
-							const chartHeight = chart.height; // Высота графика
+							const chartHeight = chart.height;
 							const tooltipYBase = yPoint - tooltipHeight - padding;
 
 							const tooltipX =
 								chart.width - tooltipWidth - tooltipMargin;
 							let tooltipY;
 
-							// Если тултип слишком близко к верхней границе (менее 100 пикселей)
 							if (tooltipYBase < 100) {
-								tooltipY = Math.max(tooltipYBase, 0) + 100; // Добавить 100 отступ сверху
-							}
-							// Если тултип слишком близко к нижней границе (ближе чем 100 пикселей до низа)
-							else if (
+								tooltipY = Math.max(tooltipYBase, 0) + 100;
+							} else if (
 								tooltipYBase >
 								chartHeight - tooltipHeight - 100
 							) {
 								tooltipY =
 									Math.max(tooltipYBase, 0) -
 									(tooltipYBase -
-										(chartHeight - tooltipHeight - 100)); // Убрать отступ снизу, но не ниже 0
-							}
-							// В любом другом случае
-							else {
-								tooltipY = Math.max(tooltipYBase, 0); // Никакие отступы не добавляются
+										(chartHeight - tooltipHeight - 100));
+							} else {
+								tooltipY = Math.max(tooltipYBase, 0);
 							}
 
-							// Убедитесь, что Y не выходит за пределы графика
 							tooltipY = Math.min(
 								tooltipY,
 								chartHeight - tooltipHeight - 100
@@ -261,75 +236,58 @@
 							ctx.textBaseline = "top";
 							ctx.font = "12px Roboto Flex";
 
-							// Отрисовка текста "Все"
+							const getEllipsisText = (
+								text: any,
+								maxWidth: number
+							) => {
+								let width = ctx.measureText(text).width;
+								if (width <= maxWidth) return text;
+								while (width > maxWidth) {
+									text = text.slice(0, -1);
+									width = ctx.measureText(`${text}...`).width;
+								}
+								return `${text}...`;
+							};
+
 							ctx.fillStyle = textColorWhite40;
 							ctx.textAlign = "left";
 							ctx.fillText(
-								"Все",
+								getEllipsisText("Всего", fixedTextWidth),
 								tooltipX + padding,
 								tooltipY + padding
 							);
 
-							// Отрисовка точки между "Все" и общим количеством
-							ctx.fillStyle = textColorWhite90;
-							ctx.fillText(
-								".",
-								tooltipX +
-									padding +
-									ctx.measureText("Все").width +
-									spaceBetween,
-								tooltipY + padding - 3
-							);
-
-							// Отрисовка общего количества
-							ctx.fillStyle = textColorWhite90;
-							const totalTextWidth = ctx.measureText(
-								sale.total.toString()
-							).width;
-							const totalPriceWidth = ctx.measureText(
-								formatPrice(sale.totalPrice)
-							).width;
-							const totalLabelX =
+							// Отрисовка общего количества и цены
+							const totalCountX =
 								tooltipX +
 								padding +
-								ctx.measureText("Все").width +
+								pointWidth +
 								spaceBetween +
-								ctx.measureText(".").width +
-								spaceBetween;
-							const totalPriceX =
-								totalLabelX +
-								totalTextWidth +
-								spaceBetween +
-								pointWidth;
-
-							ctx.fillText(
-								sale.total.toString(),
-								totalLabelX,
-								tooltipY + padding
-							);
-
-							// Отрисовка точки после количества
+								fixedTextWidth * 2; // добавлено 80 пикселей
 							ctx.fillStyle = textColorWhite90;
+							ctx.textAlign = "right";
 							ctx.fillText(
-								".",
-								totalLabelX + totalTextWidth + spaceBetween,
-								tooltipY + padding - 3
+								getEllipsisText(
+									formatPrice(sale.total).toString() + " кг",
+									fixedTextWidth
+								), // добавлено "кг"
+								totalCountX,
+								tooltipY + padding
 							);
 
 							// Отрисовка цены
 							ctx.fillStyle = "#1ABC9C";
+							ctx.textAlign = "right";
 							ctx.fillText(
-								formatPrice(sale.totalPrice),
-								totalLabelX -
-									10 +
-									totalTextWidth +
-									spaceBetween +
-									ctx.measureText(".").width +
-									spaceBetween +
-									pointWidth,
+								getEllipsisText(
+									formatPrice(sale.totalPrice),
+									fixedTextWidth
+								),
+								totalCountX + fixedTextWidth + spaceBetween,
 								tooltipY + padding
 							);
 
+							// Отрисовка разделителя
 							ctx.fillStyle = textColorWhite90;
 							ctx.fillRect(
 								tooltipX + padding,
@@ -338,6 +296,7 @@
 								separatorHeight
 							);
 
+							// Начальная позиция для отрисовки товаров
 							let yOffset =
 								tooltipY +
 								padding +
@@ -345,68 +304,42 @@
 								separatorHeight +
 								separatorPaddingBottom;
 
-							itemsText.forEach((item: any) => {
+							itemsText.forEach((item) => {
 								if (
 									yOffset + lineHeight <=
 									tooltipY + tooltipHeight - padding
 								) {
-									const productWidth = ctx.measureText(
-										item.productText
-									).width;
-									const quantityWidth = ctx.measureText(
-										item.quantityText
-									).width;
-									const priceWidth = ctx.measureText(
-										item.priceText
-									).width;
-
 									ctx.fillStyle = textColorWhite40;
+									ctx.textAlign = "left";
 									ctx.fillText(
-										item.productText,
+										getEllipsisText(item.productText, fixedTextWidth),
 										tooltipX + padding,
 										yOffset
 									);
 
 									ctx.fillStyle = textColorWhite90;
-									ctx.fillText(
-										".",
-										tooltipX + padding + productWidth + spaceBetween,
-										yOffset - 3
-									);
-
-									ctx.fillStyle = textColorWhite90;
-									ctx.fillText(
-										item.quantityText,
+									ctx.textAlign = "right";
+									const quantityX =
 										tooltipX +
-											padding +
-											productWidth +
-											pointWidth +
-											spaceBetween,
+										padding +
+										pointWidth +
+										spaceBetween +
+										fixedTextWidth * 2; // добавлено 80 пикселей
+									ctx.fillText(
+										getEllipsisText(
+											item.quantityText,
+											fixedTextWidth
+										), // добавлено "кг"
+										quantityX,
 										yOffset
 									);
 
-									ctx.fillStyle = textColorWhite90;
-									ctx.fillText(
-										".",
-										tooltipX +
-											padding +
-											productWidth +
-											pointWidth +
-											spaceBetween +
-											quantityWidth +
-											spaceBetween,
-										yOffset - 3
-									);
-
 									ctx.fillStyle = "#1ABC9C";
+									const priceX =
+										quantityX + fixedTextWidth + spaceBetween; // позиция цены основана на позиции количества
 									ctx.fillText(
-										item.priceText,
-										tooltipX +
-											padding +
-											productWidth +
-											pointWidth +
-											quantityWidth +
-											3.5 * spaceBetween,
+										getEllipsisText(item.priceText, fixedTextWidth),
+										priceX,
 										yOffset
 									);
 
@@ -497,18 +430,18 @@
 						ctx.textBaseline = "middle";
 
 						// Получаем значение для текста
-						const text = `${value}`;
+						const text = `${value} кг`;
 
 						// Измеряем ширину текста
 						const valueWidth = ctx.measureText(text).width;
 
 						// Отрисовка основного значения
-						// ctx.fillStyle = '#fff'; // Белый цвет
-						// let textOffsetX = x + 8; // Начальная позиция X
-						// for (const char of text) {
-						//     ctx.fillText(char, textOffsetX, y);
-						//     textOffsetX += letterSpacing; // Ширина символа + letterSpacing
-						// }
+						ctx.fillStyle = "#fff"; // Белый цвет
+						let textOffsetX = x + 10; // Начальная позиция X
+						for (const char of text) {
+							ctx.fillText(char, textOffsetX, y);
+							textOffsetX += ctx.measureText(char).width; // Измеряем ширину текущего символа
+						}
 
 						// Отрисовка отклонения
 						const deviationText = `(${deviation})`;
@@ -518,15 +451,15 @@
 						// Расчет позиции X для отклонения с учетом промежутка и ширины основного значения
 						const deviationOffsetX = x + valueWidth + spaceBetween;
 						ctx.fillStyle = deviationColor;
-						ctx.font = "200 12px Roboto Flex";
+						ctx.font = "200 10px Roboto Flex";
 						ctx.fillText(
 							deviationText,
-							deviationOffsetX + 15,
+							deviationOffsetX + 25,
 							y - 0.5
 						);
 					} else {
 						// Если данные null, отрисовываем "Пусто"
-						ctx.font = "400 12px Roboto Flex";
+						ctx.font = "400 10px Roboto Flex";
 						ctx.textAlign = "center";
 						ctx.textBaseline = "middle";
 						const text = "Данные отсутствуют";
@@ -602,7 +535,7 @@
 					display: false,
 				},
 				min: 0,
-				max: maxDataValue > 0 ? maxDataValue * 1.4 : 100,
+				max: maxDataValue > 0 ? maxDataValue * 1.5 : 100,
 			},
 			y: {
 				min: 0,

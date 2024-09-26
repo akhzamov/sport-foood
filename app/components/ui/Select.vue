@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-	import { useProfileStore } from "~/modules/profile/stores/profile";
 	import type { IStore } from "~/modules/profile/types/stores.type";
 
-	const profileStore = useProfileStore();
 	const props = defineProps({
 		mainTextColor: {
 			type: String,
@@ -14,7 +12,7 @@
 		},
 		array: {
 			type: Array as PropType<IStore[] | null>,
-			default: () => null,
+			default: () => [],
 		},
 		showMenu: {
 			type: Boolean,
@@ -26,22 +24,61 @@
 			required: true,
 		},
 		modelValue: {
-			type: Number as PropType<number | null>,
+			type: Number,
+			required: true,
 		},
 	});
 
-	const emit = defineEmits(["update:modelValue", "update:showMenu"]);
+	const emit = defineEmits([
+		"update:modelValue",
+		"update:showMenu",
+		"click:selectItem",
+	]);
 	const selectedItemId = ref(props.modelValue);
+	const selectedItemName = ref(props.defaultSelectText);
 
 	const activeMenu = (): any => {
 		emit("update:showMenu", true);
 	};
 
 	const selectItem = (id: number) => {
-		selectedItemId.value = id;
-		emit("update:modelValue", id);
-		emit("update:showMenu", false);
+		if (props.array) {
+			const selectedItem = props.array.find((item) => item.id === id);
+			if (selectedItem) {
+				selectedItemId.value = id;
+				selectedItemName.value = selectedItem.name;
+				emit("update:modelValue", id);
+				emit("update:showMenu", false);
+				emit("click:selectItem", id);
+			}
+		}
 	};
+
+	const setDefaultItem = () => {
+		if (Array.isArray(props.array) && props.array.length > 0) {
+			const firstItem = props.array[0];
+			if (firstItem) {
+				selectedItemId.value = firstItem.id;
+				selectedItemName.value = firstItem.name;
+				emit("update:modelValue", firstItem.id);
+			}
+		}
+	};
+
+	// Проверяем и устанавливаем текст по умолчанию
+	const checkDefaultText = () => {
+		if (props.defaultSelectText) {
+			selectedItemName.value = props.defaultSelectText;
+		} else {
+			setDefaultItem();
+		}
+	};
+
+	watchEffect(() => {
+		if (props.array && props.array.length > 0) {
+			checkDefaultText();
+		}
+	});
 </script>
 
 <template>
@@ -55,22 +92,9 @@
 			<span
 				class="text-16-med"
 				:class="props.mainTextColor"
-				v-if="!selectedItemId"
 			>
-				Не выбрано
+				{{ selectedItemName }}
 			</span>
-			<template
-				v-for="item in props.array"
-				:key="item.id"
-			>
-				<span
-					class="text-16-med"
-					:class="props.mainTextColor"
-					v-if="selectedItemId == item.id"
-				>
-					{{ item.name }}
-				</span>
-			</template>
 			<IconChevronUp
 				:class="props.mainTextColor"
 				v-if="!showMenu"
