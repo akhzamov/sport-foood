@@ -590,9 +590,22 @@
 						}
 					);
 
-					if (fullDate) {
-						console.log("Полная дата:", fullDate);
+					const fullDateRu = Object.keys(chartDataArr.value)
+						.map((date) => {
+							const [year, month, day] = date.split("-");
+							const formattedLabel = `${day}.${month}`;
+
+							if (formattedLabel === originalLabel) {
+								return `${day}-${month}-${year}`;
+							}
+
+							return null;
+						})
+						.filter(Boolean)[0];
+
+					if (fullDate && fullDateRu) {
 						profileStore.selectedDate = fullDate;
+						profileStore.selectedDateRU = fullDateRu;
 						getSalesPlanDay();
 						profileStore.activeMoreInfo = true;
 					} else {

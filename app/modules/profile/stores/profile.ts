@@ -14,6 +14,7 @@ export const useProfileStore = defineStore("profile", {
 		salesPlan: null,
 		chartLoader: false,
 		selectedDate: "",
+		selectedDateRU: "",
 		salesPlanDay: null,
 		salesPlanDayFirstRes: false,
 	}),

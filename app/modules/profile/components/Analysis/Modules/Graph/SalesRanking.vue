@@ -8,22 +8,19 @@
 	const showProductID = ref<number | null>(null);
 
 	const calculateDeviation = (
-		currentValue: number | null | undefined,
-		norm: string | number
+		soldWeight: number | null | undefined,
+		plan: string | number
 	) => {
-		const normValue = Number(norm);
+		const planNumber = Number(plan);
 
 		// Проверяем, что norm не равен нулю
-		if (normValue === 0) {
+		if (planNumber === 0) {
 			return "пусто"; // Можно вернуть соответствующее сообщение или значение
 		}
 
 		// Проверяем, что currentValue определен и преобразуем его в число
-		const currentValueNumber = Number(currentValue);
-
-		const difference = currentValueNumber - normValue;
-		const percentageDeviation = (difference / normValue) * 100;
-
+		const soldWeightNumber = Number(soldWeight);
+		const percentageDeviation = (soldWeightNumber / planNumber) * 100;
 		return `${Math.abs(percentageDeviation).toFixed(1)}%`;
 	};
 
@@ -75,7 +72,9 @@
 		<div
 			class="px-5 h-[40px] flex items-center justify-between bg-dark-gunmental-color rounded-tl-lg rounded-tr-lg"
 		>
-			<h4 class="text-14-bold text-gray-90-color">Рейтинг продаж</h4>
+			<h4 class="text-14-bold text-gray-90-color">
+				Расшифровка продаж за {{ profileStore.selectedDateRU }}
+			</h4>
 			<IconClose
 				class="text-gray-90-color cursor-pointer"
 				@click="closeSalesRanking()"
@@ -132,7 +131,7 @@
 							<p class="flex-grow text-12-reg text-gray-90-color">
 								{{ product.name }}
 							</p>
-							<div class="w-[170px]">
+							<div class="w-[150px]">
 								<div
 									class="totalPlan flex w-full h-2 bg-gray-40-color rounded-lg"
 								>
@@ -161,14 +160,14 @@
 								</div>
 							</div>
 							<div
-								class="w-[140px] flex items-center justify-end gap-[7px]"
+								class="w-[160px] flex items-center justify-end gap-[7px]"
 							>
 								<span class="text-12-reg text-gray-90-color">
 									{{ product.soldWeight.toFixed(2).toLocaleString() }}
 									кг
 								</span>
 								<span
-									class="text-10-reg w-[40px] text-end"
+									class="text-10-reg w-[70px] text-end"
 									:class="{
 										'text-success-400':
 											product.soldWeight > product.plan,

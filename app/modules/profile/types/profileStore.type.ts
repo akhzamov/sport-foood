@@ -26,6 +26,7 @@ export interface IProfileStore {
 	salesPlan: ISalesPlanMonth | null;
 	chartLoader: boolean;
 	selectedDate: string;
+	selectedDateRU: string;
 	salesPlanDay: ISalesPlanDay | null;
 	salesPlanDayFirstRes: boolean;
 }
