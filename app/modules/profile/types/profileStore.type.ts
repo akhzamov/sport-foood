@@ -29,4 +29,5 @@ export interface IProfileStore {
 	selectedDateRU: string;
 	salesPlanDay: ISalesPlanDay | null;
 	salesPlanDayFirstRes: boolean;
+	reportGraphStoreSelect: boolean;
 }

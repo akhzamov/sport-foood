@@ -99,7 +99,7 @@
 	const maxDataValue = Math.floor(
 		Math.max(
 			...Object.keys(chartDataArr.value).map(
-				(date) => chartDataArr.value?.[date]?.total || 0
+				(date) => chartDataArr.value?.[date]?.totalWeight || 0
 			)
 		)
 	);
@@ -151,7 +151,7 @@
 						if (sale) {
 							const itemsText = sale.products.map((item) => ({
 								productText: item.product,
-								quantityText: `${formatPrice(item.quantity)} кг`, // Добавляем "кг"
+								quantityText: `${formatPrice(item.weight)} кг`, // Добавляем "кг"
 								priceText: formatPrice(item.price),
 							}));
 
@@ -268,7 +268,7 @@
 							ctx.textAlign = "right";
 							ctx.fillText(
 								getEllipsisText(
-									formatPrice(sale.total).toString() + " кг",
+									formatPrice(sale.totalWeight).toString() + " кг",
 									fixedTextWidth
 								), // добавлено "кг"
 								totalCountX,
@@ -420,6 +420,7 @@
 
 					// Отрисовка значения или слова "Пусто"
 					if (value !== undefined && value != 0) {
+						console.log(value);
 						const deviation = calculateDeviation(
 							value,
 							monthAnnotation.value
@@ -454,7 +455,7 @@
 						ctx.font = "200 10px Roboto Flex";
 						ctx.fillText(
 							deviationText,
-							deviationOffsetX + 25,
+							deviationOffsetX + 30,
 							y - 0.5
 						);
 					} else {
@@ -632,7 +633,9 @@
 		});
 
 		const data = dataEntries.map(([_, value]) => {
-			return typeof value?.total === "number" ? value.total : 0;
+			return typeof value?.totalWeight === "number"
+				? value.totalWeight
+				: 0;
 		});
 
 		return { labels, data };

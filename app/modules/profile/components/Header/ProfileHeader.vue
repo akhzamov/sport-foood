@@ -95,20 +95,21 @@
 						ref="headerSelect"
 					>
 						<UiSelect
-							:mainTextColor="'text-gray-90-color'"
-							:textColor="'text-dark-night-color'"
-							:textHoverColor="'text-white'"
-							:selectBgColor="'bg-gray-15-color'"
-							:menuBgColor="'bg-primary-color'"
 							:array="profileStore.stores"
 							:showMenu="showSelectMenu"
-							defaultSelectText=""
 							v-model="profileStore.selectedBranch"
+							defaultSelectText=""
+							main-text-color="text-gray-90-color"
+							select-bg-color="bg-gray-15-color"
 							@click:selectItem="handleGetStoreByID($event)"
 							@update:showMenu="
 								profileStore.activeStoresSelect = $event
 							"
-						/>
+						>
+							<template v-slot:icon>
+								<IconBranch class="text-gray-90-color" />
+							</template>
+						</UiSelect>
 					</div>
 				</div>
 				<div class="flex gap-8">

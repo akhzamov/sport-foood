@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import type { IStore } from "~/modules/profile/types/stores.type";
+	import type { IUiSelect } from "~/types/select.type";
 
 	const props = defineProps({
 		mainTextColor: {
@@ -11,7 +11,7 @@
 			default: "bg-gray-90-color",
 		},
 		array: {
-			type: Array as PropType<IStore[] | null>,
+			type: Array as PropType<IUiSelect[] | null>,
 			default: () => [],
 		},
 		showMenu: {
@@ -38,7 +38,11 @@
 	const selectedItemName = ref(props.defaultSelectText);
 
 	const activeMenu = (): any => {
-		emit("update:showMenu", true);
+		if (props.showMenu) {
+			emit("update:showMenu", false);
+		} else {
+			emit("update:showMenu", true);
+		}
 	};
 
 	const selectItem = (id: number) => {
@@ -48,7 +52,6 @@
 				selectedItemId.value = id;
 				selectedItemName.value = selectedItem.name;
 				emit("update:modelValue", id);
-				emit("update:showMenu", false);
 				emit("click:selectItem", id);
 			}
 		}
@@ -88,7 +91,7 @@
 			:class="props.selectBgColor"
 			@click="activeMenu"
 		>
-			<IconBranch :class="props.mainTextColor" />
+			<slot name="icon" />
 			<span
 				class="text-16-med"
 				:class="props.mainTextColor"

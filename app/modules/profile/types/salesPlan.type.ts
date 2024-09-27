@@ -1,22 +1,25 @@
 export interface ISalesPlanProducts {
-    product: string,
-    quantity: number,
-    price: number
+	product: string;
+	quantity: number;
+	price: number;
+	weight: number;
 }
 
 export interface ISalesPlanDays {
-    total: number;
-    totalPrice: number;
-    products: ISalesPlanProducts[];
-};
+	total: number;
+	totalPrice: number;
+	totalWeight: number;
+	products: ISalesPlanProducts[];
+}
 
 export interface ISalesPlanMonth {
-    total: number,
-    totalPrice: number,
-    days: Record<string, ISalesPlanDays | null>
+	total: number;
+	totalPrice: number;
+	totalWeight: number;
+	days: Record<string, ISalesPlanDays | null>;
 }
 
 export interface ISalesPlan {
-    salesPlan: number,
-    data: ISalesPlanMonth,
+	salesPlan: number;
+	data: ISalesPlanMonth;
 }
