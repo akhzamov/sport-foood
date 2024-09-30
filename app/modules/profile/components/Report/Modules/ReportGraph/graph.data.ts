@@ -114,7 +114,7 @@ export const reportData: reportData = {
 		"30.09.2024": {
 			workDay: true,
 		},
-		"31.09.2024": {
+		"01.10.2024": {
 			workDay: true,
 		},
 	},
@@ -308,7 +308,7 @@ export const reportData: reportData = {
 					replaced_name: null,
 					replaced_lastName: null,
 				},
-				"31.09.2024": {
+				"01.10.2024": {
 					status: "worked",
 					replaced_id: null,
 					replaced_name: null,
@@ -502,7 +502,7 @@ export const reportData: reportData = {
 					replaced_name: null,
 					replaced_lastName: null,
 				},
-				"31.09.2024": {
+				"01.10.2024": {
 					status: "worked",
 					replaced_id: null,
 					replaced_name: null,
@@ -696,7 +696,7 @@ export const reportData: reportData = {
 					replaced_name: null,
 					replaced_lastName: null,
 				},
-				"31.09.2024": {
+				"01.10.2024": {
 					status: "worked",
 					replaced_id: null,
 					replaced_name: null,
@@ -890,7 +890,7 @@ export const reportData: reportData = {
 					replaced_name: null,
 					replaced_lastName: null,
 				},
-				"31.09.2024": {
+				"01.10.2024": {
 					status: "worked",
 					replaced_id: null,
 					replaced_name: null,
@@ -1084,7 +1084,7 @@ export const reportData: reportData = {
 					replaced_name: null,
 					replaced_lastName: null,
 				},
-				"31.09.2024": {
+				"01.10.2024": {
 					status: "worked",
 					replaced_id: null,
 					replaced_name: null,
@@ -1278,7 +1278,7 @@ export const reportData: reportData = {
 					replaced_name: null,
 					replaced_lastName: null,
 				},
-				"31.09.2024": {
+				"01.10.2024": {
 					status: "worked",
 					replaced_id: null,
 					replaced_name: null,
@@ -1472,7 +1472,7 @@ export const reportData: reportData = {
 					replaced_name: null,
 					replaced_lastName: null,
 				},
-				"31.09.2024": {
+				"01.10.2024": {
 					status: "worked",
 					replaced_id: null,
 					replaced_name: null,
@@ -1666,7 +1666,7 @@ export const reportData: reportData = {
 					replaced_name: null,
 					replaced_lastName: null,
 				},
-				"31.09.2024": {
+				"01.10.2024": {
 					status: "worked",
 					replaced_id: null,
 					replaced_name: null,

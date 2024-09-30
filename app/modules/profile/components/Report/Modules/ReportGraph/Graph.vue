@@ -4,6 +4,8 @@
 
 	const profileStore = useProfileStore();
 	const reportGraphSelect = ref<HTMLElement | null>(null);
+	const reportStatusModal = ref<HTMLElement[]>([]);
+	const reportStatusDistances = ref<number[]>([]);
 	const selectedMonth = ref(0);
 	const employeeID = ref(0);
 	const employeeDay = ref("");
@@ -43,6 +45,26 @@
 		let month = date.toLocaleString("ru-RU", { month: "short" });
 		let year = date.toLocaleString("ru-RU", { year: "numeric" });
 		return `${weekday} ${day} ${month} ${year}`;
+	};
+
+	const checkLeftPosition = async () => {
+		await nextTick();
+		if (reportStatusModal.value) {
+			reportStatusModal.value.forEach((modal, index) => {
+				const modalRect = modal?.getBoundingClientRect();
+
+				if (modalRect) {
+					const windowWidth = window.innerWidth;
+					const distanceToRightEdge = windowWidth - modalRect.right;
+
+					// Сохраняем расстояние для каждого модального окна
+					reportStatusDistances.value[index] = distanceToRightEdge;
+				}
+			});
+
+			// Обнуление ref после работы с элементами
+			reportStatusModal.value = [];
+		}
 	};
 
 	onMounted(() => {
@@ -200,18 +222,24 @@
 								</th>
 								<!-- graph body day statuses -->
 								<template
-									v-for="(attendance, personKey) in person.days"
+									v-for="(
+										attendance, personKey, index
+									) in person.days"
 								>
 									<td
-										class="relative w-[30px] h-[30px] border-b border-r border-gray-15-color cursor-pointer"
+										class="relative w-[30px] h-[30px] border-b border-r border-gray-25-color cursor-pointer"
 										@mouseenter="
 											{
-												(employeeDay = personKey), (employeeID = key);
+												(employeeDay = personKey),
+													(employeeID = key),
+													checkLeftPosition();
 											}
 										"
 										@mouseleave="
 											{
-												(employeeDay = ''), (employeeID = 0);
+												(employeeDay = ''),
+													(employeeID = 0),
+													(reportStatusDistances = []);
 											}
 										"
 									>
@@ -375,107 +403,119 @@
 											</div>
 										</div>
 										<!-- graph body day statuses hover info -->
-										<div
-											class="absolute top-0 left-[100%] w-[280px] h-max translate-x-[20px] translate-y-[20px] z-[30] bg-dark-gunmental-color p-3 rounded-lg border border-gray-15-color"
+										<template
 											v-if="
 												employeeDay == personKey &&
 												employeeID == key &&
 												attendance.status != 'weekend'
 											"
 										>
-											<div class="flex items-start justify-between">
-												<div
-													class="flex items-center justify-start gap-2"
-												>
-													<img
-														src="/img/person.jpeg"
-														class="w-9 h-9 rounded-[50%] object-cover"
-													/>
+											<div
+												ref="reportStatusModal"
+												class="absolute top-0 w-[280px] h-max translate-y-[20px] z-[30] bg-dark-gunmental-color p-3 rounded-lg border border-gray-15-color"
+												:class="{
+													'left-[100%] translate-x-[20px]':
+														reportStatusDistances[0] &&
+														reportStatusDistances[0] >= 40,
+													'right-[100%] translate-x-[-20px]':
+														reportStatusDistances[0] &&
+														reportStatusDistances[0] <= 40,
+												}"
+											>
+												<div class="flex items-start justify-between">
 													<div
-														class="flex flex-col items-start justify-center"
+														class="flex items-center justify-start gap-2"
 													>
-														<span
-															class="text-12-semi text-gray-90-color"
+														<img
+															src="/img/person.jpeg"
+															class="w-9 h-9 rounded-[50%] object-cover"
+														/>
+														<div
+															class="flex flex-col items-start justify-center"
 														>
-															{{ person.name }}
-															{{ person.lastName }}
+															<span
+																class="text-12-semi text-gray-90-color"
+															>
+																{{ person.name }}
+																{{ person.lastName }}
+															</span>
+															<span
+																class="text-12-reg text-gray-90-color"
+															>
+																{{ person.department }}
+															</span>
+														</div>
+													</div>
+													<span class="text-12-semi text-success-500">
+														{{ formatDate(personKey) }}
+													</span>
+												</div>
+												<div
+													class="flex flex-col items-start justify-center mt-2"
+												>
+													<div
+														class="flex items-center justify-center gap-2"
+													>
+														<div
+															class="w-[20px] h-[20px] block rounded"
+															:class="{
+																'bg-success-500-20':
+																	attendance.status == 'worked',
+																'bg-error-500-20':
+																	attendance.status == 'absent',
+																'bg-gray-15-color':
+																	attendance.status == 'sick_leave',
+																'bg-gray-40-color':
+																	attendance.status == 'vocation',
+															}"
+														></div>
+														<span
+															v-if="attendance.status == 'worked'"
+															class="text-12-med text-gray-90-color"
+															>На работе</span
+														>
+														<span
+															v-if="attendance.status == 'absent'"
+															class="text-12-med text-gray-90-color"
+															>Отсутствует</span
+														>
+														<span
+															v-if="attendance.status == 'sick_leave'"
+															class="text-12-med text-gray-90-color"
+															>Больничный</span
+														>
+														<span
+															v-if="attendance.status == 'vocation'"
+															class="text-12-med text-gray-90-color"
+															>В Отпуске</span
+														>
+													</div>
+													<div
+														class="flex items-center justify-center gap-2 mt-2"
+														v-if="attendance.replaced_id"
+													>
+														<div
+															class="w-[20px] h-[20px] block bg-yellow-400 rounded"
+														></div>
+														<span
+															class="text-12-med text-gray-90-color"
+														>
+															Заменяет
 														</span>
+														<IconShuffle01
+															class="w-3 h-3 text-gray-75-color"
+														/>
 														<span
-															class="text-12-reg text-gray-90-color"
+															class="text-12-med text-gray-40-color underline"
 														>
-															{{ person.department }}
+															{{ attendance.replaced_name }}
+
+															{{ attendance.replaced_lastName }}
 														</span>
 													</div>
 												</div>
-												<span class="text-12-semi text-success-500">
-													{{ formatDate(personKey) }}
-												</span>
 											</div>
-											<div
-												class="flex flex-col items-start justify-center mt-2"
-											>
-												<div
-													class="flex items-center justify-center gap-2"
-												>
-													<div
-														class="w-[20px] h-[20px] block rounded"
-														:class="{
-															'bg-success-500-20':
-																attendance.status == 'worked',
-															'bg-error-500-20':
-																attendance.status == 'absent',
-															'bg-gray-15-color':
-																attendance.status == 'sick_leave',
-															'bg-gray-40-color':
-																attendance.status == 'vocation',
-														}"
-													></div>
-													<span
-														v-if="attendance.status == 'worked'"
-														class="text-12-med text-gray-90-color"
-														>На работе</span
-													>
-													<span
-														v-if="attendance.status == 'absent'"
-														class="text-12-med text-gray-90-color"
-														>Отсутствует</span
-													>
-													<span
-														v-if="attendance.status == 'sick_leave'"
-														class="text-12-med text-gray-90-color"
-														>Больничный</span
-													>
-													<span
-														v-if="attendance.status == 'vocation'"
-														class="text-12-med text-gray-90-color"
-														>В Отпуске</span
-													>
-												</div>
-												<div
-													class="flex items-center justify-center gap-2 mt-2"
-													v-if="attendance.replaced_id"
-												>
-													<div
-														class="w-[20px] h-[20px] block bg-yellow-400 rounded"
-													></div>
-													<span
-														class="text-12-med text-gray-90-color"
-													>
-														Заменяет
-													</span>
-													<IconShuffle01
-														class="w-3 h-3 text-gray-75-color"
-													/>
-													<span
-														class="text-12-med text-gray-40-color underline"
-													>
-														{{ attendance.replaced_name }}
-
-														{{ attendance.replaced_lastName }}
-													</span>
-												</div>
-											</div>
-										</div>
+										</template>
 									</td>
 								</template>
 							</tr>

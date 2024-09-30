@@ -15,6 +15,7 @@
 <template>
 	<HeaderProfileHeader />
 	<ProfileTabs />
+	<ReportModulesReportGraphAddSettingModule />
 </template>
 
 <style scoped></style>

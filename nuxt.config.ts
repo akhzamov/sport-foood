@@ -42,6 +42,8 @@ export default defineNuxtConfig({
 		"@nuxtjs/google-fonts",
 	],
 
+	plugins: ["~/plugins/vue-datepicker.js"],
+
 	pinia: {
 		storesDirs: ["~/stores/**", "~/layers/**/stores/**"],
 	},
