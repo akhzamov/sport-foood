@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 	import { getStores } from "~/modules/profile/components/Header/profileHeader.data";
+import { useProfileStore } from "../stores/profile";
+
+	const profileStore = useProfileStore()
 
 	useSeoMeta({
 		title: "Sport Food | Profile",
@@ -15,7 +18,7 @@
 <template>
 	<HeaderProfileHeader />
 	<ProfileTabs />
-	<ReportModulesReportGraphAddSettingModule />
+	<ReportModulesReportGraphAddSettingModule v-if="profileStore.reportGraphAddSettingModal"/>
 </template>
 
 <style scoped></style>

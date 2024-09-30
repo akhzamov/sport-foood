@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+	import { useProfileStore } from "~/modules/profile/stores/profile";
+
+	const profileStore = useProfileStore();
 	const datepicker = ref<any>(null);
 	const checkToday = ref(false);
 	const checkPeriod = ref(false);
@@ -29,14 +32,20 @@
 		let year = date.toLocaleString("ru-RU", { year: "numeric" });
 		return `${weekday} ${day} ${month} ${year}`;
 	};
+
+	const closeModal = () => {
+		profileStore.reportGraphAddSettingModal = false;
+	};
 </script>
 
 <template>
 	<div
 		class="fixed z-[300] top-0 lef-0 w-full h-screen bg-gray-15-color backdrop-blur-[10px] flex items-center justify-center"
+		@click="closeModal"
 	>
 		<div
 			class="w-[440px] h-max bg-dark-gunmental-color border border-gray-15-color rounded-lg p-3"
+			@click.stop
 		>
 			<div class="flex items-start justify-between">
 				<div class="flex items-center justify-start gap-2">
@@ -53,7 +62,7 @@
 						</span>
 					</div>
 				</div>
-				<IconClose class="text-gray-90-color cursor-pointer" />
+				<IconClose class="text-gray-90-color cursor-pointer" @click="closeModal"/>
 			</div>
 			<div class="flex flex-col gap-1 mt-3">
 				<div

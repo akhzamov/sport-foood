@@ -30,4 +30,5 @@ export interface IProfileStore {
 	salesPlanDay: ISalesPlanDay | null;
 	salesPlanDayFirstRes: boolean;
 	reportGraphStoreSelect: boolean;
+	reportGraphAddSettingModal: boolean;
 }

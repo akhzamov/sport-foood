@@ -228,6 +228,9 @@
 								>
 									<td
 										class="relative w-[30px] h-[30px] border-b border-r border-gray-25-color cursor-pointer"
+										@click="
+											profileStore.reportGraphAddSettingModal = true
+										"
 										@mouseenter="
 											{
 												(employeeDay = personKey),
