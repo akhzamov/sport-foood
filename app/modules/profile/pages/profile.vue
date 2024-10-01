@@ -1,15 +1,28 @@
 <script lang="ts" setup>
 	import { getStores } from "~/modules/profile/components/Header/profileHeader.data";
-import { useProfileStore } from "../stores/profile";
+	import { useProfileStore } from "../stores/profile";
 
-	const profileStore = useProfileStore()
+	const profileStore = useProfileStore();
+
+	watch(
+		() => profileStore.reportGraphAddSettingModal,
+		() => {
+			if (profileStore.reportGraphAddSettingModal) {
+				document.body.style.overflow = "hidden";
+			} else {
+				document.body.style.overflow = "unset";
+			}
+		}
+	);
 
 	useSeoMeta({
 		title: "Sport Food | Profile",
 	});
+
 	definePageMeta({
 		middleware: "auth",
 	});
+
 	onMounted(() => {
 		getStores();
 	});
@@ -18,7 +31,9 @@ import { useProfileStore } from "../stores/profile";
 <template>
 	<HeaderProfileHeader />
 	<ProfileTabs />
-	<ReportModulesReportGraphAddSettingModule v-if="profileStore.reportGraphAddSettingModal"/>
+	<ReportModulesReportGraphAddSettingModule
+		v-if="profileStore.reportGraphAddSettingModal"
+	/>
 </template>
 
 <style scoped></style>

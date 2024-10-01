@@ -123,7 +123,7 @@
 								v-for="(key, index) in Object.keys(reportData.days)"
 								:key="index"
 								scope="col"
-								class="w-[30px] bg-dark-charcoal-color text-gray-40-color text-center border-b border-r border-gray-15-color"
+								class="w-[30px] bg-dark-charcoal-color text-gray-40-color text-center border-b border-r border-gray-15-color px-[1px]"
 							>
 								<div
 									class="w-[28px] h-full flex flex-col justify-between bg-dark-gunmental-color rounded-md py-1"
@@ -169,10 +169,10 @@
 								<!-- graph body employee names -->
 								<th
 									scope="row"
-									class="flex-grow] h-[32px] p-[2px] border-b border-r border-l border-gray-15-color"
+									class="flex-grow h-[30px] border-b border-r border-l border-gray-15-color"
 								>
 									<div
-										class="w-full h-full flex items-center justify-between px-1 text-12-semi"
+										class="flex-grow h-[30px] flex items-center justify-between px-1 text-12-semi"
 									>
 										<div
 											class="flex items-center justify-start gap-2"
@@ -227,7 +227,7 @@
 									) in person.days"
 								>
 									<td
-										class="relative w-[30px] h-[30px] border-b border-r border-gray-25-color cursor-pointer"
+										class="relative w-[30px] h-[30px] border-b border-r border-gray-25-color cursor-pointer px-[1px]"
 										@click="
 											profileStore.reportGraphAddSettingModal = true
 										"
@@ -443,13 +443,13 @@
 																{{ person.lastName }}
 															</span>
 															<span
-																class="text-12-reg text-gray-90-color"
+																class="text-12-ext text-gray-90-color"
 															>
 																{{ person.department }}
 															</span>
 														</div>
 													</div>
-													<span class="text-12-semi text-success-500">
+													<span class="text-10-ext text-success-500">
 														{{ formatDate(personKey) }}
 													</span>
 												</div>
