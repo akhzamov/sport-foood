@@ -85,9 +85,9 @@
 </script>
 
 <template>
-	<div class="w-[214px]">
+	<div class="w-[214px] relative">
 		<div
-			class="relative w-full rounded-lg flex items-center justify-between px-4 py-[10px] select-none cursor-pointer"
+			class="w-full rounded-lg flex items-center justify-between px-4 py-[10px] select-none cursor-pointer"
 			:class="props.selectBgColor"
 			@click="activeMenu"
 		>

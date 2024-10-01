@@ -43,6 +43,7 @@
 
 	const handleGetStoreByID = (id: number) => {
 		getSalesPlan();
+		profileStore.activeMoreInfo = false
 	};
 
 	onMounted(() => {

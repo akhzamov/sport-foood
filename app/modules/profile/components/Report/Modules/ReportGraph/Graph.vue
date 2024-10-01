@@ -85,7 +85,7 @@
 			<h4 class="text-16-semi text-gray-90-color">
 				Отчет по посещаемости за месяц
 			</h4>
-			<div ref="reportGraphSelect">
+			<div ref="reportGraphSelect z-[30]">
 				<UiSelect
 					:array="months"
 					:show-menu="showSelectMenu"
@@ -96,7 +96,7 @@
 					@update:showMenu="
 						profileStore.reportGraphStoreSelect = $event
 					"
-					class="z-[100]"
+					class="z-[300]"
 				>
 					<template v-slot:icon>
 						<IconCalendar class="text-gray-90-color" />

@@ -126,7 +126,7 @@
 						@click="handleCheckToday"
 					/>
 					<p class="text-14-reg text-gray-90-color">
-						Сегодня <span>Сб 07 сен. 2024</span>
+						Сегодня <span>{{ formatDate(new Date().toDateString()) }}</span>
 					</p>
 				</div>
 				<div

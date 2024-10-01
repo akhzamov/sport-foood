@@ -18,6 +18,7 @@
 	]);
 
 	const activeTab = async (value: number) => {
+		profileStore.activeMoreInfo = false
 		if (!profileStore.activeDayFilterBlocked) {
 			const activeItem = daysFilter.find(
 				(item) => item.value === value
@@ -132,7 +133,7 @@
 	>
 		<Transition name="salesRanking">
 			<AnalysisModulesGraphSalesRanking
-				v-if="profileStore.selectedDate.length > 0"
+				v-if="profileStore.selectedDate.length > 0 && profileStore.activeMoreInfo"
 			/>
 		</Transition>
 	</div>

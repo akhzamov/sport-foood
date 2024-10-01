@@ -83,9 +83,9 @@
 </script>
 
 <template>
-	<div class="w-max">
+	<div class="w-max relative">
 		<div
-			class="relative w-full rounded-lg flex items-center justify-between gap-1 px-4 py-[10px] select-none"
+			class=" w-full rounded-lg flex items-center justify-between gap-1 px-4 py-[10px] select-none"
 			:class="props.selectBgColor"
 			@click="activeMenu"
 		>
