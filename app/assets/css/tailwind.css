@@ -472,3 +472,17 @@ html::-webkit-scrollbar-thumb {
 .dp__action_select:hover {
 	background: var(--warning-400) !important;
 }
+
+.dp__cell_inner{
+	font-weight: 300 !important;
+}
+
+.dp__cell_inner:hover{
+	transition: none !important;
+}
+
+.dp__calendar_header{
+	margin-bottom: 10px !important;
+	text-transform: capitalize !important;
+	font-weight: 400 !important;
+}

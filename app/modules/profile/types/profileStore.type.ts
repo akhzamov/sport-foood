@@ -31,4 +31,5 @@ export interface IProfileStore {
 	salesPlanDayFirstRes: boolean;
 	reportGraphStoreSelect: boolean;
 	reportGraphAddSettingModal: boolean;
+	reportGraphAddSettingSelectUser: boolean;
 }

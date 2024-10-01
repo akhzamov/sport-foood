@@ -1,15 +1,15 @@
-interface reportDataDays {
-	workDay: false;
+export interface reportDataDays {
+	workDay: boolean;
 }
 
-interface reportDataEmployeesDays {
+export interface reportDataEmployeesDays {
 	status: string;
 	replaced_id: number | null;
 	replaced_name: string | null;
 	replaced_lastName: string | null;
 }
 
-interface reportDataEmployees {
+export interface reportDataEmployees {
 	name: string;
 	lastName: string;
 	department: string;
@@ -17,7 +17,7 @@ interface reportDataEmployees {
 	totalWorkDays: number;
 }
 
-interface reportData {
+export interface reportData {
 	days: Record<string, reportDataDays>;
 	employees: Record<number, reportDataEmployees>;
 }
@@ -121,7 +121,7 @@ export const reportData: reportData = {
 	// worked - Присутствует
 	// absent - Отсутствует
 	// sick_leave - Больничный
-	// vocation - Отпуск
+	//  - Отпуск
 	employees: {
 		1: {
 			name: "Антон",

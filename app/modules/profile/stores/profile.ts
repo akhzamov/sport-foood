@@ -19,6 +19,7 @@ export const useProfileStore = defineStore("profile", {
 		salesPlanDayFirstRes: false,
 		reportGraphStoreSelect: false,
 		reportGraphAddSettingModal: false,
+		reportGraphAddSettingSelectUser: false,
 	}),
 	actions: {
 		async filterData() {

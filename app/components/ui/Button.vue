@@ -1,22 +1,52 @@
 <script lang="ts" setup>
-const props = defineProps({
-    text: {
-        type: String,
-        default: 'Click'
-    },
-    bgColor: {
-        type: String,
-        default: 'bg-primary-color'
-    },
-    textColor: {
-        type: String,
-        default: 'text-dark-night-color'
-    }
-})
+	const props = defineProps({
+		text: {
+			type: String,
+			default: "Click",
+		},
+		bgColor: {
+			type: String,
+			default: "bg-primary-color",
+		},
+		textColor: {
+			type: String,
+			default: "text-dark-night-color",
+		},
+		borderColor: {
+			type: String,
+			default: "border-gray-15-color",
+		},
+		hover: {
+			type: String,
+			required: true,
+		},
+		icon: {
+			type: Boolean,
+			required: true,
+		},
+		border: {
+			type: Boolean,
+			required: true,
+		},
+	});
 </script>
 
 <template>
-    <button class="w-full h-[40px] rounded-lg" :class="props.bgColor, props.textColor">{{ text }}</button>
+	<button
+		class="border px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2"
+		:class="[
+			bgColor,
+			textColor,
+			props.border ? props.borderColor : 'border-transparent',
+			props.hover,
+		]"
+	>
+		<slot
+			name="icon"
+			v-if="props.icon"
+		/>
+		{{ text }}
+	</button>
 </template>
 
 <style scoped></style>
