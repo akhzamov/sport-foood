@@ -242,6 +242,7 @@
 					borderColor="border-gray-90-color"
 					hover="hover:bg-gray-40-color"
 					:icon="false"
+					class="w-[90px]"
 					@click="closeModal"
 				/>
 			</div>

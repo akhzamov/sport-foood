@@ -96,7 +96,7 @@
 					@update:showMenu="
 						profileStore.reportGraphStoreSelect = $event
 					"
-					class="z-[300]"
+					class="z-[100]"
 				>
 					<template v-slot:icon>
 						<IconCalendar class="text-gray-90-color" />

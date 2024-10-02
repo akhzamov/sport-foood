@@ -1,21 +1,6 @@
 <script lang="ts" setup>
-	import { useProfileStore } from "../stores/profile";
-
-	const profileStore = useProfileStore();
-
-	watch(
-		() => profileStore.reportGraphAddSettingModal,
-		() => {
-			if (profileStore.reportGraphAddSettingModal) {
-				document.body.style.overflow = "hidden";
-			} else {
-				document.body.style.overflow = "unset";
-			}
-		}
-	);
-
 	useSeoMeta({
-		title: "Sport Food | Profile",
+		title: "Sport Food | Profile Report",
 	});
 
 	definePageMeta({
@@ -27,9 +12,6 @@
 <template>
 	<div class="container-custom">
 		<Report />
-		<ReportModulesReportGraphAddSettingModule
-			v-if="profileStore.reportGraphAddSettingModal"
-		/>
 	</div>
 </template>
 
