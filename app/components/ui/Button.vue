@@ -33,10 +33,9 @@
 
 <template>
 	<button
-		class="border px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2"
+		class="w-[100%] border px-4 py-2 rounded-lg transition duration-200 flex items-center justify-center gap-2"
 		:class="[
 			bgColor,
-			textColor,
 			props.border ? props.borderColor : 'border-transparent',
 			props.hover,
 		]"
@@ -45,7 +44,7 @@
 			name="icon"
 			v-if="props.icon"
 		/>
-		{{ text }}
+		<span :class="[textColor]">{{ text }}</span>
 	</button>
 </template>
 

@@ -142,7 +142,11 @@
 						text="Войти"
 						type="submit"
 						bgColor="bg-primary-color"
+						:border="false"
+						hover="hover:opacity-[0.8]"
+						:icon="false"
 						textColor="text-dark-night-color"
+						class="w-[100%]"
 					/>
 				</div>
 			</form>
