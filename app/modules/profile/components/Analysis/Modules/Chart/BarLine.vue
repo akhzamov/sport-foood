@@ -420,7 +420,6 @@
 
 					// Отрисовка значения или слова "Пусто"
 					if (value !== undefined && value != 0) {
-						console.log(value);
 						const deviation = calculateDeviation(
 							value,
 							monthAnnotation.value

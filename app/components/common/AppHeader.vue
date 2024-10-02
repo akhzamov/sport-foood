@@ -80,7 +80,7 @@
 					<ul class="flex items-center gap-4">
 						<li>
 							<NuxtLink
-								to="/profile"
+								to="/profile-dashboard"
 								class="bg-primary-color px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2 hover:opacity-[0.8]"
 							>
 								<IconUserSquare class="text-dark-night-color" />

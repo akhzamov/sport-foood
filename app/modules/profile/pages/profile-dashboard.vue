@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-	import { getStores } from "~/modules/profile/components/Header/profileHeader.data";
 	import { useProfileStore } from "../stores/profile";
 
 	const profileStore = useProfileStore();
@@ -21,19 +20,17 @@
 
 	definePageMeta({
 		middleware: "auth",
-	});
-
-	onMounted(() => {
-		getStores();
+		layout: "profile",
 	});
 </script>
 
 <template>
-	<HeaderProfileHeader />
-	<ProfileTabs />
-	<ReportModulesReportGraphAddSettingModule
-		v-if="profileStore.reportGraphAddSettingModal"
-	/>
+	<div class="container-custom">
+		<Analysis />
+		<ReportModulesReportGraphAddSettingModule
+			v-if="profileStore.reportGraphAddSettingModal"
+		/>
+	</div>
 </template>
 
 <style scoped></style>

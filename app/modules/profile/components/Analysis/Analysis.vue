@@ -11,32 +11,24 @@
 	const isChartReady = ref(false);
 
 	const daysFilter = reactive([
-		{ id: 1, title: "30 д", value: 30, active: true },
-		{ id: 2, title: "14 д", value: 14, active: false },
-		{ id: 3, title: "7 д", value: 7, active: false },
-		{ id: 4, title: "24 ч", value: 0, active: false },
+		{ id: 1, title: "30 д", value: 30 },
+		{ id: 2, title: "14 д", value: 14 },
+		{ id: 3, title: "7 д", value: 7 },
+		{ id: 4, title: "24 ч", value: 0 },
 	]);
 
 	const activeTab = async (value: number) => {
-		profileStore.activeMoreInfo = false
+		profileStore.activeMoreInfo = false;
 		if (!profileStore.activeDayFilterBlocked) {
 			const activeItem = daysFilter.find(
 				(item) => item.value === value
 			);
 
 			if (activeItem) {
-				activeItem.active = true;
-
 				profileStore.activeDayFilterBlocked = true;
 				profileStore.activeDayFilter = value;
 				await getSalesPlan();
 				profileStore.activeDayFilterBlocked = false;
-
-				daysFilter.forEach((item) => {
-					if (item !== activeItem) {
-						item.active = false;
-					}
-				});
 			}
 		}
 	};
@@ -72,10 +64,6 @@
 			isChartReady.value = false;
 		}
 	});
-
-	onMounted(() => {
-		profileStore.activeDayFilter = 30;
-	});
 </script>
 
 <template>
@@ -93,11 +81,15 @@
 				:key="day.id"
 				class="w-20 h-[30px] flex items-center justify-center rounded-[4px]"
 				:class="{
-					'bg-primary-color': day.active && !activeDayFilterBlocked,
-					'bg-gray-40-color': day.active && activeDayFilterBlocked,
+					'bg-primary-color':
+						profileStore.activeDayFilter == day.value &&
+						!activeDayFilterBlocked,
+					'bg-gray-40-color':
+						profileStore.activeDayFilter == day.value &&
+						activeDayFilterBlocked,
 					'cursor-pointer': !activeDayFilterBlocked,
 					'cursor-not-allowed': activeDayFilterBlocked,
-					'bg-transparent': !day.active,
+					'bg-transparent': profileStore.activeDayFilter != day.value,
 				}"
 				@click="activeTab(day.value)"
 			>
@@ -105,13 +97,17 @@
 					class="text-14-med"
 					:class="{
 						'text-dark-night-color':
-							day.active && !activeDayFilterBlocked,
+							profileStore.activeDayFilter == day.value &&
+							!activeDayFilterBlocked,
 						'text-gray-90-color':
-							!day.active && !activeDayFilterBlocked,
+							profileStore.activeDayFilter != day.value &&
+							!activeDayFilterBlocked,
 						'text-dark-charcoal-color':
-							day.active && activeDayFilterBlocked,
+							profileStore.activeDayFilter == day.value &&
+							activeDayFilterBlocked,
 						'text-gray-40-color':
-							!day.active && activeDayFilterBlocked,
+							profileStore.activeDayFilter != day.value &&
+							activeDayFilterBlocked,
 					}"
 					>{{ day.title }}</span
 				>
@@ -133,7 +129,10 @@
 	>
 		<Transition name="salesRanking">
 			<AnalysisModulesGraphSalesRanking
-				v-if="profileStore.selectedDate.length > 0 && profileStore.activeMoreInfo"
+				v-if="
+					profileStore.selectedDate.length > 0 &&
+					profileStore.activeMoreInfo
+				"
 			/>
 		</Transition>
 	</div>

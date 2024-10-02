@@ -4,32 +4,33 @@
 
 	const profileStore = useProfileStore();
 	const headerSelect = ref<HTMLElement | null>(null);
+	const route = useRoute();
 	const showSelectMenu = computed(
 		() => profileStore.activeStoresSelect
 	);
 
 	const tabs = reactive([
-		{ id: 1, title: "Дашборд", icon: "IconPieDash", active: true },
-		{ id: 2, title: "Отчеты", icon: "IconBarLine", active: false },
+		{
+			id: 1,
+			title: "Дашборд",
+			icon: "IconPieDash",
+			path: "/profile-dashboard",
+		},
+		{
+			id: 2,
+			title: "Отчеты",
+			icon: "IconBarLine",
+			path: "/profile-report",
+		},
 		{
 			id: 3,
 			title: "Статистика продаж",
 			icon: "IconBarChart",
-			active: false,
+			path: "",
 		},
-		{ id: 4, title: "Логистика", icon: "IconRoute", active: false },
-		{ id: 5, title: "Реклама", icon: "IconTrendUp", active: false },
+		{ id: 4, title: "Логистика", icon: "IconRoute", path: "" },
+		{ id: 5, title: "Реклама", icon: "IconTrendUp", path: "" },
 	]);
-
-	const activeTab = (id: number) => {
-		tabs.forEach((item) => {
-			item.active = false;
-			if (item.id == id) {
-				item.active = true;
-				profileStore.activeTab = id;
-			}
-		});
-	};
 
 	const handleClickOutsideSelect = (event: MouseEvent) => {
 		if (
@@ -43,7 +44,7 @@
 
 	const handleGetStoreByID = (id: number) => {
 		getSalesPlan();
-		profileStore.activeMoreInfo = false
+		profileStore.activeMoreInfo = false;
 	};
 
 	onMounted(() => {
@@ -114,41 +115,46 @@
 					</div>
 				</div>
 				<div class="flex gap-8">
-					<div
-						class="px-5 pt-5 rounded-lg cursor-pointer flex flex-col after:w-full after:h-[2px] after:rounded-t-[4px] after:bg-primary-color text-gray-75-color hover:text-primary-color"
+					<template
 						v-for="tab in tabs"
 						:key="tab.id"
-						:class="
-							tab.active && profileStore.activeTab == tab.id
-								? 'after:block'
-								: 'after:hidden'
-						"
-						@click="activeTab(tab.id)"
 					>
-						<div class="flex items-center justify-center pb-4 gap-2">
-							<IconPieDash
-								class=""
-								v-if="tab.icon == 'IconPieDash'"
-							/>
-							<IconBarChart
-								class=""
-								v-if="tab.icon == 'IconBarChart'"
-							/>
-							<IconBarLine
-								class=""
-								v-if="tab.icon == 'IconBarLine'"
-							/>
-							<IconRoute
-								class=""
-								v-if="tab.icon == 'IconRoute'"
-							/>
-							<IconTrendUp
-								class=""
-								v-if="tab.icon == 'IconTrendUp'"
-							/>
-							<span class="text-16-med">{{ tab.title }}</span>
-						</div>
-					</div>
+						<NuxtLink
+							class="px-5 pt-5 rounded-lg cursor-pointer flex flex-col after:w-full after:h-[2px] after:rounded-t-[4px] after:bg-primary-color text-gray-75-color hover:text-primary-color"
+							:class="
+								route.fullPath == tab.path
+									? 'after:block'
+									: 'after:hidden'
+							"
+							:to="tab.path"
+						>
+							<div
+								class="flex items-center justify-center pb-4 gap-2"
+							>
+								<IconPieDash
+									class=""
+									v-if="tab.icon == 'IconPieDash'"
+								/>
+								<IconBarChart
+									class=""
+									v-if="tab.icon == 'IconBarChart'"
+								/>
+								<IconBarLine
+									class=""
+									v-if="tab.icon == 'IconBarLine'"
+								/>
+								<IconRoute
+									class=""
+									v-if="tab.icon == 'IconRoute'"
+								/>
+								<IconTrendUp
+									class=""
+									v-if="tab.icon == 'IconTrendUp'"
+								/>
+								<span class="text-16-med">{{ tab.title }}</span>
+							</div>
+						</NuxtLink>
+					</template>
 				</div>
 			</div>
 		</div>

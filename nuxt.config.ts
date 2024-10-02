@@ -66,7 +66,7 @@ export default defineNuxtConfig({
 	},
 
 	routeRules: {
-		"/": { prerender: true, redirect: "/profile" },
+		"/": { prerender: true, redirect: "/profile-dashboard" },
 		"/:pathMatch(.*)*": { prerender: true },
 	},
 
