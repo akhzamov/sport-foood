@@ -58,7 +58,7 @@
 
 <template>
 	<div
-		class="w-full h-[338px] relative flex items-end justify-center"
+		class="w-full h-[338px] relative flex items-end justify-center z-[80]"
 	>
 		<div
 			class="absolute top-0 left-0 w-full h-full bg-dark-charcoal-color z-[-1]"
@@ -107,6 +107,7 @@
 							@update:showMenu="
 								profileStore.activeStoresSelect = $event
 							"
+							class="z-[80]"
 						>
 							<template v-slot:icon>
 								<IconBranch class="text-gray-90-color" />

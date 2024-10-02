@@ -77,7 +77,7 @@
 </script>
 
 <template>
-	<div class="w-full h-max relative">
+	<div class="w-full h-max relative z-[70]">
 		<!-- graph top -->
 		<div
 			class="flex items-center justify-between p-2 rounded-t-lg bg-dark-gunmental-color border-b border-gray-40-color"
@@ -96,7 +96,7 @@
 					@update:showMenu="
 						profileStore.reportGraphStoreSelect = $event
 					"
-					class="z-[100]"
+					class="z-[70]"
 				>
 					<template v-slot:icon>
 						<IconCalendar class="text-gray-90-color" />
