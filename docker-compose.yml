@@ -18,5 +18,5 @@ services:
       - 3000
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.project1.rule=Host(`46.254.16.69`)"
-      - "traefik.http.services.project1.loadbalancer.server.port=3000"
+      - "traefik.http.routers.sprot-food-v2.rule=Host(`46.254.16.69`)"
+      - "traefik.http.services.sprot-food-v2.loadbalancer.server.port=3000"
