@@ -6,8 +6,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      # remove port 8080 for production
-      # - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
@@ -18,7 +16,7 @@ services:
     restart: always
     expose:
       - 3000
-
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`46.254.16.69`)"
+      - "traefik.http.routers.project1.rule=Host(`46.254.16.69`)"
+      - "traefik.http.services.project1.loadbalancer.server.port=3000"
