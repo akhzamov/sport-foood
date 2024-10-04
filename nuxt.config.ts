@@ -74,6 +74,5 @@ export default defineNuxtConfig({
 		prerender: {
 			routes: ["/index.html", "/404.html"],
 		},
-		preset: "static",
 	},
 });
