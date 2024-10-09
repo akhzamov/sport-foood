@@ -31,7 +31,7 @@ const props = defineProps({
             </div>
             <div class="w-12 h-12 rounded-[50%] bg-success-500-20 flex items-center justify-center mb-4"
                 v-if="type == 'success'">
-                <IconCheck class="text-success-500 w-[25px] h-[25px]" />
+                <IconCheckCircleBroken class="text-success-500 w-[25px] h-[25px]" />
             </div>
             <div class="w-12 h-12 rounded-[50%] bg-error-500-20 flex items-center justify-center mb-4"
                 v-if="type == 'error'">

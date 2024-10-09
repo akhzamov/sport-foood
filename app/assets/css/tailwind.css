@@ -6,6 +6,7 @@
 	/* Primary */
 	--primary-color: #f0b61c;
 	--secondary-color: #1abc9c;
+	--malachite: #04ea6f;
 	/* Error  */
 	--error-25: #fffbfa;
 	--error-50: #fef3f2;
@@ -473,15 +474,15 @@ html::-webkit-scrollbar-thumb {
 	background: var(--warning-400) !important;
 }
 
-.dp__cell_inner{
+.dp__cell_inner {
 	font-weight: 300 !important;
 }
 
-.dp__cell_inner:hover{
+.dp__cell_inner:hover {
 	transition: none !important;
 }
 
-.dp__calendar_header{
+.dp__calendar_header {
 	margin-bottom: 10px !important;
 	text-transform: capitalize !important;
 	font-weight: 400 !important;

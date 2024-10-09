@@ -118,9 +118,16 @@
 	<div
 		class="w-full grid grid-cols-custom-3-390 gap-6 justify-center mt-4"
 	>
-		<AnalysisModulesChartLoadChart v-if="!salesPlan" />
-		<AnalysisModulesChartBarLine v-if="salesPlan" />
-		<AnalysisModulesRatingMarketplaces />
+		<div class="grid col-span-1">
+			<AnalysisModulesChartLoadChart v-if="!salesPlan" />
+			<AnalysisModulesChartBarLine v-if="salesPlan" />
+		</div>
+		<div class="grid col-span-1">
+			<AnalysisModulesRatingMarketplaces />
+		</div>
+		<div class="grid col-span-1">
+			<ReportModulesWarehouseBalancesAndReserve />
+		</div>
 	</div>
 
 	<div

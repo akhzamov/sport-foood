@@ -45,6 +45,10 @@
 			v-if="props.icon"
 		/>
 		<span :class="[textColor]">{{ text }}</span>
+		<slot
+			name="icon-r"
+			v-if="props.icon"
+		/>
 	</button>
 </template>
 

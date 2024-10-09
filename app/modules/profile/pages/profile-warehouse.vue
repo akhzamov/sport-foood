@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 	useSeoMeta({
-		title: "Sport Food | Profile Dashboard",
+		title: "Sport Food | Profile Report",
 	});
 
 	definePageMeta({
@@ -11,7 +11,7 @@
 
 <template>
 	<div class="container-custom">
-		<Analysis />
+		<Warehouse />
 	</div>
 </template>
 

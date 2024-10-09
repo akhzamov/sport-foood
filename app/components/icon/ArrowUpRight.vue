@@ -9,7 +9,7 @@
 		xmlns="http://www.w3.org/2000/svg"
 	>
 		<path
-			d="M20 6L9 17L4 12"
+			d="M7 17L17 7M17 7H7M17 7V17"
 			stroke="currentColor"
 			stroke-opacity="0.9"
 			stroke-width="2"

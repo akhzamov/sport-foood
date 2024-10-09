@@ -18,6 +18,7 @@ export default {
 			colors: {
 				'primary-color': 'var(--primary-color)',
 				'secondary-color': 'var(--secondary-color)',
+				'malachite': 'var(--malachite)',
 				'error-25': 'var(--error-25)',
 				'error-50': 'var(--error-50)',
 				'error-100': 'var(--error-100)',
