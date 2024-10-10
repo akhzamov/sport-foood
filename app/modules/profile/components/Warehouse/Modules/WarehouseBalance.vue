@@ -12,9 +12,13 @@
 		if (weight < minWeight) {
 			return (weight / minWeight) * 15; // Заполнение до минимума
 		} else if (weight >= minWeight && weight < maxWeight) {
-			return (weight / maxWeight) * 50;
+			const range = maxWeight - minWeight;
+			const adjustedWeight = weight - minWeight; // Вычитаем minWeight, чтобы отсчет начался от 0
+			return 15 + (adjustedWeight / range) * 70;
 		} else {
-			return (weight / maxWeight) * 80; // Полное заполнение
+			const overMaxWeight = weight - maxWeight;
+			const maxRange = maxWeight * 0.2; // Диапазон, при котором заполнение идет от 85% до 100%
+			return 85 + Math.min((overMaxWeight / maxRange) * 15, 15); // Максимум 100%
 		}
 	};
 	const getWeightColor = (
@@ -122,7 +126,7 @@
 											:class="[
 												{
 													'rounded-r-lg':
-														getFilledWidth(product) >= 100,
+														getFilledWidth(product) >= 90,
 												},
 												getWeightColor(product),
 											]"

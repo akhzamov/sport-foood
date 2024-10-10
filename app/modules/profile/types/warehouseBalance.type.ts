@@ -2,7 +2,7 @@ interface IWarehouseBalanceProducts {
 	id: number;
 }
 
-interface IWarehouseBalanceCitiesProducts {
+export interface IWarehouseBalanceCitiesProducts {
 	id: number;
 	minWeight: number;
 	maxWeight: number;
