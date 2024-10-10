@@ -1,5 +1,6 @@
 import type { IStore } from "~/modules/profile/types/stores.type";
 import type { ISalesPlan } from "~/modules/profile/types/salesPlan.type";
+import { getMarketplacesData } from "~/modules/profile/components/Analysis/Modules/Rating/MarketplacesData";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import { getAuthToken } from "~/utils/auth";
 import axios from "axios";
@@ -21,6 +22,7 @@ export async function getStores() {
 		profileStore.selectedBranch = res.data ? res.data[0]?.id || 0 : 0;
 		if (res.data.length > 0) {
 			getSalesPlan();
+			getMarketplacesData();
 		}
 	} catch (error: any) {
 		console.error("Не удалось получить /stores: ", error);

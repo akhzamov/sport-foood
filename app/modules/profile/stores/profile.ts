@@ -20,6 +20,10 @@ export const useProfileStore = defineStore("profile", {
 		reportGraphStoreSelect: false,
 		reportGraphAddSettingModal: false,
 		reportGraphAddSettingSelectUser: false,
+		marketplacesData: null,
+		marketplacesTotalProfit: 0,
+		marketplacesTotalSold: 0,
+		marketplacesTotalSpending: 0,
 	}),
 	actions: {
 		async filterData() {

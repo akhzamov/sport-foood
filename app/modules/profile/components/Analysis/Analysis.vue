@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 	import { useProfileStore } from "~/modules/profile/stores/profile";
 	import { getSalesPlan } from "~/modules/profile/components/Header/profileHeader.data";
+	import { getMarketplacesData } from "~/modules/profile/components/Analysis/Modules/Rating/MarketplacesData";
 
 	const profileStore = useProfileStore();
 	const activeMoreInfo = computed(() => profileStore.activeMoreInfo);
@@ -8,6 +9,9 @@
 		() => profileStore.activeDayFilterBlocked
 	);
 	const salesPlan = computed(() => profileStore.salesPlan);
+	const marketplacesData = computed(
+		() => profileStore.marketplacesData
+	);
 	const isChartReady = ref(false);
 
 	const daysFilter = reactive([
@@ -28,6 +32,7 @@
 				profileStore.activeDayFilterBlocked = true;
 				profileStore.activeDayFilter = value;
 				await getSalesPlan();
+				await getMarketplacesData();
 				profileStore.activeDayFilterBlocked = false;
 			}
 		}
@@ -123,7 +128,8 @@
 			<AnalysisModulesChartBarLine v-if="salesPlan" />
 		</div>
 		<div class="grid col-span-1">
-			<AnalysisModulesRatingMarketplaces />
+			<AnalysisModulesChartLoadChart v-if="!marketplacesData" />
+			<AnalysisModulesRatingMarketplaces v-if="marketplacesData" />
 		</div>
 		<div class="grid col-span-1">
 			<ReportModulesWarehouseBalancesAndReserve />

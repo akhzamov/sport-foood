@@ -1,6 +1,7 @@
 import type { ISalesPlanMonth } from "~/modules/profile/types/salesPlan.type";
 import type { IStore } from "~/modules/profile/types/stores.type";
 import type { ISalesPlanDay } from "~/modules/profile/types/salesPlanDay.type";
+import type { IMarketplaceDataMarket } from "~/modules/profile/types/marketplaceData.type";
 
 interface IDaySalesProducts {
 	product: string;
@@ -32,4 +33,8 @@ export interface IProfileStore {
 	reportGraphStoreSelect: boolean;
 	reportGraphAddSettingModal: boolean;
 	reportGraphAddSettingSelectUser: boolean;
+	marketplacesData: Record<string, IMarketplaceDataMarket> | null;
+	marketplacesTotalProfit: number;
+	marketplacesTotalSold: number;
+	marketplacesTotalSpending: number;
 }
