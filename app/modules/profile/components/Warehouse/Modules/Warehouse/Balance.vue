@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import { warehouseBalance } from "~/modules/profile/components/Warehouse/Modules/warehouseBalance.data";
+	import { warehouseBalance } from "~/modules/profile/components/Warehouse/Modules/Warehouse/warehouseBalance.data";
 	import type { IWarehouseBalanceCitiesProducts } from "~/modules/profile/types/warehouseBalance.type";
 
 	const getFilledWidth = (
@@ -34,22 +34,6 @@
 			return "bg-secondary-color"; // Зеленый цвет
 		} else {
 			return "bg-primary-color"; // Желтый цвет
-		}
-	};
-	const getLeftPosition = (
-		product: IWarehouseBalanceCitiesProducts
-	) => {
-		const { minWeight, maxWeight, weight } = product;
-
-		if (weight < minWeight) {
-			// Если вес меньше минимума, позиция будет перед линией минимума
-			return 0; // Начинается с нуля
-		} else if (weight >= minWeight && weight <= maxWeight) {
-			// Если вес между минимумом и максимумом
-			return 15; // Позиция, где начинается линия минимума
-		} else {
-			// Если вес больше максимума, позиция будет там, где заканчивается линия минимума
-			return 15; // Позиция, где начинается линия минимума
 		}
 	};
 </script>

@@ -38,9 +38,9 @@ export const warehouseBalance: IWarehouseBalance = {
 			products: {
 				"Протеины": {
 					id: 1,
-					minWeight: 100000,
-					maxWeight: 200000,
-					weight: 370000,
+					minWeight: 2,
+					maxWeight: 4,
+					weight: 10,
 				},
 				"Креатин": {
 					id: 2,
@@ -102,9 +102,9 @@ export const warehouseBalance: IWarehouseBalance = {
 			products: {
 				"Протеины": {
 					id: 1,
-					minWeight: 150000,
-					maxWeight: 250000,
-					weight: 170000,
+					minWeight: 20,
+					maxWeight: 100,
+					weight: 80,
 				},
 				"Креатин": {
 					id: 2,

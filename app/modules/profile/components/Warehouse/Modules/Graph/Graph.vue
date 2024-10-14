@@ -12,6 +12,7 @@
 				<WarehouseModulesGraphAside />
 				<div class="flex-grow h-full flex flex-col p-3">
 					<WarehouseModulesWarehouseBalance />
+					<WarehouseModulesTradingFloorBalance />
 				</div>
 			</div>
 		</div>
