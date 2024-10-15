@@ -13,6 +13,7 @@
 				<div class="flex-grow h-full flex flex-col p-3">
 					<WarehouseModulesWarehouseBalance />
 					<WarehouseModulesTradingFloorBalance />
+					<WarehouseModulesSalesAgentsBalance />
 				</div>
 			</div>
 		</div>

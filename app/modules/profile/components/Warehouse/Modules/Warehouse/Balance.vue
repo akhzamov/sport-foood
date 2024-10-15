@@ -39,7 +39,9 @@
 </script>
 
 <template>
-	<div class="flex flex-col items-start w-full h-full">
+	<div
+		class="flex flex-col items-start border border-gray-40-color rounded-lg w-full h-full"
+	>
 		<div
 			class="w-full h-[38px] bg-gray-15-color flex items-center justify-between px-3 rounded-t-lg"
 		>
@@ -90,7 +92,7 @@
 								</th>
 								<th
 									scope="row"
-									class="w-[84px] h-full flex items-center justify-center border-r border-gray-15-color"
+									class="w-[84px] h-full flex items-center justify-center border-gray-15-color"
 									v-for="(product, productKey) in city.products"
 								>
 									<div

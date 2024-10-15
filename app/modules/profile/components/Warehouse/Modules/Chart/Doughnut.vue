@@ -146,13 +146,13 @@
 		createChart(newCanvas, preparedData.labels, preparedData.data);
 	}
 
-	watch(
-		() => warehouseStore.tradingFloorData,
-		async () => {
-			await initializeChart();
-		},
-		{ immediate: true }
-	);
+	// watch(
+	// 	() => warehouseStore.tradingFloorData,
+	// 	async () => {
+	// 		await initializeChart();
+	// 	},
+	// 	{ immediate: true }
+	// );
 
 	onMounted(() => {
 		initializeChart();

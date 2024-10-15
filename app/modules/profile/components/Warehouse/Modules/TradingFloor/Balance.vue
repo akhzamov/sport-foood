@@ -45,7 +45,7 @@
 
 <template>
 	<div
-		class="flex flex-col items-start w-full h-full bg-gray-15-color rounded-lg mt-7"
+		class="flex flex-col items-start w-full h-full border border-gray-40-color bg-gray-15-color rounded-lg mt-7"
 	>
 		<div
 			class="w-full h-[38px] flex items-center justify-between px-3"
