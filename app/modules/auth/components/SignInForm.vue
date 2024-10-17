@@ -146,7 +146,7 @@
 						hover="hover:opacity-[0.8]"
 						:icon="false"
 						textColor="text-dark-night-color"
-						class="w-[100%]"
+						class="w-full"
 					/>
 				</div>
 			</form>
