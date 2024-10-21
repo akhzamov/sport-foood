@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 	import { useProfileStore } from "~/modules/profile/stores/profile";
-	import { reportData } from "~/modules/profile/components/Report/Modules/ReportGraph/graph.data";
+	import { reportData } from "~/modules/profile/components/Report/ReportGraph/graph.data";
 
 	const profileStore = useProfileStore();
 	const reportGraphSelect = ref<HTMLElement | null>(null);

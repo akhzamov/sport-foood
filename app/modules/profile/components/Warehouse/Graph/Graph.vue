@@ -9,11 +9,11 @@
 			<div
 				class="w-full h-full flex items-start justify-between bg-dark-charcoal-color rounded-b-lg"
 			>
-				<WarehouseModulesGraphAside />
+				<WarehouseGraphAside />
 				<div class="flex-grow h-full flex flex-col p-3">
-					<WarehouseModulesWarehouseBalance />
-					<WarehouseModulesTradingFloorBalance />
-					<WarehouseModulesSalesAgentsBalance />
+					<WarehouseWarehouseBalance />
+					<WarehouseTradingFloorBalance />
+					<WarehouseSalesAgentsBalance />
 				</div>
 			</div>
 		</div>

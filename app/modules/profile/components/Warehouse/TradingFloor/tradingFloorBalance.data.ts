@@ -1,6 +1,6 @@
-import type { tradingFloor } from "~/modules/profile/types/tradingFloorBalance.type";
+import type { ITradingFloor } from "~/modules/profile/types/tradingFloorBalance.type";
 
-export const tradingFloorData: tradingFloor = {
+export const tradingFloorData: ITradingFloor = {
 	marketplaces: {
 		"Ozon": {
 			id: 1,

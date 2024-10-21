@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import type { reportDataEmployees } from "~/modules/profile/components/Report/Modules/ReportGraph/graph.data";
+	import type { reportDataEmployees } from "~/modules/profile/components/Report/ReportGraph/graph.data";
 
 	const props = defineProps({
 		mainTextColor: {

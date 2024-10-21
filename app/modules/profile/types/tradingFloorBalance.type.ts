@@ -1,10 +1,10 @@
-export interface tradingFloorMarketplace {
+export interface ITradingFloorMarketplace {
 	id: number;
 	type: string;
 	totalWeight: number;
 }
 
-export interface tradingFloorProductMarketplace {
+export interface ITradingFloorProductMarketplace {
 	id: number;
 	type: string;
 	minWeight: number;
@@ -12,12 +12,12 @@ export interface tradingFloorProductMarketplace {
 	weight: number;
 }
 
-export interface tradingFloorProduct {
+export interface ITradingFloorProduct {
 	id: number;
-	marketplaces: Record<string, tradingFloorProductMarketplace>;
+	marketplaces: Record<string, ITradingFloorProductMarketplace>;
 }
 
-export interface tradingFloor {
-	marketplaces: Record<string, tradingFloorMarketplace>;
-	products: Record<string, tradingFloorProduct>;
+export interface ITradingFloor {
+	marketplaces: Record<string, ITradingFloorMarketplace>;
+	products: Record<string, ITradingFloorProduct>;
 }

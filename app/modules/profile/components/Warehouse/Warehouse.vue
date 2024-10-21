@@ -5,7 +5,7 @@
 		<h2 class="text-32-semi text-gray-90-color">Остатки и резерв</h2>
 	</div>
 	<div class="w-full grid grid-cols-1 mt-4 pb-16">
-		<WarehouseModulesGraph />
+		<WarehouseGraph />
 	</div>
 </template>
 

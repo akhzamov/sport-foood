@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import type { ISalesPlanDayProducts } from "~/modules/profile/types/salesPlanDay.type";
+	import type { ISalesPlanDayProducts } from "~/modules/profile/types/Dashboard/salesPlanDay.type";
 	import { useProfileStore } from "~/modules/profile/stores/profile";
 
 	const profileStore = useProfileStore();

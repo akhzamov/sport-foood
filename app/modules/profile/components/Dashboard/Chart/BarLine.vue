@@ -47,7 +47,7 @@
 		customTooltip,
 		lineLabel,
 		customDataLabel,
-	} from "~/modules/profile/components/Analysis/Modules/Chart/chartRegister";
+	} from "~/modules/profile/components/Dashboard/Chart/chartRegister";
 
 	Chart.register(
 		BarController,

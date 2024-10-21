@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 	import { useProfileStore } from "~/modules/profile/stores/profile";
 	import { getSalesPlan } from "~/modules/profile/components/Header/profileHeader.data";
-	import { getMarketplacesData } from "~/modules/profile/components/Analysis/Modules/Rating/MarketplacesData";
+	import { getMarketplacesData } from "~/modules/profile/components/Dashboard/Rating/MarketplacesData";
 
 	const profileStore = useProfileStore();
 	const activeMoreInfo = computed(() => profileStore.activeMoreInfo);
@@ -124,15 +124,15 @@
 		class="w-full grid grid-cols-custom-3-390 gap-6 justify-center mt-4"
 	>
 		<div class="grid col-span-1">
-			<AnalysisModulesChartLoadChart v-if="!salesPlan" />
-			<AnalysisModulesChartBarLine v-if="salesPlan" />
+			<DashboardChartLoadChart v-if="!salesPlan" />
+			<DashboardChartBarLine v-if="salesPlan" />
 		</div>
 		<div class="grid col-span-1">
-			<AnalysisModulesChartLoadChart v-if="!marketplacesData" />
-			<AnalysisModulesRatingMarketplaces v-if="marketplacesData" />
+			<DashboardChartLoadChart v-if="!marketplacesData" />
+			<DashboardRatingMarketplaces v-if="marketplacesData" />
 		</div>
 		<div class="grid col-span-1">
-			<ReportModulesWarehouseBalancesAndReserve />
+			<ReportWarehouseBalancesAndReserve />
 		</div>
 	</div>
 
@@ -141,7 +141,7 @@
 		ref="moreInfo"
 	>
 		<Transition name="salesRanking">
-			<AnalysisModulesGraphSalesRanking
+			<DashboardGraphSalesRanking
 				v-if="
 					profileStore.selectedDate.length > 0 &&
 					profileStore.activeMoreInfo

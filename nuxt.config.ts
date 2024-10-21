@@ -1,78 +1,78 @@
 export default defineNuxtConfig({
-	compatibilityDate: "2024-04-03",
-	devtools: { enabled: true },
+  compatibilityDate: "2024-04-03",
+  devtools: { enabled: true },
 
-	future: {
-		compatibilityVersion: 4,
-	},
+  future: {
+    compatibilityVersion: 4,
+  },
 
-	vite: {
-		server: {
-			proxy: {
-				"/api": {
-					target: "https://crm-api.autosale.pw",
-					changeOrigin: true,
-				},
-			},
-		},
-	},
+  vite: {
+    server: {
+      proxy: {
+        "/api": {
+          target: "https://crm-api.autosale.pw",
+          changeOrigin: true,
+        },
+      },
+    },
+  },
 
-	extends: [
-		"./app/modules/about",
-		"./app/modules/profile",
-		"./app/modules/settings",
-		"./app/modules/users",
-		"./app/modules/auth",
-	],
+  // runtimeConfig: {
+  //   public: {
+  //     apiBaseUrl: process.env.API_BASE_URL,
+  //   },
+  // },
 
-	app: {
-		head: {
-			link: [
-				{ rel: "icon", type: "image/svg+xml", href: "/logo.svg" },
-			],
-			bodyAttrs: {
-				id: "body",
-			},
-		},
-	},
+  extends: [
+    "./app/modules/about",
+    "./app/modules/profile",
+    "./app/modules/settings",
+    "./app/modules/users",
+    "./app/modules/auth",
+  ],
 
-	modules: [
-		"@nuxtjs/tailwindcss",
-		"@pinia/nuxt",
-		"@nuxtjs/google-fonts",
-	],
+  app: {
+    head: {
+      link: [{ rel: "icon", type: "image/svg+xml", href: "/logo.svg" }],
+      bodyAttrs: {
+        id: "body",
+      },
+    },
+  },
 
-	plugins: ["~/plugins/vue-datepicker.js"],
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@nuxtjs/google-fonts"],
 
-	pinia: {
-		storesDirs: ["~/stores/**", "~/layers/**/stores/**"],
-	},
+  plugins: ["~/plugins/vue-datepicker.js"],
 
-	css: ["~/assets/css/tailwind.css"],
+  pinia: {
+    storesDirs: ["~/stores/**", "~/layers/**/stores/**"],
+  },
 
-	tailwindcss: {
-		cssPath: "~/assets/css/tailwind.css",
-		configPath: "./tailwind.config.js",
-		exposeConfig: true,
-		viewer: true,
-	},
+  css: ["~/assets/css/tailwind.css"],
 
-	googleFonts: {
-		families: {
-			"Roboto Flex": {
-				wght: [200, 300, 400, 500, 600, 700],
-			},
-		},
-	},
+  tailwindcss: {
+    cssPath: "~/assets/css/tailwind.css",
+    configPath: "./tailwind.config.js",
+    exposeConfig: true,
+    viewer: true,
+  },
 
-	routeRules: {
-		"/": { prerender: true, redirect: "/profile-dashboard" },
-		"/:pathMatch(.*)*": { prerender: true },
-	},
+  googleFonts: {
+    families: {
+      "Roboto Flex": {
+        wght: [200, 300, 400, 500, 600, 700],
+      },
+    },
+  },
 
-	nitro: {
-		prerender: {
-			routes: ["/index.html", "/404.html"],
-		},
-	},
+  routeRules: {
+    "/": { prerender: true, redirect: "/profile-dashboard" },
+    "/:pathMatch(.*)*": { prerender: true },
+  },
+
+  nitro: {
+    prerender: {
+      routes: ["/index.html", "/404.html"],
+    },
+  },
 });

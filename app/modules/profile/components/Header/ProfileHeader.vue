@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 	import { useProfileStore } from "~/modules/profile/stores/profile";
 	import { getSalesPlan } from "~/modules/profile/components/Header/profileHeader.data";
-	import { getMarketplacesData } from "~/modules/profile/components/Analysis/Modules/Rating/MarketplacesData";
+	import { getMarketplacesData } from "~/modules/profile/components/Dashboard/Rating/MarketplacesData";
 
 	const profileStore = useProfileStore();
 	const headerSelect = ref<HTMLElement | null>(null);

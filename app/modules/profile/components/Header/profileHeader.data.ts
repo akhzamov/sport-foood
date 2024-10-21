@@ -1,61 +1,48 @@
-import type { IStore } from "~/modules/profile/types/stores.type";
-import type { ISalesPlan } from "~/modules/profile/types/salesPlan.type";
-import { getMarketplacesData } from "~/modules/profile/components/Analysis/Modules/Rating/MarketplacesData";
 import { useProfileStore } from "~/modules/profile/stores/profile";
-import { getAuthToken } from "~/utils/auth";
-import axios from "axios";
+import { getMarketplacesData } from "~/modules/profile/components/Dashboard/Rating/MarketplacesData";
 import { useRouter } from "#app";
 
+
 export async function getStores() {
-	const profileStore = useProfileStore();
-	const token = getAuthToken();
-	const router = useRouter();
-	profileStore.salesPlan = null;
-	try {
-		const res = await axios.get<IStore[]>(`/api/stores`, {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		profileStore.stores = res.data;
-		profileStore.selectedBranch = res.data ? res.data[0]?.id || 0 : 0;
-		if (res.data.length > 0) {
-			getSalesPlan();
-			getMarketplacesData();
-		}
-	} catch (error: any) {
-		console.error("Не удалось получить /stores: ", error);
-		if (error.status === 401) {
-			router.push("/sign-in");
-			router.go(1);
-		}
-	}
+  const { $storesRep } = useNuxtApp();
+  const profileStore = useProfileStore();
+  const router = useRouter();
+  profileStore.salesPlan = null;
+  try {
+    const res = await $storesRep.getStores();
+    profileStore.stores = res;
+    profileStore.selectedBranch = res ? res[0]?.id || 0 : 0;
+    if (res.length > 0) {
+      getSalesPlan();
+      getMarketplacesData();
+    }
+  } catch (error: any) {
+    console.error("Не удалось получить /stores: ", error);
+    if (error.status === 401) {
+      router.push("/sign-in");
+      router.go(1);
+    }
+  }
 }
 
 export async function getSalesPlan() {
-	const profileStore = useProfileStore();
-	const token = getAuthToken();
-	const router = useRouter();
-	profileStore.salesPlan = null;
-	try {
-		const res = await axios.get<ISalesPlan>(`/api/sales-plan`, {
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			params: {
-				store_id: profileStore.selectedBranch,
-				days: profileStore.activeDayFilter,
-			},
-		});
-		profileStore.salesPlan = res.data.data;
-		profileStore.monthAnnotation = res.data.salesPlan;
-	} catch (error: any) {
-		console.error("Не удалось получить /sales-plan: ", error);
-		if (error.status === 401) {
-			router.push("/sign-in");
-			router.go(1);
-		}
-	}
+  const { $salesPlanRep } = useNuxtApp();
+  const profileStore = useProfileStore();
+  const router = useRouter();
+  profileStore.salesPlan = null;
+  try {
+    const params = {
+      store_id: profileStore.selectedBranch,
+      days: profileStore.activeDayFilter,
+    };
+    const res = await $salesPlanRep.getPlan(params);
+    profileStore.salesPlan = res.data;
+    profileStore.monthAnnotation = res.salesPlan;
+  } catch (error: any) {
+    console.error("Не удалось получить /sales-plan: ", error);
+    if (error.status === 401) {
+      router.push("/sign-in");
+      router.go(1);
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import type { IWarehouseBalance } from "~/modules/profile/types/warehouseBalance.type";
+import type { IWarehouseBalance } from "~/modules/profile/types/Warehouse/balance.type";
 
 export const warehouseBalance: IWarehouseBalance = {
 	products: {
@@ -29,7 +29,7 @@ export const warehouseBalance: IWarehouseBalance = {
 		"Казеин": {
 			id: 9,
 		},
-		"Предтренировочный комплекс": {
+		"Пкредтренировочный комплекс": {
 			id: 10,
 		},
 	},

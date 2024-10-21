@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 	import { useWarehouseStore } from "~/modules/profile/stores/warehouse";
 	import type {
-		tradingFloorMarketplace,
-		tradingFloorProductMarketplace,
+		ITradingFloorMarketplace,
+		ITradingFloorProductMarketplace,
 	} from "~/modules/profile/types/tradingFloorBalance.type";
 
 	const warehouseStore = useWarehouseStore();
 
 	const getFilledWidth = (
-		marketplace: tradingFloorProductMarketplace
+		marketplace: ITradingFloorProductMarketplace
 	) => {
 		const weight = marketplace.weight; // Предполагаем, что weight - это текущее значение
 		const minWeight = marketplace.minWeight;
@@ -27,7 +27,7 @@
 		}
 	};
 	const getWeightColor = (
-		marketplace: tradingFloorProductMarketplace
+		marketplace: ITradingFloorProductMarketplace
 	) => {
 		const weight = marketplace.weight;
 		const minWeight = marketplace.minWeight;
@@ -56,7 +56,7 @@
 		</div>
 		<div class="w-full mt-5 flex items-end p-3">
 			<div class="w-[240px] h-max z-[40]">
-				<WarehouseModulesChartDoughnut />
+				<WarehouseChartDoughnut />
 			</div>
 			<div
 				class="flex-grow flex flex-col items-start w-full h-max border border-gray-40-color rounded-lg"

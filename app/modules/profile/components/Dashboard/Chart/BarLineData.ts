@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useProfileStore } from "~/modules/profile/stores/profile";
-import type { ISalesPlanDay } from "~/modules/profile/types/salesPlanDay.type";
 import { getAuthToken } from "~/utils/auth";
+import type { ISalesPlanDay } from "~/modules/profile/types/Dashboard/salesPlanDay.type";
 
 export async function getSalesPlanDay() {
 	const profileStore = useProfileStore();

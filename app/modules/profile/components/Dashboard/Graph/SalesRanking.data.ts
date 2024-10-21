@@ -1,4 +1,4 @@
-import type { ISalesRanking } from "~/modules/profile/types/salesRanking.type";
+import type { ISalesRanking } from "~/modules/profile/types/Dashboard/salesRanking.type";
 
 export const data: ISalesRanking = {
 	success: true,

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-	import { getMarketplacesData } from "~/modules/profile/components/Analysis/Modules/Rating/MarketplacesData";
 	import { useProfileStore } from "~/modules/profile/stores/profile";
 
 	const profileStore = useProfileStore();

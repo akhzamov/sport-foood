@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import { warehouseBalance } from "~/modules/profile/components/Warehouse/Modules/Warehouse/warehouseBalance.data";
+	import { warehouseBalance } from "~/modules/profile/components/Warehouse/Warehouse/warehouseBalance.data";
 	import type { IWarehouseBalanceCitiesProducts } from "~/modules/profile/types/warehouseBalance.type";
 
 	const getFilledWidth = (
