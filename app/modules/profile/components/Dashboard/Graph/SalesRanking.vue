@@ -86,7 +86,7 @@
 			<template v-if="data">
 				<div
 					class="w-full h-full flex flex-col"
-					v-for="item in data.data"
+					v-for="item in data"
 					:key="item.name"
 				>
 					<div

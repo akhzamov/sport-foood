@@ -1,5 +1,4 @@
 import type { ISalesPlan } from "~/modules/profile/types/salesPlan.type";
-import { useProfileStore } from "../stores/profile";
 
 export class SalesPlanRep {
   private async request<T>(
