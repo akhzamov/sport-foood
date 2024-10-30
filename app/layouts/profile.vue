@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <CommonAppHeader />
+  <ProfileAppHeader />
   <HeaderProfileHeader />
   <ReportReportGraphAddSettingModule
     v-if="profileStore.reportGraphAddSettingModal"

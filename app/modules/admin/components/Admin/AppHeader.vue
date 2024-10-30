@@ -1,9 +1,13 @@
 <script lang="ts" setup>
 import { removeAuthToken } from "~/utils/auth";
 
-function logOut() {
+const router = useRouter();
+const logOut = () => {
   removeAuthToken();
-}
+};
+const handleRoutPush = (link: string) => {
+  router.push(link);
+};
 </script>
 
 <template>
@@ -43,7 +47,7 @@ function logOut() {
               </template>
             </UiButton>
             <UiButton
-              text="Админ панель"
+              text="Витрина магазина"
               bg-color="bg-gray-15-color"
               text-color="text-gray-90-color"
               border-color="border-gray-90-color"
@@ -51,9 +55,10 @@ function logOut() {
               :icon="true"
               :border="true"
               class="w-max"
+              @click="handleRoutPush('/profile-dashboard')"
             >
               <template v-slot:icon>
-                <IconSliders02 class="text-gray-90-color" />
+                <IconBranch class="text-gray-90-color" />
               </template>
             </UiButton>
           </div>
