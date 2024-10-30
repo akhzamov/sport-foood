@@ -87,7 +87,6 @@ onMounted(() => {
   comment.value = props.data.comment;
   photos.value = props.data.images;
   tableData.value = props.data.products;
-  tableData.value[adminLogisticsStore.activeOpenEditTableTab];
 });
 </script>
 

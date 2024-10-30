@@ -9,9 +9,7 @@ const props = withDefaults(
     text: string;
   }>(),
   {
-    type: "success",
-    title: "Успешно",
-    text: "Вы успешно авторизовались!",
+    type: "save",
   }
 );
 </script>
@@ -19,7 +17,7 @@ const props = withDefaults(
 <template>
   <div
     class="alert-modal fixed z-[300] top-0 left-0 w-full h-screen flex justify-center items-center bg-gray-40-color select-none"
-    @click="mainStore.alertShow = false"
+    @click="mainStore.confirmModal = false"
   >
     <div
       @click.stop
@@ -27,28 +25,32 @@ const props = withDefaults(
     >
       <IconClose
         class="text-gray-75-color absolute top-[10px] right-[10px] cursor-pointer"
-        @click="mainStore.alertShow = false"
+        @click="mainStore.confirmModal = false"
       />
       <div
         class="w-12 h-12 rounded-[50%] bg-warning-500-20 flex items-center justify-center mb-4"
-        v-if="type == 'warning'"
+        v-if="type == 'cancel'"
       >
-        <IconInfo class="text-warning-500 w-[25px] h-[25px]" />
+        <IconClose class="text-warning-500 w-[25px] h-[25px]" />
       </div>
       <div
         class="w-12 h-12 rounded-[50%] bg-success-500-20 flex items-center justify-center mb-4"
-        v-if="type == 'success'"
+        v-if="type == 'save'"
       >
-        <IconCheckCircleBroken class="text-success-500 w-[25px] h-[25px]" />
+        <IconPlus class="text-success-500 w-[25px] h-[25px]" />
       </div>
       <div
         class="w-12 h-12 rounded-[50%] bg-error-500-20 flex items-center justify-center mb-4"
-        v-if="type == 'error'"
+        v-if="type == 'delete'"
       >
-        <IconClose class="text-error-500 w-[25px] h-[25px]" />
+        <IconTrash03 class="text-error-500 w-[25px] h-[25px]" />
       </div>
-      <h4 class="text-24-bold text-white mb-1">{{ props.title }}</h4>
-      <p class="text-14-med text-gray-75-color">{{ props.text }}</p>
+      <h4 class="text-24-bold text-white mb-1 text-center">
+        {{ props.title }}
+      </h4>
+      <p class="text-14-med text-gray-75-color text-center mt-3">
+        {{ props.text }}
+      </p>
     </div>
   </div>
 </template>

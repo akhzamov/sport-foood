@@ -12,7 +12,7 @@ definePageMeta({
 
 <template>
   <div class="w-full h-full overflow-y-hidden">
-    <LogisticsHead />
+    <!-- <LogisticsHead /> -->
     <LogisticsTable />
   </div>
 </template>

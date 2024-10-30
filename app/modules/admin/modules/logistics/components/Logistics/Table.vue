@@ -1,9 +1,17 @@
 <script lang="ts" setup>
+import { useMainStore } from "~/stores/main";
 import { useAdminLogisticsStore } from "../../stores/adminLogistics";
 import { logisticData } from "./logisticsTable.data";
 
 const adminLogisticsStore = useAdminLogisticsStore();
+const mainStore = useMainStore();
+const route = useRoute();
+const data = reactive(logisticData);
 const allChecked = ref(false);
+const itemIds = reactive<string[]>([]);
+const suppliers = reactive<string[]>([]);
+const deleteItemTitle = ref("");
+const deleteItemText = ref("");
 const dateFormatter = (date: string) => {
   let nDate = new Date(date);
   let day = nDate.getDate() > 9 ? nDate.getDate() : `0${nDate.getDate()}`;
@@ -20,9 +28,90 @@ const timeFormatter = (date: string) => {
 
   return `${hour}:${minute}`;
 };
+const handleAllChecked = () => {
+  if (allChecked.value) {
+    data.forEach((item) => {
+      item.checked = true;
+    });
+  } else {
+    data.forEach((item) => {
+      item.checked = false;
+    });
+  }
+};
+const deleteItem = () => {
+  let idsText = itemIds.length > 1 ? "Удалить закупки: " : "Удалить закупку";
+  let splText = suppliers.length > 1 ? "Поставщики: " : "Поставщик";
+  deleteItemTitle.value = `${idsText} ${itemIds
+    .map((id) => `#${id}`)
+    .join(", ")}`;
+    deleteItemText.value = `${splText} ${suppliers
+    .map((supplier) => `${supplier}`)
+    .join(", ")}`;
+  console.log(deleteItemText.value);
+  mainStore.confirmModal = true;
+};
+
+watch(
+  () => data,
+  () => {
+    let length = 0;
+    itemIds.length = 0;
+    suppliers.length = 0;
+    data.forEach((item) => {
+      if (item.checked) {
+        length += 1;
+        itemIds.push(item.id);
+        suppliers.push(item.supplier);
+      } else if (item.checked && length > 0) {
+        length -= 1;
+        itemIds.forEach((id, index) => {
+          if (id == item.id) {
+            itemIds.splice(index, 1);
+          }
+        });
+        suppliers.forEach((supplier, index) => {
+          if (supplier == item.supplier) {
+            suppliers.splice(index, 1);
+          }
+        });
+      }
+    });
+    if (length == data.length) {
+      allChecked.value = true;
+    } else {
+      allChecked.value = false;
+    }
+  },
+  { deep: true }
+);
 </script>
 
 <template>
+  <Transition name="alert">
+    <UiConfirmModal
+      v-if="mainStore.confirmModal"
+      type="delete"
+      :title="deleteItemTitle"
+      :text="deleteItemText"
+    />
+  </Transition>
+  <div
+    class="w-full h-[40px] bg-dark-gunmental-color px-2 p-2 overflow-x-hidden"
+  >
+    <div class="flex-grow h-full flex items-center justify-start">
+      <div
+        class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15-color"
+      >
+        <p class="text-16-400 text-gray-40-color">{{ route.name }}</p>
+      </div>
+      <IconPlus class="text-gray-40-color hover:text-primary-color ml-4" />
+      <IconTrash03
+        class="text-gray-40-color hover:text-error-500 ml-4"
+        @click="deleteItem()"
+      />
+    </div>
+  </div>
   <div class="w-full h-full">
     <table class="w-full">
       <thead class="w-full">
@@ -31,7 +120,7 @@ const timeFormatter = (date: string) => {
         >
           <th class="w-[22px] text-end">№</th>
           <th class="w-[36px] flex justify-center">
-            <UiCheckbox v-model="allChecked" />
+            <UiCheckbox v-model="allChecked" @click="handleAllChecked()" />
           </th>
           <th class="w-[72px] text-center">ID заказа</th>
           <th class="w-[180px] text-left pl-3">Поставщик</th>
@@ -57,7 +146,7 @@ const timeFormatter = (date: string) => {
         </tr>
       </thead>
       <tbody>
-        <template v-for="(item, index) in logisticData">
+        <template v-for="(item, index) in data">
           <tr
             @click="
               adminLogisticsStore.activeOpenTabs.push({
@@ -66,9 +155,7 @@ const timeFormatter = (date: string) => {
               })
             "
             :class="[
-              index - 1 !== logisticData.length
-                ? 'border-b border-gray-40-color'
-                : '',
+              index - 1 !== data.length ? 'border-b border-gray-40-color' : '',
             ]"
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15-color"
           >
@@ -77,7 +164,7 @@ const timeFormatter = (date: string) => {
                 {{ index + 1 }}
               </span>
             </th>
-            <th class="w-[36px] flex items-center justify-center">
+            <th class="w-[36px] flex items-center justify-center" @click.stop>
               <UiCheckbox v-model="item.checked" />
             </th>
             <th class="w-[72px] flex justify-center">

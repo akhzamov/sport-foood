@@ -6,5 +6,6 @@ export interface IMainStore {
     marketplaces: IMarketplace[] | null,
     marketplaceById: IMarketplace | null,
     errorMessage: string,
-    alertShow: boolean
+    alertShow: boolean,
+    confirmModal: boolean,
 }

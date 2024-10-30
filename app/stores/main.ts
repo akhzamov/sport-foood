@@ -7,7 +7,8 @@ export const useMainStore = defineStore('main', {
         marketplaces: null,
         marketplaceById: null,
         errorMessage: '',
-        alertShow: false
+        alertShow: false,
+        confirmModal: false,
     }),
     actions: {
     },
