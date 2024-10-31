@@ -220,7 +220,7 @@ onMounted(() => {
       </div>
       <!-- Table -->
       <div
-        class="w-full h-max flex flex-col justify-start items-center bg-gray-15-color p-2"
+        class="w-full h-max flex flex-col justify-start items-center bg-gray-15-color p-2 rounded-b-md"
       >
         <!-- Table Tabs -->
         <div class="w-full h-[30px] flex items-center justify-start gap-2">
@@ -264,7 +264,7 @@ onMounted(() => {
             </div>
           </div>
           <!-- Table data -->
-          <table class="w-full h-max bg-gray-15-color">
+          <table class="w-full h-max bg-gray-15-color rounded-b-lg">
             <thead class="w-full h-max">
               <tr
                 class="w-full h-8 flex bg-gray-40-color border-b border-gray-15-color"
@@ -304,7 +304,7 @@ onMounted(() => {
                 ]"
                 :key="index"
               >
-                <tr class="w-full h-8 flex border-b border-gray-15-color">
+                <tr class="w-full h-8 flex border-b border-gray-15-color rounded-b-lg">
                   <th class="w-9 h-full">
                     <div class="w-full h-full flex items-center justify-center">
                       <UiCheckbox v-model:model-value="item.checked" />
