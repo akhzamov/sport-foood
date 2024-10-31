@@ -10,4 +10,8 @@ export interface IAdminLogisticsStore {
   activeOpenTab: string | undefined;
   activeOpenEditTableTab: string;
   logisticsData: ILogistics[] | null;
+  addCityModal: boolean;
+  showSelectMenuAddCityModal: boolean;
+  selectedCityAddCityModal: null | number;
+  citiesAddCityModal: any;
 }

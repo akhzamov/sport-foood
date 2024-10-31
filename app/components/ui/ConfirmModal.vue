@@ -12,12 +12,18 @@ const props = withDefaults(
     type: "save",
   }
 );
+
+const closeConfirmModal = () => {
+  mainStore.confirmModal = false;
+  mainStore.confirmModalText = "";
+  mainStore.confirmModalTitle = "";
+};
 </script>
 
 <template>
   <div
     class="alert-modal fixed z-[300] top-0 left-0 w-full h-screen flex justify-center items-center bg-gray-40-color select-none"
-    @click="mainStore.confirmModal = false"
+    @click="closeConfirmModal()"
   >
     <div
       @click.stop
@@ -25,7 +31,7 @@ const props = withDefaults(
     >
       <IconClose
         class="text-gray-75-color absolute top-[10px] right-[10px] cursor-pointer"
-        @click="mainStore.confirmModal = false"
+        @click="closeConfirmModal()"
       />
       <div
         class="w-12 h-12 rounded-[50%] bg-warning-500-20 flex items-center justify-center mb-4"
@@ -51,6 +57,29 @@ const props = withDefaults(
       <p class="text-14-med text-gray-75-color text-center mt-3">
         {{ props.text }}
       </p>
+      <div class="w-full flex items-center justify-end gap-2 mt-3">
+        <UiButton
+          text="Удалить"
+          bg-color="bg-error-500"
+          text-color="text-gray-90-color"
+          hover="hover:bg-error-700"
+          :border="false"
+          :icon="false"
+          class="w-[95px]"
+          @click="closeConfirmModal()"
+        />
+        <UiButton
+          text="Отмена"
+          bg-color="bg-gray-15-color"
+          text-color="text-gray-90-color"
+          border-color="border-gray-90-color"
+          hover="hover:bg-gray-25-color"
+          :border="true"
+          :icon="false"
+          class="w-[95px]"
+          @click="closeConfirmModal()"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -27,9 +27,7 @@ onMounted(() => {
   <div
     class="max-w-[740px] w-full h-[100%] flex flex-col border-l border-gray-15-color p-2 overflow-y-auto pb-[80px]"
   >
-    <div
-      class="w-max h-max flex items-center justify-start gap-1"
-    >
+    <div class="w-max h-max flex items-center justify-start gap-1">
       <template v-for="(tab, index) in adminLogisticsStore.activeOpenTabs">
         <div
           v-if="adminLogisticsStore.activeOpenTabs.length > 0"
@@ -63,6 +61,7 @@ onMounted(() => {
         "
       />
     </template>
+    <LogisticsAdd v-if="adminLogisticsStore.activeOpenTab == 'Новый'" />
   </div>
 </template>
 

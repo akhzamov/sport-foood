@@ -14,12 +14,18 @@ const props = withDefaults(
     text: "Вы успешно авторизовались!",
   }
 );
+
+const closeAlertShow = () => {
+  mainStore.alertShow = false;
+  mainStore.alertShowText = "";
+  mainStore.alertShowTitle = "";
+};
 </script>
 
 <template>
   <div
     class="alert-modal fixed z-[300] top-0 left-0 w-full h-screen flex justify-center items-center bg-gray-40-color select-none"
-    @click="mainStore.alertShow = false"
+    @click="closeAlertShow()"
   >
     <div
       @click.stop
@@ -27,7 +33,7 @@ const props = withDefaults(
     >
       <IconClose
         class="text-gray-75-color absolute top-[10px] right-[10px] cursor-pointer"
-        @click="mainStore.alertShow = false"
+        @click="closeAlertShow()"
       />
       <div
         class="w-12 h-12 rounded-[50%] bg-warning-500-20 flex items-center justify-center mb-4"

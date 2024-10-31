@@ -1,3 +1,8 @@
+export interface ILogisticsCity {
+  id: number;
+  name: string;
+}
+
 interface ILogisticsProductCityProduct {
   checked: boolean;
   name: string;

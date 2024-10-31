@@ -40,16 +40,21 @@ const handleAllChecked = () => {
   }
 };
 const deleteItem = () => {
-  let idsText = itemIds.length > 1 ? "Удалить закупки: " : "Удалить закупку";
-  let splText = suppliers.length > 1 ? "Поставщики: " : "Поставщик";
-  deleteItemTitle.value = `${idsText} ${itemIds
-    .map((id) => `#${id}`)
-    .join(", ")}`;
-    deleteItemText.value = `${splText} ${suppliers
-    .map((supplier) => `${supplier}`)
-    .join(", ")}`;
-  console.log(deleteItemText.value);
-  mainStore.confirmModal = true;
+  if (itemIds.length <= 0) {
+    mainStore.alertShowTitle = "Нельзя удалить!";
+    mainStore.alertShowText = "Выберите один из закупок что бы удалить!";
+    mainStore.alertShow = true;
+  } else {
+    let idsText = itemIds.length > 1 ? "Удалить закупки: " : "Удалить закупку";
+    let splText = suppliers.length > 1 ? "Поставщики: " : "Поставщик";
+    mainStore.confirmModalTitle = `${idsText} ${itemIds
+      .map((id) => `#${id}`)
+      .join(", ")}`;
+    mainStore.confirmModalText = `${splText} ${suppliers
+      .map((supplier) => `${supplier}`)
+      .join(", ")}`;
+    mainStore.confirmModal = true;
+  }
 };
 
 watch(
@@ -88,14 +93,6 @@ watch(
 </script>
 
 <template>
-  <Transition name="alert">
-    <UiConfirmModal
-      v-if="mainStore.confirmModal"
-      type="delete"
-      :title="deleteItemTitle"
-      :text="deleteItemText"
-    />
-  </Transition>
   <div
     class="w-full h-[40px] bg-dark-gunmental-color px-2 p-2 overflow-x-hidden"
   >
@@ -105,7 +102,15 @@ watch(
       >
         <p class="text-16-400 text-gray-40-color">{{ route.name }}</p>
       </div>
-      <IconPlus class="text-gray-40-color hover:text-primary-color ml-4" />
+      <IconPlus
+        class="text-gray-40-color hover:text-primary-color ml-4"
+        @click="
+          adminLogisticsStore.activeOpenTabs.push({
+            id: 'Новый',
+            name: 'ID заказа',
+          })
+        "
+      />
       <IconTrash03
         class="text-gray-40-color hover:text-error-500 ml-4"
         @click="deleteItem()"

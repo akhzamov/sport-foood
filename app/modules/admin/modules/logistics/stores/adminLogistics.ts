@@ -8,6 +8,14 @@ export const useAdminLogisticsStore = defineStore("adminLogistics", {
     activeOpenTab: "",
     activeOpenEditTableTab: "",
     logisticsData: logisticData,
+    addCityModal: false,
+    showSelectMenuAddCityModal: false,
+    selectedCityAddCityModal: null,
+    citiesAddCityModal: [
+      { id: 1, name: "Казань, Советский" },
+      { id: 2, name: "Мирны, Яблоко" },
+      { id: 3, name: "Мытищи, Сколкого" },
+    ],
   }),
   actions: {},
 });
