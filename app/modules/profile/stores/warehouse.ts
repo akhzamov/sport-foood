@@ -4,9 +4,16 @@ import { salesAgentsData } from "~/modules/profile/components/Warehouse/SalesAge
 import type { IWarehouseStore } from "~/modules/profile/types/Warehouse/store.type";
 
 export const useWarehouseStore = defineStore("warehouse", {
-	state: (): IWarehouseStore => ({
-		tradingFloorData: tradingFloorData,
-		salesAgentsData: salesAgentsData,
-	}),
-	actions: {},
+  state: (): IWarehouseStore => ({
+    isLoading: false,
+    tradingFloorData: tradingFloorData,
+    salesAgentsData: salesAgentsData,
+    areas: null,
+    selectedCities: [],
+    storageTypes: null,
+    activeStorageType: "RETAIL",
+    storagesLeft: null,
+    marketplaceLeft: null,
+  }),
+  actions: {},
 });

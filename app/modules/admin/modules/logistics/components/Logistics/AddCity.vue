@@ -101,7 +101,7 @@ const updateShowSelectMenu = (newValue: boolean) => {
           hover="hover:opacity-90"
           :border="false"
           :icon="false"
-          class="w-[95px]"
+          class="max-w-[100px]"
           @click="updateSelectedCity()"
         />
         <UiButton
@@ -112,7 +112,7 @@ const updateShowSelectMenu = (newValue: boolean) => {
           hover="hover:bg-gray-25-color"
           :border="true"
           :icon="false"
-          class="w-[95px]"
+          class="max-w-[90px]"
           @click="closeAddCityModal()"
         />
       </div>

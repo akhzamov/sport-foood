@@ -67,8 +67,8 @@ watch(
 </script>
 
 <template>
-  <Transition name="alert">
-    <UiAddCity
+  <TransitionGroup name="alert">
+    <LogisticsAddCity
       v-if="adminLogisticsStore.addCityModal"
       :show-select-menu="adminLogisticsStore.showSelectMenuAddCityModal"
       :selected-city="adminLogisticsStore.selectedCityAddCityModal"
@@ -78,7 +78,8 @@ watch(
         adminLogisticsStore.showSelectMenuAddCityModal = $event
       "
     />
-  </Transition>
+    <!-- <LogisticsAddProduct /> -->
+  </TransitionGroup>
   <div
     class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
   >
@@ -214,9 +215,7 @@ watch(
         <div class="w-full h-[30px] flex items-center justify-start gap-2">
           <template v-for="(city, index) in tableCity">
             <div
-              @click="
-                adminLogisticsStore.activeOpenEditTableTab = city.name
-              "
+              @click="adminLogisticsStore.activeOpenEditTableTab = city.name"
               :class="[
                 adminLogisticsStore.activeOpenEditTableTab == city.name
                   ? 'bg-gray-25-color'
@@ -224,7 +223,9 @@ watch(
               ]"
               class="w-max h-full flex items-center justify-center cursor-pointer px-3 rounded-tl-lg rounded-tr-lg"
             >
-              <p class="text-14-reg text-gray-90-color">{{ city.name.split(",")[0] }}</p>
+              <p class="text-14-reg text-gray-90-color">
+                {{ city.name.split(",")[0] }}
+              </p>
             </div>
           </template>
           <div
