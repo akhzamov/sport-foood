@@ -25,7 +25,7 @@ type TMarketplaceLeftProduct = {
   marketplaces: Record<string, TMarketplaceLEftProductMarketplace>;
 };
 
-type TMarketplaceLeftRoundMarketplace = {
+export type TMarketplaceLeftRoundMarketplace = {
   marketplace_id: number;
   marketplace_name: string;
   left_weight: number;
