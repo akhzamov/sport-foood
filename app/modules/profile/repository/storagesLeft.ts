@@ -16,16 +16,21 @@ export class StoragesLeftRep {
     params?: Record<string, any>,
     headers?: Record<string, string>
   ): Promise<IStoragesLeft> {
+    const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IStoragesLeft>("GET", "/api/storages-left", {
-      params: {
-        ...params,
-      },
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json",
-        ...headers,
-      },
-    });
+    return await this.request<IStoragesLeft>(
+      "GET",
+      `${config.public.apiBaseUrl}/api/storages-left`,
+      {
+        params: {
+          ...params,
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+          ...headers,
+        },
+      }
+    );
   }
 }

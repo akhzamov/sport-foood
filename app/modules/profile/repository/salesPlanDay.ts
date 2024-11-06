@@ -16,10 +16,11 @@ export class SalesPlanDayRep {
     params?: Record<string, any>,
     headers?: Record<string, string>
   ): Promise<ISalesPlanDay> {
+    const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     return await this.request<ISalesPlanDay>(
       "GET",
-      "/api/sales-plan/day/detail",
+      `${config.public.apiBaseUrl}/api/sales-plan/day/detail`,
       {
         params: {
           ...params,

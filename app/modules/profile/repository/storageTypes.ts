@@ -16,16 +16,21 @@ export class StorageTypesRep {
     params?: Record<string, any>,
     headers?: Record<string, string>
   ): Promise<IStorageTypes> {
+    const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IStorageTypes>("GET", "/api/storage-types", {
-      params: {
-        ...params,
-      },
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json",
-        ...headers,
-      },
-    });
+    return await this.request<IStorageTypes>(
+      "GET",
+      `${config.public.apiBaseUrl}/api/storage-types`,
+      {
+        params: {
+          ...params,
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+          ...headers,
+        },
+      }
+    );
   }
 }

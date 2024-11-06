@@ -16,16 +16,21 @@ export class SalesPlanRep {
     params?: Record<string, any>,
     headers?: Record<string, string>
   ): Promise<ISalesPlan> {
+    const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<ISalesPlan>("GET", "/api/sales-plan", {
-      params: {
-        ...params,
-      },
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json",
-        ...headers,
-      },
-    });
+    return await this.request<ISalesPlan>(
+      "GET",
+      `${config.public.apiBaseUrl}/api/sales-plan`,
+      {
+        params: {
+          ...params,
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+          ...headers,
+        },
+      }
+    );
   }
 }

@@ -17,8 +17,9 @@ export class AreasRep {
     params?: Record<string, any>,
     headers?: Record<string, string>
   ): Promise<IAreas> {
+    const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IAreas>("GET", "/api/areas", {
+    return await this.request<IAreas>("GET", `${config.public.apiBaseUrl}/api/areas`, {
       params: {
         ...params,
       },

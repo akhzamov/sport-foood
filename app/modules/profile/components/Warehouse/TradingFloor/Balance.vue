@@ -10,6 +10,10 @@ import type { TMarketplaceLEftProductMarketplace } from "~/modules/profile/types
 const warehouseStore = useWarehouseStore();
 const activeMarketPlaceItemId = ref<number | null>(null);
 const activeProductItemId = ref<number | null>(null);
+const activeCountryItemId = ref<number | null>(null);
+const cityRef = ref<HTMLElement[]>([]);
+const tableRef = ref<HTMLElement[]>([]);
+const cityModalRightDistance = ref<number | null>(null);
 
 const getFilledWidth = (marketplace: TMarketplaceLEftProductMarketplace) => {
   const weight = marketplace.left_weight; // Предполагаем, что weight - это текущее значение
@@ -41,18 +45,45 @@ const getWeightColor = (marketplace: TMarketplaceLEftProductMarketplace) => {
     return "bg-primary-color"; // Желтый цвет
   }
 };
+
+const activeModal = (
+  marketplaceId: number | null,
+  productId: number | null,
+  countryId: number | null
+) => {
+  activeMarketPlaceItemId.value = marketplaceId;
+  activeProductItemId.value = productId;
+  activeCountryItemId.value = countryId;
+};
+
+const checkPosition = async () => {
+  await nextTick();
+  if (cityRef.value && tableRef.value) {
+    cityRef.value.forEach((modal, index) => {
+      const modalRect = modal?.getBoundingClientRect();
+      const tableRect = tableRef.value[0]?.getBoundingClientRect();
+
+      if (tableRect && modalRect) {
+        const tableWidth = tableRect.right;
+        const tableHeight = tableRect.height;
+        const distanceToRightTable = tableWidth - modalRect.right;
+        cityModalRightDistance.value = distanceToRightTable;
+      }
+    });
+  }
+};
 </script>
 
 <template>
   <div
-    class="flex flex-col items-start w-full h-full border border-gray-40-color bg-gray-15-color rounded-lg mt-7"
+    class="flex flex-col items-start w-full h-full border border-gray-40-color bg-gray-15-color rounded-lg mt-7 overflow-visible"
   >
     <div class="w-full h-[38px] flex items-center justify-between px-3">
       <p class="text-14-semi text-white">Остатки по торговым площадкам</p>
     </div>
     <template v-if="warehouseStore.marketplaceLeft != null">
       <div
-        class="w-full mt-5 flex items-end p-3"
+        class="w-full mt-5 flex items-end p-3 overflow-visible"
         v-for="(country, cKey) in Object.values(warehouseStore.marketplaceLeft)"
         :key="country.id"
       >
@@ -64,16 +95,16 @@ const getWeightColor = (marketplace: TMarketplaceLEftProductMarketplace) => {
           />
         </div>
         <div
-          class="flex-grow flex flex-col items-start w-full h-max border border-gray-40-color rounded-lg"
+          class="flex-grow flex flex-col items-start w-full h-max border border-gray-40-color rounded-lg overflow-visible"
         >
           <div
             class="w-full h-[38px] bg-gray-15-color flex items-center justify-between px-3 rounded-t-lg"
           >
             <p class="text-14-semi text-white">{{ country.name }}</p>
           </div>
-          <div class="w-full">
-            <div class="w-full z-[40] overflow-x-auto">
-              <table class="w-full text-sm table-fixed">
+          <div class="w-full overflow-auto">
+            <div class="w-full z-[40]">
+              <table ref="tableRef" class="w-full text-sm table-fixed">
                 <thead class="flex">
                   <tr class="w-full flex">
                     <th
@@ -138,12 +169,19 @@ const getWeightColor = (marketplace: TMarketplaceLEftProductMarketplace) => {
                           product.marketplaces
                         )"
                         @mouseenter="
-                          activeMarketPlaceItemId = marketplace.marketplace_id;
-                          activeProductItemId = product.product_id;
+                          {
+                            activeMarketPlaceItemId =
+                              marketplace.marketplace_id;
+                            activeProductItemId = product.product_id;
+                            activeCountryItemId = country.id;
+                            checkPosition();
+                          }
                         "
                         @mouseleave="
-                          activeMarketPlaceItemId = null;
-                          activeProductItemId = null;
+                          {
+                            activeModal(null, null, null);
+                            cityModalRightDistance = null;
+                          }
                         "
                         scope="row"
                         class="min-w-[120px] h-full flex items-center justify-center border-r border-gray-15-color"
@@ -152,7 +190,8 @@ const getWeightColor = (marketplace: TMarketplaceLEftProductMarketplace) => {
                           :class="[
                             activeMarketPlaceItemId ==
                               marketplace.marketplace_id &&
-                            activeProductItemId == product.product_id
+                            activeProductItemId == product.product_id &&
+                            activeCountryItemId == country.id
                               ? 'border border-white'
                               : '',
                           ]"
@@ -181,12 +220,20 @@ const getWeightColor = (marketplace: TMarketplaceLEftProductMarketplace) => {
                             }"
                           ></div>
                           <div
+                            ref="cityRef"
                             v-if="
                               activeMarketPlaceItemId ==
                                 marketplace.marketplace_id &&
-                              activeProductItemId == product.product_id
+                              activeProductItemId == product.product_id &&
+                              activeCountryItemId == country.id
                             "
-                            class="absolute top-[-50%] right-[-100%] z-[30] translate-x-[35%] w-[200px] h-max flex flex-col gap-2 p-2 bg-dark-gunmental-color rounded-lg"
+                            :class="[
+                              cityModalRightDistance &&
+                              cityModalRightDistance <= 12
+                                ? 'left-[-100%] translate-x-[-45%]'
+                                : 'right-[-100%] translate-x-[45%]',
+                            ]"
+                            class="absolute top-[-50%] z-[30] w-[200px] h-max flex flex-col gap-2 p-2 bg-dark-gunmental-color rounded-lg"
                           >
                             <div
                               v-for="city in marketplace.cities"

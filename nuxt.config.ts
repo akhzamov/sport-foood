@@ -17,11 +17,12 @@ export default defineNuxtConfig({
     },
   },
 
-  // runtimeConfig: {
-  //   public: {
-  //     apiBaseUrl: process.env.API_BASE_URL,
-  //   },
-  // },
+  runtimeConfig: {
+    public: {
+      // apiBaseUrl: "https://crm-api.autosale.pw",
+      apiBaseUrl: "",
+    },
+  },
 
   extends: [
     "./app/modules/profile",
@@ -67,6 +68,15 @@ export default defineNuxtConfig({
 
   routeRules: {
     "/": { prerender: true, redirect: "/profile-dashboard" },
+    // "/about": { prerender: true },
+    // "/admin-new-tab": { prerender: true },
+    // "/admin-procurement-management": { prerender: true },
+    // "/sign-in": { prerender: true },
+    // "/profile-dashboard": { prerender: true },
+    // "/profile-report": { prerender: true },
+    // "/profile-warehouse": { prerender: true },
+    // "/settings": { prerender: true },
+    // "/users": { prerender: true },
     "/:pathMatch(.*)*": { prerender: true },
   },
 
@@ -74,5 +84,8 @@ export default defineNuxtConfig({
     prerender: {
       routes: ["/index.html", "/404.html"],
     },
+    // preset: "static",
   },
+
+  // ssr: false,
 });

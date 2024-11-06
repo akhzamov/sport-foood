@@ -6,6 +6,7 @@
 	import axios from "axios";
 	import { baseUrl } from "~/api";
 
+	const config = useRuntimeConfig();
 	const schema = yup.object({
 		login: yup
 			.string()
@@ -38,7 +39,7 @@
 		try {
 			if (!loginError.value && !passwordError.value) {
 				const res = await axios.post(
-					`/api/login`,
+					`${config.public.apiBaseUrl}/api/login`,
 					{
 						username: login.value,
 						password: password.value,

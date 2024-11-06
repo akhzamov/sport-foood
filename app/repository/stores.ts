@@ -16,8 +16,9 @@ export class StoresRep {
     params?: Record<string, any>,
     headers?: Record<string, string>
   ): Promise<IStore[]> {
+    const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IStore[]>("GET", "/api/stores", {
+    return await this.request<IStore[]>("GET", `${config.public.apiBaseUrl}/api/stores`, {
       params: {
         ...params,
       },

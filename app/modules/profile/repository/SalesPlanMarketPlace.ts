@@ -16,10 +16,11 @@ export class SalesPlanMarketplaceRep {
     params?: Record<string, any>,
     headers?: Record<string, string>
   ): Promise<IMarketplaceData> {
+    const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     return await this.request<IMarketplaceData>(
       "GET",
-      "/api/sales-plan/marketplace",
+      `${config.public.apiBaseUrl}/api/sales-plan/marketplace`,
       {
         params: {
           ...params,

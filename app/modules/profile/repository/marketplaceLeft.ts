@@ -16,10 +16,11 @@ export class MarketplaceLeftRep {
     params?: Record<string, any>,
     headers?: Record<string, string>
   ): Promise<IMarketplaceLeft> {
+    const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     return await this.request<IMarketplaceLeft>(
       "GET",
-      "/api/marketplace-left",
+      `${config.public.apiBaseUrl}/api/marketplace-left`,
       {
         params: {
           ...params,
