@@ -1,10 +1,5 @@
 <script lang="ts" setup>
 import { useWarehouseStore } from "~/modules/profile/stores/warehouse";
-import type {
-  ITradingFloorMarketplace,
-  ITradingFloorProductMarketplace,
-} from "~/modules/profile/types/tradingFloorBalance.type";
-
 import type { TMarketplaceLEftProductMarketplace } from "~/modules/profile/types/Warehouse/marketplaceLeft.type";
 
 const warehouseStore = useWarehouseStore();

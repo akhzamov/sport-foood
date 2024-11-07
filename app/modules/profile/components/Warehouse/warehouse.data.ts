@@ -36,6 +36,7 @@ export async function getAreas() {
     console.error("Не удалось получить /api/areas: ", error);
   }
 }
+
 export async function getStorageTypes() {
   const { $storageTypesRep } = useNuxtApp();
   const profileStore = useProfileStore();

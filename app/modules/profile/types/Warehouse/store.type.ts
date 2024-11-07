@@ -9,15 +9,15 @@ import type {
   IMarketplaceLeft,
   TMarketplaceLeftArea,
 } from "~/modules/profile/types/Warehouse/marketplaceLeft.type";
+import type { TSalesAgentLeftCity } from "./salesAgentLeft.type";
 
 export interface IWarehouseStore {
   isLoading: boolean;
-  tradingFloorData: ITradingFloor | null;
-  salesAgentsData: Record<string, ISalesAgents> | null;
   areas: Record<string, IAreasArea> | null;
   selectedCities: number[];
   storageTypes: Record<string, string> | null;
   activeStorageType: string;
   storagesLeft: Record<string, TStoragesLeftCity> | null;
   marketplaceLeft: Record<string, TMarketplaceLeftArea> | null;
+  salesAgentLeft: Record<string, TSalesAgentLeftCity> | null;
 }

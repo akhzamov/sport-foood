@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { warehouseBalance } from "~/modules/profile/components/Warehouse/Warehouse/warehouseBalance.data";
 import { useWarehouseStore } from "~/modules/profile/stores/warehouse";
 import type { TStoragesLeftProduct } from "~/modules/profile/types/Warehouse/storagesLeft.type";
 import { getStoragesLeft } from "~/modules/profile/components/Warehouse/Warehouse/warehouseBalance.data";
@@ -156,7 +155,7 @@ watch(
                   { 'bg-gray-15-color': index % 2 == 1 },
                   {
                     'rounded-b-lg':
-                      index === Object.keys(warehouseBalance.cities).length - 1,
+                      index === Object.keys(warehouseStore.storagesLeft).length - 1,
                   },
                 ]"
               >

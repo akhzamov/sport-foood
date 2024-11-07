@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useWarehouseStore } from "~/modules/profile/stores/warehouse";
 import { getMarketplaceLeft } from "../TradingFloor/tradingFloorBalance.data";
+import { getSalesAgentLeft } from "../SalesAgents/salesAgentsBalance.data";
 
 const warehouseStore = useWarehouseStore();
 const allChecked = ref(false);
@@ -89,7 +90,7 @@ watchEffect(() => {
 
 <template>
   <div
-    class="w-full min-w-[260px] h-[100%] bg-gray-15-color border-r border-gray-15-color rounded-bl-lg"
+    class="w-full min-w-[260px] max-w-[260px] h-[100%] bg-gray-15-color border-r border-gray-15-color rounded-bl-lg"
   >
     <div
       class="w-full h-[36px] flex items-center justify-between text-white border-b border-gray-15-color px-2 gap-2"
@@ -99,7 +100,7 @@ watchEffect(() => {
         <p class="text-12-semi">Фильтры</p>
       </div>
       <div
-        @click="getMarketplaceLeft()"
+        @click="getMarketplaceLeft(); getSalesAgentLeft()"
         class="w-max h-full flex items-center justify-start gap-1 cursor-pointer text-primary-color"
       >
         <p class="text-12-semi">Применить</p>

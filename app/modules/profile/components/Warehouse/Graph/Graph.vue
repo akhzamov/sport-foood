@@ -10,7 +10,7 @@
 				class="w-full h-full flex items-start justify-between bg-dark-charcoal-color rounded-b-lg"
 			>
 				<WarehouseGraphAside />
-				<div class="flex-grow h-full flex flex-col p-3">
+				<div class="flex-grow w-full h-max flex flex-col p-3">
 					<WarehouseWarehouseBalance />
 					<WarehouseTradingFloorBalance />
 					<WarehouseSalesAgentsBalance />

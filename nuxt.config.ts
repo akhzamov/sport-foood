@@ -20,6 +20,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // apiBaseUrl: "https://crm-api.autosale.pw",
+      // apiBaseUrl: "https://172.31.10.4",
       apiBaseUrl: "",
     },
   },
