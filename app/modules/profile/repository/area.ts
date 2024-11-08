@@ -26,6 +26,8 @@ export class AreasRep {
       headers: {
         Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Origin": window.location.origin,
         ...headers,
       },
     });

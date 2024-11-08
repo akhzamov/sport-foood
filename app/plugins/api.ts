@@ -9,6 +9,7 @@ import { StorageTypesRep } from "~/modules/profile/repository/storageTypes";
 import { StoragesLeftRep } from "~/modules/profile/repository/storagesLeft";
 import { MarketplaceLeftRep } from "~/modules/profile/repository/marketplaceLeft";
 import { SalesAgentLeftRep } from "~/modules/profile/repository/salesAgentLeft";
+import { LoginRep } from "~/modules/auth/repository/login";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const salesPlanRep = new SalesPlanRep();
@@ -20,6 +21,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const storagesLeftRep = new StoragesLeftRep();
   const marketplaceLeftRep = new MarketplaceLeftRep();
   const salesAgentLeftRep = new SalesAgentLeftRep();
+  const loginRep = new LoginRep();
 
   nuxtApp.provide("salesPlanRep", salesPlanRep);
   nuxtApp.provide("storesRep", storesRep);
@@ -30,4 +32,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.provide("storagesLeftRep", storagesLeftRep);
   nuxtApp.provide("marketplaceLeftRep", marketplaceLeftRep);
   nuxtApp.provide("salesAgentLeftRep", salesAgentLeftRep);
+  nuxtApp.provide("loginRep", loginRep);
 });

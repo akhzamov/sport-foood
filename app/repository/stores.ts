@@ -1,4 +1,4 @@
-import type { IStore } from "~/modules/profile/types/stores.type";
+import type { IStore } from "~/modules/profile/types/Dashboard/stores.type";
 
 export class StoresRep {
   private async request<T>(
@@ -18,15 +18,21 @@ export class StoresRep {
   ): Promise<IStore[]> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IStore[]>("GET", `${config.public.apiBaseUrl}/api/stores`, {
-      params: {
-        ...params,
-      },
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json",
-        ...headers,
-      },
-    });
+    return await this.request<IStore[]>(
+      "GET",
+      `${config.public.apiBaseUrl}/api/stores`,
+      {
+        params: {
+          ...params,
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Origin": window.location.origin,
+          ...headers,
+        },
+      }
+    );
   }
 }

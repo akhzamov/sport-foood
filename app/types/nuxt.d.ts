@@ -7,6 +7,7 @@ import type { StorageTypesRep } from '~/modules/profile/repository/storageTypes'
 import type { StoragesLeftRep } from '~/modules/profile/repository/storagesLeft';
 import type { MarketplaceLeftRep } from '~/modules/profile/repository/marketplaceLeft';
 import type { SalesAgentLeftRep } from '~/modules/profile/repository/salesAgentLeft';
+import type { LoginRep } from '~/modules/auth/repository/login';
 
 declare module '#app' {
   interface NuxtApp {
@@ -19,5 +20,6 @@ declare module '#app' {
     $storagesLeftRep: StoragesLeftRep;
     $marketplaceLeftRep: MarketplaceLeftRep;
     $salesAgentLeftRep: SalesAgentLeftRep;
+    $loginRep: LoginRep;
   }
 }
