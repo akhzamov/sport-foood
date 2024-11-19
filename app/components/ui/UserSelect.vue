@@ -26,7 +26,7 @@ const emit = defineEmits([
 const selectedItemId = ref(props.modelValue);
 const selectedItemName = ref(props.defaultSelectText);
 
-const activeMenu = (): any => {
+const activeMenu = (): void => {
   if (props.showMenu) {
     emit("update:showMenu", false);
   } else {
@@ -52,7 +52,6 @@ const setDefaultItem = () => {
   }
 };
 
-// Проверяем и устанавливаем текст по умолчанию
 const checkDefaultText = () => {
   if (props.defaultSelectText) {
     selectedItemName.value = props.defaultSelectText;

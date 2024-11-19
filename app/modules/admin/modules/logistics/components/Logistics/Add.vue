@@ -34,6 +34,7 @@ const photos = ref<any>(null);
 const allTableDataChecked = ref(false);
 const tableData = ref<any[]>([]);
 const tableCity = ref<ILogisticsCity[]>([]);
+const tableProduct = ref<any[]>([]);
 const handleCheckPeriod = () => {
   checkPeriod.value = !checkPeriod.value;
   if (checkPeriod.value) {
@@ -56,6 +57,15 @@ const addCityInTable = (cityId: string) => {
     }
   });
 };
+
+const addProductInTable = (productId: number) => {
+  adminLogisticsStore.productsProductModal.find((item: any) => {
+    if (item.id == productId) {
+      tableProduct.value.push(item);
+    }
+  });
+};
+
 watch(
   () => date.value,
   () => {
@@ -78,7 +88,16 @@ watch(
         adminLogisticsStore.showSelectMenuAddCityModal = $event
       "
     />
-    <!-- <LogisticsAddProduct /> -->
+    <LogisticsAddProduct
+      v-if="adminLogisticsStore.addProductModal"
+      :show-select-menu="adminLogisticsStore.showSelectMenuProductModal"
+      :selected-product="adminLogisticsStore.selectedItemProductModal"
+      :products="adminLogisticsStore.productsProductModal"
+      @update:selected-product="addProductInTable($event)"
+      @update:show-select-menu="
+        adminLogisticsStore.showSelectMenuProductModal = $event
+      "
+    />
   </TransitionGroup>
   <div
     class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
@@ -249,7 +268,7 @@ watch(
               <div
                 class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40-color hover:text-primary-color"
               >
-                <IconPlus />
+                <IconPlus @click="adminLogisticsStore.addProductModal = true"/>
               </div>
               <div
                 class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40-color hover:text-error-500"
@@ -293,11 +312,9 @@ watch(
               </tr>
             </thead>
             <tbody class="w-full h-max rounded-b-lg">
-              <!-- <template
-                v-for="(item, index) in props.data.products[
-                  adminLogisticsStore.activeOpenEditTableTab
-                ]"
-                :key="index"
+              <template
+                v-for="(item, index) in tableProduct"
+                :key="item.id"
               >
                 <tr class="w-full h-8 flex border-b border-gray-15-color">
                   <th class="w-9 h-full">
@@ -339,7 +356,7 @@ watch(
                     </span>
                   </th>
                 </tr>
-              </template> -->
+              </template>
               <tr class="flex items-center justify-center mt-5">
                 <th class="text-12-med text-gray-75-color">
                   У вас пока нет товаров в списке

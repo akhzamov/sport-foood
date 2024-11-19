@@ -45,17 +45,17 @@ watch(
 
 // Close modal function
 const closeAddCityModal = () => {
-  adminLogisticsStore.addCityModal = false;
-  adminLogisticsStore.showSelectMenuAddCityModal = false;
-  adminLogisticsStore.selectedCityAddCityModal = null;
+  adminLogisticsStore.addProductModal = false;
+  adminLogisticsStore.showSelectMenuProductModal = false;
+  adminLogisticsStore.selectedItemProductModal = null;
 };
 
 // Update selected city function
 const updateSelectedCity = () => {
   emit("update:selectedProduct", localSelectedProduct.value);
-  adminLogisticsStore.addCityModal = false;
-  adminLogisticsStore.showSelectMenuAddCityModal = false;
-  adminLogisticsStore.selectedCityAddCityModal = null;
+  adminLogisticsStore.addProductModal = false;
+  adminLogisticsStore.showSelectMenuProductModal = false;
+  adminLogisticsStore.selectedItemProductModal = null;
 };
 
 // Update show select menu function

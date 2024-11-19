@@ -7,6 +7,7 @@ export interface IMainStore {
   marketplaceById: IMarketplace | null;
   errorMessage: string;
   alertShow: boolean;
+  alertShowType: string;
   alertShowTitle: string;
   alertShowText: string;
   confirmModal: boolean;

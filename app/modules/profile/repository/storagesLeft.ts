@@ -29,7 +29,7 @@ export class StoragesLeftRep {
           Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
           "Accept": "application/json",
-          "Origin": window.location.origin,
+          // "Origin": window.location.origin,
           ...headers,
         },
       }

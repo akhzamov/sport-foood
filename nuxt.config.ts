@@ -31,6 +31,7 @@ export default defineNuxtConfig({
     "./app/modules/admin",
     //ADMIN
     "./app/modules/admin/modules/logistics",
+    "./app/modules/admin/modules/personal",
   ],
 
   app: {
@@ -40,6 +41,7 @@ export default defineNuxtConfig({
         id: "body",
       },
     },
+    // baseURL: "/crm",
   },
 
   modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@nuxtjs/google-fonts"],

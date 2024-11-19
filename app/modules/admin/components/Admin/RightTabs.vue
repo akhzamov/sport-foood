@@ -1,47 +1,45 @@
 <script lang="ts" setup>
 import { useAdminLogisticsStore } from "../../modules/logistics/stores/adminLogistics";
+import { useAdminStore } from "../../stores/admin";
 
 const adminLogisticsStore = useAdminLogisticsStore();
+const adminStore = useAdminStore();
 const removeTab = (id: string) => {
-  const index = adminLogisticsStore.activeOpenTabs.findIndex(
-    (tab) => tab.id === id
-  );
-  if (adminLogisticsStore.activeOpenTabs[index + 1]?.id) {
-    adminLogisticsStore.activeOpenTab =
-      adminLogisticsStore.activeOpenTabs[index + 1]?.id;
+  const index = adminStore.activeOpenTabs.findIndex((tab) => tab.id === id);
+  if (adminStore.activeOpenTabs[index + 1]?.id) {
+    adminStore.activeOpenTab = adminStore.activeOpenTabs[index + 1]?.id;
   } else {
-    adminLogisticsStore.activeOpenTab =
-      adminLogisticsStore.activeOpenTabs[index - 1]?.id;
+    adminStore.activeOpenTab = adminStore.activeOpenTabs[index - 1]?.id;
   }
   if (index !== -1) {
-    adminLogisticsStore.activeOpenTabs.splice(index, 1);
+    adminStore.activeOpenTabs.splice(index, 1);
   }
 };
 
 onMounted(() => {
-  adminLogisticsStore.activeOpenTab = adminLogisticsStore.activeOpenTabs[0]?.id;
+  adminStore.activeOpenTab = adminStore.activeOpenTabs[0]?.id;
 });
 </script>
 
 <template>
   <div
-    class="max-w-[740px] w-full h-[100%] flex flex-col border-l border-gray-15-color p-2 overflow-y-auto pb-[80px]"
+    class="absolute top-0 right-0 max-w-[740px] min-w-[740px] w-full h-[100%] flex flex-col border-l border-gray-15-color p-2 overflow-y-auto pb-[80px] z-[30] bg-dark-charcoal-color"
   >
     <div class="w-max h-max flex items-center justify-start gap-1">
-      <template v-for="(tab, index) in adminLogisticsStore.activeOpenTabs">
+      <template v-for="(tab, index) in adminStore.activeOpenTabs">
         <div
-          v-if="adminLogisticsStore.activeOpenTabs.length > 0"
+          v-if="adminStore.activeOpenTabs.length > 0"
           :class="[
-            adminLogisticsStore.activeOpenTab == tab.id
+            adminStore.activeOpenTab == tab.id
               ? 'bg-dark-gunmental-color'
               : 'bg-dark-eerie-black-color',
           ]"
-          @click="adminLogisticsStore.activeOpenTab = tab.id"
+          @click="adminStore.activeOpenTab = tab.id"
           class="w-max h-[36px] flex items-start gap-9 rounded-t-lg py-1 px-2 cursor-pointer"
         >
           <div class="flex flex-col items-start justify-start">
             <p class="text-12-ext text-gray-40-color">{{ tab.name }}:</p>
-            <p class="text-10-reg text-gray-90-color">{{ tab.id }}</p>
+            <p class="text-10-reg text-gray-90-color">{{ tab.title }}</p>
           </div>
           <button
             @click.stop="removeTab(tab.id)"
@@ -56,12 +54,26 @@ onMounted(() => {
       <LogisticsEdit
         :data="data"
         v-if="
-          data.id == adminLogisticsStore.activeOpenTab &&
-          adminLogisticsStore.activeOpenTabs.length > 0
+          `admin-logistics-edit-${data.id}` === adminStore.activeOpenTab &&
+          adminStore.activeOpenTabs.length > 0 &&
+          adminStore.activeOpenTab !== 'admin-logistics-add'
         "
       />
     </template>
-    <LogisticsAdd v-if="adminLogisticsStore.activeOpenTab == 'Новый'" />
+    <template v-for="data in adminStore.activeOpenTabs">
+      <LogisticsAdd
+        v-if="
+          data.id == 'admin-logistics-add' &&
+          adminStore.activeOpenTab == 'admin-logistics-add'
+        "
+      />
+      <EmployeesAdd
+        v-if="
+          data.id == 'admin-employees-add' &&
+          adminStore.activeOpenTab == 'admin-employees-add'
+        "
+      />
+    </template>
   </div>
 </template>
 

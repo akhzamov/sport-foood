@@ -13,7 +13,7 @@ const handleRoutPush = (link: string) => {
 <template>
   <nav class="flex flex-col">
     <div class="bg-dark-night-color py-3">
-      <div class="container-custom w-full flex items-center justify-between">
+      <div class="px-5 w-full flex items-center justify-between">
         <div class="flex items-center gap-8">
           <NuxtLink to="/">
             <img src="@/assets/img/logo.svg" alt="" />

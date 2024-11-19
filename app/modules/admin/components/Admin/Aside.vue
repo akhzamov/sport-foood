@@ -9,9 +9,30 @@ const route = useRoute();
 const links = reactive([
   {
     id: 1,
-    name: "Сотрудники",
+    name: "Персонал",
     icon: markRaw(IconUsers01),
-    children: [],
+    children: [
+      {
+        id: 1,
+        name: "Сотрудники",
+        path: "/admin-employees",
+      },
+      {
+        id: 2,
+        name: "Торговые агенты",
+        path: "/admin-sales-agents",
+      },
+      {
+        id: 3,
+        name: "Водители",
+        path: "/admin-drivers",
+      },
+      {
+        id: 4,
+        name: "Роли",
+        path: "/admin-roles",
+      },
+    ],
   },
   {
     id: 2,
@@ -55,7 +76,9 @@ const handleActiveLink = (id: number) => {
 </script>
 
 <template>
-  <div class="min-w-[240px] h-full bg-dark-gunmental-color border-r border-gray-15-color">
+  <div
+    class="min-w-[240px] h-full bg-dark-gunmental-color border-r border-gray-15-color"
+  >
     <div
       class="w-full h-full flex flex-col items-start justify-start gap-4 py-3 px-2"
     >
@@ -93,7 +116,10 @@ const handleActiveLink = (id: number) => {
             ]"
           />
         </div>
-        <div v-if="link.id == activeLink" class="w-full h-[30px] flex flex-col items-start justify-center px-3">
+        <div
+          v-if="link.id == activeLink"
+          class="w-full h-max flex flex-col items-start justify-center px-3"
+        >
           <p
             v-if="link.children.length <= 0"
             class="text-12-semi text-gray-40-color pl-8"
@@ -104,7 +130,7 @@ const handleActiveLink = (id: number) => {
             v-for="child in link.children"
             :key="child.id"
             :to="child.path"
-            class="w-full h-full flex items-center justify-start text-12-semi pl-8 rounded-md hover:bg-gray-15-color"
+            class="w-full h-[30px] flex items-center justify-start text-12-semi pl-8 rounded-md hover:bg-gray-15-color"
             :class="[
               route.path == child.path
                 ? 'text-primary-color'

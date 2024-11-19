@@ -2,7 +2,9 @@
 import { useMainStore } from "~/stores/main";
 import { useAdminLogisticsStore } from "../../stores/adminLogistics";
 import { logisticData } from "./logisticsTable.data";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
+const adminStore = useAdminStore();
 const adminLogisticsStore = useAdminLogisticsStore();
 const mainStore = useMainStore();
 const route = useRoute();
@@ -56,6 +58,36 @@ const deleteItem = () => {
     mainStore.confirmModal = true;
   }
 };
+const openNewTab = (id: string) => {
+  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
+
+  if (exists) {
+    mainStore.alertShow = true;
+    mainStore.alertShowType = "error";
+    mainStore.alertShowTitle = "Ошибка";
+    mainStore.alertShowText =
+      "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
+  } else {
+    adminStore.activeOpenTabs.push({
+      id,
+      title: "Новый",
+      name: "ID заказа",
+    });
+  }
+};
+const openEditTab = (title: string, id: string) => {
+  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
+
+  if (exists) {
+    adminStore.activeOpenTab = id;
+  } else {
+    adminStore.activeOpenTabs.push({
+      id,
+      title,
+      name: "ID заказа",
+    });
+  }
+};
 
 watch(
   () => data,
@@ -104,12 +136,7 @@ watch(
       </div>
       <IconPlus
         class="text-gray-40-color hover:text-primary-color ml-4"
-        @click="
-          adminLogisticsStore.activeOpenTabs.push({
-            id: 'Новый',
-            name: 'ID заказа',
-          })
-        "
+        @click="openNewTab('admin-logistics-add')"
       />
       <IconTrash03
         class="text-gray-40-color hover:text-error-500 ml-4"
@@ -130,35 +157,15 @@ watch(
           <th class="w-[72px] text-center">ID заказа</th>
           <th class="w-[180px] text-left pl-3">Поставщик</th>
           <th class="w-[180px] text-left pl-3">Водитель</th>
-          <th
-            v-if="adminLogisticsStore.activeOpenTabs.length <= 0"
-            class="w-[140px] text-left pl-3"
-          >
-            Дата выезда
-          </th>
-          <th
-            v-if="adminLogisticsStore.activeOpenTabs.length <= 0"
-            class="w-[320px] text-left pl-3"
-          >
-            Точки доставки
-          </th>
-          <th
-            v-if="adminLogisticsStore.activeOpenTabs.length <= 0"
-            class="flex-grow text-left pl-3"
-          >
-            Статус
-          </th>
+          <th class="w-[140px] text-left pl-3">Дата выезда</th>
+          <th class="w-[320px] text-left pl-3">Точки доставки</th>
+          <th class="flex-grow text-left pl-3">Статус</th>
         </tr>
       </thead>
       <tbody>
         <template v-for="(item, index) in data">
           <tr
-            @click="
-              adminLogisticsStore.activeOpenTabs.push({
-                id: item.id,
-                name: 'ID заказа',
-              })
-            "
+            @click="openEditTab(item.id, `admin-logistics-edit-${item.id}`)"
             :class="[
               index - 1 !== data.length ? 'border-b border-gray-40-color' : '',
             ]"
@@ -187,10 +194,7 @@ watch(
                 {{ item.driver }}
               </span>
             </th>
-            <th
-              v-if="adminLogisticsStore.activeOpenTabs.length <= 0"
-              class="w-[140px] flex items-center justify-start"
-            >
+            <th class="w-[140px] flex items-center justify-start">
               <span class="pl-3 text-14-reg text-gray-75-color">
                 {{ dateFormatter(item.departureDate) }}
               </span>
@@ -198,10 +202,7 @@ watch(
                 {{ timeFormatter(item.departureDate) }}
               </span>
             </th>
-            <th
-              v-if="adminLogisticsStore.activeOpenTabs.length <= 0"
-              class="min-w-[320px] flex items-center justify-start"
-            >
+            <th class="min-w-[320px] flex items-center justify-start">
               <div
                 class="ml-3 w-[6px] h-[6px] block rounded-[50%] bg-gray-75-color"
               ></div>
@@ -209,10 +210,7 @@ watch(
                 {{ item.deliveryPoint }}
               </span>
             </th>
-            <th
-              v-if="adminLogisticsStore.activeOpenTabs.length <= 0"
-              class="flex-grow flex items-center justify-start"
-            >
+            <th class="flex-grow flex items-center justify-start">
               <p
                 v-if="item.status == 'delivered'"
                 class="ml-3 px-2 w-max h-[22px] rounded-[20px] bg-emerald-500/15 flex items-center justify-start gap-1"

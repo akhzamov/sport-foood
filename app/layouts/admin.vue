@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { useAdminLogisticsStore } from "~/modules/admin/modules/logistics/stores/adminLogistics";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
 
 const adminLogisticsStore = useAdminLogisticsStore();
+const adminStore = useAdminStore();
 const mainStore = useMainStore();
 </script>
 
@@ -16,7 +18,7 @@ const mainStore = useMainStore();
     />
     <UiAlert
       v-if="mainStore.alertShow"
-      type="error"
+      :type="mainStore.alertShowType"
       :title="mainStore.alertShowTitle"
       :text="mainStore.alertShowText"
     />
@@ -25,11 +27,11 @@ const mainStore = useMainStore();
     <AdminAppHeader />
     <div class="w-full h-full flex">
       <AdminAside />
-      <div class="w-full h-full flex bg-dark-charcoal-color">
-        <div class="flex-grow">
+      <div class="relative w-full h-full flex bg-dark-charcoal-color">
+        <div class="flex-grow z-20">
           <NuxtPage />
         </div>
-        <AdminRightTabs v-if="adminLogisticsStore.activeOpenTabs.length > 0" />
+        <AdminRightTabs v-if="adminStore.activeOpenTabs.length > 0" />
       </div>
     </div>
   </div>

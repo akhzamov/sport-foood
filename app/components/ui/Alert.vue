@@ -54,7 +54,7 @@ const closeAlertShow = () => {
         <IconClose class="text-error-500 w-[25px] h-[25px]" />
       </div>
       <h4 class="text-24-bold text-white mb-1">{{ props.title }}</h4>
-      <p class="text-14-med text-gray-75-color">{{ props.text }}</p>
+      <p class="text-14-med text-gray-75-color text-center">{{ props.text }}</p>
     </div>
   </div>
 </template>

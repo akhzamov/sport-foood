@@ -9,12 +9,14 @@ const props = withDefaults(
     showMenu: boolean;
     defaultSelectText: string;
     modelValue: any;
+    icon: boolean;
   }>(),
   {
     mainTextColor: "text-gray-90-color",
     selectBgColor: "bg-gray-90-color",
     array: () => [],
     defaultSelectText: "",
+    icon: false,
   }
 );
 
@@ -75,7 +77,7 @@ watchEffect(() => {
 watch(
   () => props.modelValue,
   () => {
-    selectItem(props.modelValue)
+    selectItem(props.modelValue);
   }
 );
 </script>
@@ -103,7 +105,8 @@ watch(
           :key="item.id"
           @click="selectItem(item.id)"
         >
-          <IconBranch class="text-gray-90-color" />
+          <slot name="value-icon" v-if="!props.icon" />
+          <IconBranch class="text-gray-90-color" v-if="props.icon" />
           <span class="text-16-med text-gray-90-color">
             {{ item.name }}
           </span>
