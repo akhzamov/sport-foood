@@ -33,7 +33,7 @@
 
 <template>
 	<button
-		class="w-full border px-4 py-2 rounded-lg transition duration-200 flex items-center justify-center gap-2"
+		class="w-full border px-4 py-2 rounded-lg transition duration-200 flex items-center justify-center gap-2 cursor-pointer"
 		:class="[
 			bgColor,
 			props.border ? props.borderColor : 'border-transparent',

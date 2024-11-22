@@ -115,6 +115,7 @@ const openNewTab = (id: string) => {
 };
 const openEditTab = (title: number, id: string) => {
   const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
+  adminStore.openUser = title;
 
   if (exists) {
     adminStore.activeOpenTab = id;
@@ -170,7 +171,7 @@ const openEditTab = (title: number, id: string) => {
             selectPositionMenu = $event;
           "
         />
-        <UiRoundedSelect
+        <!-- <UiRoundedSelect
           :model-value="selectedRole"
           :show-menu="selectRoleMenu"
           :default-select-text="'Выбрать роль'"
@@ -180,7 +181,7 @@ const openEditTab = (title: number, id: string) => {
             closeMenu();
             selectRoleMenu = $event;
           "
-        />
+        /> -->
       </div>
     </div>
     <table class="w-full">
@@ -188,17 +189,11 @@ const openEditTab = (title: number, id: string) => {
         <tr
           class="w-full h-[32px] flex items-center text-12-med text-gray-40-color border-b border-gray-40-color"
         >
-          <th class="w-[22px] text-end">№</th>
-          <th class="w-[36px] flex items-center justify-center">
-            <UiCheckbox
-              v-model="allChecked"
-              @click="allChecked = !allChecked"
-            />
-          </th>
+          <th class="w-[60px] text-start pl-2">ID</th>
           <th
-            class="min-w-[394px] flex-grow flex items-center justify-start gap-1"
+            class="min-w-[394px] flex-grow flex items-center justify-start gap-1 ml-1"
           >
-            <span>Имя</span>
+            <span>Имя пользователя</span>
             <IconSwitchVertical01 class="w-[20px] h-[20px] cursor-pointer" />
           </th>
           <th class="w-[160px] flex items-center justify-start gap-1">
@@ -206,18 +201,18 @@ const openEditTab = (title: number, id: string) => {
             <IconSwitchVertical01 class="w-[20px] h-[20px] cursor-pointer" />
           </th>
           <th class="w-[180px] flex items-center justify-start">
-            <span>Телефон</span>
+            <span>Контакт</span>
           </th>
           <th class="w-[180px] flex items-center justify-start">
+            <span>Магазины</span>
+          </th>
+          <th class="w-[220px] flex items-center justify-start">
             <span>Должность</span>
-          </th>
-          <th class="w-[180px] flex items-center justify-start">
-            <span>Роль</span>
           </th>
         </tr>
       </thead>
       <tbody>
-        <template v-for="employee in employees" :key="employee.id">
+        <template v-for="(employee, index) in adminStore.employees" :key="employee.id">
           <tr
             @click="
               openEditTab(employee.id, `admin-employees-edit-${employee.id}`)
@@ -225,17 +220,14 @@ const openEditTab = (title: number, id: string) => {
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15-color border-b border-gray-40-color"
           >
             <th
-              class="w-[22px] flex items-center justify-end text-14-reg text-gray-75-color"
+              class="w-[60px] flex items-center justify-start pl-2 text-14-reg text-gray-75-color"
             >
               {{ employee.id }}
             </th>
-            <th class="w-[36px] flex items-center justify-center">
-              <UiCheckbox v-model:model-value="employee.checked" />
-            </th>
             <th
-              class="min-w-[394px] flex-grow flex items-center justify-start gap-1 text-14-reg text-gray-75-color"
+              class="min-w-[394px] flex-grow flex items-center justify-start ml-1 gap-1 text-14-reg text-gray-75-color"
             >
-              {{ employee.name }}
+              {{ employee.username }}
             </th>
             <th class="w-[160px] flex items-center justify-start gap-1">
               <span
@@ -268,19 +260,25 @@ const openEditTab = (title: number, id: string) => {
               >
                 Уволен
               </span>
+              <span
+                v-if="employee.status == 'Активный'"
+                class="px-2 py-1 rounded-[20px] text-12-reg bg-green-500/15 text-green-500"
+              >
+                Активный
+              </span>
             </th>
             <th
               class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
             >
-              {{ employee.phone }}
+              {{ employee.contact ? employee.contact : 'Пусто' }}
             </th>
             <th
-              class="w-[180px] flex items-center justify-start text-14-med text-gray-75-color"
+              class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
             >
-              {{ employee.position }}
+              {{ employee.stores.length }} шт
             </th>
             <th
-              class="w-[180px] flex items-center justify-start text-14-med text-gray-75-color"
+              class="w-[220px] flex items-center justify-start text-14-med text-gray-75-color"
             >
               {{ employee.role }}
             </th>

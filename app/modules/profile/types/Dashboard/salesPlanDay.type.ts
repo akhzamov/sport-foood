@@ -11,6 +11,7 @@ export interface ISalesPlanDayProducts {
 	plan: number;
 	soldCount: number;
 	soldWeight: number;
+	soldAmount: number;
 	packages: Record<string, ISalesPlanDayPackages>;
 }
 

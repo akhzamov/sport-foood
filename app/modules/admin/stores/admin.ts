@@ -6,6 +6,13 @@ export const useAdminStore = defineStore("admin", {
     activeOpenTabs: [],
     activeOpenTab: "",
     activeOpenEditTableTab: "",
+    openUser: null,
+    employees: null,
+    employeesPagination: null,
+    employeesPage: 1,
+    employeesPerPage: 20,
+    employee: null,
+    permissions: null,
   }),
   actions: {},
 });

@@ -23,7 +23,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="absolute top-0 right-0 max-w-[740px] min-w-[740px] w-full h-[100%] flex flex-col border-l border-gray-15-color p-2 overflow-y-auto pb-[80px] z-[30] bg-dark-charcoal-color"
+    class="absolute z-[100] top-0 right-0 min-w-[740px] w-[740px] h-[100%] flex flex-col border-l border-gray-15-color p-2 overflow-y-auto pb-[80px] bg-dark-charcoal-color"
   >
     <div class="w-max h-max flex items-center justify-start gap-1">
       <template v-for="(tab, index) in adminStore.activeOpenTabs">
@@ -55,6 +55,16 @@ onMounted(() => {
         :data="data"
         v-if="
           `admin-logistics-edit-${data.id}` === adminStore.activeOpenTab &&
+          adminStore.activeOpenTabs.length > 0 &&
+          adminStore.activeOpenTab !== 'admin-logistics-add'
+        "
+      />
+    </template>
+    <template v-for="data in adminStore.employees">
+      <EmployeesEdit
+        :data="data"
+        v-if="
+          `admin-employees-edit-${data.id}` === adminStore.activeOpenTab &&
           adminStore.activeOpenTabs.length > 0 &&
           adminStore.activeOpenTab !== 'admin-logistics-add'
         "

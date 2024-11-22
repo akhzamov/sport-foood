@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import { useAdminLogisticsStore } from "~/modules/admin/modules/logistics/stores/adminLogistics";
+import { getPermissions } from "~/modules/admin/modules/personal/components/Roles/roles.data";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
 
 const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
 const mainStore = useMainStore();
+
+onMounted(async () => {
+  await getPermissions();
+});
 </script>
 
 <template>
@@ -28,7 +33,7 @@ const mainStore = useMainStore();
     <div class="w-full h-full flex">
       <AdminAside />
       <div class="relative w-full h-full flex bg-dark-charcoal-color">
-        <div class="flex-grow z-20">
+        <div class="flex-grow z-[0]">
           <NuxtPage />
         </div>
         <AdminRightTabs v-if="adminStore.activeOpenTabs.length > 0" />

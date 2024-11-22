@@ -48,7 +48,7 @@ Chart.register(
 );
 
 const profileStore = useProfileStore();
-const monthAnnotation = computed(() => profileStore.monthAnnotation / 30);
+const monthAnnotation = computed(() => profileStore.monthAnnotation);
 // let monthAnnotation = ref(5950 / 30);
 let chartDataArr = computed(() =>
   profileStore.salesPlan ? profileStore.salesPlan.days : {}

@@ -1,5 +1,5 @@
 import type { ISalesPlanMonth } from "~/modules/profile/types/salesPlan.type";
-import type { ISalesPlanDay } from "~/modules/profile/types/Dashboard/salesPlanDay.type";
+import type { ISalesPlanDayData } from "~/modules/profile/types/Dashboard/salesPlanDay.type";
 import type { IMarketplaceDataMarket } from "~/modules/profile/types/Dashboard/marketplaceData.type";
 
 interface IDaySalesProducts {
@@ -26,7 +26,7 @@ export interface IProfileStore {
 	chartLoader: boolean;
 	selectedDate: string;
 	selectedDateRU: string;
-	salesPlanDay: ISalesPlanDay | null;
+	salesPlanDay: Record<string, ISalesPlanDayData> | null;
 	salesPlanDayFirstRes: boolean;
 	reportGraphStoreSelect: boolean;
 	reportGraphAddSettingModal: boolean;

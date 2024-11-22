@@ -1,60 +1,68 @@
 <script lang="ts" setup>
+import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useAdminLogisticsStore } from "../../../logistics/stores/adminLogistics";
+import { getUserById, editUserById } from "./employees.data";
 
-const adminLogisticsStore = useAdminLogisticsStore();
-const name = ref("");
-const surname = ref("");
-const phone = ref("");
-const status = ref<number | null>(null);
-const statusMenu = ref(false);
-const statuses = reactive([
-  { id: 1, name: "Все" },
-  { id: 2, name: "В отпуске" },
-  { id: 3, name: "Работает" },
-  { id: 4, name: "Болен" },
-  { id: 5, name: "Отсутствует" },
-  { id: 6, name: "Уволен" },
-]);
-const position = ref<number | null>(null);
-const positionMenu = ref(false);
-const positions = reactive([
-  { id: 1, name: "Все" },
-  { id: 2, name: "Администратор" },
-  { id: 3, name: "Старший менеджер" },
-  { id: 4, name: "Менеджер" },
-  { id: 5, name: "Логист" },
-  { id: 6, name: "Маркетолог" },
-]);
-const role = ref<number | null>(null);
-const roleMenu = ref(false);
-const roles = reactive([
-  { id: 1, name: "Все" },
-  { id: 2, name: "Администратор" },
-  { id: 3, name: "Перемещение" },
-  { id: 4, name: "Пользователь" },
-  { id: 5, name: "Просмотр" },
-]);
+const adminStore = useAdminStore();
+const removePermission = (permissionName: string) => {
+  if (adminStore.employee) {
+    const updatedPermissions = adminStore.employee.permissions.filter(
+      (perm) => perm !== permissionName
+    );
+    adminStore.employee.permissions = [];
+    adminStore.employee.permissions.push(...updatedPermissions);
+  }
+};
+
+const addPermission = (permissionName: string) => {
+  if (adminStore.employee) {
+    if (!adminStore.employee.permissions.includes(permissionName)) {
+      adminStore.employee.permissions.push(permissionName);
+    }
+  }
+};
+
+onMounted(() => {
+  getUserById(adminStore.openUser ? adminStore.openUser : 0);
+});
 </script>
 
 <template>
   <div
-    class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    v-if="adminStore.employee"
+    class="sticky z-[20] w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
   >
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Имя </label>
+        <label class="text-12-reg text-gray-90-color mb-1">
+          Имя пользователя</label
+        >
         <UiInput
-          v-model:model-value="name"
-          placeholder="Дмитрий"
+          :modelValue="adminStore.employee?.username"
+          @update:modelValue="
+            (value) => {
+              if (adminStore.employee) {
+                adminStore.employee.username = value;
+              }
+            }
+          "
+          placeholder="SkyHunter"
           type="text"
           class="text-gray-90-color"
         />
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Фамилия </label>
+        <label class="text-12-reg text-gray-90-color mb-1"> Контакт </label>
         <UiInput
-          v-model:model-value="surname"
-          placeholder="Петров"
+          :modelValue="adminStore.employee?.contact"
+          @update:modelValue="
+            (value) => {
+              if (adminStore.employee) {
+                adminStore.employee.contact = value;
+              }
+            }
+          "
+          placeholder="Телефон или почта"
           type="text"
           class="text-gray-90-color"
         />
@@ -62,63 +70,37 @@ const roles = reactive([
     </div>
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Телефон </label>
+        <label class="text-12-reg text-gray-90-color mb-1"> Должность </label>
         <UiInput
-          v-model:model-value="phone"
-          placeholder="+7 495 123-45-67"
+          :modelValue="adminStore.employee?.role"
+          @update:modelValue="
+            (value) => {
+              if (adminStore.employee) {
+                adminStore.employee.role = value;
+              }
+            }
+          "
+          placeholder="Администратор"
           type="text"
           class="text-gray-90-color"
         />
       </div>
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">Статус</label>
-        <div class="flex gap-1">
-          <UiSelect
-            v-model:model-value="status"
-            default-select-text="Выбор статуса"
-            :show-menu="statusMenu"
-            :array="statuses"
-            select-bg-color="bg-gray-15-color"
-            main-text-color="text-gray-90-color"
-            class="flex-grow z-[50]"
-            @update:show-menu="statusMenu = $event"
-            :icon="false"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
-      <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Должность</label>
-        <div class="flex gap-1">
-          <UiSelect
-            v-model:model-value="position"
-            default-select-text="Выбор должности"
-            :show-menu="positionMenu"
-            :array="positions"
-            select-bg-color="bg-gray-15-color"
-            main-text-color="text-gray-90-color"
-            class="flex-grow"
-            @update:show-menu="positionMenu = $event"
-            :icon="false"
-          />
-        </div>
-      </div>
-      <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Роль</label>
-        <div class="flex gap-1">
-          <UiSelect
-            v-model:model-value="role"
-            default-select-text="Выбор роли"
-            :show-menu="roleMenu"
-            :array="roles"
-            select-bg-color="bg-gray-15-color"
-            main-text-color="text-gray-90-color"
-            class="flex-grow"
-            @update:show-menu="roleMenu = $event"
-            :icon="false"
-          />
-        </div>
+        <UiInput
+          :modelValue="adminStore.employee?.status"
+          @update:modelValue="
+            (value) => {
+              if (adminStore.employee) {
+                adminStore.employee.status = value;
+              }
+            }
+          "
+          placeholder="Администратор"
+          type="text"
+          class="text-gray-90-color"
+          disabled
+        />
       </div>
     </div>
     <div
@@ -126,138 +108,83 @@ const roles = reactive([
     ></div>
     <div class="flex items-start justify-between flex-col gap-3 mt-3">
       <p class="text-12-reg text-gray-90-color">Доступы</p>
-      <div
-        class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color"
-      >
-        <div class="w-full h-8 flex items-center justify-between">
-          <p class="text-16-reg text-gray-75-color">Главная страница</p>
-          <IconChevronDown class="text-gray-90-color" />
-        </div>
+      <template v-for="(permissionGroup, key) in adminStore.permissions?.data">
         <div
-          class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color"
+          class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color"
         >
-          <p class="text-16-reg text-gray-75-color">План продаж</p>
-          <div class="w-max h-full flex items-center gap-2">
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconEdit05 class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconPlus class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconTrash03 class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconEye class="text-gray-90-color w-5 h-5" />
-            </div>
+          <div class="w-full h-8 flex items-center justify-between">
+            <p class="text-16-reg text-gray-75-color">{{ key }}</p>
+            <IconChevronDown class="text-gray-90-color" />
           </div>
+          <template v-for="permission in permissionGroup">
+            <div
+              class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color"
+            >
+              <p class="text-16-reg text-gray-75-color">
+                {{ permission.display_name }}
+              </p>
+              <div class="h-full flex items-center gap-2 cursor-pointer">
+                <!-- <div
+                  class="w-7 h-7 flex items-center justify-center rounded-[4px] bg-white/5"
+                >
+                  <IconEdit05 class="text-gray-90-color w-5 h-5" />
+                </div> -->
+                <div
+                  @click="addPermission(permission.name)"
+                  class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 text-gray-90-color hover:text-success-500"
+                >
+                  <IconPlus class="w-5 h-5" />
+                </div>
+                <div
+                  @click="removePermission(permission.name)"
+                  class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 text-gray-90-color hover:text-error-500"
+                >
+                  <IconTrash03 class="w-5 h-5" />
+                </div>
+                <div
+                  class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5"
+                >
+                  <IconCheck
+                    :class="{
+                      'text-error-500':
+                        !adminStore.employee?.permissions.includes(
+                          permission.name
+                        ),
+                      'text-malachite':
+                        adminStore.employee?.permissions.includes(
+                          permission.name
+                        ),
+                    }"
+                    class="w-5 h-5"
+                  />
+                </div>
+              </div>
+            </div>
+          </template>
         </div>
-        <div
-          class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color"
-        >
-          <p class="text-16-reg text-gray-75-color">Рейтинг площадок</p>
-          <div class="w-max h-full flex items-center gap-2">
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconEdit05 class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconPlus class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconTrash03 class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconEye class="text-gray-90-color w-5 h-5" />
-            </div>
-          </div>
-        </div>
-        <div
-          class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color"
-        >
-          <p class="text-16-reg text-gray-75-color">Остатки и резерв</p>
-          <div class="w-max h-full flex items-center gap-2">
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconEdit05 class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconPlus class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconTrash03 class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconEye class="text-gray-90-color w-5 h-5" />
-            </div>
-          </div>
-        </div>
-        <div
-          class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color"
-        >
-          <p class="text-16-reg text-gray-75-color">Рейтинг площадок</p>
-          <div class="w-max h-full flex items-center gap-2">
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconEdit05 class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconPlus class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconTrash03 class="text-gray-90-color w-5 h-5" />
-            </div>
-            <div
-              class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 cursor-pointer"
-            >
-              <IconEye class="text-gray-90-color w-5 h-5" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color"
-      >
-        <div class="w-full h-8 flex items-center justify-between">
-          <p class="text-16-reg text-gray-75-color">Отчеты</p>
-          <IconChevronDown class="text-gray-90-color" />
-        </div>
-      </div>
-      <div
-        class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color"
-      >
-        <div class="w-full h-8 flex items-center justify-between">
-          <p class="text-16-reg text-gray-75-color">Логистика</p>
-          <IconChevronDown class="text-gray-90-color" />
-        </div>
-      </div>
+      </template>
+    </div>
+    <div class="flex items-center justify-end gap-2 mt-3">
+      <UiButton
+        bgColor="bg-primary-color"
+        :border="false"
+        :icon="false"
+        hover="opacity-[0.9]"
+        textColor="text-dark-night-color"
+        text="Сохранить"
+        class="max-w-[110px]"
+        @click="editUserById(adminStore.employee?.id)"
+      />
+      <UiButton
+        bgColor="bg-gray-15-color"
+        :border="true"
+        borderColor="border-gray-90-color"
+        :icon="false"
+        hover="opacity-[0.9]"
+        textColor="text-gray-90-color"
+        text="Отменить"
+        class="max-w-[88px]"
+      />
     </div>
   </div>
 </template>

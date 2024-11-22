@@ -72,14 +72,18 @@ export default defineNuxtConfig({
   routeRules: {
     "/": { prerender: true, redirect: "/profile-dashboard" },
     // "/about": { prerender: true },
-    // "/admin-new-tab": { prerender: true },
-    // "/admin-procurement-management": { prerender: true },
     // "/sign-in": { prerender: true },
     // "/profile-dashboard": { prerender: true },
     // "/profile-report": { prerender: true },
     // "/profile-warehouse": { prerender: true },
     // "/settings": { prerender: true },
     // "/users": { prerender: true },
+    // "/admin-new-tab": { prerender: true },
+    // "/admin-procurement-management": { prerender: true },
+    // "/admin-employees": { prerender: true },
+    // "/admin-sales-agents": { prerender: true },
+    // "/admin-drivers": { prerender: true },
+    // "/admin-roles": { prerender: true },
     "/:pathMatch(.*)*": { prerender: true },
   },
 
@@ -90,5 +94,5 @@ export default defineNuxtConfig({
     // preset: "static",
   },
 
-  // ssr: false,
+  ssr: false,
 });

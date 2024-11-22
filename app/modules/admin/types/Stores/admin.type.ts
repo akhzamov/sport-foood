@@ -1,3 +1,10 @@
+import type {
+  TPagination,
+  TUser,
+  TUserID,
+} from "../Personal/Employees/users.type";
+import type { IPermissions } from "../Personal/Roles/permissions.type";
+
 interface IAdminLogisticsTab {
   id: string;
   title: string;
@@ -7,6 +14,12 @@ interface IAdminLogisticsTab {
 export interface IAdminStore {
   activeOpenTabs: IAdminLogisticsTab[];
   activeOpenTab: string | undefined;
-  activeOpenAddTab: string | undefined;
   activeOpenEditTableTab: string;
+  openUser: number | null;
+  employees: TUser[] | null;
+  employeesPagination: TPagination | null;
+  employeesPage: number;
+  employeesPerPage: number;
+  employee: TUserID | null;
+  permissions: IPermissions | null;
 }

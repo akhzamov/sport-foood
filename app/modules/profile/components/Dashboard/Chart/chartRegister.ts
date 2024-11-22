@@ -329,7 +329,7 @@ export const customDataLabel: Plugin = {
 					ctx.textBaseline = "middle";
 
 					// Получаем значение для текста
-					const text = `${value} кг`;
+					const text = `${value.toFixed(0)} кг`;
 
 					// Измеряем ширину текста
 					const valueWidth = ctx.measureText(text).width;
