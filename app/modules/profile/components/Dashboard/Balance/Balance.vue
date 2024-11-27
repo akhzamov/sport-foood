@@ -1,72 +1,75 @@
 <script lang="ts" setup>
+import { useProfileStore } from "~/modules/profile/stores/profile";
+
 const router = useRouter();
+const profileStore = useProfileStore();
 const activeFilter = ref("platform");
+const activeItemId = ref<number | null>(null);
 const items = reactive([
   {
     id: 1,
     name: "Ozon",
     weight: 2600,
     totalSum: 9230,
-    percent: 24,
+    empty: true,
   },
   {
     id: 2,
     name: "Worldsport",
     weight: 781400,
     totalSum: 27153000,
-    percent: 80,
+    empty: true,
   },
   {
     id: 3,
     name: "Tenor",
     weight: 457240,
     totalSum: 18234000,
-    percent: 57,
+    empty: true,
   },
   {
     id: 4,
     name: "Coldmans",
     weight: 881400,
     totalSum: 21567000,
-    percent: 120,
+    empty: false,
   },
   {
     id: 5,
     name: "Zeus",
     weight: 457240,
     totalSum: 13654000,
-    percent: 50,
+    empty: true,
   },
   {
     id: 6,
     name: "Yolo",
     weight: 781400,
     totalSum: 16234000,
-    percent: 76,
+    empty: false,
   },
   {
     id: 7,
     name: "Guru",
     weight: 512240,
     totalSum: 27456000,
-    percent: 58,
+    empty: false,
   },
   {
     id: 8,
     name: "Guru",
     weight: 512240,
     totalSum: 27456000,
-    percent: 78,
+    empty: false,
   },
   {
     id: 9,
     name: "Guru",
     weight: 512240,
     totalSum: 27456000,
-    percent: 99,
+    empty: true,
   },
 ]);
-
 const handleRouterWarehouse = () => {
   router.push("/profile-warehouse");
 };
@@ -119,9 +122,7 @@ const handleRouterWarehouse = () => {
         </div>
       </div>
     </div>
-    <div
-      class="flex flex-col w-full h-[360px] bg-dark-gunmental-color"
-    >
+    <div class="flex flex-col w-full h-[360px] bg-dark-gunmental-color">
       <div
         class="w-full h-[20px] flex items-center px-[20px] bg-dark-charcoal-color"
       >
@@ -131,10 +132,19 @@ const handleRouterWarehouse = () => {
           Сумма
         </p>
       </div>
-      <div class="w-full h-full flex flex-col mb-2 overflow-y-auto">
-        <template v-for="item in items" :key="item.id">
+      <div
+        class="w-full h-full flex flex-col mb-2 overflow-y-auto"
+        v-if="profileStore.indexMarketplacesLeft"
+      >
+        <template
+          v-for="(item, key) in profileStore.indexMarketplacesLeft"
+          :key="item.id"
+        >
           <div
+            :class="[key % 2 == 0 ? 'bg-dark-charcoal-color' : '']"
             class="relative w-full min-h-[40px] max-h-[40px] h-full flex items-center pr-[20px]"
+            @mouseenter="activeItemId = item.id"
+            @mouseleave="activeItemId = null"
           >
             <div class="flex-grow flex items-center z-[1]">
               <span class="w-4 h-4 text-center text-12-semi text-gray-40-color">
@@ -145,9 +155,9 @@ const handleRouterWarehouse = () => {
                 alt=""
                 class="w-6 h-6 rounded-[50%] object-cover ml-1"
               />
-              <span class="text-10-semi text-gray-90-color ml-1">{{
-                item.name
-              }}</span>
+              <span class="text-10-semi text-gray-90-color ml-1">
+                {{ item.name }}
+              </span>
             </div>
             <div class="w-[80px] flex items-center justify-end z-[1]">
               <span class="text-10-semi text-gray-75-color">
@@ -156,16 +166,41 @@ const handleRouterWarehouse = () => {
             </div>
             <div class="w-[80px] flex items-center justify-end z-[1]">
               <span class="text-10-semi text-gray-75-color">
-                {{ item.totalSum.toLocaleString() }}
+                {{ item.amount.toLocaleString() }}
               </span>
             </div>
             <div
-              :style="{ width: `${item.percent >= 100 ? 100 : item.percent}%` }"
-              class="item-gradient w-[24%] h-full absolute z-[0] flex items-center justify-center border-r-2 border-malachite"
+              v-if="item.has_warning"
+              class="w-[80px] h-[16px] absolute top-[50%] left-[35%] z-[1] translate-y-[-50%] flex items-center justify-center gap-1 bg-red-500/25 rounded-md"
             >
-              <span class="text-[40px] italic font-bold text-gray-15-color">
-                {{ item.percent }}%
+              <span class="block w-[5px] h-[5px] rounded-[50%] bg-error-500">
               </span>
+              <span class="text-10-ext text-error-500"> Мало товара </span>
+            </div>
+            <div
+              v-if="item.products && item.id == activeItemId"
+              class="w-[155px] h-max absolute top-[50%] left-[35%] z-[5] translate-y-[-50%] flex flex-col items-center justify-center gap-1 p-3 bg-dark-gunmental-color rounded-lg border border-gray-15-color"
+            >
+              <div class="w-full flex items-center justify-between">
+                <span class="text-8-reg text-gray-90-color">Продукт</span>
+                <span class="text-[7px] font-extralight text-white">
+                  Остаток
+                </span>
+              </div>
+              <div
+                class="w-full h-[1px] block bg-dark-charcoal-color my-2"
+              ></div>
+              <div
+                class="w-full flex items-center justify-between"
+                v-for="product in item.products"
+              >
+                <span class="text-8-reg text-gray-90-color">
+                  {{ product.product_name }}
+                </span>
+                <span class="text-[7px] font-extralight text-white">
+                  {{ product.weight.toLocaleString() }} гр
+                </span>
+              </div>
             </div>
           </div>
         </template>

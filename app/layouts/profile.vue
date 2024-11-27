@@ -6,8 +6,12 @@ import {
   getStorageTypes,
 } from "~/modules/profile/components/Warehouse/warehouse.data";
 import { getStoragesLeft } from "~/modules/profile/components/Warehouse/Warehouse/warehouseBalance.data";
+import { useMainStore } from "~/stores/main";
+import { gerIndexMarketplaces } from "~/modules/profile/components/Dashboard/Balance/balance.data";
 
 const profileStore = useProfileStore();
+const mainStore = useMainStore();
+const { $loginRep } = useNuxtApp();
 
 watch(
   () => profileStore.reportGraphAddSettingModal,
@@ -21,10 +25,13 @@ watch(
 );
 
 onMounted(async () => {
+  const resUser = await $loginRep.getUser();
+  mainStore.user = resUser;
   await getStores();
   await getAreas();
   await getStorageTypes();
   await getStoragesLeft();
+  await gerIndexMarketplaces();
 });
 </script>
 

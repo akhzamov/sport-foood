@@ -43,7 +43,6 @@ const onSubmit = handleSubmit(async (values) => {
         username: login.value,
         password: password.value,
       });
-
       if (res.token) {
         setAuthToken(res.token);
         router.push("/");

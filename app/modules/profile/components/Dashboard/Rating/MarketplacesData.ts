@@ -1,6 +1,5 @@
 import { useProfileStore } from "~/modules/profile/stores/profile";
 
-
 export async function getMarketplacesData() {
   const { $salesPlanMarketplaceRep } = useNuxtApp();
   const profileStore = useProfileStore();
@@ -8,7 +7,8 @@ export async function getMarketplacesData() {
   try {
     const params = {
       store_id: profileStore.selectedBranch,
-      days: profileStore.activeDayFilter,
+      date_from: profileStore.activeDayFilterValue?.date_from,
+      date_to: profileStore.activeDayFilterValue?.date_to,
     };
     const res = await $salesPlanMarketplaceRep.getMarketplace(params);
     profileStore.marketplacesData = res.data;

@@ -2,6 +2,31 @@ import { useProfileStore } from "~/modules/profile/stores/profile";
 import { getMarketplacesData } from "~/modules/profile/components/Dashboard/Rating/MarketplacesData";
 import { useRouter } from "#app";
 
+function formatDate(date: Date) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
+function getDateRange(days: number | string) {
+  const today = new Date(); // Текущая дата
+  const dateTo = new Date(today); // Конец периода (сегодняшняя дата)
+  const dateFrom = new Date(today); // Начало периода
+
+  if (days === "месяц") {
+    // Устанавливаем начало месяца
+    dateFrom.setDate(1);
+  } else if (typeof days === "number") {
+    // Если это число (например, 30, 14, 7, 1)
+    dateFrom.setDate(today.getDate() - days + 1);
+  }
+
+  return {
+    date_from: formatDate(dateFrom),
+    date_to: formatDate(dateTo),
+  };
+}
 
 export async function getStores() {
   const { $storesRep } = useNuxtApp();
@@ -13,6 +38,11 @@ export async function getStores() {
     profileStore.stores = res;
     profileStore.selectedBranch = res ? res[0]?.id || 0 : 0;
     if (res.length > 0) {
+      const dates = getDateRange(profileStore.activeDayFilter ?? 30);
+      profileStore.activeDayFilterValue = {
+        date_from: dates.date_from,
+        date_to: dates.date_to,
+      };
       getSalesPlan();
       getMarketplacesData();
     }
@@ -33,7 +63,8 @@ export async function getSalesPlan() {
   try {
     const params = {
       store_id: profileStore.selectedBranch,
-      days: profileStore.activeDayFilter,
+      date_from: profileStore.activeDayFilterValue?.date_from,
+      date_to: profileStore.activeDayFilterValue?.date_to,
     };
     const res = await $salesPlanRep.getPlan(params);
     profileStore.salesPlan = res.data;

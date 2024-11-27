@@ -9,10 +9,11 @@
       ref="chartWrapper"
       class="chart-wrapper w-full flex overflow-y-auto h-[360px] bg-dark-charcoal-color"
     >
+      <canvas id="chartForMonth" v-if="profileStore.activeDayFilter == 0" />
       <canvas id="chartFor30Days" v-if="profileStore.activeDayFilter == 30" />
       <canvas id="chartFor14Days" v-if="profileStore.activeDayFilter == 14" />
       <canvas id="chartFor7Days" v-if="profileStore.activeDayFilter == 7" />
-      <canvas id="chartFor1Days" v-if="profileStore.activeDayFilter == 0" />
+      <canvas id="chartFor1Days" v-if="profileStore.activeDayFilter == 1" />
     </div>
   </div>
 </template>
@@ -70,7 +71,7 @@ const calcHeight = computed(() => {
     case 1:
       return 360; // 26px
     default:
-      return 360; // на случай, если данных нет
+      return numLines * 40; // на случай, если данных нет
   }
 });
 const maxDataValue = Math.floor(
@@ -306,8 +307,14 @@ async function initializeChart() {
     case 7:
       canvasId = "chartFor7Days";
       break;
-    case 0:
+    case 1:
       canvasId = "chartFor1Days";
+      break;
+    case 0:
+      canvasId = "chartForMonth";
+      break;
+    case 3:
+      canvasId = "chartForMonth";
       break;
     default:
       console.warn("Invalid day filter");

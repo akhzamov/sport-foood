@@ -1,3 +1,5 @@
+import type { IUser } from "~/types/user.type";
+
 type TLogin = {
   token: string;
 };
@@ -27,6 +29,22 @@ export class LoginRep {
         },
         body: {
           ...body,
+        },
+      }
+    );
+  }
+  async getUser(): Promise<IUser> {
+    const config = useRuntimeConfig();
+    const authToken = process.client ? localStorage.getItem("authToken") : "";
+    return await this.request<IUser>(
+      "GET",
+      `${config.public.apiBaseUrl}/api/user`,
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          // "Origin": window.location.origin,
         },
       }
     );

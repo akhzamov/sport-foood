@@ -7,8 +7,11 @@ import { useMainStore } from "~/stores/main";
 const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
 const mainStore = useMainStore();
+const { $loginRep } = useNuxtApp();
 
 onMounted(async () => {
+  const resUser = await $loginRep.getUser();
+  mainStore.user = resUser;
   await getPermissions();
 });
 </script>
