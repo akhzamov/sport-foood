@@ -2,7 +2,12 @@ import type { ISalesPlanMonth } from "~/modules/profile/types/salesPlan.type";
 import type { ISalesPlanDayData } from "~/modules/profile/types/Dashboard/salesPlanDay.type";
 import type { IMarketplaceDataMarket } from "~/modules/profile/types/Dashboard/marketplaceData.type";
 import type { IStore } from "./Dashboard/stores.type";
-import type { TIndexMarketplacesMarket } from "./Dashboard/indexMarketplaceLeft.type";
+import type {
+  TIndexAgent,
+  TIndexMarketplacesMarket,
+  TIndexStorage,
+} from "./Dashboard/indexBalance.type";
+import type { TPurchase } from "./Dashboard/purchases.type";
 
 interface IDaySalesProducts {
   product: string;
@@ -40,4 +45,7 @@ export interface IProfileStore {
   marketplacesTotalSold: number;
   marketplacesTotalSpending: number;
   indexMarketplacesLeft: Record<number, TIndexMarketplacesMarket> | null;
+  indexAgentsLeft: Record<number, TIndexAgent> | null;
+  indexStoragesLeft: Record<number, TIndexStorage> | null;
+  purchases: Record<number, TPurchase> | null;
 }

@@ -7,7 +7,12 @@ import {
 } from "~/modules/profile/components/Warehouse/warehouse.data";
 import { getStoragesLeft } from "~/modules/profile/components/Warehouse/Warehouse/warehouseBalance.data";
 import { useMainStore } from "~/stores/main";
-import { gerIndexMarketplaces } from "~/modules/profile/components/Dashboard/Balance/balance.data";
+import {
+  getIndexMarketplaces,
+  getIndexAgents,
+  getIndexStorages,
+} from "~/modules/profile/components/Dashboard/Balance/balance.data";
+import { getPurchases } from "~/modules/profile/components/Dashboard/Purchases/purchases.data";
 
 const profileStore = useProfileStore();
 const mainStore = useMainStore();
@@ -31,7 +36,10 @@ onMounted(async () => {
   await getAreas();
   await getStorageTypes();
   await getStoragesLeft();
-  await gerIndexMarketplaces();
+  await getIndexMarketplaces();
+  await getIndexAgents();
+  await getIndexStorages();
+  await getPurchases();
 });
 </script>
 

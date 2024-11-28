@@ -187,6 +187,12 @@ onMounted(() => {
       />
     </div>
   </div>
+  <div
+    v-else
+    class="sticky z-[20] w-full h-[400px] flex items-center justify-center bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+  >
+    <div class="loader"></div>
+  </div>
 </template>
 
 <style scoped></style>

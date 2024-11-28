@@ -1,6 +1,5 @@
-import type { IIndexMarketplaces } from "./../types/Dashboard/indexMarketplaceLeft.type";
-
-export class IndexMarketplacesRep {
+import type { IPurchases } from "~/modules/profile/types/Dashboard/purchases.type";
+export class PurchasesRep {
   private async request<T>(
     method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
     url: string,
@@ -12,15 +11,15 @@ export class IndexMarketplacesRep {
     });
   }
 
-  async getIndexMarketplaces(
+  async getPurchases(
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<IIndexMarketplaces> {
+  ): Promise<IPurchases> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IIndexMarketplaces>(
+    return await this.request<IPurchases>(
       "GET",
-      `${config.public.apiBaseUrl}/api/index-marketplace-left`,
+      `${config.public.apiBaseUrl}/api/purchases`,
       {
         params: {
           ...params,

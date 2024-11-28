@@ -9,6 +9,9 @@ const activeDayFilterBlocked = computed(
   () => profileStore.activeDayFilterBlocked
 );
 const salesPlan = computed(() => profileStore.salesPlan);
+const indexMarketplacesLeft = computed(
+  () => profileStore.indexMarketplacesLeft
+);
 const marketplacesData = computed(() => profileStore.marketplacesData);
 const isChartReady = ref(false);
 const datepicker = ref<any>(null);
@@ -212,7 +215,8 @@ watch(date, async (newDate) => {
       <DashboardBalance />
     </div>
     <div class="grid col-span-1">
-      <DashboardPurchases />
+      <DashboardChartLoadChart v-if="!profileStore.purchases" />
+      <DashboardPurchases v-if="profileStore.purchases"/>
     </div>
     <div class="grid col-span-1">
       <DashboardChartLoadChart v-if="!marketplacesData" />

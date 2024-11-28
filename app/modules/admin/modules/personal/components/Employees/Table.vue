@@ -11,63 +11,7 @@ const selectedRole = ref<number | null>(null);
 const selectStatusMenu = ref(false);
 const selectPositionMenu = ref(false);
 const selectRoleMenu = ref(false);
-const allChecked = ref(false);
-const employees = reactive([
-  {
-    id: 1,
-    checked: false,
-    name: "Дмитрий Петров",
-    status: "on_leave",
-    phone: "+7 (495) 123-45-67",
-    position: "Старший менеджер",
-    role: "Пользователь",
-  },
-  {
-    id: 2,
-    checked: false,
-    name: "Екатерина Новикова",
-    status: "is_working",
-    phone: "+7 (916) 234-56-78",
-    position: "Менеджер",
-    role: "Пользователь",
-  },
-  {
-    id: 3,
-    checked: false,
-    name: "Андрей Федоров",
-    status: "sick",
-    phone: "+7 (925) 345-67-89",
-    position: "Администратор",
-    role: "Администрация",
-  },
-  {
-    id: 4,
-    checked: false,
-    name: "Мария Смирнова",
-    status: "on_leave",
-    phone: "+7 (499) 456-78-90",
-    position: "Логист",
-    role: "Перемещение",
-  },
-  {
-    id: 5,
-    checked: false,
-    name: "Анна Соколова",
-    status: "absent",
-    phone: "+7 (903) 567-89-01",
-    position: "Маркетолог",
-    role: "Просмотр",
-  },
-  {
-    id: 6,
-    checked: false,
-    name: "Юлия Михайлова",
-    status: "dismissed",
-    phone: "+7 (812) 678-90-12",
-    position: "Маркетолог",
-    role: "Просмотр",
-  },
-]);
+const search = ref("");
 const statuses = reactive([
   { id: 1, name: "Все" },
   { id: 2, name: "В отпуске" },
@@ -132,46 +76,47 @@ const openEditTab = (title: number, id: string) => {
 <template>
   <div class="w-full h-full" @click="closeMenu()">
     <div
-      class="w-full flex-grow h-[40px] bg-dark-gunmental-color px-2 p-2 flex items-center justify-start"
+      class="w-full flex-grow h-[40px] bg-dark-gunmental-color px-2 p-2 flex items-center justify-between"
     >
-      <div class="w-auto h-full flex items-center justify-start">
-        <div
-          class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15-color"
-        >
-          <p class="text-16-400 text-gray-40-color">{{ route.name }}</p>
+      <div class="w-full h-full flex-grow flex items-center justify-start">
+        <div class="w-auto h-full flex items-center justify-start">
+          <div
+            class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15-color"
+          >
+            <p class="text-16-400 text-gray-40-color">{{ route.name }}</p>
+          </div>
+          <IconPlus
+            class="text-gray-40-color hover:text-primary-color ml-4"
+            @click="openNewTab('admin-employees-add')"
+          />
+          <!-- <IconTrash03 class="text-gray-40-color hover:text-error-500 ml-4" /> -->
         </div>
-        <IconPlus
-          class="text-gray-40-color hover:text-primary-color ml-4"
-          @click="openNewTab('admin-employees-add')"
-        />
-        <IconTrash03 class="text-gray-40-color hover:text-error-500 ml-4" />
-      </div>
-      <div
-        class="w-auto h-full flex items-center gap-3 border-l border-gray-15-color ml-3 pl-3"
-      >
-        <UiRoundedSelect
-          :model-value="selectedStatus"
-          :show-menu="selectStatusMenu"
-          :default-select-text="'Выбрать статус'"
-          :array="statuses"
-          @update:model-value="selectedStatus = $event"
-          @update:show-menu="
-            closeMenu();
-            selectStatusMenu = $event;
-          "
-        />
-        <UiRoundedSelect
-          :model-value="selectedPosition"
-          :show-menu="selectPositionMenu"
-          :default-select-text="'Выбрать должность'"
-          :array="positions"
-          @update:model-value="selectedPosition = $event"
-          @update:show-menu="
-            closeMenu();
-            selectPositionMenu = $event;
-          "
-        />
-        <!-- <UiRoundedSelect
+        <div
+          class="w-auto h-full flex items-center gap-3 border-l border-gray-15-color ml-3 pl-3"
+        >
+          <UiRoundedSelect
+            :model-value="selectedStatus"
+            :show-menu="selectStatusMenu"
+            :default-select-text="'Выбрать статус'"
+            :array="statuses"
+            @update:model-value="selectedStatus = $event"
+            @update:show-menu="
+              closeMenu();
+              selectStatusMenu = $event;
+            "
+          />
+          <UiRoundedSelect
+            :model-value="selectedPosition"
+            :show-menu="selectPositionMenu"
+            :default-select-text="'Выбрать должность'"
+            :array="positions"
+            @update:model-value="selectedPosition = $event"
+            @update:show-menu="
+              closeMenu();
+              selectPositionMenu = $event;
+            "
+          />
+          <!-- <UiRoundedSelect
           :model-value="selectedRole"
           :show-menu="selectRoleMenu"
           :default-select-text="'Выбрать роль'"
@@ -182,9 +127,23 @@ const openEditTab = (title: number, id: string) => {
             selectRoleMenu = $event;
           "
         /> -->
+        </div>
+      </div>
+      <div class="w-full h-full flex items-center justify-end">
+        <div
+          class="w-[240px] max-h-[32px] flex items-center justify-center pr-2 bg-gray-15-color border border-gray-90-color rounded-lg text-gray-90-color"
+        >
+          <UiInputIcon
+            v-model:model-value="search"
+            placeholder="Поиск..."
+            type="text"
+            class="max-w-[240px] px-2"
+          />
+          <IconSearchMd />
+        </div>
       </div>
     </div>
-    <table class="w-full">
+    <table class="w-full h-max">
       <thead class="w-full">
         <tr
           class="w-full h-[32px] flex items-center text-12-med text-gray-40-color border-b border-gray-40-color"
@@ -211,8 +170,11 @@ const openEditTab = (title: number, id: string) => {
           </th>
         </tr>
       </thead>
-      <tbody>
-        <template v-for="(employee, index) in adminStore.employees" :key="employee.id">
+      <tbody v-if="adminStore.employees">
+        <template
+          v-for="(employee, index) in adminStore.employees"
+          :key="employee.id"
+        >
           <tr
             @click="
               openEditTab(employee.id, `admin-employees-edit-${employee.id}`)
@@ -270,7 +232,7 @@ const openEditTab = (title: number, id: string) => {
             <th
               class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
             >
-              {{ employee.contact ? employee.contact : 'Пусто' }}
+              {{ employee.contact ? employee.contact : "Пусто" }}
             </th>
             <th
               class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
@@ -285,6 +247,9 @@ const openEditTab = (title: number, id: string) => {
           </tr>
         </template>
       </tbody>
+      <div v-else class="w-full h-[600px] flex items-center justify-center">
+        <div class="loader"></div>
+      </div>
     </table>
   </div>
 </template>

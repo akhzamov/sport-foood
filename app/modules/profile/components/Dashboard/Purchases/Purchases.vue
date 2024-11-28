@@ -1,118 +1,8 @@
 <script lang="ts" setup>
+import { useProfileStore } from "~/modules/profile/stores/profile";
+
 const router = useRouter();
-const activeFilter = ref("platform");
-const items = reactive([
-  {
-    id: "00123",
-    name: "OOO Vortex",
-    driver: "Смоляков Максим",
-    started_date: new Date(),
-    deliveries: [
-      {
-        name: "Пермь",
-        status: "warning",
-        end_date: null,
-      },
-      {
-        name: "Сочи",
-        status: "en_route",
-        end_date: null,
-      },
-      {
-        name: "Пермь",
-        status: "en_route",
-        end_date: null,
-      },
-      {
-        name: "Пермь",
-        status: "en_route",
-        end_date: null,
-      },
-    ],
-  },
-  {
-    id: "00124",
-    name: "Power",
-    driver: "Иванов Иван",
-    started_date: new Date(),
-    deliveries: [
-      {
-        name: "Казань",
-        status: "finished",
-        end_date: new Date(),
-      },
-      {
-        name: "Челябинск",
-        status: "en_route",
-        end_date: null,
-      },
-      {
-        name: "Самара",
-        status: "en_route",
-        end_date: null,
-      },
-    ],
-  },
-  {
-    id: "00125",
-    name: "Muscle",
-    driver: "Уралов Александр",
-    started_date: new Date(),
-    deliveries: [
-      {
-        name: "Иркутск",
-        status: "finished",
-        end_date: new Date(),
-      },
-      {
-        name: "Уфа",
-        status: "en_route",
-        end_date: null,
-      },
-    ],
-  },
-  {
-    id: "00126",
-    name: "Factory",
-    driver: "Ягофаров Гафур",
-    started_date: new Date(),
-    deliveries: [
-      {
-        name: "Новосибирск",
-        status: "finished",
-        end_date: new Date(),
-      },
-      {
-        name: "Челябинск",
-        status: "finished",
-        end_date: new Date(),
-      },
-      {
-        name: "Омск",
-        status: "en_route",
-        end_date: null,
-      },
-    ],
-  },
-  {
-    id: "00127",
-    name: "Jamala",
-    driver: "Тимуров Евгений",
-    started_date: new Date(),
-    deliveries: [
-      {
-        name: "Барнаул",
-        status: "finished",
-        end_date: new Date(),
-      },
-      {
-        name: "Ярославль",
-        status: "en_route",
-        end_date: null,
-      },
-    ],
-  },
-]);
+const profileStore = useProfileStore();
 
 const handleRouterWarehouse = () => {
   router.push("/profile-warehouse");
@@ -134,21 +24,26 @@ const formatDate = (value: string | Date): string => {
     >
       <h4 class="text-14-bold text-gray-90-color">Закупки</h4>
     </div>
-    <div class="flex flex-col w-full h-[360px] bg-white/5">
-      <template v-for="item in items" :key="item.id">
+    <div
+      class="w-full h-[360px] flex flex-col bg-white/5 overflow-x-auto"
+      v-if="profileStore.purchases"
+    >
+      <template v-for="purchase in profileStore.purchases" :key="purchase.id">
         <div
           class="w-full h-[68px] p-1 flex items-center border-b border-gray-15-color"
         >
           <div
-            class="w-[73px] h-full bg-gray-15-color rounded-[4px] flex flex-col items-start gap-1 p-2 mr-3"
+            class="w-[93px] h-full bg-gray-15-color rounded-[4px] flex flex-col items-start gap-1 p-2 mr-3"
           >
-            <span class="text-10-ext text-gray-90-color">ID {{ item.id }}</span>
+            <span class="text-10-ext text-gray-90-color"
+              >ID {{ purchase.id }}</span
+            >
             <span class="text-10-semi text-gray-90-color">
-              {{ item.name }}
+              {{ purchase.supplier_name }}
             </span>
             <span class="text-8-reg text-gray-75-color">
-              {{ item.driver.split(" ")[0] }}
-              {{ item.driver.split(" ")[1]?.[0] }}.
+              {{ purchase.driver_name.split(" ")[0] }}
+              {{ purchase.driver_name.split(" ")[1]?.[0] }}.
             </span>
           </div>
           <div
@@ -189,13 +84,13 @@ const formatDate = (value: string | Date): string => {
             <div class="flex flex-col items-start gap-[2px]">
               <p class="text-10-reg text-gray-90-color">Старт</p>
               <span class="text-8-ext text-gray-75-color">
-                {{ formatDate(item.started_date) }}
+                {{ purchase.start_date }}
               </span>
             </div>
           </div>
-          <template v-for="(delivery, index) in item.deliveries">
+          <template v-for="(city, index) in purchase.cities">
             <div
-              v-if="delivery.status == 'warning'"
+              v-if="city.status == 'Не полностью'"
               class="w-[60px] h-full flex flex-col items-start justify-center gap-2"
             >
               <div class="w-full flex items-center justify-start">
@@ -213,13 +108,15 @@ const formatDate = (value: string | Date): string => {
                   />
                 </div>
                 <div
-                  v-if="item.deliveries.length != index + 1"
+                  v-if="
+                    Object.keys(purchase.cities).length.toString() != index + 1
+                  "
                   class="flex-grow block w-full h-[2px] bg-gray-40-color"
                 ></div>
               </div>
               <div class="flex flex-col items-start gap-[2px]">
                 <p class="text-10-reg text-gray-90-color truncate-text">
-                  {{ delivery.name }}
+                  {{ city.name }}
                 </p>
                 <span class="text-8-ext text-gray-75-color">
                   Не полностью
@@ -227,7 +124,7 @@ const formatDate = (value: string | Date): string => {
               </div>
             </div>
             <div
-              v-if="delivery.status == 'finished'"
+              v-if="city.status == 'Доставлен'"
               class="w-[60px] h-full flex flex-col items-start justify-center gap-2"
             >
               <div class="w-full flex items-center justify-start">
@@ -245,7 +142,9 @@ const formatDate = (value: string | Date): string => {
                   />
                 </div>
                 <div
-                  v-if="item.deliveries.length != index + 1"
+                  v-if="
+                    Object.keys(purchase.cities).length.toString() != index + 1
+                  "
                   class="relative flex-grow block w-full h-[2px] bg-yellow-500/70"
                 >
                   <div
@@ -265,19 +164,15 @@ const formatDate = (value: string | Date): string => {
               </div>
               <div class="flex flex-col items-start gap-[2px]">
                 <p class="text-10-reg text-gray-90-color truncate-text">
-                  {{ delivery.name }}
+                  {{ city.name }}
                 </p>
                 <span class="text-8-ext text-gray-75-color">
-                  {{
-                    delivery.end_date
-                      ? formatDate(delivery.end_date)
-                      : "завершен"
-                  }}
+                  {{ city.arrived_at ? city.arrived_at : "завершен" }}
                 </span>
               </div>
             </div>
             <div
-              v-if="delivery.status == 'en_route'"
+              v-if="city.status == 'В пути'"
               class="w-[60px] h-full flex flex-col items-start justify-center gap-2"
             >
               <div class="w-full flex items-center justify-start">
@@ -289,13 +184,15 @@ const formatDate = (value: string | Date): string => {
                   </span>
                 </div>
                 <div
-                  v-if="item.deliveries.length != index + 1"
+                  v-if="
+                    Object.keys(purchase.cities).length.toString() != index + 1
+                  "
                   class="flex-grow block w-full h-[2px] bg-gray-40-color"
                 ></div>
               </div>
               <div class="flex flex-col items-start gap-[2px]">
                 <p class="text-10-reg text-gray-90-color truncate-text">
-                  {{ delivery.name }}
+                  {{ city.name }}
                 </p>
                 <span class="text-8-ext text-gray-75-color"> В пути </span>
               </div>
@@ -304,6 +201,15 @@ const formatDate = (value: string | Date): string => {
         </div>
       </template>
     </div>
+    <!-- <div
+      v-else
+      class="w-full h-full flex flex-col items-center justify-center mb-2 overflow-y-auto"
+    >
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div> -->
   </div>
 </template>
 
