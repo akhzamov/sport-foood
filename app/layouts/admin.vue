@@ -3,6 +3,9 @@ import { useAdminLogisticsStore } from "~/modules/admin/modules/logistics/stores
 import { getPermissions } from "~/modules/admin/modules/personal/components/Roles/roles.data";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
+import { getUsers } from "~/modules/admin/modules/personal/components/Employees/employees.data";
+import { getSalesAgents } from "~/modules/admin/modules/personal/components/SalesAgents/salesAgents.data";
+import { getStores } from "~/modules/profile/components/Header/profileHeader.data";
 
 const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
@@ -12,7 +15,10 @@ const { $loginRep } = useNuxtApp();
 onMounted(async () => {
   const resUser = await $loginRep.getUser();
   mainStore.user = resUser;
+  await getStores();
   await getPermissions();
+  await getUsers();
+  await getSalesAgents();
 });
 </script>
 
@@ -36,7 +42,7 @@ onMounted(async () => {
     <div class="w-full h-full flex">
       <AdminAside />
       <div class="relative w-full h-full flex bg-dark-charcoal-color">
-        <div class="flex-grow z-[0]">
+        <div class="w-full h-auto flex-grow z-[0]">
           <NuxtPage />
         </div>
         <AdminRightTabs v-if="adminStore.activeOpenTabs.length > 0" />

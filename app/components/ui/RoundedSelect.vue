@@ -2,7 +2,7 @@
 const props = withDefaults(
   defineProps<{
     defaultSelectText: string;
-    array: { id: number; name: string }[];
+    array: any;
     showMenu: boolean;
     modelValue: number | null;
   }>(),
@@ -20,7 +20,7 @@ const activeMenu = (): void => {
 };
 const selectItem = (id: number): void => {
   if (props.array) {
-    let selectedItem = props.array.find((item) => item.id == id);
+    let selectedItem = props.array.find((item: any) => item.id == id);
     if (selectedItem) {
       selectedItemId.value = selectedItem.id;
       selectedItemName.value = selectedItem.name;

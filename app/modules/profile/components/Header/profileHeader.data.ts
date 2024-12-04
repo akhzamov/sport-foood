@@ -14,7 +14,7 @@ function getDateRange(days: number | string) {
   const dateTo = new Date(today); // Конец периода (сегодняшняя дата)
   const dateFrom = new Date(today); // Начало периода
 
-  if (days === "месяц") {
+  if (days === 0) {
     // Устанавливаем начало месяца
     dateFrom.setDate(1);
   } else if (typeof days === "number") {
@@ -38,7 +38,7 @@ export async function getStores() {
     profileStore.stores = res;
     profileStore.selectedBranch = res ? res[0]?.id || 0 : 0;
     if (res.length > 0) {
-      const dates = getDateRange(profileStore.activeDayFilter ?? 30);
+      const dates = getDateRange(profileStore.activeDayFilter ?? 0);
       profileStore.activeDayFilterValue = {
         date_from: dates.date_from,
         date_to: dates.date_to,

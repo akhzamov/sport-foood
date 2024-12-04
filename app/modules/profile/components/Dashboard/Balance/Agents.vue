@@ -19,23 +19,20 @@ const imgPath = "/img/ozon.png";
         <p class="text-10-reg text-gray-40-color">Торговые агенты</p>
       </div>
       <div
-        class="w-[125px] h-full flex flex-col items-center justify-center border-r border-gray-15-color"
+        class="w-[100px] h-full flex flex-col items-center justify-center border-r border-gray-15-color"
       >
         <p class="text-10-ext text-center text-gray-40-color">На руках</p>
         <div
           class="w-full h-[14px] flex items-center border-t border-gray-15-color"
         >
           <div
-            class="w-[50%] flex items-center justify-end px-1 border-r border-gray-15-color"
+            class="w-[100%] flex items-center justify-end px-1"
           >
             <p class="text-10-ext text-gray-40-color">Вес</p>
           </div>
-          <div class="w-[50%] flex items-center justify-end px-1">
-            <p class="text-10-ext text-gray-40-color">Сумма</p>
-          </div>
         </div>
       </div>
-      <div class="w-[125px] h-full flex flex-col items-center justify-center">
+      <div class="w-[150px] h-full flex flex-col items-center justify-center">
         <p class="text-10-ext text-center text-gray-40-color">На витрине</p>
         <div
           class="w-full h-[14px] flex items-center border-t border-gray-15-color"
@@ -71,30 +68,25 @@ const imgPath = "/img/ozon.png";
             </p>
           </div>
           <div
-            class="max-w-[125px] w-full h-full flex items-center justify-end border-r border-gray-15-color"
+            class="max-w-[100px] w-full h-full flex items-center justify-end border-r border-gray-15-color"
           >
             <div
-              class="w-[50%] h-full flex items-center justify-end px-1 border-r border-gray-15-color"
+              class="w-full h-full flex items-center justify-end px-1 border-r border-gray-15-color"
             >
               <span
                 class="text-10-ext"
                 :class="[
-                  agent.store_weight <= 0
+                  agent.hand_weight <= 1
                     ? 'text-error-500'
                     : 'text-success-500',
                 ]"
               >
-                {{ agent.store_weight.toFixed(1) }} гр
-              </span>
-            </div>
-            <div class="w-[50%] h-full flex items-center justify-end px-1">
-              <span class="text-10-reg text-gray-75-color">
-                {{ agent.store_amount.toFixed(1) }}
+                {{ agent.hand_weight.toFixed(1) }} гр
               </span>
             </div>
           </div>
           <div
-            class="max-w-[125px] w-full h-full flex items-center justify-end"
+            class="max-w-[150px] w-full h-full flex items-center justify-end"
           >
             <div
               class="w-[50%] h-full flex items-center justify-end px-1 border-r border-gray-15-color"
@@ -105,12 +97,12 @@ const imgPath = "/img/ozon.png";
                   agent.has_warning ? 'text-error-500' : 'text-success-500',
                 ]"
               >
-                {{ agent.hand_weight.toFixed(1) }}
+                {{ agent.store_weight.toFixed(1) }}
               </span>
             </div>
             <div class="w-[50%] h-full flex items-center justify-end px-1">
               <span class="text-10-reg text-gray-75-color">
-                {{ agent.hand_amount ? agent.hand_amount.toFixed(1) : "пусто" }}
+                {{ agent.store_amount.toFixed(1) }}
               </span>
             </div>
           </div>

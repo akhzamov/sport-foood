@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { useAdminStore } from "~/modules/admin/stores/admin";
+import { getSalesAgents } from "~/modules/admin/modules/personal/components/SalesAgents/salesAgents.data";
+
 useSeoMeta({
   title: "Sport Food | Admin Sales Agents",
 });
@@ -9,25 +12,40 @@ definePageMeta({
   name: "Торговые Агенты",
 });
 
-const route = useRoute();
+const adminStore = useAdminStore();
+const totalPages = computed(() => {
+  if (adminStore.salesAgentsPagination) {
+    return Math.ceil(
+      adminStore.salesAgentsPagination.total /
+        adminStore.salesAgentsPagination.per_page
+    );
+  } else {
+    return 0;
+  }
+});
+const changePage = (value: number) => {
+  adminStore.salesAgentsPage = value;
+  getSalesAgents();
+};
 </script>
 
 <template>
-  <div class="w-full h-full overflow-y-hidden">
+  <div class="w-full h-full flex flex-col justify-between pb-[70px]">
+    <SalesAgentsTable />
     <div
-      class="w-full h-[40px] bg-dark-gunmental-color px-2 p-2 overflow-x-hidden"
+      class="h-[90px] py-[12px] px-[24px] border-t border-gray-15-color"
+      v-if="
+        adminStore.salesAgentsPagination &&
+        adminStore.salesAgentsPagination.total > adminStore.salesAgentsPerPage
+      "
     >
-      <div class="flex-grow h-full flex items-center justify-start">
-        <div
-          class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15-color"
-        >
-          <p class="text-16-400 text-gray-40-color">{{ route.name }}</p>
-        </div>
-        <IconPlus class="text-gray-40-color hover:text-primary-color ml-4" />
-        <IconTrash03 class="text-gray-40-color hover:text-error-500 ml-4" />
-      </div>
+      <UiAdminPagination
+        :total-pages="totalPages"
+        :current-page="adminStore.salesAgentsPage"
+        v-model:model-value="adminStore.salesAgentsPage"
+        @update:model-value="changePage"
+      />
     </div>
-    <h2>Sales Agents</h2>
   </div>
 </template>
 

@@ -4,6 +4,11 @@ import { useAdminLogisticsStore } from "../../../logistics/stores/adminLogistics
 import { getUserById, editUserById } from "./employees.data";
 
 const adminStore = useAdminStore();
+const toggle = ref(false);
+const openPermission = ref(false);
+const openPermissionID = ref("");
+const openPermissionName = ref("");
+
 const removePermission = (permissionName: string) => {
   if (adminStore.employee) {
     const updatedPermissions = adminStore.employee.permissions.filter(
@@ -13,12 +18,22 @@ const removePermission = (permissionName: string) => {
     adminStore.employee.permissions.push(...updatedPermissions);
   }
 };
-
 const addPermission = (permissionName: string) => {
   if (adminStore.employee) {
     if (!adminStore.employee.permissions.includes(permissionName)) {
       adminStore.employee.permissions.push(permissionName);
     }
+  }
+};
+const openAndClosePermission = (key: string, permissionName: string) => {
+  if (openPermission.value) {
+    openPermission.value = false;
+    openPermissionID.value = "";
+    openPermissionName.value = "";
+  } else {
+    openPermission.value = true;
+    openPermissionID.value = key;
+    openPermissionName.value = permissionName;
   }
 };
 
@@ -114,21 +129,23 @@ onMounted(() => {
         >
           <div class="w-full h-8 flex items-center justify-between">
             <p class="text-16-reg text-gray-75-color">{{ key }}</p>
-            <IconChevronDown class="text-gray-90-color" />
+            <!-- <IconChevronDown class="text-gray-90-color" /> -->
           </div>
           <template v-for="permission in permissionGroup">
             <div
-              class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color"
+              @click="openAndClosePermission(key, permission.name)"
+              class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color cursor-pointer select-none"
             >
               <p class="text-16-reg text-gray-75-color">
                 {{ permission.display_name }}
               </p>
-              <div class="h-full flex items-center gap-2 cursor-pointer">
-                <!-- <div
+              <IconChevronDown class="text-gray-75-color" />
+              <!-- <div class="h-full flex items-center gap-2 cursor-pointer">
+                <div
                   class="w-7 h-7 flex items-center justify-center rounded-[4px] bg-white/5"
                 >
                   <IconEdit05 class="text-gray-90-color w-5 h-5" />
-                </div> -->
+                </div>
                 <div
                   @click="addPermission(permission.name)"
                   class="w-6 h-6 flex items-center justify-center rounded-[4px] bg-white/5 text-gray-90-color hover:text-success-500"
@@ -158,6 +175,33 @@ onMounted(() => {
                     class="w-5 h-5"
                   />
                 </div>
+              </div> -->
+            </div>
+            <div
+              v-if="
+                openPermission &&
+                openPermissionID == key &&
+                openPermissionName == permission.name
+              "
+              class="w-full h-max flex flex-col items-center justify-between gap-3 p-2 rounded-lg bg-dark-onix-color cursor-pointer"
+            >
+              <div class="w-full flex items-center justify-between">
+                <p class="text-16-reg text-gray-75-color">
+                  {{ permission.display_name }} ( Просмотр )
+                </p>
+                <UiToggle
+                  v-model:model-value="toggle"
+                  @update:model-value="toggle = $event"
+                />
+              </div>
+              <div class="w-full flex items-center justify-between">
+                <p class="text-16-reg text-gray-75-color">
+                  {{ permission.display_name }} ( Редактирование )
+                </p>
+                <UiToggle
+                  v-model:model-value="toggle"
+                  @update:model-value="toggle = $event"
+                />
               </div>
             </div>
           </template>

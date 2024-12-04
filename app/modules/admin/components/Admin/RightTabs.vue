@@ -70,6 +70,16 @@ onMounted(() => {
         "
       />
     </template>
+    <template v-for="data in adminStore.salesAgents">
+      <SalesAgentsEdit
+        :data="data"
+        v-if="
+          `admin-salesAgents-edit-${data.id}` === adminStore.activeOpenTab &&
+          adminStore.activeOpenTabs.length > 0 &&
+          adminStore.activeOpenTab !== 'admin-logistics-add'
+        "
+      />
+    </template>
     <template v-for="data in adminStore.activeOpenTabs">
       <LogisticsAdd
         v-if="

@@ -4,6 +4,10 @@ import type {
   TUserID,
 } from "../Personal/Employees/users.type";
 import type { IPermissions } from "../Personal/Roles/permissions.type";
+import type {
+  ISalesAgents,
+  TSalesAgent,
+} from "../Personal/SalesAgents/salesAgents.type";
 
 interface IAdminLogisticsTab {
   id: string;
@@ -22,4 +26,9 @@ export interface IAdminStore {
   employeesPerPage: number;
   employee: TUserID | null;
   permissions: IPermissions | null;
+  salesAgents: Record<number, TSalesAgent> | null;
+  salesAgent: TSalesAgent | null;
+  salesAgentsPagination: TPagination | null;
+  salesAgentsPage: number;
+  salesAgentsPerPage: number;
 }
