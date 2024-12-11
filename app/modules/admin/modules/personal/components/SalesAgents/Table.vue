@@ -201,7 +201,7 @@ const selectBranch = (value: number) => {
             <th
               class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
             >
-              {{ agent.phone ? agent.phone : "Пусто" }}
+              {{ agent.contact ? agent.contact : "Пусто" }}
             </th>
           </tr>
         </template>

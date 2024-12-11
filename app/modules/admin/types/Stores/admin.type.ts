@@ -1,13 +1,21 @@
 import type {
-  TPagination,
+  IDriverAreas,
+  TDriver,
+  TDriverArea,
+} from "../../modules/personal/types/Personal/Drivers/drivers.type";
+import type {
   TUser,
   TUserID,
-} from "../Personal/Employees/users.type";
-import type { IPermissions } from "../Personal/Roles/permissions.type";
+} from "../../modules/personal/types/Personal/Employees/users.type";
+import type {
+  IPermissions,
+  TPermissions,
+} from "../../modules/personal/types/Personal/Roles/permissions.type";
 import type {
   ISalesAgents,
   TSalesAgent,
-} from "../Personal/SalesAgents/salesAgents.type";
+} from "../../modules/personal/types/Personal/SalesAgents/salesAgents.type";
+import type { TPagination } from "../Others/pagination.type";
 
 interface IAdminLogisticsTab {
   id: string;
@@ -25,10 +33,16 @@ export interface IAdminStore {
   employeesPage: number;
   employeesPerPage: number;
   employee: TUserID | null;
-  permissions: IPermissions | null;
+  permissions: TPermissions | null;
   salesAgents: Record<number, TSalesAgent> | null;
   salesAgent: TSalesAgent | null;
   salesAgentsPagination: TPagination | null;
   salesAgentsPage: number;
   salesAgentsPerPage: number;
+  drivers: Record<string, TDriver> | null;
+  driver: TDriver | null;
+  driverAreas: Record<number, TDriverArea> | null;
+  driversPagination: TPagination | null;
+  driversPage: number;
+  driversPerPage: number;
 }

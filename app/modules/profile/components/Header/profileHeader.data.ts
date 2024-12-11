@@ -35,6 +35,9 @@ export async function getStores() {
   profileStore.salesPlan = null;
   try {
     const res = await $storesRep.getStores();
+    res.forEach((item) => {
+      item.checked = false;
+    });
     profileStore.stores = res;
     profileStore.selectedBranch = res ? res[0]?.id || 0 : 0;
     if (res.length > 0) {

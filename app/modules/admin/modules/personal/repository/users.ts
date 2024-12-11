@@ -1,4 +1,4 @@
-import type { IUsers, IUser } from "~/modules/admin/types/Personal/Employees/users.type";
+import type { IUsers, IUser } from "~/modules/admin/modules/personal/types/Personal/Employees/users.type";
 
 export class UsersRep {
   private async request<T>(
@@ -61,7 +61,7 @@ export class UsersRep {
   }
   async editUserById(
     id: number,
-    body?: Record<string, any>,
+    body: Record<string, any>,
     params?: Record<string, any>,
     headers?: Record<string, string>
   ): Promise<IUser> {

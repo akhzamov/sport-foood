@@ -1,4 +1,4 @@
-import type { IPermissions } from "~/modules/admin/types/Personal/Roles/permissions.type";
+import type { IPermissions } from "~/modules/admin/modules/personal/types/Personal/Roles/permissions.type";
 
 export class PermissionsRep {
   private async request<T>(

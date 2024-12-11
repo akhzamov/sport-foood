@@ -1,15 +1,8 @@
+import type { TPagination } from "~/modules/admin/types/Others/pagination.type";
+
 type TUserStore = {
   id: number;
   name: string;
-};
-
-export type TPagination = {
-  current_page: number;
-  per_page: number;
-  total: number;
-  last_page: number;
-  next_page_url: string;
-  prev_page_url: string;
 };
 
 export type TUser = {
@@ -39,5 +32,9 @@ export interface IUsers {
 
 export interface IUser {
   success: boolean;
-  data: TUserID;
+  message: string;
+  errors?: {
+    [key: string]: string[];
+  };
+  data?: TUserID;
 }

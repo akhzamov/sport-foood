@@ -1,11 +1,4 @@
-export type TPagination = {
-  current_page: number;
-  per_page: number;
-  total: number;
-  last_page: number;
-  next_page_url: string;
-  prev_page_url: string;
-};
+import type { TPagination } from "~/modules/admin/types/Others/pagination.type";
 
 type TSalesAgentStore = {
   id: number;
@@ -16,8 +9,8 @@ export type TSalesAgent = {
   id: number;
   name: string;
   status: string;
-  phone: string | null;
-  stores: Record<symbol, TSalesAgentStore>;
+  contact: string | null;
+  stores: TSalesAgentStore[];
 };
 
 export interface ISalesAgents {
@@ -41,10 +34,13 @@ export interface ISalesAgentDelete {
 export interface ISalesAgentEdit {
   success: boolean;
   message: string;
-  data: {
+  data?: {
     id: number;
     name: string;
     phone: string;
     stores: Record<symbol, TSalesAgentStore>;
+  };
+  errors?: {
+    [key: string]: string[];
   };
 }

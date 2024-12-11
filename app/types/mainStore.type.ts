@@ -13,4 +13,5 @@ export interface IMainStore {
   confirmModal: boolean;
   confirmModalTitle: string;
   confirmModalText: string;
+  isLoading: boolean;
 }

@@ -14,6 +14,7 @@ export const useMainStore = defineStore("main", {
     confirmModal: false,
     confirmModalTitle: "",
     confirmModalText: "",
+    isLoading: false,
   }),
   actions: {},
 });

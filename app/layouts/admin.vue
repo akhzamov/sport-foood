@@ -6,6 +6,7 @@ import { useMainStore } from "~/stores/main";
 import { getUsers } from "~/modules/admin/modules/personal/components/Employees/employees.data";
 import { getSalesAgents } from "~/modules/admin/modules/personal/components/SalesAgents/salesAgents.data";
 import { getStores } from "~/modules/profile/components/Header/profileHeader.data";
+import { getDriverAreas, getDrivers } from "~/modules/admin/modules/personal/components/Drivers/drivers.data";
 
 const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
@@ -19,6 +20,8 @@ onMounted(async () => {
   await getPermissions();
   await getUsers();
   await getSalesAgents();
+  await getDrivers();
+  await getDriverAreas();
 });
 </script>
 

@@ -18,6 +18,13 @@ export const useAdminStore = defineStore("admin", {
     salesAgentsPagination: null,
     salesAgentsPage: 1,
     salesAgentsPerPage: 15,
+    drivers: null,
+    driver: null,
+    driverAreas: null,
+    driversPagination: null,
+    driversPage: 1,
+    driversPerPage: 15,
+    stores: null,
   }),
   actions: {},
 });

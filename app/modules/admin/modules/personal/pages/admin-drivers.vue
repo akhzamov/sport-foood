@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { useAdminStore } from "~/modules/admin/stores/admin";
+import { getDrivers } from "../components/Drivers/drivers.data";
+
 useSeoMeta({
   title: "Sport Food | Admin Drivers",
 });
@@ -10,24 +13,39 @@ definePageMeta({
 });
 
 const route = useRoute();
+const adminStore = useAdminStore();
+const totalPages = computed(() => {
+  if (adminStore.driversPagination) {
+    return Math.ceil(
+      adminStore.driversPagination.total / adminStore.driversPagination.per_page
+    );
+  } else {
+    return 0;
+  }
+});
+const changePage = (value: number) => {
+  adminStore.employeesPage = value;
+  getDrivers();
+};
 </script>
 
 <template>
-  <div class="w-full h-full overflow-y-hidden">
-    <div
-      class="w-full h-[40px] bg-dark-gunmental-color px-2 p-2 overflow-x-hidden"
-    >
-      <div class="flex-grow h-full flex items-center justify-start">
-        <div
-          class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15-color"
-        >
-          <p class="text-16-400 text-gray-40-color">{{ route.name }}</p>
-        </div>
-        <IconPlus class="text-gray-40-color hover:text-primary-color ml-4" />
-        <IconTrash03 class="text-gray-40-color hover:text-error-500 ml-4" />
-      </div>
-    </div>
+  <div class="w-full h-full flex flex-col justify-between pb-[70px]">
     <DriversTable />
+    <div
+      class="h-[90px] py-[12px] px-[24px] border-t border-gray-15-color"
+      v-if="
+        adminStore.driversPagination &&
+        adminStore.driversPagination.total > adminStore.driversPerPage
+      "
+    >
+      <UiAdminPagination
+        :total-pages="totalPages"
+        :current-page="adminStore.employeesPage"
+        v-model:model-value="adminStore.employeesPage"
+        @update:model-value="changePage"
+      />
+    </div>
   </div>
 </template>
 

@@ -13,6 +13,7 @@ import { PermissionsRep } from "~/modules/admin/modules/personal/repository/perm
 import { IndexBalanceRep } from "~/modules/profile/repository/indexBalance";
 import { PurchasesRep } from "~/modules/profile/repository/purchases";
 import { SalesAgentsRep } from "~/modules/admin/modules/personal/repository/salesAgents";
+import type { DriversRep } from "~/modules/admin/modules/personal/repository/drivers";
 
 declare module "#app" {
   interface NuxtApp {
@@ -31,5 +32,6 @@ declare module "#app" {
     $indexBalanceRep: IndexBalanceRep;
     $purchasesRep: PurchasesRep;
     $salesAgentsRep: SalesAgentsRep;
+    $driversRep: DriversRep;
   }
 }

@@ -6,7 +6,14 @@ export async function getPermissions() {
   adminStore.permissions = null;
   try {
     const res = await $permissionsRep.getPermissions();
-    adminStore.permissions = res;
+    for (const key in res.data) {
+      for (const key2 in res.data[key]) {
+        res.data[key][key2]?.forEach((item) => {
+          item.checked = false;
+        });
+      }
+    }
+    adminStore.permissions = res.data;
   } catch (error) {
     console.error("Не удалось получить /permissions: ", error);
   }
