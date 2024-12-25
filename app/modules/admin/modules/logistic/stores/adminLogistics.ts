@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import type { IAdminLogisticsStore } from "~/modules/admin/modules/logistics/types/Stores/adminLogistics.type";
-import { logisticData } from "~/modules/admin/modules/logistics/components/Logistics/logisticsTable.data";
+import type { IAdminLogisticsStore } from "~/modules/admin/modules/logistic/types/Stores/adminLogistics.type";
+import { logisticData } from "~/modules/admin/modules/logistic/components/Logistics/logisticsTable.data";
 
 export const useAdminLogisticsStore = defineStore("adminLogistics", {
   state: (): IAdminLogisticsStore => ({

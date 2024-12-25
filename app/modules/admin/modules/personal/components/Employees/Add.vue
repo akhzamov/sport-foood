@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
-import { useAdminLogisticsStore } from "../../../logistics/stores/adminLogistics";
 import { getUserById, editUserById } from "./employees.data";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import type { TUserID } from "../../types/Personal/Employees/users.type";
 import { useMainStore } from "~/stores/main";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 const schema = yup.object({
   username: yup
@@ -33,6 +33,7 @@ const { value: contact, errorMessage: contactError } =
 const adminStore = useAdminStore();
 const profileStore = useProfileStore();
 const mainStore = useMainStore();
+const personalStore = usePersonalStore();
 const toggle = ref(false);
 const openPermission = ref(false);
 const openPermissionName = ref("");
@@ -161,11 +162,11 @@ onUnmounted(() => {
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1"> Должность </label>
         <UiInput
-          :modelValue="adminStore.employee?.role"
+          :modelValue="personalStore.employee?.role"
           @update:modelValue="
             (value) => {
-              if (adminStore.employee) {
-                adminStore.employee.role = value;
+              if (personalStore.employee) {
+                personalStore.employee.role = value;
               }
             }
           "
@@ -177,11 +178,11 @@ onUnmounted(() => {
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">Статус</label>
         <UiInput
-          :modelValue="adminStore.employee?.status"
+          :modelValue="personalStore.employee?.status"
           @update:modelValue="
             (value) => {
-              if (adminStore.employee) {
-                adminStore.employee.status = value;
+              if (personalStore.employee) {
+                personalStore.employee.status = value;
               }
             }
           "
@@ -237,7 +238,7 @@ onUnmounted(() => {
     ></div>
     <div class="flex items-start justify-between flex-col gap-3 mt-3">
       <p class="text-12-reg text-gray-90-color">Доступы</p>
-      <template v-for="(permissionGroup, key) in adminStore.permissions">
+      <template v-for="(permissionGroup, key) in personalStore.permissions">
         <div
           class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color"
         >

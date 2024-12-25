@@ -1,19 +1,18 @@
-import { useAdminStore } from "~/modules/admin/stores/admin";
-import { useProfileStore } from "~/modules/profile/stores/profile";
+import { usePaymentStore } from "~/modules/admin/stores/payment";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 import { useMainStore } from "~/stores/main";
 
 export async function getDrivers() {
   const { $driversRep } = useNuxtApp();
-  const adminStore = useAdminStore();
-  adminStore.drivers = null;
+  const personalStore = usePersonalStore();
   try {
     const params = {
-      page: adminStore.salesAgentsPage,
-      per_page: adminStore.salesAgentsPerPage,
+      page: personalStore.salesAgentsPage,
+      per_page: personalStore.salesAgentsPerPage,
     };
     const res = await $driversRep.getDrivers(params);
-    adminStore.drivers = res.data.drivers;
-    adminStore.driversPagination = res.pagination;
+    personalStore.drivers = res.data.drivers;
+    personalStore.driversPagination = res.pagination;
   } catch (error) {
     console.error("Не удалось получить /crud/drivers: ", error);
   }
@@ -21,11 +20,12 @@ export async function getDrivers() {
 
 export async function getDriverAreas() {
   const { $driversRep } = useNuxtApp();
-  const adminStore = useAdminStore();
-  adminStore.driverAreas = null;
+  const personalStore = usePersonalStore();
+  const paymentStore = usePaymentStore();
   try {
     const res = await $driversRep.getDriverAreas();
-    adminStore.driverAreas = res.data.areas;
+    personalStore.driverAreas = res.data.areas;
+    paymentStore.areas = res.data.areas;
   } catch (error) {
     console.error("Не удалось получить /crud/drivers: ", error);
   }
@@ -33,14 +33,11 @@ export async function getDriverAreas() {
 
 export async function getDriverById(id: number) {
   const { $driversRep } = useNuxtApp();
-  const adminStore = useAdminStore();
-  adminStore.driver = null;
-  console.log("work");
-
+  const personalStore = usePersonalStore();
   try {
     const res = await $driversRep.getDriverById(id);
     console.log(res);
-    adminStore.driver = res.data;
+    personalStore.driver = res.data;
   } catch (error) {
     console.error(`Не удалось получить /crud/drivers/${id}: `, error);
   }
@@ -52,61 +49,30 @@ export async function editDriverById(
 ) {
   const { $driversRep } = useNuxtApp();
   const mainStore = useMainStore();
-  mainStore.isLoading = true
+  mainStore.isLoading = true;
   try {
     const body = data;
     const res = await $driversRep.editDriverById(id, body);
-    if (res.errors) {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "error";
-      mainStore.alertShowTitle = "Ошибка";
-      mainStore.alertShowText = res.message;
-    } else if (res.success) {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "success";
-      mainStore.alertShowTitle = "Успешно";
-      mainStore.alertShowText = "Данные успешно изменены";
-      getDrivers()
-    }
-    setTimeout(() => {
-      mainStore.alertShow = false;
-      mainStore.alertShowType = "";
-      mainStore.alertShowTitle = "";
-      mainStore.alertShowText = "";
-    }, 6000);
-    mainStore.isLoading = false
+    await getDrivers();
+    mainStore.isLoading = false;
   } catch (error) {
     console.error(`Не удалось получить /crud/drivers/${id}/update: `, error);
   }
 }
 
-export async function createDriverById(
-  data: { name: string; contact: string; city_id: string | number }
-) {
+export async function createDriverById(data: {
+  name: string;
+  contact: string;
+  city_id: string | number;
+}) {
   const { $driversRep } = useNuxtApp();
-  const adminStore = useAdminStore();
   const mainStore = useMainStore();
+  mainStore.isLoading = true;
   try {
     const body = data;
     const res = await $driversRep.createDriver(body);
-    if (res.errors) {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "error";
-      mainStore.alertShowTitle = "Ошибка";
-      mainStore.alertShowText = res.message;
-    } else if (res.success) {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "success";
-      mainStore.alertShowTitle = "Успешно";
-      mainStore.alertShowText = "Данные успешно изменены";
-      getDrivers();
-    }
-    setTimeout(() => {
-      mainStore.alertShow = false;
-      mainStore.alertShowType = "";
-      mainStore.alertShowTitle = "";
-      mainStore.alertShowText = "";
-    }, 6000);
+    await getDrivers();
+    mainStore.isLoading = false;
   } catch (error) {
     console.error(`Не удалось создать /crud/drivers/store: `, error);
   }
@@ -114,27 +80,11 @@ export async function createDriverById(
 
 export async function deleteSalesAgentById(id: number) {
   const { $driversRep } = useNuxtApp();
-  const adminStore = useAdminStore();
   const mainStore = useMainStore();
+  mainStore.isLoading = true;
   try {
     const res = await $driversRep.deleteDriverById(id);
-    if (res.success) {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "success";
-      mainStore.alertShowTitle = "Успешно";
-      mainStore.alertShowText = "Данные успешно изменены";
-    } else {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "error";
-      mainStore.alertShowTitle = "Ошибка";
-      mainStore.alertShowText = "Не удалось удалить водителя!";
-    }
-    setTimeout(() => {
-      mainStore.alertShow = false;
-      mainStore.alertShowType = "";
-      mainStore.alertShowTitle = "";
-      mainStore.alertShowText = "";
-    }, 6000);
+    mainStore.isLoading = false;
   } catch (error) {
     console.error(`Не удалось создать /crud/drivers/store: `, error);
   }

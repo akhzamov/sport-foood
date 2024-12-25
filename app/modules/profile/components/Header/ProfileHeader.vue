@@ -3,6 +3,7 @@ import { useProfileStore } from "~/modules/profile/stores/profile";
 import { getSalesPlan } from "~/modules/profile/components/Header/profileHeader.data";
 import { getMarketplacesData } from "~/modules/profile/components/Dashboard/Rating/MarketplacesData";
 import { useMainStore } from "~/stores/main";
+import { getSpending } from "../Dashboard/Expenses/expenses.data";
 
 const profileStore = useProfileStore();
 const mainStore = useMainStore();
@@ -46,6 +47,7 @@ const handleClickOutsideSelect = (event: MouseEvent) => {
 const handleGetStoreByID = (id: number) => {
   getSalesPlan();
   getMarketplacesData();
+  getSpending();
   profileStore.activeMoreInfo = false;
 };
 

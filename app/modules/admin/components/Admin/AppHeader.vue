@@ -2,12 +2,38 @@
 import { removeAuthToken } from "~/utils/auth";
 
 const router = useRouter();
+let timeTimeout: NodeJS.Timeout;
 const logOut = () => {
   removeAuthToken();
 };
 const handleRoutPush = (link: string) => {
   router.push(link);
 };
+const currentTime = ref(
+  new Date().toLocaleTimeString("ru-RU", {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+);
+
+const updateTime = () => {
+  currentTime.value = new Date().toLocaleTimeString("ru-RU", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const now = new Date();
+  const delay = 1000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+  timeTimeout = setTimeout(updateTime, delay);
+};
+
+onMounted(() => {
+  updateTime();
+});
+
+onBeforeMount(() => {
+  clearTimeout(timeTimeout);
+});
 </script>
 
 <template>
@@ -20,6 +46,29 @@ const handleRoutPush = (link: string) => {
           </NuxtLink>
         </div>
         <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2 mr-2">
+            <div class="flex items-center text-gray-40-color gap-1">
+              <IconCalendar class="w-[15px] h-[15px]" />
+              <p class="text-12-reg">
+                Сегодня:
+                <span class="text-12-ext">
+                  {{
+                    new Date().toLocaleDateString("ru-RU", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    })
+                  }}
+                </span>
+              </p>
+            </div>
+            <div class="flex items-center text-gray-40-color gap-1">
+              <IconClock class="w-[15px] h-[15px]" />
+              <p class="text-12-reg">
+                {{ currentTime }}
+              </p>
+            </div>
+          </div>
           <div class="flex items-center gap-4">
             <div
               class="flex item-center justify-center w-6 h-6 cursor-pointer text-gray-75-color hover:text-primary-color"

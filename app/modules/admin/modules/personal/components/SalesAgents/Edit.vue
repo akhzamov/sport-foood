@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
-import { useAdminLogisticsStore } from "../../../logistics/stores/adminLogistics";
 import { editSalesAgentById, getSalesAgentById } from "./salesAgents.data";
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import { useMainStore } from "~/stores/main";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 const schema = yup.object({
   username: yup
@@ -24,13 +24,15 @@ interface ISchemaForm {
 const { handleSubmit } = useForm<ISchemaForm>({
   validationSchema: schema,
 });
-const { value: username, errorMessage: usernameError } = useField<string>("username");
+const { value: username, errorMessage: usernameError } =
+  useField<string>("username");
 const { value: contact, errorMessage: contactError } =
   useField<string>("contact");
 
 const adminStore = useAdminStore();
 const profileStore = useProfileStore();
 const mainStore = useMainStore();
+const personalStore = usePersonalStore();
 const toggle = ref(false);
 const openPermission = ref(false);
 const openPermissionID = ref("");
@@ -40,14 +42,14 @@ let checkedStore = reactive<number[]>([]);
 
 const updateCheckedStores = () => {
   checkedStore.length = 0;
-  if (!adminStore.salesAgent || !profileStore.stores) {
+  if (!personalStore.salesAgent || !profileStore.stores) {
     console.warn("Не хватает данных для обработки");
     return;
   }
   // Пройдемся по магазинам из профиля и сверим с магазинами сотрудника
   profileStore.stores.forEach((store) => {
     store.checked = false;
-    const isEmployeeStore = adminStore.salesAgent?.stores.some(
+    const isEmployeeStore = personalStore.salesAgent?.stores.some(
       (employeeStore) => employeeStore.id === store.id
     );
 
@@ -95,9 +97,9 @@ const onSubmit = handleSubmit(async (values) => {
 });
 
 watch(
-  () => adminStore.salesAgent,
+  () => personalStore.salesAgent,
   () => {
-    if (adminStore.salesAgent) {
+    if (personalStore.salesAgent) {
       checkedStore.length = 0;
       updateCheckedStores();
     }
@@ -107,16 +109,16 @@ watch(
 
 onMounted(async () => {
   await getSalesAgentById(adminStore.openUser ? adminStore.openUser : 0);
-  if (adminStore.salesAgent) {
-    username.value = adminStore.salesAgent.name;
-    contact.value = adminStore.salesAgent.contact ?? "";
+  if (personalStore.salesAgent) {
+    username.value = personalStore.salesAgent.name;
+    contact.value = personalStore.salesAgent.contact ?? "";
   }
 });
 </script>
 
 <template>
   <form
-    v-if="adminStore.salesAgent && !mainStore.isLoading"
+    v-if="personalStore.salesAgent && !mainStore.isLoading"
     @submit.prevent="onSubmit"
     class="sticky z-[20] w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
   >
@@ -150,7 +152,7 @@ onMounted(async () => {
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">Статус</label>
         <UiInput
-          v-model:model-value="adminStore.salesAgent.status"
+          v-model:model-value="personalStore.salesAgent.status"
           placeholder="Администратор"
           type="text"
           class="text-gray-90-color"

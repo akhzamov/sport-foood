@@ -1,22 +1,21 @@
-import { useAdminStore } from "~/modules/admin/stores/admin";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import { useMainStore } from "~/stores/main";
 
 export async function getSalesAgents() {
   const { $salesAgentsRep } = useNuxtApp();
-  const adminStore = useAdminStore();
+  const personalStore = usePersonalStore();
   const profileStore = useProfileStore();
-  adminStore.salesAgents = null;
   try {
     const params = {
       store_id:
         profileStore.selectedBranch > 0 ? profileStore.selectedBranch : 5,
-      page: adminStore.salesAgentsPage,
-      per_page: adminStore.salesAgentsPerPage,
+      page: personalStore.salesAgentsPage,
+      per_page: personalStore.salesAgentsPerPage,
     };
     const res = await $salesAgentsRep.getSalesAgents(params);
-    adminStore.salesAgents = res.data.agents;
-    adminStore.salesAgentsPagination = res.pagination;
+    personalStore.salesAgents = res.data.agents;
+    personalStore.salesAgentsPagination = res.pagination;
   } catch (error) {
     console.error("Не удалось получить /crud/agents: ", error);
   }
@@ -24,16 +23,15 @@ export async function getSalesAgents() {
 
 export async function getSalesAgentById(id: number) {
   const { $salesAgentsRep } = useNuxtApp();
-  const adminStore = useAdminStore();
+  const personalStore = usePersonalStore();
   const profileStore = useProfileStore();
-  adminStore.salesAgent = null;
   try {
     const params = {
       store_id:
         profileStore.selectedBranch > 0 ? profileStore.selectedBranch : 5,
     };
     const res = await $salesAgentsRep.getSalesAgentById(id, params);
-    adminStore.salesAgent = res.data;
+    personalStore.salesAgent = res.data;
   } catch (error) {
     console.error(`Не удалось получить /crud/users/${id}: `, error);
   }
@@ -49,28 +47,11 @@ export async function editSalesAgentById(
 ) {
   const { $salesAgentsRep } = useNuxtApp();
   const mainStore = useMainStore();
-  mainStore.isLoading = true
+  mainStore.isLoading = true;
   try {
     const res = await $salesAgentsRep.updateSalesAgentById(id, data);
-    if (res.errors) {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "error";
-      mainStore.alertShowTitle = "Ошибка";
-      mainStore.alertShowText = res.message;
-    } else if (res.success) {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "success";
-      mainStore.alertShowTitle = "Успешно";
-      mainStore.alertShowText = "Данные успешно изменены";
-      getSalesAgents();
-    }
-    setTimeout(() => {
-      mainStore.alertShow = false;
-      mainStore.alertShowType = "";
-      mainStore.alertShowTitle = "";
-      mainStore.alertShowText = "";
-    }, 6000);
-    mainStore.isLoading = true
+    await getSalesAgents();
+    mainStore.isLoading = false;
   } catch (error) {
     console.error(`Не удалось получить /crud/agents/${id}: `, error);
   }
@@ -78,8 +59,7 @@ export async function editSalesAgentById(
 
 export async function deleteSalesAgentById(id: number) {
   const { $usersRep } = useNuxtApp();
-  const adminStore = useAdminStore();
-  adminStore.employee = null;
+  const personalStore = usePersonalStore();
   try {
     const res = await $usersRep.getUserById(id);
   } catch (error) {

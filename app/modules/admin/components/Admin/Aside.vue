@@ -56,7 +56,7 @@ const links = reactive([
     id: 4,
     name: "Заявки на оплату",
     icon: markRaw(IconCurrencyDollarCircle),
-    children: [],
+    path: "/payment-requests",
   },
   {
     id: 5,
@@ -84,6 +84,7 @@ const handleActiveLink = (id: number) => {
     >
       <template v-for="link in links" :key="link.id">
         <div
+          v-if="link.children"
           @click="handleActiveLink(link.id)"
           class="w-full h-[30px] flex items-center justify-between cursor-pointer px-3"
         >
@@ -116,12 +117,23 @@ const handleActiveLink = (id: number) => {
             ]"
           />
         </div>
+        <NuxtLink
+          v-if="!link.children && link.path"
+          :to="link.path"
+          class="w-full h-[30px] flex items-center justify-start gap-2 cursor-pointer px-3 text-gray-40-color hover:text-primary-color"
+          :class="[route.path == link.path ? 'text-primary-color' : '']"
+        >
+          <component :is="link.icon" />
+          <p class="text-12-semi">
+            {{ link.name }}
+          </p>
+        </NuxtLink>
         <div
           v-if="link.id == activeLink"
           class="w-full h-max flex flex-col items-start justify-center px-3"
         >
           <p
-            v-if="link.children.length <= 0"
+            v-if="link.children && link.children.length <= 0"
             class="text-12-semi text-gray-40-color pl-8"
           >
             Пусто

@@ -29,6 +29,8 @@ export const useProfileStore = defineStore("profile", {
     indexAgentsLeft: null,
     indexStoragesLeft: null,
     purchases: null,
+    spending: null,
+    spendingTotalAmount: null,
   }),
   actions: {
     async filterData() {

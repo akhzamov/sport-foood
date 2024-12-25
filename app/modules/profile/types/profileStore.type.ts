@@ -8,6 +8,7 @@ import type {
   TIndexStorage,
 } from "./Dashboard/indexBalance.type";
 import type { TPurchase } from "./Dashboard/purchases.type";
+import type { TSalesPlanSpendingType } from "./Dashboard/salesPlanSpending";
 
 interface IDaySalesProducts {
   product: string;
@@ -48,4 +49,6 @@ export interface IProfileStore {
   indexAgentsLeft: Record<number, TIndexAgent> | null;
   indexStoragesLeft: Record<number, TIndexStorage> | null;
   purchases: Record<number, TPurchase> | null;
+  spending: Record<string, TSalesPlanSpendingType> | null;
+  spendingTotalAmount: number | null;
 }

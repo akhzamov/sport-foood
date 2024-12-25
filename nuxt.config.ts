@@ -30,8 +30,9 @@ export default defineNuxtConfig({
     "./app/modules/auth",
     "./app/modules/admin",
     //ADMIN
-    "./app/modules/admin/modules/logistics",
+    "./app/modules/admin/modules/logistic",
     "./app/modules/admin/modules/personal",
+    "./app/modules/admin/modules/payment",
   ],
 
   app: {

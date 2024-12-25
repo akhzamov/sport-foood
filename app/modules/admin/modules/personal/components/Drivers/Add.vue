@@ -4,6 +4,7 @@ import { useAdminStore } from "~/modules/admin/stores/admin";
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 const schema = yup.object({
   name: yup
@@ -30,7 +31,7 @@ const { value: contact, errorMessage: contactError } =
 const { value: selectedCity, errorMessage: selectedCityError } =
   useField<number>("selectedCity");
 
-const adminStore = useAdminStore();
+const personalStore = usePersonalStore();
 const mainStore = useMainStore();
 const status = ref("");
 const cost = ref<number | null>(null);
@@ -55,7 +56,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <form
-    v-if="adminStore.driverAreas && !mainStore.isLoading"
+    v-if="personalStore.driverAreas && !mainStore.isLoading"
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
   >
@@ -106,7 +107,7 @@ const onSubmit = handleSubmit(async (values) => {
             v-model:model-value="selectedCity"
             default-select-text="Выбрать город"
             :show-menu="statusMenu"
-            :array="adminStore.driverAreas"
+            :array="personalStore.driverAreas"
             select-bg-color="bg-gray-15-color"
             main-text-color="text-gray-90-color"
             class="flex-grow z-[70]"

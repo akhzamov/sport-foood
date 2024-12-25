@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import { getDrivers } from "../components/Drivers/drivers.data";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 useSeoMeta({
   title: "Sport Food | Admin Drivers",
@@ -13,18 +14,19 @@ definePageMeta({
 });
 
 const route = useRoute();
-const adminStore = useAdminStore();
+const personalStore = usePersonalStore();
 const totalPages = computed(() => {
-  if (adminStore.driversPagination) {
+  if (personalStore.driversPagination) {
     return Math.ceil(
-      adminStore.driversPagination.total / adminStore.driversPagination.per_page
+      personalStore.driversPagination.total /
+        personalStore.driversPagination.per_page
     );
   } else {
     return 0;
   }
 });
 const changePage = (value: number) => {
-  adminStore.employeesPage = value;
+  personalStore.employeesPage = value;
   getDrivers();
 };
 </script>
@@ -35,14 +37,14 @@ const changePage = (value: number) => {
     <div
       class="h-[90px] py-[12px] px-[24px] border-t border-gray-15-color"
       v-if="
-        adminStore.driversPagination &&
-        adminStore.driversPagination.total > adminStore.driversPerPage
+        personalStore.driversPagination &&
+        personalStore.driversPagination.total > personalStore.driversPerPage
       "
     >
       <UiAdminPagination
         :total-pages="totalPages"
-        :current-page="adminStore.employeesPage"
-        v-model:model-value="adminStore.employeesPage"
+        :current-page="personalStore.employeesPage"
+        v-model:model-value="personalStore.employeesPage"
         @update:model-value="changePage"
       />
     </div>

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import { getSalesAgents } from "~/modules/admin/modules/personal/components/SalesAgents/salesAgents.data";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 useSeoMeta({
   title: "Sport Food | Admin Sales Agents",
@@ -12,19 +13,19 @@ definePageMeta({
   name: "Торговые Агенты",
 });
 
-const adminStore = useAdminStore();
+const personalStore = usePersonalStore();
 const totalPages = computed(() => {
-  if (adminStore.salesAgentsPagination) {
+  if (personalStore.salesAgentsPagination) {
     return Math.ceil(
-      adminStore.salesAgentsPagination.total /
-        adminStore.salesAgentsPagination.per_page
+      personalStore.salesAgentsPagination.total /
+        personalStore.salesAgentsPagination.per_page
     );
   } else {
     return 0;
   }
 });
 const changePage = (value: number) => {
-  adminStore.salesAgentsPage = value;
+  personalStore.salesAgentsPage = value;
   getSalesAgents();
 };
 </script>
@@ -35,14 +36,15 @@ const changePage = (value: number) => {
     <div
       class="h-[90px] py-[12px] px-[24px] border-t border-gray-15-color"
       v-if="
-        adminStore.salesAgentsPagination &&
-        adminStore.salesAgentsPagination.total > adminStore.salesAgentsPerPage
+        personalStore.salesAgentsPagination &&
+        personalStore.salesAgentsPagination.total >
+          personalStore.salesAgentsPerPage
       "
     >
       <UiAdminPagination
         :total-pages="totalPages"
-        :current-page="adminStore.salesAgentsPage"
-        v-model:model-value="adminStore.salesAgentsPage"
+        :current-page="personalStore.salesAgentsPage"
+        v-model:model-value="personalStore.salesAgentsPage"
         @update:model-value="changePage"
       />
     </div>

@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 import { useMainStore } from "~/stores/main";
 
 const route = useRoute();
 const mainStore = useMainStore();
 const adminStore = useAdminStore();
+const personalStore = usePersonalStore();
 const selectedStatus = ref<number | null>(null);
 const selectedPosition = ref<number | null>(null);
 const selectedRole = ref<number | null>(null);
@@ -26,14 +28,7 @@ const positions = reactive([
   { id: 3, name: "Старший менеджер" },
   { id: 4, name: "Менеджер" },
   { id: 5, name: "Логист" },
-  { id: 6, name: "Маркетолог" },
-]);
-const roles = reactive([
-  { id: 1, name: "Все" },
-  { id: 2, name: "Администратор" },
-  { id: 3, name: "Перемещение" },
-  { id: 4, name: "Пользователь" },
-  { id: 5, name: "Просмотр" },
+  { id: 6, name: "Маркетолоƒг" },
 ]);
 const closeMenu = () => {
   selectStatusMenu.value = false;
@@ -170,9 +165,9 @@ const openEditTab = (title: number, id: string) => {
           </th>
         </tr>
       </thead>
-      <tbody v-if="adminStore.employees">
+      <tbody v-if="personalStore.employees">
         <template
-          v-for="(employee, index) in adminStore.employees"
+          v-for="(employee, index) in personalStore.employees"
           :key="employee.id"
         >
           <tr

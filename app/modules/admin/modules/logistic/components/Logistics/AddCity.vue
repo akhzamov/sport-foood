@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from "vue";
-import { useAdminLogisticsStore } from "~/modules/admin/modules/logistics/stores/adminLogistics";
+import { useAdminLogisticsStore } from "~/modules/admin/modules/logistic/stores/adminLogistics";
 
 // Pinia store
 const adminLogisticsStore = useAdminLogisticsStore();

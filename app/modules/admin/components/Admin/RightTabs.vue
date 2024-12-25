@@ -1,16 +1,22 @@
 <script lang="ts" setup>
-import { useAdminLogisticsStore } from "../../modules/logistics/stores/adminLogistics";
-import { useAdminStore } from "../../stores/admin";
-import LogisticsEdit from "~/modules/admin/modules/logistics/components/Logistics/Edit.vue";
-import LogisticsAdd from "~/modules/admin/modules/logistics/components/Logistics/Add.vue";
+import { useAdminStore } from "~/modules/admin/stores/admin";
+import { useAdminLogisticsStore } from "~/modules/admin/modules/logistic/stores/adminLogistics";
+import LogisticsEdit from "~/modules/admin/modules/logistic/components/Logistics/Edit.vue";
+import LogisticsAdd from "~/modules/admin/modules/logistic/components/Logistics/Add.vue";
 import EmployeesEdit from "~/modules/admin/modules/personal/components/Employees/Edit.vue";
 import EmployeesAdd from "~/modules/admin/modules/personal/components/Employees/Add.vue";
 import SalesAgentsEdit from "~/modules/admin/modules/personal/components/SalesAgents/Edit.vue";
 import DriversAdd from "~/modules/admin/modules/personal/components/Drivers/Add.vue";
 import DriversEdit from "~/modules/admin/modules/personal/components/Drivers/Edit.vue";
+import PaymentRequestsAdd from "~/modules/admin/modules/payment/components/Requests/Add.vue";
+import PaymentRequestsEdit from "~/modules/admin/modules/payment/components/Requests/Edit.vue";
+import { usePersonalStore } from "../../stores/personal";
+import { usePaymentStore } from "../../stores/payment";
 
 const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
+const personalStore = usePersonalStore();
+const paymentStore = usePaymentStore();
 const removeTab = (id: string) => {
   const index = adminStore.activeOpenTabs.findIndex((tab) => tab.id === id);
   if (adminStore.activeOpenTabs[index + 1]?.id) {
@@ -39,25 +45,30 @@ const openTab = (id: string) => {
 };
 
 const dynamicTabs = computed(() => [
-  ...(adminLogisticsStore.logisticsData?.map((data) => ({
+  ...(adminLogisticsStore.logisticsData?.map((data: any) => ({
     component: LogisticsEdit,
     data,
     tabId: `admin-logistics-edit-${data.id}`,
   })) ?? []),
-  ...(adminStore.employees?.map((data) => ({
+  ...(personalStore.employees?.map((data) => ({
     component: EmployeesEdit,
     data,
     tabId: `admin-employees-edit-${data.id}`,
   })) ?? []),
-  ...Object.values(adminStore.salesAgents ?? {}).map((data) => ({
+  ...Object.values(personalStore.salesAgents ?? {}).map((data) => ({
     component: SalesAgentsEdit,
     data,
     tabId: `admin-salesAgents-edit-${data.id}`,
   })),
-  ...Object.values(adminStore.drivers ?? {}).map((data) => ({
+  ...Object.values(personalStore.drivers ?? {}).map((data) => ({
     component: DriversEdit,
     data,
     tabId: `admin-drivers-edit-${data.id}`,
+  })),
+  ...Object.values(paymentStore.payments ?? {}).map((data) => ({
+    component: PaymentRequestsEdit,
+    data,
+    tabId: `admin-payment-requests-edit-${data.id}`,
   })),
   {
     component: LogisticsAdd,
@@ -73,6 +84,11 @@ const dynamicTabs = computed(() => [
     component: DriversAdd,
     data: null,
     tabId: "admin-drivers-add",
+  },
+  {
+    component: PaymentRequestsAdd,
+    data: null,
+    tabId: "admin-payment-requests-add",
   },
 ]);
 

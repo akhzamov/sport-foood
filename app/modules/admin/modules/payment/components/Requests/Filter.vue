@@ -1,0 +1,247 @@
+<script lang="ts" setup>
+import { usePaymentStore } from "~/modules/admin/stores/payment";
+import { getPayments } from "./requests.data";
+
+const paymentStore = usePaymentStore();
+const storesMenuShow = ref(false);
+const citiesMenuShow = ref(false);
+const statusesMenuShow = ref(false);
+const prioritiesMenuShow = ref(false);
+const typesMenuShow = ref(false);
+const paymentsMenuShow = ref(false);
+const buttonDisabled = ref(true);
+
+const closeAlertShow = () => {
+  paymentStore.filterShow = false;
+};
+const checkShowFilter = () => {
+  if (
+    paymentStore.filteredStores.length > 0 ||
+    paymentStore.filteredCities.length > 0 ||
+    paymentStore.filteredStatus != "" ||
+    paymentStore.filteredPriority != "" ||
+    paymentStore.filteredType != "" ||
+    paymentStore.filteredPaymentId
+  ) {
+    buttonDisabled.value = false;
+  } else {
+    buttonDisabled.value = true;
+  }
+};
+const onSubmit = async () => {
+  try {
+    console.log(buttonDisabled.value);
+    if (!buttonDisabled.value) {
+      await getPayments();
+      paymentStore.filterShow = false;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const resetFilter = async () => {
+  try {
+    paymentStore.filteredStores = [];
+    paymentStore.filteredCities = [];
+    paymentStore.filteredStatus = "";
+    paymentStore.filteredPriority = "";
+    paymentStore.filteredType = "";
+    paymentStore.filteredPaymentId = null;
+    console.log("work");
+    await getPayments();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+watch(
+  () => ({
+    stores: paymentStore.filteredStores,
+    cities: paymentStore.filteredCities,
+    status: paymentStore.filteredStatus,
+    priority: paymentStore.filteredPriority,
+    type: paymentStore.filteredType,
+    paymentId: paymentStore.filteredPaymentId,
+  }),
+  (newValue, oldValue) => {
+    checkShowFilter();
+  },
+  { deep: true } // Для отслеживания вложенных изменений
+);
+</script>
+
+<template>
+  <div
+    class="alert-modal fixed z-[300] top-0 left-0 w-full h-screen flex justify-center items-center bg-gray-40-color select-none"
+    @click="closeAlertShow()"
+  >
+    <div
+      @click.stop
+      v-if="
+        paymentStore.stores &&
+        paymentStore.areas &&
+        paymentStore.statuses &&
+        paymentStore.priorities &&
+        paymentStore.types &&
+        paymentStore.payments
+      "
+      class="relative w-[760px] h-max bg-dark-gunmental-color rounded-xl border-[1px] border-gray-15-color p-2 flex flex-col items-center justify-center"
+    >
+      <div class="w-full h-[64px] flex items-center justify-between">
+        <div class="flex items-center justify-start gap-2">
+          <div
+            class="w-[48px] h-[48px] flex items-center justify-center rounded-[50%] bg-gray-15-color"
+          >
+            <IconFilters class="text-gray-90-color" />
+          </div>
+          <p class="text-24-semi text-white">Фильтры</p>
+        </div>
+        <div
+          class="w-[44px] h-[44px] flex items-center justify-center cursor-pointer"
+        >
+          <IconClose class="text-gray-75-color" @click="closeAlertShow()" />
+        </div>
+      </div>
+      <div class="w-full h-max">
+        <div class="w-full flex items-center justify-between p-4">
+          <div class="max-w-[345px] w-full">
+            <UiMultipleSelectArr
+              v-model:model-value="paymentStore.filteredStores"
+              :show-menu="storesMenuShow"
+              :array="paymentStore.stores"
+              @update:show-menu="storesMenuShow = $event"
+              :icon-check="true"
+              default-select-text="Магазины"
+              main-text-color="text-gray-90-color"
+              select-bg-color="bg-gray-15-color"
+              value-key="id"
+              label-key="name"
+              class="w-full z-[70]"
+            />
+          </div>
+          <div class="max-w-[345px] w-full">
+            <UiMultipleSelectCategories
+              v-model:model-value="paymentStore.filteredCities"
+              :show-menu="citiesMenuShow"
+              :array="paymentStore.areas"
+              @update:show-menu="citiesMenuShow = $event"
+              :icon-check="true"
+              default-select-text="Города"
+              main-text-color="text-gray-90-color"
+              select-bg-color="bg-gray-15-color"
+              value-key="id"
+              label-key="name"
+              inner-item-key="cities"
+              class="w-full z-[70]"
+            />
+          </div>
+        </div>
+        <div class="w-full flex items-center justify-between p-4">
+          <div class="max-w-[345px] w-full">
+            <UiSelectArr
+              v-model:model-value="paymentStore.filteredStatus"
+              :show-menu="statusesMenuShow"
+              :array="paymentStore.statuses"
+              @update:show-menu="statusesMenuShow = $event"
+              :icon="false"
+              :icon-check="true"
+              default-select-text="Статус"
+              main-text-color="text-gray-90-color"
+              select-bg-color="bg-gray-15-color"
+              value-key="key"
+              label-key="value"
+              class="w-full z-[60]"
+            />
+          </div>
+          <div class="max-w-[345px] w-full">
+            <UiSelectArr
+              v-model:model-value="paymentStore.filteredPriority"
+              :show-menu="prioritiesMenuShow"
+              :array="paymentStore.priorities"
+              @update:show-menu="prioritiesMenuShow = $event"
+              :icon="false"
+              :icon-check="true"
+              default-select-text="Приоритет"
+              main-text-color="text-gray-90-color"
+              select-bg-color="bg-gray-15-color"
+              value-key="key"
+              label-key="value"
+              class="w-full z-[60]"
+            />
+          </div>
+        </div>
+        <div class="w-full flex items-center justify-between p-4">
+          <div class="max-w-[345px] w-full">
+            <UiSelectArr
+              v-model:model-value="paymentStore.filteredType"
+              :show-menu="typesMenuShow"
+              :array="paymentStore.types"
+              @update:show-menu="typesMenuShow = $event"
+              :icon="false"
+              :icon-check="true"
+              default-select-text="Типы заявок"
+              main-text-color="text-gray-90-color"
+              select-bg-color="bg-gray-15-color"
+              value-key="key"
+              label-key="value"
+              class="w-full z-[50]"
+            />
+          </div>
+          <div class="max-w-[345px] w-full">
+            <UiSelect
+              v-model:model-value="paymentStore.filteredPaymentId"
+              :show-menu="paymentsMenuShow"
+              :array="paymentStore.payments"
+              @update:show-menu="paymentsMenuShow = $event"
+              :icon="false"
+              :icon-check="true"
+              default-select-text="ID заявки"
+              main-text-color="text-gray-90-color"
+              select-bg-color="bg-gray-15-color"
+              value-key="id"
+              label-key="id"
+              class="w-full z-[50]"
+            />
+          </div>
+        </div>
+        <div class="w-full flex items-center justify-end gap-3 p-4">
+          <UiButton
+            bgColor="bg-transparent"
+            :border="false"
+            :icon="false"
+            hover="opacity-[0.9]"
+            textColor="text-gray-75-color"
+            text="Сбросить"
+            class="max-w-[140px]"
+            @click="resetFilter"
+          >
+            <template v-slot:icon>
+              <IconRefreshCw05 class="w-[24px] h-[24px] text-gray-75-color" />
+            </template>
+          </UiButton>
+          <UiButton
+            :bgColor="buttonDisabled ? 'bg-gray-15-color' : 'bg-primary-color'"
+            :border="false"
+            :icon="false"
+            hover="opacity-[0.9]"
+            :textColor="
+              buttonDisabled ? 'text-dark-onix-color' : 'text-dark-night-color'
+            "
+            text="Применить"
+            class="max-w-[115px]"
+            @click="onSubmit"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      v-else
+      class="relative w-[760px] h-max bg-dark-gunmental-color rounded-xl border-[1px] border-gray-15-color p-2 flex flex-col items-center justify-center"
+    >
+      <div class="loader"></div>
+    </div>
+  </div>
+</template>
+
+<style></style>

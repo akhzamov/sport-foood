@@ -1,15 +1,16 @@
 <script lang="ts" setup>
-import type { IUiSelect } from "~/types/select.type";
-
 const props = withDefaults(
   defineProps<{
     mainTextColor: string;
     selectBgColor: string;
-    array: IUiSelect[] | null;
+    array: Record<string, any>;
     showMenu: boolean;
     defaultSelectText: string;
     modelValue: any;
     icon: boolean;
+    iconCheck: boolean;
+    valueKey: string;
+    labelKey: string;
   }>(),
   {
     mainTextColor: "text-gray-90-color",
@@ -17,6 +18,7 @@ const props = withDefaults(
     array: () => [],
     defaultSelectText: "",
     icon: false,
+    iconCheck: false,
   }
 );
 
@@ -28,24 +30,12 @@ const emit = defineEmits([
 const selectedItemId = ref(props.modelValue);
 const selectedItemName = ref(props.defaultSelectText);
 
-const activeMenu = (): any => {
-  if (props.showMenu) {
-    emit("update:showMenu", false);
-  } else {
-    emit("update:showMenu", true);
-  }
-};
-
-const selectItem = (id: number) => {
-  if (props.array) {
-    const selectedItem = props.array.find((item) => item.id === id);
-    if (selectedItem) {
-      selectedItemId.value = id;
-      selectedItemName.value = selectedItem.name;
-      emit("update:modelValue", id);
-      emit("click:selectItem", id);
-    }
-  }
+const selectItem = (id: number | string, name: string) => {
+  emit("update:modelValue", id);
+  emit("click:selectItem", id);
+  emit("update:showMenu", false);
+  selectedItemId.value = id;
+  selectedItemName.value = name;
 };
 
 const setDefaultItem = () => {
@@ -68,18 +58,23 @@ const checkDefaultText = () => {
   }
 };
 
+watch(
+  () => props.modelValue,
+  () => {
+    if (
+      !props.modelValue &&
+      selectedItemName.value !== props.defaultSelectText
+    ) {
+      selectedItemName.value = props.defaultSelectText;
+    }
+  }
+);
+
 watchEffect(() => {
   if (props.array && props.array.length > 0) {
     checkDefaultText();
   }
 });
-
-watch(
-  () => props.modelValue,
-  () => {
-    selectItem(props.modelValue);
-  }
-);
 </script>
 
 <template>
@@ -87,29 +82,40 @@ watch(
     <div
       class="w-full h-full rounded-lg flex items-center justify-between px-4 select-none cursor-pointer"
       :class="props.selectBgColor"
-      @click="activeMenu"
+      @click="emit('update:showMenu', !props.showMenu)"
     >
       <slot name="icon" />
       <span class="text-14-reg" :class="props.mainTextColor">
         {{ selectedItemName }}
       </span>
-      <IconChevronUp :class="props.mainTextColor" v-if="!showMenu" />
+      <IconChevronUp :class="props.mainTextColor" v-if="!props.showMenu" />
       <IconChevronDown :class="props.mainTextColor" v-else />
       <div
         class="absolute bg-dark-eerie-black-color top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px]"
-        v-if="showMenu"
+        v-if="props.showMenu"
       >
         <div
           class="flex items-center gap-2 cursor-pointer select-item"
           v-for="item in props.array"
-          :key="item.id"
-          @click="selectItem(item.id)"
+          :key="item[valueKey]"
+          @click.stop="selectItem(item[props.valueKey], item[props.labelKey])"
         >
-          <slot name="value-icon" v-if="!props.icon" />
+          <slot name="value-icon" />
           <IconBranch class="text-gray-90-color" v-if="props.icon" />
-          <span class="text-16-med text-gray-90-color">
-            {{ item.name }}
+          <span
+            class="flex-grow text-16-med"
+            :class="
+              item[labelKey] == selectedItemName
+                ? 'text-primary-color'
+                : 'text-gray-90-color'
+            "
+          >
+            {{ item[labelKey] }}
           </span>
+          <IconCheck
+            v-if="item[labelKey] == selectedItemName"
+            class="text-primary-color"
+          />
         </div>
       </div>
     </div>

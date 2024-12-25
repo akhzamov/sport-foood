@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAdminLogisticsStore } from "~/modules/admin/modules/logistics/stores/adminLogistics";
+import { useAdminLogisticsStore } from "~/modules/admin/modules/logistic/stores/adminLogistics";
 import { getPermissions } from "~/modules/admin/modules/personal/components/Roles/roles.data";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
@@ -7,6 +7,7 @@ import { getUsers } from "~/modules/admin/modules/personal/components/Employees/
 import { getSalesAgents } from "~/modules/admin/modules/personal/components/SalesAgents/salesAgents.data";
 import { getStores } from "~/modules/profile/components/Header/profileHeader.data";
 import { getDriverAreas, getDrivers } from "~/modules/admin/modules/personal/components/Drivers/drivers.data";
+import { getPayments } from "~/modules/admin/modules/payment/components/Requests/requests.data";
 
 const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
@@ -22,6 +23,7 @@ onMounted(async () => {
   await getSalesAgents();
   await getDrivers();
   await getDriverAreas();
+  await getPayments();
 });
 </script>
 

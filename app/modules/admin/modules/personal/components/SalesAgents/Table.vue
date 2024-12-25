@@ -3,11 +3,13 @@ import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import { useMainStore } from "~/stores/main";
 import { getSalesAgents } from "~/modules/admin/modules/personal/components/SalesAgents/salesAgents.data";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 const route = useRoute();
 const mainStore = useMainStore();
 const adminStore = useAdminStore();
 const profileStore = useProfileStore();
+const personalStore = usePersonalStore();
 const selectedStatus = ref<number | null>(null);
 const selectStatusMenu = ref(false);
 const selectStoreMenu = ref(false);
@@ -57,7 +59,7 @@ const openEditTab = (title: number, id: string) => {
 };
 const selectBranch = (value: number) => {
   profileStore.selectedBranch = value;
-  getSalesAgents()
+  getSalesAgents();
 };
 </script>
 
@@ -141,9 +143,9 @@ const selectBranch = (value: number) => {
           </th>
         </tr>
       </thead>
-      <tbody v-if="adminStore.salesAgents">
+      <tbody v-if="personalStore.salesAgents">
         <template
-          v-for="(agent, index) in adminStore.salesAgents"
+          v-for="(agent, index) in personalStore.salesAgents"
           :key="agent.id"
         >
           <tr

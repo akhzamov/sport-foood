@@ -2,9 +2,11 @@
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
 import { getDriverById } from "./drivers.data";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 const adminStore = useAdminStore();
 const mainStore = useMainStore();
+const personalStore = usePersonalStore();
 const route = useRoute();
 const search = ref("");
 
@@ -99,7 +101,7 @@ const openEditTab = (id: number, textId: string) => {
         </tr>
       </thead>
       <tbody>
-        <template v-for="driver in adminStore.drivers" :key="driver.id">
+        <template v-for="driver in personalStore.drivers" :key="driver.id">
           <tr
             @click="openEditTab(driver.id, `admin-drivers-edit-${driver.id}`)"
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15-color border-b border-gray-40-color"

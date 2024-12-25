@@ -16,6 +16,8 @@ import { IndexBalanceRep } from "~/modules/profile/repository/indexBalance";
 import { PurchasesRep } from "~/modules/profile/repository/purchases";
 import { SalesAgentsRep } from "~/modules/admin/modules/personal/repository/salesAgents";
 import { DriversRep } from "~/modules/admin/modules/personal/repository/drivers";
+import { PaymentRequestsRep } from "~/modules/admin/modules/payment/repository/paymentRequests";
+import { SalesPlanSpendingRep } from "~/modules/profile/repository/salesPlanSpending";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const salesPlanRep = new SalesPlanRep();
@@ -34,6 +36,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   const purchasesRep = new PurchasesRep();
   const salesAgentsRep = new SalesAgentsRep();
   const driversRep = new DriversRep();
+  const paymentRequestsRep = new PaymentRequestsRep();
+  const salesPlanSpendingRep = new SalesPlanSpendingRep();
 
   nuxtApp.provide("salesPlanRep", salesPlanRep);
   nuxtApp.provide("storesRep", storesRep);
@@ -51,4 +55,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.provide("purchasesRep", purchasesRep);
   nuxtApp.provide("salesAgentsRep", salesAgentsRep);
   nuxtApp.provide("driversRep", driversRep);
+  nuxtApp.provide("paymentRequestsRep", paymentRequestsRep);
+  nuxtApp.provide("salesPlanSpendingRep", salesPlanSpendingRep);
 });

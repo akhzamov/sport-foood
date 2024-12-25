@@ -2,6 +2,7 @@
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import { getSalesPlan } from "~/modules/profile/components/Header/profileHeader.data";
 import { getMarketplacesData } from "~/modules/profile/components/Dashboard/Rating/MarketplacesData";
+import { getSpending } from "./Expenses/expenses.data";
 
 const profileStore = useProfileStore();
 const activeMoreInfo = computed(() => profileStore.activeMoreInfo);
@@ -73,6 +74,7 @@ const activeTab = async (value: number) => {
       };
       await getSalesPlan();
       await getMarketplacesData();
+      await getSpending();
       profileStore.activeDayFilterBlocked = false;
     }
   }
@@ -122,6 +124,8 @@ watch(date, async (newDate) => {
     profileStore.activeDayFilterValue.date_to = formatDate(newDate[1]);
     profileStore.activeDayFilter = 3;
     getSalesPlan();
+    getMarketplacesData();
+    getSpending();
   }
 });
 </script>
@@ -216,11 +220,15 @@ watch(date, async (newDate) => {
     </div>
     <div class="grid col-span-1">
       <DashboardChartLoadChart v-if="!profileStore.purchases" />
-      <DashboardPurchases v-if="profileStore.purchases"/>
+      <DashboardPurchases v-if="profileStore.purchases" />
     </div>
     <div class="grid col-span-1">
       <DashboardChartLoadChart v-if="!marketplacesData" />
       <DashboardRatingMarketplaces v-if="marketplacesData" />
+    </div>
+    <div class="grid col-span-1">
+      <DashboardChartLoadChart v-if="!profileStore.spending" />
+      <DashboardExpenses v-if="profileStore.spending" />
     </div>
   </div>
 

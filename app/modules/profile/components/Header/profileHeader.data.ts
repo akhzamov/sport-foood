@@ -1,6 +1,8 @@
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import { getMarketplacesData } from "~/modules/profile/components/Dashboard/Rating/MarketplacesData";
 import { useRouter } from "#app";
+import { usePaymentStore } from "~/modules/admin/stores/payment";
+import { getSpending } from "../Dashboard/Expenses/expenses.data";
 
 function formatDate(date: Date) {
   const day = String(date.getDate()).padStart(2, "0");
@@ -31,6 +33,7 @@ function getDateRange(days: number | string) {
 export async function getStores() {
   const { $storesRep } = useNuxtApp();
   const profileStore = useProfileStore();
+  const paymentStore = usePaymentStore();
   const router = useRouter();
   profileStore.salesPlan = null;
   try {
@@ -39,6 +42,7 @@ export async function getStores() {
       item.checked = false;
     });
     profileStore.stores = res;
+    paymentStore.stores = res;
     profileStore.selectedBranch = res ? res[0]?.id || 0 : 0;
     if (res.length > 0) {
       const dates = getDateRange(profileStore.activeDayFilter ?? 0);
@@ -46,9 +50,10 @@ export async function getStores() {
         date_from: dates.date_from,
         date_to: dates.date_to,
       };
-      getSalesPlan();
-      getMarketplacesData();
     }
+    getSalesPlan();
+    getMarketplacesData();
+    getSpending();
   } catch (error: any) {
     console.error("Не удалось получить /stores: ", error);
     if (error.status === 401) {

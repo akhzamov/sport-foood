@@ -1,9 +1,8 @@
-import { useAdminStore } from "~/modules/admin/stores/admin";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 export async function getPermissions() {
   const { $permissionsRep } = useNuxtApp();
-  const adminStore = useAdminStore();
-  adminStore.permissions = null;
+  const personalStore = usePersonalStore();
   try {
     const res = await $permissionsRep.getPermissions();
     for (const key in res.data) {
@@ -13,7 +12,7 @@ export async function getPermissions() {
         });
       }
     }
-    adminStore.permissions = res.data;
+    personalStore.permissions = res.data;
   } catch (error) {
     console.error("Не удалось получить /permissions: ", error);
   }

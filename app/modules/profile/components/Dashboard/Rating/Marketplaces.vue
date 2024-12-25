@@ -4,6 +4,9 @@ import { useProfileStore } from "~/modules/profile/stores/profile";
 const profileStore = useProfileStore();
 const activeMarketplaceInfo = ref<null | number>(null);
 const calcSoldPercentage = (sold: number) => {
+  if (sold == 0) {
+    return 0;
+  }
   return (sold / profileStore.marketplacesTotalSold) * 100;
 };
 const calcSpendingWidth = (spending: number, sold: number) => {
@@ -11,6 +14,15 @@ const calcSpendingWidth = (spending: number, sold: number) => {
 };
 const calcTotalProfitWidth = (totalProfit: number, sold: number) => {
   return Math.floor((totalProfit / sold) * 100).toFixed(2);
+};
+const profitWidth = (market: any) => {
+  const profit = market.sold - market.spending;
+  return `${(profit / market.sold) * 100}%`;
+};
+
+// Ширина полосы для расходов
+const spendingWidth = (market: any) => {
+  return `${(market.spending / market.sold) * 100}%`;
 };
 onMounted(() => {});
 </script>
@@ -65,14 +77,16 @@ onMounted(() => {});
 
       <!-- Строки таблицы -->
       <div
-        class="relative flex w-full h-[40px]"
+        class="relative flex w-full h-[40px] border"
         v-for="(market, key) in profileStore.marketplacesData"
         :key="key"
         @mouseenter="activeMarketplaceInfo = Number(key)"
         @mouseleave="activeMarketplaceInfo = null"
         :class="{
-          'bg-dark-gunmental-color': Number(key) % 2 === 0 && Number(key) != 1,
-          'bg-dark-charcoal-color': Number(key) % 2 === 1 && Number(key) != 1,
+          'bg-dark-gunmental-color': Number(key) % 2 !== 0,
+          'bg-dark-charcoal-color': Number(key) % 2 === 0,
+          'border-gray-90-color': activeMarketplaceInfo == Number(key),
+          'border-transparent': activeMarketplaceInfo != Number(key),
         }"
       >
         <div class="w-full z-[2] flex h-full py-[7px] pr-[6px]">
@@ -105,8 +119,24 @@ onMounted(() => {});
               </div>
             </div>
           </div>
+          <div class="flex items-center justify-center">
+            <div
+              class="relative w-[120px] h-[12px] overflow-hidden rounded-lg block bg-gray-40-color"
+            >
+              <!-- Заполненная полоса для оборота -->
+              <div
+                class="absolute left-0 top-0 h-full bg-malachite opacity-[48%]"
+                :style="{ width: profitWidth(market) }"
+              ></div>
+              <!-- Заполненная полоса для расхода -->
+              <div
+                class="absolute right-0 top-0 h-full bg-malachite"
+                :style="{ width: spendingWidth(market) }"
+              ></div>
+            </div>
+          </div>
           <div
-            class="flex w-[80px] h-full flex-col items-end justify-between border-gray-40-color mr-1 p-[1px]"
+            class="flex w-[116px] h-full flex-col items-end justify-between border-gray-40-color mr-1 p-[1px]"
           >
             <div class="flex items-center gap-[4px]">
               <span class="text-10-ext text-gray-75-color text-right">
@@ -120,42 +150,6 @@ onMounted(() => {});
               {{ market.sold.toLocaleString() }}
             </span>
           </div>
-          <div
-            class="flex w-[80px] h-full flex-col items-end justify-between border-gray-40-color mr-[15px] p-[1px]"
-          >
-            <span class="text-10-ext text-gray-75-color"> Расходы </span>
-            <span class="text-12-reg text-gray-90-color">
-              {{ market.spending.toLocaleString() }}
-            </span>
-          </div>
-          <div
-            class="flex w-[80px] h-full flex-col items-end justify-between border-gray-40-color p-[1px]"
-          >
-            <span class="text-10-ext text-gray-75-color text-center">
-              Чистая прибыль
-            </span>
-            <span class="text-12-reg text-gray-90-color">
-              {{ market.totalProfit.toLocaleString() }}
-            </span>
-          </div>
-        </div>
-        <div
-          class="absolute w-[100%] h-full z-[1] flex items-center justify-start"
-        >
-          <div
-            class="block h-full bg-red-20-color"
-            :style="`width: ${calcSpendingWidth(
-              market.spending,
-              market.sold
-            )}%;`"
-          ></div>
-          <div
-            class="block h-full bg-green-20-color"
-            :style="`width: ${calcTotalProfitWidth(
-              market.totalProfit,
-              market.sold
-            )}%;`"
-          ></div>
         </div>
         <div
           class="absolute top-[50%] left-[15%] w-[150px] h-auto translate-y-[40%] z-[100] bg-dark-gunmental-color border border-gray-15-color p-3 rounded-lg"
@@ -168,16 +162,17 @@ onMounted(() => {});
             Оборот: <span>{{ market.sold.toLocaleString() }}</span>
           </p>
           <div class="w-full h-[1px] block bg-gray-15-color my-[3px]"></div>
-					<p
+          <p
             class="text-8-reg text-error-500 flex items-center justify-between mt-1"
           >
             Расход: <span>{{ market.spending.toLocaleString() }}</span>
           </p>
-					<div class="w-full h-[1px] block bg-gray-15-color my-[3px]"></div>
-					<p
+          <div class="w-full h-[1px] block bg-gray-15-color my-[3px]"></div>
+          <p
             class="text-8-reg text-success-500 flex items-center justify-between mt-1"
           >
-            Чистая прибыль: <span>{{ market.totalProfit.toLocaleString() }}</span>
+            Чистая прибыль:
+            <span>{{ market.totalProfit.toLocaleString() }}</span>
           </p>
         </div>
       </div>

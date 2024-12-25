@@ -1,18 +1,17 @@
-import { useAdminStore } from "~/modules/admin/stores/admin";
+import { usePersonalStore } from "~/modules/admin/stores/personal";
 import { useMainStore } from "~/stores/main";
 
 export async function getUsers() {
   const { $usersRep } = useNuxtApp();
-  const adminStore = useAdminStore();
-  adminStore.employees = null;
+  const personalStore = usePersonalStore();
   try {
     const params = {
-      page: adminStore.employeesPage,
-      per_page: adminStore.employeesPerPage,
+      page: personalStore.employeesPage,
+      per_page: personalStore.employeesPerPage,
     };
     const res = await $usersRep.getUsers(params);
-    adminStore.employees = res.data;
-    adminStore.employeesPagination = res.pagination;
+    personalStore.employees = res.data;
+    personalStore.employeesPagination = res.pagination;
   } catch (error) {
     console.error("Не удалось получить /crud/users: ", error);
   }
@@ -20,12 +19,11 @@ export async function getUsers() {
 
 export async function getUserById(id: number) {
   const { $usersRep } = useNuxtApp();
-  const adminStore = useAdminStore();
-  adminStore.employee = null;
+  const personalStore = usePersonalStore();
   try {
     const res = await $usersRep.getUserById(id);
     if (res.data) {
-      adminStore.employee = res.data;
+      personalStore.employee = res.data;
     }
   } catch (error) {
     console.error(`Не удалось получить /crud/users/${id}: `, error);
@@ -48,24 +46,7 @@ export async function editUserById(
     try {
       const body = data;
       const res = await $usersRep.editUserById(id, body);
-      if (res.errors) {
-        mainStore.alertShow = true;
-        mainStore.alertShowType = "error";
-        mainStore.alertShowTitle = "Ошибка";
-        mainStore.alertShowText = res.message;
-      } else if (res.success) {
-        mainStore.alertShow = true;
-        mainStore.alertShowType = "success";
-        mainStore.alertShowTitle = "Успешно";
-        mainStore.alertShowText = "Данные успешно изменены";
-        getUsers();
-      }
-      setTimeout(() => {
-        mainStore.alertShow = false;
-        mainStore.alertShowType = "";
-        mainStore.alertShowTitle = "";
-        mainStore.alertShowText = "";
-      }, 6000);
+      await getUsers();
       mainStore.isLoading = false;
     } catch (error) {
       console.error(`Не удалось изменить /crud/users/${id}: `, error);

@@ -1,5 +1,4 @@
 import type {
-  IDriverAreas,
   TDriver,
   TDriverArea,
 } from "../../modules/personal/types/Personal/Drivers/drivers.type";
@@ -7,27 +6,11 @@ import type {
   TUser,
   TUserID,
 } from "../../modules/personal/types/Personal/Employees/users.type";
-import type {
-  IPermissions,
-  TPermissions,
-} from "../../modules/personal/types/Personal/Roles/permissions.type";
-import type {
-  ISalesAgents,
-  TSalesAgent,
-} from "../../modules/personal/types/Personal/SalesAgents/salesAgents.type";
+import type { TPermissions } from "../../modules/personal/types/Personal/Roles/permissions.type";
+import type { TSalesAgent } from "../../modules/personal/types/Personal/SalesAgents/salesAgents.type";
 import type { TPagination } from "../Others/pagination.type";
 
-interface IAdminLogisticsTab {
-  id: string;
-  title: string;
-  name: string;
-}
-
-export interface IAdminStore {
-  activeOpenTabs: IAdminLogisticsTab[];
-  activeOpenTab: string | undefined;
-  activeOpenEditTableTab: string;
-  openUser: number | null;
+export interface IPersonalStore {
   employees: TUser[] | null;
   employeesPagination: TPagination | null;
   employeesPage: number;
