@@ -6,6 +6,7 @@ import LogisticsAdd from "~/modules/admin/modules/logistic/components/Logistics/
 import EmployeesEdit from "~/modules/admin/modules/personal/components/Employees/Edit.vue";
 import EmployeesAdd from "~/modules/admin/modules/personal/components/Employees/Add.vue";
 import SalesAgentsEdit from "~/modules/admin/modules/personal/components/SalesAgents/Edit.vue";
+import SalesAgentsAdd from "~/modules/admin/modules/personal/components/SalesAgents/Add.vue";
 import DriversAdd from "~/modules/admin/modules/personal/components/Drivers/Add.vue";
 import DriversEdit from "~/modules/admin/modules/personal/components/Drivers/Edit.vue";
 import PaymentRequestsAdd from "~/modules/admin/modules/payment/components/Requests/Add.vue";
@@ -79,6 +80,11 @@ const dynamicTabs = computed(() => [
     component: EmployeesAdd,
     data: null,
     tabId: "admin-employees-add",
+  },
+  {
+    component: SalesAgentsAdd,
+    data: null,
+    tabId: "admin-salesAgents-add",
   },
   {
     component: DriversAdd,
