@@ -125,6 +125,7 @@ onMounted(async () => {
             class="flex-grow z-[70]"
             @update:show-menu="statusMenu = $event"
             :icon="false"
+            :is-object="true"
             value-key="id"
             label-key="name"
             inner-item-key="cities"

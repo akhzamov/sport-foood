@@ -26,13 +26,19 @@ const localSelectedCity = ref(props.selectedCity);
 const localShowSelectMenu = ref(props.showSelectMenu);
 
 // Watchers to sync local state with props
-watch(() => props.selectedCity, (newValue) => {
-  localSelectedCity.value = newValue;
-});
+watch(
+  () => props.selectedCity,
+  (newValue) => {
+    localSelectedCity.value = newValue;
+  }
+);
 
-watch(() => props.showSelectMenu, (newValue) => {
-  localShowSelectMenu.value = newValue;
-});
+watch(
+  () => props.showSelectMenu,
+  (newValue) => {
+    localShowSelectMenu.value = newValue;
+  }
+);
 
 // Close modal function
 const closeAddCityModal = () => {
@@ -82,7 +88,10 @@ const updateShowSelectMenu = (newValue: boolean) => {
             v-model:model-value="props.selectedCity"
             :show-menu="props.showSelectMenu"
             :array="props.cities"
-            class="w-full"
+            :icon="false"
+            value-key="id"
+            label-key="name"
+            class="w-full h-[40px]"
             @update:model-value="localSelectedCity = $event"
             @update:show-menu="updateShowSelectMenu"
           />

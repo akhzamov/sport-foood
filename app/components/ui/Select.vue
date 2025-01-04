@@ -3,12 +3,11 @@ const props = withDefaults(
   defineProps<{
     mainTextColor: string;
     selectBgColor: string;
-    array: Record<string, any>;
+    array: Record<string, any>[] | any[];
     showMenu: boolean;
     defaultSelectText: string;
     modelValue: any;
     icon: boolean;
-    iconCheck: boolean;
     valueKey: string;
     labelKey: string;
   }>(),
@@ -18,7 +17,6 @@ const props = withDefaults(
     array: () => [],
     defaultSelectText: "",
     icon: false,
-    iconCheck: false,
   }
 );
 
@@ -27,6 +25,7 @@ const emit = defineEmits([
   "update:showMenu",
   "click:selectItem",
 ]);
+
 const selectedItemId = ref(props.modelValue);
 const selectedItemName = ref(props.defaultSelectText);
 
@@ -42,9 +41,9 @@ const setDefaultItem = () => {
   if (Array.isArray(props.array) && props.array.length > 0) {
     const firstItem = props.array[0];
     if (firstItem) {
-      selectedItemId.value = firstItem.id;
-      selectedItemName.value = firstItem.name;
-      emit("update:modelValue", firstItem.id);
+      selectedItemId.value = firstItem[props.valueKey];
+      selectedItemName.value = firstItem[props.labelKey];
+      emit("update:modelValue", firstItem[props.valueKey]);
     }
   }
 };
@@ -78,7 +77,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="w-[214px] h-[40px] relative">
+  <div class="relative">
     <div
       class="w-full h-full rounded-lg flex items-center justify-between px-4 select-none cursor-pointer"
       :class="props.selectBgColor"
@@ -97,7 +96,7 @@ watchEffect(() => {
         <div
           class="flex items-center gap-2 cursor-pointer select-item"
           v-for="item in props.array"
-          :key="item[valueKey]"
+          :key="item[props.valueKey]"
           @click.stop="selectItem(item[props.valueKey], item[props.labelKey])"
         >
           <slot name="value-icon" />
@@ -105,15 +104,15 @@ watchEffect(() => {
           <span
             class="flex-grow text-16-med"
             :class="
-              item[labelKey] == selectedItemName
+              item[props.labelKey] == selectedItemName
                 ? 'text-primary-color'
                 : 'text-gray-90-color'
             "
           >
-            {{ item[labelKey] }}
+            {{ item[props.labelKey] }}
           </span>
           <IconCheck
-            v-if="item[labelKey] == selectedItemName"
+            v-if="item[props.labelKey] == selectedItemName"
             class="text-primary-color"
           />
         </div>

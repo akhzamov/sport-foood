@@ -3,7 +3,7 @@ const props = withDefaults(
   defineProps<{
     mainTextColor: string;
     selectBgColor: string;
-    array: Record<string, any>;
+    array: Record<string, any> | any[];
     showMenu: boolean;
     defaultSelectText: string;
     modelValue: any;
@@ -11,6 +11,7 @@ const props = withDefaults(
     valueKey: string;
     labelKey: string;
     innerItemKey: string;
+    isObject: boolean; // Указывает, объект или массив передан
   }>(),
   {
     mainTextColor: "text-gray-90-color",
@@ -20,6 +21,7 @@ const props = withDefaults(
     icon: false,
     valueKey: "id",
     labelKey: "name",
+    isObject: true,
   }
 );
 
@@ -32,43 +34,52 @@ const emit = defineEmits([
 const selectedItemId = ref(props.modelValue);
 const selectedItemName = ref(props.defaultSelectText);
 const searchValue = ref("");
-let filteredObject = reactive(props.array);
 
-const filterNestedItems = (item: any, searchValue: string) => {
-  if (Array.isArray(item)) {
-    return item.filter((label: any) =>
-      label[props.labelKey]?.toLowerCase().includes(searchValue.toLowerCase())
-    );
-  } else if (typeof item === "object" && item !== null) {
-    const filteredItem: Record<string, any> = {};
-    Object.keys(item).forEach((key) => {
-      const value = item[key];
+let filteredData = ref(props.array);
+
+const filterItems = (data: any, search: string): any => {
+  if (Array.isArray(data)) {
+    return data
+      .map((item) => {
+        const nested =
+          props.innerItemKey && Array.isArray(item[props.innerItemKey])
+            ? filterItems(item[props.innerItemKey], search)
+            : null;
+
+        if (
+          item[props.labelKey]?.toLowerCase().includes(search.toLowerCase()) ||
+          (nested && nested.length)
+        ) {
+          return { ...item, [props.innerItemKey]: nested };
+        }
+
+        return null;
+      })
+      .filter(Boolean);
+  } else if (typeof data === "object" && data !== null) {
+    const filteredObject: Record<string, any> = {};
+
+    Object.entries(data).forEach(([key, value]) => {
       if (
         typeof value === "string" &&
-        value.toLowerCase().includes(searchValue.toLowerCase())
+        value.toLowerCase().includes(search.toLowerCase())
       ) {
-        filteredItem[key] = value;
+        filteredObject[key] = value;
       } else if (Array.isArray(value) || typeof value === "object") {
-        const filteredNested = filterNestedItems(value, searchValue);
-        if (filteredNested) {
-          filteredItem[key] = filteredNested;
+        const nested = filterItems(value, search);
+        if (
+          nested &&
+          (Array.isArray(nested) ? nested.length : Object.keys(nested).length)
+        ) {
+          filteredObject[key] = nested;
         }
       }
     });
-    return Object.keys(filteredItem).length > 0 ? filteredItem : null;
-  }
-  return null;
-};
 
-const filterObject = (obj: Record<string, any>, searchValue: string) => {
-  const result: Record<string, any> = {};
-  Object.keys(obj).forEach((key) => {
-    const filteredItem = filterNestedItems(obj[key], searchValue);
-    if (filteredItem) {
-      result[key] = filteredItem;
-    }
-  });
-  return result;
+    return Object.keys(filteredObject).length > 0 ? filteredObject : null;
+  }
+
+  return null;
 };
 
 const selectItem = (id: string | number, name: string) => {
@@ -81,10 +92,10 @@ const selectItem = (id: string | number, name: string) => {
 
 watch(
   () => searchValue.value,
-  () => {
-    filteredObject = filterObject(props.array, searchValue.value);
-  },
-  { deep: true }
+  (newSearch) => {
+    filteredData.value =
+      newSearch.length > 0 ? filterItems(props.array, newSearch) : props.array;
+  }
 );
 </script>
 
@@ -109,26 +120,39 @@ watch(
         <input
           v-model="searchValue"
           type="text"
-          placeholder="Поиск города"
+          placeholder="Поиск"
           class="w-full h-[30px] bg-dark-onix-color rounded-md border border-gray-15-color px-2 outline-none text-gray-75-color"
         />
       </div>
       <div
-        v-for="(item, key) in filteredObject"
+        v-for="(item, key) in filteredData"
         :key="key"
         class="flex flex-col gap-2"
       >
-        <span class="text-16-semi text-gray-40-color">
+        <span
+          class="text-16-semi text-gray-40-color"
+          v-if="!Array.isArray(item)"
+        >
           {{ item[props.labelKey] }}
         </span>
         <template v-for="(label, lKey) in item[props.innerItemKey]" :key="lKey">
           <div
-            class="pl-3 cursor-pointer text-gray-75-color hover:text-primary-color"
+            class="flex items-center justify-between pl-3 cursor-pointer hover:text-primary-color"
             @click="selectItem(label[props.valueKey], label[props.labelKey])"
           >
-            <span class="text-14-med">
-              {{ label[props.labelKey] }}
-            </span>
+            <span
+              class="text-14-med"
+              :class="
+                label[props.labelKey] == selectedItemName
+                  ? 'text-primary-color'
+                  : 'text-gray-75-color'
+              "
+              >{{ label[props.labelKey] }}</span
+            >
+            <IconCheck
+              v-if="label[props.labelKey] == selectedItemName"
+              class="text-primary-color"
+            />
           </div>
         </template>
       </div>

@@ -91,7 +91,10 @@ const updateShowSelectMenu = (newValue: boolean) => {
             v-model:model-value="props.selectedProduct"
             :show-menu="props.showSelectMenu"
             :array="props.products"
-            class="w-full"
+            :icon="false"
+            value-key="id"
+            label-key="name"
+            class="w-full h-[40px]"
             @update:model-value="localSelectedProduct = $event"
             @update:show-menu="updateShowSelectMenu"
           />

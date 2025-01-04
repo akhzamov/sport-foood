@@ -62,7 +62,7 @@ const links = reactive([
     id: 5,
     name: "Логи",
     icon: markRaw(IconInfoCircle),
-    children: [],
+    path: "/admin-logs",
   },
 ]);
 const activeLink = ref<null | number>(null);

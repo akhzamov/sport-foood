@@ -3,11 +3,10 @@ const props = withDefaults(
   defineProps<{
     mainTextColor: string;
     selectBgColor: string;
-    array: Record<string, any>;
+    array: any[] | Record<string, any>;
     showMenu: boolean;
     defaultSelectText: string;
     modelValue: any;
-    iconCheck: boolean;
     valueKey: string;
     labelKey: string;
   }>(),
@@ -16,7 +15,6 @@ const props = withDefaults(
     selectBgColor: "bg-gray-90-color",
     array: () => [],
     defaultSelectText: "",
-    iconCheck: false,
   }
 );
 
@@ -25,12 +23,15 @@ const emit = defineEmits([
   "update:showMenu",
   "click:selectItem",
 ]);
+
 const state = reactive({
   selectedItemIds: [] as (number | string)[],
   selectedItems: [] as string[],
 });
+
 const defaultSelectText = ref(props.defaultSelectText);
 
+// Обработка выбора элемента
 const selectItem = (id: number | string, name: string) => {
   if (!state.selectedItemIds.includes(id)) {
     state.selectedItemIds.push(id);
@@ -43,6 +44,7 @@ const selectItem = (id: number | string, name: string) => {
   emit("update:showMenu", false);
 };
 
+// Удаление элемента из выбранных
 const removeItem = (index: number) => {
   if (index >= 0 && index < state.selectedItemIds.length) {
     state.selectedItemIds.splice(index, 1);
@@ -52,6 +54,7 @@ const removeItem = (index: number) => {
   }
 };
 
+// Проверка текста по умолчанию
 const checkDefaultText = () => {
   if (state.selectedItems.length == 0 || state.selectedItemIds.length == 0) {
     defaultSelectText.value = props.defaultSelectText;
@@ -69,7 +72,10 @@ watch(
 );
 
 watchEffect(() => {
-  if (props.array && props.array.length > 0) {
+  if (
+    props.array &&
+    (Array.isArray(props.array) || Object.keys(props.array).length > 0)
+  ) {
     checkDefaultText();
   }
 });
@@ -123,10 +129,13 @@ watchEffect(() => {
         class="absolute bg-dark-eerie-black-color top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px]"
         v-if="props.showMenu"
       >
+        <!-- Отображение элементов -->
         <div
           class="flex items-center gap-2 cursor-pointer select-item"
-          v-for="item in props.array"
-          :key="item[valueKey]"
+          v-for="(item, index) in Array.isArray(props.array)
+            ? props.array
+            : Object.values(props.array)"
+          :key="item[props.valueKey] || index"
           @click.stop="selectItem(item[props.valueKey], item[props.labelKey])"
         >
           <slot name="value-icon" />
@@ -139,13 +148,10 @@ watchEffect(() => {
             ]"
           >
             <span class="text-16-med">
-              {{ item[labelKey] }}
+              {{ item[props.labelKey] }}
             </span>
             <IconCheck
-              v-if="
-                state.selectedItems.includes(item[props.labelKey]) &&
-                props.iconCheck
-              "
+              v-if="state.selectedItems.includes(item[props.labelKey])"
             />
           </div>
         </div>

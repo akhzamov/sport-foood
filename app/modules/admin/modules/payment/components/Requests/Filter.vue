@@ -106,12 +106,11 @@ watch(
       <div class="w-full h-max">
         <div class="w-full flex items-center justify-between p-4">
           <div class="max-w-[345px] w-full">
-            <UiMultipleSelectArr
+            <UiMultipleSelect
               v-model:model-value="paymentStore.filteredStores"
               :show-menu="storesMenuShow"
               :array="paymentStore.stores"
               @update:show-menu="storesMenuShow = $event"
-              :icon-check="true"
               default-select-text="Магазины"
               main-text-color="text-gray-90-color"
               select-bg-color="bg-gray-15-color"
@@ -126,7 +125,6 @@ watch(
               :show-menu="citiesMenuShow"
               :array="paymentStore.areas"
               @update:show-menu="citiesMenuShow = $event"
-              :icon-check="true"
               default-select-text="Города"
               main-text-color="text-gray-90-color"
               select-bg-color="bg-gray-15-color"
@@ -139,53 +137,50 @@ watch(
         </div>
         <div class="w-full flex items-center justify-between p-4">
           <div class="max-w-[345px] w-full">
-            <UiSelectArr
+            <UiSelect
               v-model:model-value="paymentStore.filteredStatus"
               :show-menu="statusesMenuShow"
               :array="paymentStore.statuses"
               @update:show-menu="statusesMenuShow = $event"
               :icon="false"
-              :icon-check="true"
               default-select-text="Статус"
               main-text-color="text-gray-90-color"
               select-bg-color="bg-gray-15-color"
               value-key="key"
               label-key="value"
-              class="w-full z-[60]"
+              class="w-full h-[40px] z-[60]"
             />
           </div>
           <div class="max-w-[345px] w-full">
-            <UiSelectArr
+            <UiSelect
               v-model:model-value="paymentStore.filteredPriority"
               :show-menu="prioritiesMenuShow"
               :array="paymentStore.priorities"
               @update:show-menu="prioritiesMenuShow = $event"
               :icon="false"
-              :icon-check="true"
               default-select-text="Приоритет"
               main-text-color="text-gray-90-color"
               select-bg-color="bg-gray-15-color"
               value-key="key"
               label-key="value"
-              class="w-full z-[60]"
+              class="w-full h-[40px] z-[60]"
             />
           </div>
         </div>
         <div class="w-full flex items-center justify-between p-4">
           <div class="max-w-[345px] w-full">
-            <UiSelectArr
+            <UiSelect
               v-model:model-value="paymentStore.filteredType"
               :show-menu="typesMenuShow"
               :array="paymentStore.types"
               @update:show-menu="typesMenuShow = $event"
               :icon="false"
-              :icon-check="true"
               default-select-text="Типы заявок"
               main-text-color="text-gray-90-color"
               select-bg-color="bg-gray-15-color"
               value-key="key"
               label-key="value"
-              class="w-full z-[50]"
+              class="w-full h-[40px] z-[50]"
             />
           </div>
           <div class="max-w-[345px] w-full">
@@ -195,13 +190,12 @@ watch(
               :array="paymentStore.payments"
               @update:show-menu="paymentsMenuShow = $event"
               :icon="false"
-              :icon-check="true"
               default-select-text="ID заявки"
               main-text-color="text-gray-90-color"
               select-bg-color="bg-gray-15-color"
               value-key="id"
               label-key="id"
-              class="w-full z-[50]"
+              class="w-full h-[40px] z-[50]"
             />
           </div>
         </div>

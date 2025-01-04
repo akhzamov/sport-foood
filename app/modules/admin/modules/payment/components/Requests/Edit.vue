@@ -76,19 +76,18 @@ const onSubmit = handleSubmit(async (values) => {});
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1"> Тип заявки </label>
-        <UiSelectArr
+        <UiSelect
           v-model:model-value="type"
           :show-menu="typeMenuShow"
           :array="paymentStore.types"
           @update:show-menu="typeMenuShow = $event"
           :icon="false"
-          :icon-check="false"
           default-select-text="Выбрать"
           main-text-color="text-gray-90-color"
           select-bg-color="bg-gray-15-color"
           value-key="key"
           label-key="value"
-          class="w-full z-[80]"
+          class="w-full h-[40px] z-[80]"
         />
         <span v-if="typeError" class="text-14-ext text-error-500 mt-[2px]">
           {{ typeError }}
@@ -116,7 +115,7 @@ const onSubmit = handleSubmit(async (values) => {});
             :show-menu="cityMenuShow"
             :array="paymentStore.areas"
             :icon="false"
-            :icon-check="false"
+            :is-object="true"
             default-select-text="Выбрать город"
             select-bg-color="bg-gray-15-color"
             main-text-color="text-gray-90-color"
@@ -136,19 +135,18 @@ const onSubmit = handleSubmit(async (values) => {});
       </div>
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1"> Магазин </label>
-        <UiSelectArr
+        <UiSelect
           v-model:model-value="selectedStore"
           :show-menu="storeMenuShow"
           :array="paymentStore.stores"
           @update:show-menu="storeMenuShow = $event"
           :icon="false"
-          :icon-check="false"
           default-select-text="Выбрать"
           main-text-color="text-gray-90-color"
           select-bg-color="bg-gray-15-color"
           value-key="id"
           label-key="name"
-          class="w-full z-[70]"
+          class="w-full h-[40px] z-[70]"
         />
         <span
           v-if="selectedStoreError"
@@ -161,19 +159,18 @@ const onSubmit = handleSubmit(async (values) => {});
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">Приоритет</label>
-        <UiSelectArr
+        <UiSelect
           v-model:model-value="priority"
           :show-menu="priorityMenuStore"
           :array="paymentStore.priorities"
           @update:show-menu="priorityMenuStore = $event"
           :icon="false"
-          :icon-check="false"
           default-select-text="Выбрать"
           main-text-color="text-gray-90-color"
           select-bg-color="bg-gray-15-color"
           value-key="key"
           label-key="value"
-          class="w-full z-[60]"
+          class="w-full h-[40px] z-[60]"
         />
         <span v-if="priorityError" class="text-14-ext text-error-500 mt-[2px]">
           {{ priorityError }}
@@ -225,19 +222,18 @@ const onSubmit = handleSubmit(async (values) => {});
       </div>
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">Статус</label>
-        <UiSelectArr
+        <UiSelect
           v-model:model-value="priority"
           :show-menu="statusMenuStore"
           :array="paymentStore.statuses"
           @update:show-menu="statusMenuStore = $event"
           :icon="false"
-          :icon-check="false"
           default-select-text="Выбрать"
           main-text-color="text-gray-90-color"
           select-bg-color="bg-gray-15-color"
           value-key="key"
           label-key="value"
-          class="w-full z-[50]"
+          class="w-full h-[40px] z-[50]"
         />
         <span v-if="priorityError" class="text-14-ext text-error-500 mt-[2px]">
           {{ priorityError }}

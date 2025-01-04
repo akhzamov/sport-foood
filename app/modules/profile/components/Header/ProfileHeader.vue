@@ -95,6 +95,8 @@ onBeforeUnmount(() => {
           <div class="w-max h-max" ref="headerSelect">
             <UiSelect
               :array="profileStore.stores"
+              value-key="id"
+              label-key="name"
               :showMenu="showSelectMenu"
               v-model:model-value="profileStore.selectedBranch"
               defaultSelectText=""
@@ -103,7 +105,7 @@ onBeforeUnmount(() => {
               @click:selectItem="handleGetStoreByID($event)"
               @update:showMenu="profileStore.activeStoresSelect = $event"
               :icon="true"
-              class="z-[80]"
+              class="w-[240px] h-[40px] z-[80]"
             >
               <template v-slot:icon>
                 <IconBranch class="text-gray-90-color" />

@@ -107,13 +107,16 @@ watch(
         <label class="text-12-reg text-gray-90-color mb-1">Поставщик</label>
         <div class="flex gap-1">
           <UiSelect
-            v-model="supplier"
+            v-model:modal-value="supplier"
             default-select-text="Выбор поставщика"
             :show-menu="supplierMenu"
             :array="suppliers"
+            :icon="false"
+            value-key="id"
+            label-key="name"
             select-bg-color="bg-gray-15-color"
             main-text-color="text-gray-90-color"
-            class="flex-grow"
+            class="w-full h-[40px]"
             @update:show-menu="supplierMenu = $event"
           />
           <button
@@ -131,6 +134,9 @@ watch(
             default-select-text="Выбор доставщика"
             :show-menu="currierMenu"
             :array="curriers"
+            :icon="false"
+            value-key="id"
+            label-key="name"
             select-bg-color="bg-gray-15-color"
             main-text-color="text-gray-90-color"
             class="flex-grow"
@@ -268,7 +274,7 @@ watch(
               <div
                 class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40-color hover:text-primary-color"
               >
-                <IconPlus @click="adminLogisticsStore.addProductModal = true"/>
+                <IconPlus @click="adminLogisticsStore.addProductModal = true" />
               </div>
               <div
                 class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40-color hover:text-error-500"
@@ -312,10 +318,7 @@ watch(
               </tr>
             </thead>
             <tbody class="w-full h-max rounded-b-lg">
-              <template
-                v-for="(item, index) in tableProduct"
-                :key="item.id"
-              >
+              <template v-for="(item, index) in tableProduct" :key="item.id">
                 <tr class="w-full h-8 flex border-b border-gray-15-color">
                   <th class="w-9 h-full">
                     <div class="w-full h-full flex items-center justify-center">

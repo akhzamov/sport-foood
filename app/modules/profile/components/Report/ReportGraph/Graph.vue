@@ -92,8 +92,10 @@ onBeforeUnmount(() => {
           select-bg-color="bg-gray-15-color"
           main-text-color="text-gray-90-color"
           :icon="false"
+          value-key="id"
+          label-key="name"
           @update:showMenu="profileStore.reportGraphStoreSelect = $event"
-          class="z-[70]"
+          class="w-[240px] h-[40px] z-[70]"
         >
           <template v-slot:icon>
             <IconCalendar class="text-gray-90-color" />
