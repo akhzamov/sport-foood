@@ -94,18 +94,23 @@ onBeforeUnmount(() => {
           </div>
           <div class="w-max h-max" ref="headerSelect">
             <UiSelect
-              :array="profileStore.stores"
-              value-key="id"
-              label-key="name"
-              :showMenu="showSelectMenu"
-              v-model:model-value="profileStore.selectedBranch"
-              defaultSelectText=""
               main-text-color="text-gray-90-color"
               select-bg-color="bg-gray-15-color"
-              @click:selectItem="handleGetStoreByID($event)"
-              @update:showMenu="profileStore.activeStoresSelect = $event"
+              disable-text-color="text-gray-40-color"
+              disable-bg-color="bg-gray-15-color"
+              :array="profileStore.stores ? profileStore.stores : []"
+              :showMenu="showSelectMenu"
+              defaultSelectText=""
+              v-model:model-value="profileStore.selectedBranch"
               :icon="true"
-              class="w-[240px] h-[40px] z-[80]"
+              value-key="id"
+              label-key="name"
+              @update:showMenu="profileStore.activeStoresSelect = $event"
+              @click:selectItem="handleGetStoreByID($event)"
+              width="w-[240px]"
+              :text-center="true"
+              :disable="false"
+              class="h-[40px] z-[80]"
             >
               <template v-slot:icon>
                 <IconBranch class="text-gray-90-color" />

@@ -85,17 +85,22 @@ onBeforeUnmount(() => {
       </h4>
       <div ref="reportGraphSelect z-[30]">
         <UiSelect
+          main-text-color="text-gray-90-color"
+          select-bg-color="bg-gray-15-color"
+          disable-text-color="text-gray-40-color"
+          disable-bg-color="bg-gray-15-color"
           :array="months"
           :show-menu="showSelectMenu"
-          v-model="selectedMonth"
           default-select-text=""
-          select-bg-color="bg-gray-15-color"
-          main-text-color="text-gray-90-color"
+          v-model:model-value="selectedMonth"
           :icon="false"
           value-key="id"
           label-key="name"
           @update:showMenu="profileStore.reportGraphStoreSelect = $event"
-          class="w-[240px] h-[40px] z-[70]"
+          width="w-[210px]"
+          :text-center="true"
+          :disable="false"
+          class="h-[40px] z-[70]"
         >
           <template v-slot:icon>
             <IconCalendar class="text-gray-90-color" />

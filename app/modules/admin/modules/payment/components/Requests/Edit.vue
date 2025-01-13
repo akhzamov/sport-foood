@@ -77,17 +77,22 @@ const onSubmit = handleSubmit(async (values) => {});
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1"> Тип заявки </label>
         <UiSelect
-          v-model:model-value="type"
-          :show-menu="typeMenuShow"
-          :array="paymentStore.types"
-          @update:show-menu="typeMenuShow = $event"
-          :icon="false"
-          default-select-text="Выбрать"
           main-text-color="text-gray-90-color"
           select-bg-color="bg-gray-15-color"
+          disable-text-color="text-gray-40-color"
+          disable-bg-color="bg-gray-15-color"
+          :array="paymentStore.types"
+          :show-menu="typeMenuShow"
+          default-select-text="Выбрать"
+          v-model:model-value="type"
+          :icon="false"
           value-key="key"
           label-key="value"
-          class="w-full h-[40px] z-[80]"
+          @update:show-menu="typeMenuShow = $event"
+          width="w-full"
+          :text-center="false"
+          :disable="false"
+          class="h-[40px] z-[80]"
         />
         <span v-if="typeError" class="text-14-ext text-error-500 mt-[2px]">
           {{ typeError }}
@@ -136,17 +141,22 @@ const onSubmit = handleSubmit(async (values) => {});
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1"> Магазин </label>
         <UiSelect
-          v-model:model-value="selectedStore"
-          :show-menu="storeMenuShow"
-          :array="paymentStore.stores"
-          @update:show-menu="storeMenuShow = $event"
-          :icon="false"
-          default-select-text="Выбрать"
           main-text-color="text-gray-90-color"
           select-bg-color="bg-gray-15-color"
+          disable-text-color="text-gray-40-color"
+          disable-bg-color="bg-gray-15-color"
+          :array="paymentStore.stores"
+          :show-menu="storeMenuShow"
+          default-select-text="Выбрать"
+          v-model:model-value="selectedStore"
+          :icon="false"
           value-key="id"
           label-key="name"
-          class="w-full h-[40px] z-[70]"
+          @update:show-menu="storeMenuShow = $event"
+          width="w-fill"
+          :text-center="false"
+          :disable="false"
+          class="h-[40px] z-[70]"
         />
         <span
           v-if="selectedStoreError"
@@ -160,17 +170,22 @@ const onSubmit = handleSubmit(async (values) => {});
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">Приоритет</label>
         <UiSelect
-          v-model:model-value="priority"
-          :show-menu="priorityMenuStore"
-          :array="paymentStore.priorities"
-          @update:show-menu="priorityMenuStore = $event"
-          :icon="false"
-          default-select-text="Выбрать"
           main-text-color="text-gray-90-color"
           select-bg-color="bg-gray-15-color"
+          disable-text-color="text-gray-40-color"
+          disable-bg-color="bg-gray-15-color"
+          :array="paymentStore.priorities"
+          :show-menu="priorityMenuStore"
+          default-select-text="Выбрать"
+          v-model:model-value="priority"
+          :icon="false"
           value-key="key"
           label-key="value"
-          class="w-full h-[40px] z-[60]"
+          @update:show-menu="priorityMenuStore = $event"
+          width="w-full"
+          :text-center="false"
+          :disable="false"
+          class="h-[40px] z-[60]"
         />
         <span v-if="priorityError" class="text-14-ext text-error-500 mt-[2px]">
           {{ priorityError }}
@@ -223,17 +238,22 @@ const onSubmit = handleSubmit(async (values) => {});
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">Статус</label>
         <UiSelect
-          v-model:model-value="priority"
-          :show-menu="statusMenuStore"
-          :array="paymentStore.statuses"
-          @update:show-menu="statusMenuStore = $event"
-          :icon="false"
-          default-select-text="Выбрать"
           main-text-color="text-gray-90-color"
           select-bg-color="bg-gray-15-color"
+          disable-text-color="text-gray-40-color"
+          disable-bg-color="bg-gray-15-color"
+          :array="paymentStore.statuses"
+          :show-menu="statusMenuStore"
+          default-select-text="Выбрать"
+          v-model:model-value="priority"
+          :icon="false"
           value-key="key"
           label-key="value"
-          class="w-full h-[40px] z-[50]"
+          @update:show-menu="statusMenuStore = $event"
+          width="w-full"
+          :text-center="false"
+          :disable="false"
+          class="h-[40px] z-[50]"
         />
         <span v-if="priorityError" class="text-14-ext text-error-500 mt-[2px]">
           {{ priorityError }}

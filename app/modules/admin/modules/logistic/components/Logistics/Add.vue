@@ -107,17 +107,22 @@ watch(
         <label class="text-12-reg text-gray-90-color mb-1">Поставщик</label>
         <div class="flex gap-1">
           <UiSelect
-            v-model:modal-value="supplier"
-            default-select-text="Выбор поставщика"
-            :show-menu="supplierMenu"
+            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
             :array="suppliers"
+            :show-menu="supplierMenu"
+            default-select-text="Выбор поставщика"
+            v-model:model-value="supplier"
             :icon="false"
             value-key="id"
             label-key="name"
-            select-bg-color="bg-gray-15-color"
-            main-text-color="text-gray-90-color"
-            class="w-full h-[40px]"
             @update:show-menu="supplierMenu = $event"
+            width="w-full"
+            :text-center="false"
+            :disable="false"
+            class="h-[40px] flex-grow"
           />
           <button
             class="w-[40px] h-[40px] bg-gray-15-color rounded-lg flex items-center justify-center cursor-pointer"
@@ -127,20 +132,25 @@ watch(
         </div>
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Доставщик</label>
+        <label class="text-12-reg text-gray-90-color mb-1">Водитель</label>
         <div class="flex gap-1">
           <UiSelect
-            v-model="currier"
-            default-select-text="Выбор доставщика"
-            :show-menu="currierMenu"
+            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
             :array="curriers"
+            :show-menu="currierMenu"
+            default-select-text="Выбор водителя"
+            v-model:model-value="currier"
             :icon="false"
             value-key="id"
             label-key="name"
-            select-bg-color="bg-gray-15-color"
-            main-text-color="text-gray-90-color"
-            class="flex-grow"
             @update:show-menu="currierMenu = $event"
+            width="w-full"
+            :text-center="false"
+            :disable="false"
+            class="h-[40px] flex-grow"
           />
           <button
             class="w-[40px] h-[40px] bg-gray-15-color rounded-lg flex items-center justify-center cursor-pointer"

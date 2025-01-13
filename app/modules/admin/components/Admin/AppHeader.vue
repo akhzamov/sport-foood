@@ -89,7 +89,7 @@ onBeforeMount(() => {
               hover="hover:opacity-[0.8]"
               :icon="true"
               :border="false"
-              class="w-max"
+              class="w-max px-4"
             >
               <template v-slot:icon>
                 <IconUserSquare class="text-dark-night-color" />
@@ -103,7 +103,7 @@ onBeforeMount(() => {
               hover="hover:opacity-[0.8]"
               :icon="true"
               :border="true"
-              class="w-max"
+              class="w-max px-4"
               @click="handleRoutPush('/profile-dashboard')"
             >
               <template v-slot:icon>

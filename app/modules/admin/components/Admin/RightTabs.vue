@@ -11,6 +11,7 @@ import DriversAdd from "~/modules/admin/modules/personal/components/Drivers/Add.
 import DriversEdit from "~/modules/admin/modules/personal/components/Drivers/Edit.vue";
 import PaymentRequestsAdd from "~/modules/admin/modules/payment/components/Requests/Add.vue";
 import PaymentRequestsEdit from "~/modules/admin/modules/payment/components/Requests/Edit.vue";
+import SalesReportsEdit from "~/modules/admin/modules/salesReports/components/SalesReports/Edit.vue";
 import { usePersonalStore } from "../../stores/personal";
 import { usePaymentStore } from "../../stores/payment";
 
@@ -70,6 +71,11 @@ const dynamicTabs = computed(() => [
     component: PaymentRequestsEdit,
     data,
     tabId: `admin-payment-requests-edit-${data.id}`,
+  })),
+  ...Object.values(paymentStore.payments ?? {}).map((data) => ({
+    component: SalesReportsEdit,
+    data,
+    tabId: `admin-sales-reports-edit-${data.id}`,
   })),
   {
     component: LogisticsAdd,

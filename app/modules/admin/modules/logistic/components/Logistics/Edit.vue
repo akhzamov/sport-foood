@@ -99,14 +99,22 @@ onMounted(() => {
         <label class="text-12-reg text-gray-90-color mb-1">Поставщик</label>
         <div class="flex gap-1">
           <UiSelect
-            v-model="supplier"
-            default-select-text="Выбор поставщика"
-            :show-menu="supplierMenu"
-            :array="suppliers"
-            select-bg-color="bg-gray-15-color"
             main-text-color="text-gray-90-color"
-            class="flex-grow"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
+            :array="suppliers"
+            :show-menu="supplierMenu"
+            default-select-text="Выбор поставщика"
+            v-model:model-value="supplier"
+            :icon="false"
+            value-key="id"
+            label-key="name"
             @update:show-menu="supplierMenu = $event"
+            width="w-full"
+            :text-center="false"
+            :disable="false"
+            class="h-[40px] flex-grow"
           />
           <button
             class="w-[40px] h-[40px] bg-gray-15-color rounded-lg flex items-center justify-center cursor-pointer"
@@ -119,14 +127,22 @@ onMounted(() => {
         <label class="text-12-reg text-gray-90-color mb-1">Доставщик</label>
         <div class="flex gap-1">
           <UiSelect
-            v-model="currier"
-            default-select-text="Выбор доставщика"
-            :show-menu="currierMenu"
-            :array="curriers"
-            select-bg-color="bg-gray-15-color"
             main-text-color="text-gray-90-color"
-            class="flex-grow"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
+            :array="curriers"
+            :show-menu="currierMenu"
+            default-select-text="Выбор доставщика"
+            v-model:model-value="currier"
+            :icon="false"
+            value-key="id"
+            label-key="name"
             @update:show-menu="currierMenu = $event"
+            width="w-full"
+            :text-center="false"
+            :disable="false"
+            class="h-[40px] flex-grow"
           />
           <button
             class="w-[40px] h-[40px] bg-gray-15-color rounded-lg flex items-center justify-center cursor-pointer"
@@ -304,7 +320,9 @@ onMounted(() => {
                 ]"
                 :key="index"
               >
-                <tr class="w-full h-8 flex border-b border-gray-15-color rounded-b-lg">
+                <tr
+                  class="w-full h-8 flex border-b border-gray-15-color rounded-b-lg"
+                >
                   <th class="w-9 h-full">
                     <div class="w-full h-full flex items-center justify-center">
                       <UiCheckbox v-model:model-value="item.checked" />
