@@ -32,6 +32,7 @@ const storeMenuShow = ref(false);
 const priorityMenuStore = ref(false);
 const statusMenuStore = ref(false);
 const accumulating = ref(false);
+const editWindow = ref(false);
 const edit = ref(false);
 const datepicker = ref<any>(null);
 const date = ref<Date>();
@@ -92,7 +93,7 @@ const onSubmit = handleSubmit(async (values) => {});
 
 <template>
   <div
-    v-if="false"
+    v-if="!editWindow"
     class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
   >
     <div class="w-full h-[30px] flex gap-4 justify-between items-center">
@@ -151,6 +152,7 @@ const onSubmit = handleSubmit(async (values) => {});
         hover="hover:bg-gray-15-color"
         :border="false"
         class="w-[210px] h-[30px]"
+        @click="editWindow = true"
       >
         <template v-slot:icon>
           <IconEdit05 class="w-[20px] h-[20px] text-gray-90-color" />
@@ -346,7 +348,7 @@ const onSubmit = handleSubmit(async (values) => {});
   </div>
   <form
     @submit.prevent="onSubmit"
-    v-if="paymentStore.stores"
+    v-if="paymentStore.stores && editWindow"
     class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
   >
     <!-- top lvl - 1 : menu and edit toggle-->
@@ -608,6 +610,7 @@ const onSubmit = handleSubmit(async (values) => {});
         :border="false"
         :icon="false"
         class="w-[90px] h-[30px] mt-4"
+        @click="editWindow = false"
       />
     </div>
   </form>
