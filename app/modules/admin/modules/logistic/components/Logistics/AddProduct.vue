@@ -87,16 +87,21 @@ const updateShowSelectMenu = (newValue: boolean) => {
           <UiSelect
             main-text-color="text-gray-90-color"
             select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
+            :array="props.products"
+            :show-menu="props.showSelectMenu"
             default-select-text="Товар"
             v-model:model-value="props.selectedProduct"
-            :show-menu="props.showSelectMenu"
-            :array="props.products"
             :icon="false"
             value-key="id"
             label-key="name"
-            class="w-full h-[40px]"
-            @update:model-value="localSelectedProduct = $event"
             @update:show-menu="updateShowSelectMenu"
+            @update:model-value="localSelectedProduct = $event"
+            width="w-full"
+            :text-center="false"
+            :disable="false"
+            class="h-[40px] flex-grow"
           />
           <button
             class="min-w-[40px] h-[40px] flex items-center justify-center bg-gray-15-color rounded-lg"
@@ -124,13 +129,13 @@ const updateShowSelectMenu = (newValue: boolean) => {
         </div>
       </div>
       <div class="w-full flex flex-col items-start justify-start mt-4">
-          <label class="text-12-reg text-gray-90-color mb-1">Цена за кг.</label>
-          <UiInput
-            v-model:model-value="localPrice"
-            placeholder="500 руб."
-            type="number"
-          />
-        </div>
+        <label class="text-12-reg text-gray-90-color mb-1">Цена за кг.</label>
+        <UiInput
+          v-model:model-value="localPrice"
+          placeholder="500 руб."
+          type="number"
+        />
+      </div>
       <div class="w-full flex items-center justify-end gap-2 mt-4">
         <UiButton
           text="Добавить"

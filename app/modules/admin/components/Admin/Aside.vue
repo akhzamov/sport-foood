@@ -4,6 +4,7 @@ import IconSettings from "~/components/icon/Settings.vue";
 import IconRoute from "~/components/icon/Route.vue";
 import IconCurrencyDollarCircle from "~/components/icon/CurrencyDollarCircle.vue";
 import IconInfoCircle from "~/components/icon/InfoCircle.vue";
+import IconTrendUp from "~/components/icon/TrendUp.vue";
 
 const route = useRoute();
 const links = reactive([
@@ -62,7 +63,13 @@ const links = reactive([
     id: 5,
     name: "Логи",
     icon: markRaw(IconInfoCircle),
-    path: "/admin-logs",
+    path: "/admin-history",
+  },
+  {
+    id: 5,
+    name: "Отчеты по продажам",
+    icon: markRaw(IconTrendUp),
+    path: "/admin-sales-reports",
   },
 ]);
 const activeLink = ref<null | number>(null);

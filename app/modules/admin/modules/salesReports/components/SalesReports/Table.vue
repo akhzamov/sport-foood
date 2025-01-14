@@ -1,0 +1,154 @@
+<script lang="ts" setup>
+import { useAdminStore } from "~/modules/admin/stores/admin";
+import { usePaymentStore } from "~/modules/admin/stores/payment";
+import { useMainStore } from "~/stores/main";
+
+const mainStore = useMainStore();
+const adminStore = useAdminStore();
+const paymentStore = usePaymentStore();
+const openNewTab = (id: string) => {
+  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
+
+  if (exists) {
+    mainStore.alertShow = true;
+    mainStore.alertShowType = "error";
+    mainStore.alertShowTitle = "Ошибка";
+    mainStore.alertShowText =
+      "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
+  } else {
+    adminStore.activeOpenTabs.push({
+      id,
+      title: "Новая",
+      name: "Отчет",
+    });
+  }
+};
+const openEditTab = (id: number, textId: string) => {
+  const exists = adminStore.activeOpenTabs.some((item) => item.id === textId);
+  adminStore.openUser = id;
+
+  if (exists) {
+    adminStore.activeOpenTab = textId;
+  } else {
+    adminStore.activeOpenTabs.push({
+      id: textId,
+      title: `#${id}`,
+      name: "Отчет",
+    });
+  }
+};
+</script>
+
+<template>
+  <RequestsFilter v-if="paymentStore.filterShow" />
+  <div class="w-full h-full">
+    <div
+      class="w-full flex-grow h-[40px] bg-dark-charcoal-color flex items-center justify-start gap-1"
+    >
+      <NuxtLink
+        to="/admin-sales-reports"
+        class="w-max h-[40px] relative flex flex-col justify-center px-2 text-14-semi text-gray-40-color payment-requests-link"
+      >
+        <p class="flex items-center justify-center gap-2">
+          <IconTrendUp />
+          <span>Отчеты</span>
+        </p>
+      </NuxtLink>
+      <NuxtLink
+        to="/admin-sales-reports-archive"
+        class="w-max h-[40px] relative flex flex-col justify-center px-2 text-14-semi text-gray-40-color payment-requests-link"
+      >
+        <p class="flex items-center justify-center gap-2">
+          <IconArchive />
+          <span>Архив</span>
+        </p>
+      </NuxtLink>
+    </div>
+    <div
+      class="w-full flex-grow h-[40px] bg-dark-gunmental-color p-2 flex items-center justify-between"
+    >
+      <div class="w-full h-full flex-grow flex items-center justify-start">
+        <div class="w-auto h-full flex items-center justify-start">
+          <div
+            @click="openNewTab('admin-sales-reports-add')"
+            class="w-max h-[30px] px-3 flex items-center justify-center border-r border-gray-15-color cursor-pointer"
+          >
+            <IconPlus class="w-[30px] h-[30px] text-gray-40-color" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class="w-full">
+      <thead class="w-full">
+        <tr
+          class="w-full h-[32px] flex items-center text-12-med text-gray-40-color border-b border-gray-40-color"
+        >
+          <th class="w-[72px] text-start pl-2">ID</th>
+          <th
+            class="min-w-[400px] flex-grow flex items-center justify-start pl-2"
+          >
+            <span>Магазин</span>
+          </th>
+          <th class="w-[200px] flex items-center justify-start pl-2">
+            <span>Сумма</span>
+          </th>
+          <th class="w-[200px] flex items-center justify-start pl-2">
+            <span>Дата отчета</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody v-if="paymentStore.payments">
+        <template v-for="(request, key) in paymentStore.payments" :key="key">
+          <tr
+            @click="openEditTab(key, `admin-sales-reports-edit-${key}`)"
+            class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15-color border-b border-gray-40-color"
+          >
+            <th
+              class="w-[72px] flex items-center justify-start pl-2 text-14-reg text-gray-75-color"
+            >
+              {{ key }}
+            </th>
+            <th
+              class="min-w-[178px] flex-grow flex items-center justify-start gap-1 pl-2 text-14-reg text-gray-75-color"
+            >
+              {{ request.store.name }}
+            </th>
+            <th
+              class="w-[200px] flex items-center justify-start gap-1 pl-2 text-14-reg text-gray-75-color"
+            >
+              {{ request.amount }} {{ request.currency }}
+            </th>
+            <th
+              class="w-[200px] flex items-center justify-start pl-2 text-14-reg text-gray-75-color"
+            >
+              {{ request.created_at }}
+            </th>
+          </tr>
+        </template>
+      </tbody>
+      <div v-else class="w-full h-[600px] flex items-center justify-center">
+        <div class="loader"></div>
+      </div>
+    </table>
+  </div>
+</template>
+
+<style scoped>
+.payment-requests-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  @apply bg-transparent;
+}
+
+.payment-requests-link::after.router-link-active {
+  @apply bg-primary-color text-primary-color;
+}
+
+.router-link-active p {
+  @apply text-primary-color;
+}
+</style>

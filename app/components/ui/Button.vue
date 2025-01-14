@@ -20,10 +20,6 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  icon: {
-    type: Boolean,
-    required: true,
-  },
   border: {
     type: Boolean,
     required: true,
@@ -33,7 +29,7 @@ const props = defineProps({
 
 <template>
   <button
-    class="w-full border px-4 py-2 rounded-lg transition duration-200 flex items-center justify-center gap-2 cursor-pointer"
+    class="border px-2 py-2 rounded-lg transition duration-200 flex items-center justify-center gap-2 cursor-pointer"
     :class="[
       bgColor,
       props.border ? props.borderColor : 'border-transparent',

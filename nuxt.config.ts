@@ -33,7 +33,8 @@ export default defineNuxtConfig({
     "./app/modules/admin/modules/logistic",
     "./app/modules/admin/modules/personal",
     "./app/modules/admin/modules/payment",
-    "./app/modules/admin/modules/logs",
+    "./app/modules/admin/modules/history",
+    "./app/modules/admin/modules/salesReports",
   ],
 
   app: {
