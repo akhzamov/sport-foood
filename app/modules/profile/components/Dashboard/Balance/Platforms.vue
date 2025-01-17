@@ -48,12 +48,12 @@ const imgPath = "/img/ozon.png";
           </div>
           <div class="w-[80px] flex items-center justify-end z-[1]">
             <span class="text-10-semi text-gray-75-color">
-              {{ item.weight.toLocaleString() }} гр
+              {{ Number(item.weight.toFixed(1)).toLocaleString("ru-RU") }} гр
             </span>
           </div>
           <div class="w-[80px] flex items-center justify-end z-[1]">
             <span class="text-10-semi text-gray-75-color">
-              {{ item.amount.toLocaleString() }}
+              {{ Number(item.amount.toFixed(1)).toLocaleString("ru-RU") }}
             </span>
           </div>
           <div

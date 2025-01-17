@@ -15,7 +15,6 @@ const selectPositionMenu = ref(false);
 const selectRoleMenu = ref(false);
 const search = ref("");
 const statuses = reactive([
-  { id: 1, name: "Все" },
   { id: 2, name: "В отпуске" },
   { id: 3, name: "Работает" },
   { id: 4, name: "Болен" },
@@ -23,12 +22,17 @@ const statuses = reactive([
   { id: 6, name: "Уволен" },
 ]);
 const positions = reactive([
-  { id: 1, name: "Все" },
   { id: 2, name: "Администратор" },
   { id: 3, name: "Старший менеджер" },
   { id: 4, name: "Менеджер" },
   { id: 5, name: "Логист" },
-  { id: 6, name: "Маркетолоƒг" },
+  { id: 6, name: "Маркетолог" },
+]);
+const roles = reactive([
+  { id: 2, name: "Пользователь" },
+  { id: 3, name: "Администратор" },
+  { id: 4, name: "Перемещение" },
+  { id: 5, name: "Просмотр" },
 ]);
 const closeMenu = () => {
   selectStatusMenu.value = false;
@@ -90,38 +94,62 @@ const openEditTab = (title: number, id: string) => {
           class="w-auto h-full flex items-center gap-3 border-l border-gray-15-color ml-3 pl-3"
         >
           <UiRoundedSelect
-            :model-value="selectedStatus"
-            :show-menu="selectStatusMenu"
-            :default-select-text="'Выбрать статус'"
+            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
             :array="statuses"
-            @update:model-value="selectedStatus = $event"
-            @update:show-menu="
-              closeMenu();
-              selectStatusMenu = $event;
-            "
+            :show-menu="selectStatusMenu"
+            default-select-text="Статус"
+            v-model:model-value="selectedStatus"
+            :icon="false"
+            value-key="id"
+            label-key="name"
+            @update:show-menu="selectStatusMenu = $event"
+            width="w-[160px]"
+            :text-center="false"
+            :disable="false"
+            class="h-[32px] z-[100]"
+            @click.stop
           />
           <UiRoundedSelect
-            :model-value="selectedPosition"
-            :show-menu="selectPositionMenu"
-            :default-select-text="'Выбрать должность'"
+            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
             :array="positions"
-            @update:model-value="selectedPosition = $event"
-            @update:show-menu="
-              closeMenu();
-              selectPositionMenu = $event;
-            "
+            :show-menu="selectPositionMenu"
+            default-select-text="Должность"
+            v-model:model-value="selectedPosition"
+            :icon="false"
+            value-key="id"
+            label-key="name"
+            @update:show-menu="selectPositionMenu = $event"
+            width="w-[160px]"
+            :text-center="false"
+            :disable="false"
+            class="h-[32px] z-[100]"
+            @click.stop
           />
-          <!-- <UiRoundedSelect
-          :model-value="selectedRole"
-          :show-menu="selectRoleMenu"
-          :default-select-text="'Выбрать роль'"
-          :array="roles"
-          @update:model-value="selectedRole = $event"
-          @update:show-menu="
-            closeMenu();
-            selectRoleMenu = $event;
-          "
-        /> -->
+          <UiRoundedSelect
+            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
+            :array="roles"
+            :show-menu="selectRoleMenu"
+            default-select-text="Роль"
+            v-model:model-value="selectedRole"
+            :icon="false"
+            value-key="id"
+            label-key="name"
+            @update:show-menu="selectRoleMenu = $event"
+            width="w-[160px]"
+            :text-center="false"
+            :disable="false"
+            class="h-[32px] z-[100]"
+            @click.stop
+          />
         </div>
       </div>
       <div class="w-full h-full flex items-center justify-end">
@@ -143,31 +171,37 @@ const openEditTab = (title: number, id: string) => {
         <tr
           class="w-full h-[32px] flex items-center text-12-med text-gray-40-color border-b border-gray-40-color"
         >
-          <th class="w-[60px] text-start pl-2">ID</th>
+          <th class="w-[60px] text-start pl-2">№</th>
           <th
             class="min-w-[394px] flex-grow flex items-center justify-start gap-1 ml-1"
           >
-            <span>Имя пользователя</span>
-            <IconSwitchVertical01 class="w-[20px] h-[20px] cursor-pointer" />
+            <span>Имя</span>
+            <IconSwitchVertical01
+              class="w-[20px] h-[20px] cursor-pointer"
+              @click="personalStore.nameFilter()"
+            />
+          </th>
+          <th class="w-[220px] flex items-center justify-start">
+            <span>Должность</span>
           </th>
           <th class="w-[160px] flex items-center justify-start gap-1">
             <span>Статус</span>
-            <IconSwitchVertical01 class="w-[20px] h-[20px] cursor-pointer" />
-          </th>
-          <th class="w-[180px] flex items-center justify-start">
-            <span>Контакт</span>
+            <IconSwitchVertical01
+              class="w-[20px] h-[20px] cursor-pointer"
+              @click="personalStore.statusFilter()"
+            />
           </th>
           <th class="w-[180px] flex items-center justify-start">
             <span>Магазины</span>
           </th>
-          <th class="w-[220px] flex items-center justify-start">
-            <span>Должность</span>
+          <th class="w-[180px] flex items-center justify-start">
+            <span>Контакт</span>
           </th>
         </tr>
       </thead>
       <tbody v-if="personalStore.employees">
         <template
-          v-for="(employee, index) in personalStore.employees"
+          v-for="(employee, index) in personalStore.employeesFiltered"
           :key="employee.id"
         >
           <tr
@@ -185,6 +219,11 @@ const openEditTab = (title: number, id: string) => {
               class="min-w-[394px] flex-grow flex items-center justify-start ml-1 gap-1 text-14-reg text-gray-75-color"
             >
               {{ employee.username }}
+            </th>
+            <th
+              class="w-[220px] flex items-center justify-start text-14-med text-gray-75-color"
+            >
+              {{ employee.role }}
             </th>
             <th class="w-[160px] flex items-center justify-start gap-1">
               <span
@@ -227,17 +266,12 @@ const openEditTab = (title: number, id: string) => {
             <th
               class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
             >
-              {{ employee.contact ? employee.contact : "Пусто" }}
+              {{ employee.stores.length }} шт
             </th>
             <th
               class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
             >
-              {{ employee.stores.length }} шт
-            </th>
-            <th
-              class="w-[220px] flex items-center justify-start text-14-med text-gray-75-color"
-            >
-              {{ employee.role }}
+              {{ employee.contact ? employee.contact : "Пусто" }}
             </th>
           </tr>
         </template>

@@ -12,6 +12,9 @@ import type { TPagination } from "../Others/pagination.type";
 
 export interface IPersonalStore {
   employees: TUser[] | null;
+  employeesFiltered: TUser[] | null;
+  isAscendingUsername: boolean;
+  isAscendingStatus: boolean;
   employeesPagination: TPagination | null;
   employeesPage: number;
   employeesPerPage: number;

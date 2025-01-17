@@ -103,7 +103,9 @@ const uniqueDistricts = computed(() => {
                             >
                               <template v-if="key !== 'product_id'">
                                 <span class="text-8-reg"> {{ key }}: </span>
-                                <span class="text-8-reg"> {{ value }} гр </span>
+                                <span class="text-8-reg">
+                                  {{ Number(value).toLocaleString("ru-RU") }} гр
+                                </span>
                               </template>
                             </template>
                           </p>
@@ -140,7 +142,9 @@ const uniqueDistricts = computed(() => {
                           <!-- Условие исключает ключи min и max -->
                           <template v-if="key !== 'min' && key !== 'max'">
                             <span class="text-8-reg"> {{ key }}: </span>
-                            <span class="text-8-reg"> {{ value }} гр </span>
+                            <span class="text-8-reg">
+                              {{ Number(value).toLocaleString("ru-RU") }} гр
+                            </span>
                           </template>
                         </template>
                       </p>

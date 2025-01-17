@@ -10,7 +10,7 @@ useSeoMeta({
 definePageMeta({
   middleware: "auth",
   layout: "admin",
-  name: "Сотрудники",
+  name: "Пользователи",
 });
 
 const personalStore = usePersonalStore();

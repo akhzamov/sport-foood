@@ -6,92 +6,6 @@ import { useMainStore } from "~/stores/main";
 const adminStore = useAdminStore();
 const mainStore = useMainStore();
 const paymentStore = usePaymentStore();
-const paymentRequests = reactive({
-  1: {
-    market: "Ozon",
-    type: "Оплата аренды",
-    city: {
-      id: 1,
-      name: "Москва",
-    },
-    recipient: "OOO 'АрендаПро'",
-    amount: 316000,
-    currency: "rub",
-    date: new Date(),
-    status: "В обработке",
-    priority: "Средний",
-  },
-  2: {
-    market: "YOLO",
-    type: "Покупка оборудования",
-    city: {
-      id: 1,
-      name: "Санкт-Петербург",
-    },
-    recipient: "ООО 'Тренажеры'",
-    amount: 120000,
-    currency: "rub",
-    date: new Date(),
-    status: "Оплачено",
-    priority: "Обычный",
-  },
-  3: {
-    market: "Eldomark",
-    type: "Закупка товара",
-    city: {
-      id: 1,
-      name: "Санкт-Петербург",
-    },
-    recipient: "ИП Иванов",
-    amount: 104900,
-    currency: "usd",
-    date: new Date(),
-    status: "Отказано",
-    priority: "Обычный",
-  },
-  4: {
-    market: "Jungle",
-    type: "Закупка товара",
-    city: {
-      id: 1,
-      name: "Москва",
-    },
-    recipient: "OOO 'Солонс'",
-    amount: 203000,
-    currency: "rub",
-    date: new Date(),
-    status: "Ожидание оплаты",
-    priority: "Срочный",
-  },
-  5: {
-    market: "Wild Panther ",
-    type: "Покупка оборудования",
-    city: {
-      id: 1,
-      name: "Москва",
-    },
-    recipient: "ИП Спортс",
-    amount: 133000,
-    currency: "usd",
-    date: new Date(),
-    status: "В обработке",
-    priority: "Средний",
-  },
-  6: {
-    market: "Wildberries",
-    type: "Покупка оборудования",
-    city: {
-      id: 1,
-      name: "Москва",
-    },
-    recipient: "ИП ЛОРО",
-    amount: 144000,
-    currency: "usd",
-    date: new Date(),
-    status: "В обработке",
-    priority: "Срочный",
-  },
-});
 const openNewTab = (id: string) => {
   const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
 
@@ -242,7 +156,7 @@ const openEditTab = (id: number, textId: string) => {
             </th>
             <th class="w-[160px] flex items-center justify-end gap-1 pr-2">
               <span class="text-14-reg text-gray-75-color">
-                {{ request.amount.toLocaleString() }}
+                {{ Number(request.amount).toLocaleString("ru-RU") }}
               </span>
               <span
                 class="text-10-ext"

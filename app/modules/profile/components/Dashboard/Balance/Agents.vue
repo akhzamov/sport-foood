@@ -7,6 +7,9 @@ const activeItemId = ref<number | null>(null);
 const handleRouterWarehouse = () => {
   router.push("/profile-warehouse");
 };
+const fixed = (value: number) => {
+  return value.toFixed(1);
+};
 const imgPath = "/img/ozon.png";
 </script>
 
@@ -25,9 +28,7 @@ const imgPath = "/img/ozon.png";
         <div
           class="w-full h-[14px] flex items-center border-t border-gray-15-color"
         >
-          <div
-            class="w-[100%] flex items-center justify-end px-1"
-          >
+          <div class="w-[100%] flex items-center justify-end px-1">
             <p class="text-10-ext text-gray-40-color">Вес</p>
           </div>
         </div>
@@ -81,7 +82,10 @@ const imgPath = "/img/ozon.png";
                     : 'text-success-500',
                 ]"
               >
-                {{ agent.hand_weight.toFixed(1) }} гр
+                {{
+                  Number(agent.hand_weight.toFixed(1)).toLocaleString("ru-RU")
+                }}
+                гр
               </span>
             </div>
           </div>
@@ -97,12 +101,17 @@ const imgPath = "/img/ozon.png";
                   agent.has_warning ? 'text-error-500' : 'text-success-500',
                 ]"
               >
-                {{ agent.store_weight.toFixed(1) }}
+                {{
+                  Number(agent.store_weight.toFixed(1)).toLocaleString("ru-RU")
+                }}
+                гр
               </span>
             </div>
             <div class="w-[50%] h-full flex items-center justify-end px-1">
               <span class="text-10-reg text-gray-75-color">
-                {{ agent.store_amount.toFixed(1) }}
+                {{
+                  Number(agent.store_amount.toFixed(1)).toLocaleString("ru-RU")
+                }}
               </span>
             </div>
           </div>

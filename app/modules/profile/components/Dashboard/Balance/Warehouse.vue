@@ -3,73 +3,9 @@ import { useProfileStore } from "~/modules/profile/stores/profile";
 
 const router = useRouter();
 const profileStore = useProfileStore();
-const activeItemId = ref<number | null>(null);
 const handleRouterWarehouse = () => {
   router.push("/profile-warehouse");
 };
-const imgPath = "/img/ozon.png";
-const products = reactive([
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-  {
-    id: 1,
-    name: "Протеин",
-    weight: 13000,
-    amount: 45545820,
-  },
-]);
 </script>
 
 <template>
@@ -117,12 +53,12 @@ const products = reactive([
               ]"
               class="text-10-semi pr-2"
             >
-              {{ product.weight.toFixed(1) }} гр
+              {{ Number(product.weight.toFixed(1)).toLocaleString("ru-RU") }} гр
             </p>
           </div>
           <div class="w-full h-full flex items-center justify-end">
             <p class="text-10-semi text-gray-75-color pr-2">
-              {{ product.amount.toFixed(1) }}
+              {{ Number(product.amount.toFixed(1)).toLocaleString("ru-RU") }}
             </p>
           </div>
         </div>

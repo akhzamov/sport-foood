@@ -11,6 +11,7 @@ export async function getUsers() {
     };
     const res = await $usersRep.getUsers(params);
     personalStore.employees = res.data;
+    personalStore.employeesFiltered = res.data;
     personalStore.employeesPagination = res.pagination;
   } catch (error) {
     console.error("Не удалось получить /crud/users: ", error);

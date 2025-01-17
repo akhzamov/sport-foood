@@ -7,7 +7,10 @@ const warehouseStore = useWarehouseStore();
 const activeWarehouseHoverMenuId = ref<null | number>(null);
 const activeWarehouseHoverMenuProduct = ref<string>("");
 const activeWarehouseHoverMenuCity = ref<string>("");
-
+const cityModalRightDistance = ref<number | null>(null);
+const cityModalBottomDistance = ref<number | null>(null);
+const productRef = ref<HTMLElement[]>([]);
+const tableRef = ref<HTMLElement | null>(null);
 const getFilledWidth = (product: TStoragesLeftProduct) => {
   const weight = Number(product.left); // Предполагаем, что weight - это текущее значение
   const minWeight = product.min_limit;
@@ -38,6 +41,26 @@ const getWeightColor = (product: TStoragesLeftProduct) => {
     return "bg-primary-color"; // Желтый цвет
   }
 };
+
+const checkPosition = async () => {
+  await nextTick();
+  if (productRef.value && tableRef.value) {
+    productRef.value.forEach((modal, index) => {
+      const modalRect = modal?.getBoundingClientRect();
+      const tableRect = tableRef.value?.getBoundingClientRect();
+
+      if (tableRect && modalRect) {
+        const tableWidth = tableRect.right;
+        const tableHeight = tableRect.height;
+        const distanceToRightTable = tableWidth - modalRect.right;
+        const distanceToBottomTable = tableRect.bottom - modalRect.bottom;
+        cityModalRightDistance.value = distanceToRightTable;
+        cityModalBottomDistance.value = distanceToBottomTable;
+      }
+    });
+  }
+};
+
 const handleActiveWareHouseHover = (
   productId: null | number,
   productName: string,
@@ -142,7 +165,10 @@ watch(
               </template>
             </tr>
           </thead>
-          <tbody class="w-fit bg-gray-15-color rounded-b-lg flex flex-col pb-2">
+          <tbody
+            ref="tableRef"
+            class="w-fit bg-gray-15-color rounded-b-lg flex flex-col pb-2"
+          >
             <template
               v-for="([storageKey, storage], index) in Object.entries(
                 warehouseStore.storagesLeft || {}
@@ -155,7 +181,8 @@ watch(
                   { 'bg-gray-15-color': index % 2 == 1 },
                   {
                     'rounded-b-lg':
-                      index === Object.keys(warehouseStore.storagesLeft).length - 1,
+                      index ===
+                      Object.keys(warehouseStore.storagesLeft).length - 1,
                   },
                 ]"
               >
@@ -175,13 +202,22 @@ watch(
                   ]"
                   v-for="(product, productKey, index) in storage.products"
                   @mouseenter="
-                    handleActiveWareHouseHover(
-                      product.product_id,
-                      product.product_name,
-                      storage.name
-                    )
+                    {
+                      handleActiveWareHouseHover(
+                        product.product_id,
+                        product.product_name,
+                        storage.name
+                      );
+                      checkPosition();
+                    }
                   "
-                  @mouseleave="handleActiveWareHouseHover(null, '', '')"
+                  @mouseleave="
+                    {
+                      handleActiveWareHouseHover(null, '', '');
+                      cityModalRightDistance = null;
+                      cityModalBottomDistance = null;
+                    }
+                  "
                 >
                   <div
                     class="relative w-[70px] h-[15px] rounded-lg block bg-gray-40-color"
@@ -209,12 +245,21 @@ watch(
                     ></div>
                   </div>
                   <div
-                    class="absolute top-[100%] left-[-10%] z-[30] w-[190px] h-auto translate-y-[10%] rounded-md bg-dark-gunmental-color border border-gray-15-color p-3 flex flex-col items-start justify-center"
+                    class="absolute z-[30] w-[190px] h-auto rounded-md bg-dark-gunmental-color border border-gray-15-color p-3 flex flex-col items-start justify-center"
+                    ref="productRef"
                     v-if="
                       product.product_id == activeWarehouseHoverMenuId &&
                       product.product_name == activeWarehouseHoverMenuProduct &&
                       storage.name == activeWarehouseHoverMenuCity
                     "
+                    :class="[
+                      cityModalRightDistance && cityModalRightDistance < 100
+                        ? 'left-[-100%] translate-x-[-50%]'
+                        : 'left-[-10%]',
+                      cityModalBottomDistance && cityModalBottomDistance < 35
+                        ? 'bottom-[100%] translate-y-[-10%]'
+                        : 'top-[100%] translate-y-[10%]',
+                    ]"
                   >
                     <h4 class="w-full text-12-reg text-gray-90-color text-left">
                       {{ activeWarehouseHoverMenuCity }}
@@ -224,9 +269,14 @@ watch(
                     </h4>
                     <p class="w-full flex items-center justify-between mt-2">
                       <span class="text-8-ext text-gray-75-color">Остаток</span>
-                      <span class="text-8-reg text-gray-90-color"
-                        >{{ product.left.toLocaleString() }} кг</span
-                      >
+                      <span class="text-8-reg text-gray-90-color">
+                        {{
+                          Number(product.left.toFixed(1)).toLocaleString(
+                            "ru-RU"
+                          )
+                        }}
+                        кг
+                      </span>
                     </p>
                     <div
                       class="w-full h-[1px] inline-flex bg-dark-charcoal-color my-1"
@@ -235,17 +285,27 @@ watch(
                       <span class="text-8-ext text-error-500"
                         >Минимальный запас</span
                       >
-                      <span class="text-8-reg text-gray-90-color"
-                        >{{ product.min_limit.toLocaleString() }} кг</span
-                      >
+                      <span class="text-8-reg text-gray-90-color">
+                        {{
+                          Number(product.min_limit.toFixed(1)).toLocaleString(
+                            "ru-RU"
+                          )
+                        }}
+                        кг
+                      </span>
                     </p>
                     <p class="w-full flex items-center justify-between mt-2">
                       <span class="text-8-ext text-success-500"
                         >Максимальный запас</span
                       >
-                      <span class="text-8-reg text-gray-90-color"
-                        >{{ product.max_limit.toLocaleString() }} кг</span
-                      >
+                      <span class="text-8-reg text-gray-90-color">
+                        {{
+                          Number(product.max_limit.toFixed(1)).toLocaleString(
+                            "ru-RU"
+                          )
+                        }}
+                        кг
+                      </span>
                     </p>
                   </div>
                 </th>

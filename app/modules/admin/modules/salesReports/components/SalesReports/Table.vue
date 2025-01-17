@@ -116,7 +116,8 @@ const openEditTab = (id: number, textId: string) => {
             <th
               class="w-[200px] flex items-center justify-start gap-1 pl-2 text-14-reg text-gray-75-color"
             >
-              {{ request.amount }} {{ request.currency }}
+              {{ Number(request.amount).toLocaleString("ru-RU") }}
+              {{ request.currency }}
             </th>
             <th
               class="w-[200px] flex items-center justify-start pl-2 text-14-reg text-gray-75-color"

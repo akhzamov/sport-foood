@@ -88,12 +88,12 @@ const prevPage = () => {
 
 <template>
   <div
-    class="w-max flex items-center justify-center bg-gray-40-color border border-gray-75-color rounded-md"
+    class="w-max flex items-center justify-center bg-dark-gunmental-color border border-gray-15-color rounded-md overflow-hidden"
   >
     <button
       @click="prevPage"
       v-if="currentPage != 1"
-      class="w-[52px] h-[40px] flex items-center justify-center px-2 border-r-[1px] border-gray-90-color text-14-semi text-gray-90-color"
+      class="w-[52px] h-[40px] flex items-center justify-center px-2 border-r-[1px] border-gray-15-color text-14-semi text-gray-40-color"
     >
       <IconChevronLeft />
     </button>
@@ -101,11 +101,14 @@ const prevPage = () => {
       <div
         v-for="page in displayPages"
         @click="updateCurrentPage(page)"
-        class="w-[40px] h-[40px] flex items-center justify-center b-border-pagination text-14-semi text-gray-90-color"
+        class="w-[40px] h-[40px] flex items-center justify-center b-border-pagination text-14-semi"
         :class="[
-          { 'border-r-[1px]': page != totalPages },
+          { 'border-r-[1px] border-gray-15-color': page != totalPages },
           {
-            'bg-gray-75-color text-white': currentPage == page,
+            'bg-primary-color text-dark-eerie-black-color': currentPage == page,
+          },
+          {
+            'text-gray-40-color': currentPage != page,
           },
         ]"
       >
@@ -115,7 +118,7 @@ const prevPage = () => {
     <button
       @click="nextPage"
       v-if="currentPage != totalPages"
-      class="w-[52px] h-[40px] flex items-center justify-center border-l-[1px] b-border-pagination text-14-semi text-gray-90-color"
+      class="w-[52px] h-[40px] flex items-center justify-center border-l-[1px] border-gray-15-color text-14-semi text-gray-40-color"
     >
       <IconChevronRight />
     </button>

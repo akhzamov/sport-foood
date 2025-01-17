@@ -103,7 +103,7 @@ watchEffect(() => {
         props.width,
         props.disable ? 'cursor-not-allowed' : 'cursor-pointer',
       ]"
-      @click="emit('update:showMenu', props.disable ? false : !props.showMenu)"
+      @click="emit('update:showMenu', !props.showMenu)"
     >
       <slot name="icon" />
       <span

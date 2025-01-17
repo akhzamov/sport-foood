@@ -1,7 +1,7 @@
 export type TStoragesLeftProduct = {
   product_id: number;
   product_name: string;
-  left: string;
+  left: number;
   min_limit: number;
   max_limit: number;
 };

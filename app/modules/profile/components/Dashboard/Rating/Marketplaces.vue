@@ -16,8 +16,8 @@ const calcTotalProfitWidth = (totalProfit: number, sold: number) => {
   return Math.floor((totalProfit / sold) * 100).toFixed(2);
 };
 const profitWidth = (market: any) => {
-  const profit = market.sold - market.spending;
-  return `${(profit / market.sold) * 100}%`;
+  const calc = (market.sold / profileStore.marketplacesTotalSold) * 100;
+  return `${calc <= 5 ? calc + 2 : calc}%`;
 };
 
 // Ширина полосы для расходов
@@ -51,7 +51,11 @@ onMounted(() => {});
               >Оборот</span
             >
             <span class="text-12-reg text-gray-90-color">
-              {{ profileStore.marketplacesTotalSold.toLocaleString() }}
+              {{
+                Number(
+                  profileStore.marketplacesTotalSold.toFixed(2)
+                ).toLocaleString("ru-RU")
+              }}
             </span>
           </div>
           <div
@@ -59,7 +63,11 @@ onMounted(() => {});
           >
             <span class="text-10-ext text-gray-75-color">Расходы </span>
             <span class="text-12-reg text-gray-90-color">
-              {{ profileStore.marketplacesTotalSpending.toLocaleString() }}
+              {{
+                Number(
+                  profileStore.marketplacesTotalSpending.toFixed(2)
+                ).toLocaleString("ru-RU")
+              }}
             </span>
           </div>
           <div
@@ -69,7 +77,11 @@ onMounted(() => {});
               >Чистая прибыль</span
             >
             <span class="text-12-reg text-gray-90-color">
-              {{ profileStore.marketplacesTotalProfit.toLocaleString() }}
+              {{
+                Number(
+                  profileStore.marketplacesTotalProfit.toFixed(2)
+                ).toLocaleString("ru-RU")
+              }}
             </span>
           </div>
         </div>
@@ -147,7 +159,7 @@ onMounted(() => {});
               </span>
             </div>
             <span class="text-12-reg text-gray-90-color">
-              {{ market.sold.toLocaleString() }}
+              {{ Number(market.sold.toFixed(1)).toLocaleString("ru-RU") }}
             </span>
           </div>
         </div>
@@ -159,20 +171,30 @@ onMounted(() => {});
           <p
             class="text-8-reg text-gray-75-color flex items-center justify-between mt-1"
           >
-            Оборот: <span>{{ market.sold.toLocaleString() }}</span>
+            Оборот:
+            <span>
+              {{ Number(market.sold.toFixed(1)).toLocaleString("ru-RU") }}
+            </span>
           </p>
           <div class="w-full h-[1px] block bg-gray-15-color my-[3px]"></div>
           <p
             class="text-8-reg text-error-500 flex items-center justify-between mt-1"
           >
-            Расход: <span>{{ market.spending.toLocaleString() }}</span>
+            Расход:
+            <span>
+              {{ Number(market.spending.toFixed(1)).toLocaleString("ru-RU") }}
+            </span>
           </p>
           <div class="w-full h-[1px] block bg-gray-15-color my-[3px]"></div>
           <p
             class="text-8-reg text-success-500 flex items-center justify-between mt-1"
           >
             Чистая прибыль:
-            <span>{{ market.totalProfit.toLocaleString() }}</span>
+            <span>
+              {{
+                Number(market.totalProfit.toFixed(1)).toLocaleString("ru-RU")
+              }}
+            </span>
           </p>
         </div>
       </div>

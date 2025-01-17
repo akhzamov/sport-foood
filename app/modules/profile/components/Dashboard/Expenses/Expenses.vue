@@ -46,7 +46,9 @@ onMounted(() => {});
             <span class="text-12-reg text-gray-90-color">
               {{
                 profileStore.spendingTotalAmount
-                  ? profileStore.spendingTotalAmount.toLocaleString()
+                  ? Number(
+                      profileStore.spendingTotalAmount.toFixed(1)
+                    ).toLocaleString("ru-RU")
                   : 0
               }}
             </span>
@@ -124,7 +126,7 @@ onMounted(() => {});
             class="flex w-[90px] h-full flex-col items-end justify-between border-gray-40-color mr-1 p-[1px]"
           >
             <span class="text-12-reg text-gray-90-color">
-              {{ spending.amount.toLocaleString() }}
+              {{ Number(spending.amount.toFixed(1)).toLocaleString("ru-RU") }}
             </span>
           </div>
         </div>

@@ -265,7 +265,11 @@ const checkPosition = async () => {
                                 <span
                                   class="w-full h-full flex items-center justify-center bg-dark-gunmental-color text-8-ext text-gray-75-color"
                                 >
-                                  {{ district.left_weight }}
+                                  {{
+                                    Number(
+                                      district.left_weight.toFixed()
+                                    ).toLocaleString("ru-RU")
+                                  }}
                                 </span>
                               </p>
                             </div>
