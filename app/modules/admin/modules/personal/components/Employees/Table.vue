@@ -100,7 +100,7 @@ const openEditTab = (title: number, id: string) => {
             disable-bg-color="bg-gray-15-color"
             :array="statuses"
             :show-menu="selectStatusMenu"
-            default-select-text="Статус"
+            default-select-text="Все"
             v-model:model-value="selectedStatus"
             :icon="false"
             value-key="id"
@@ -113,13 +113,13 @@ const openEditTab = (title: number, id: string) => {
             @click.stop
           />
           <UiRoundedSelect
-            main-text-color="text-gray-90-color"
+            main-text-color="text-gray-90-color text-"
             select-bg-color="bg-gray-15-color"
             disable-text-color="text-gray-40-color"
             disable-bg-color="bg-gray-15-color"
             :array="positions"
             :show-menu="selectPositionMenu"
-            default-select-text="Должность"
+            default-select-text="Все"
             v-model:model-value="selectedPosition"
             :icon="false"
             value-key="id"
@@ -138,7 +138,7 @@ const openEditTab = (title: number, id: string) => {
             disable-bg-color="bg-gray-15-color"
             :array="roles"
             :show-menu="selectRoleMenu"
-            default-select-text="Роль"
+            default-select-text="Все"
             v-model:model-value="selectedRole"
             :icon="false"
             value-key="id"
@@ -182,20 +182,17 @@ const openEditTab = (title: number, id: string) => {
             />
           </th>
           <th class="w-[220px] flex items-center justify-start">
-            <span>Должность</span>
+            <span>Роль</span>
           </th>
-          <th class="w-[160px] flex items-center justify-start gap-1">
+          <th class="w-[270px] flex items-center justify-start">
+            <span>Магазины</span>
+          </th>
+          <th class="w-[180px] flex items-center justify-start gap-1">
             <span>Статус</span>
             <IconSwitchVertical01
               class="w-[20px] h-[20px] cursor-pointer"
               @click="personalStore.statusFilter()"
             />
-          </th>
-          <th class="w-[180px] flex items-center justify-start">
-            <span>Магазины</span>
-          </th>
-          <th class="w-[180px] flex items-center justify-start">
-            <span>Контакт</span>
           </th>
         </tr>
       </thead>
@@ -225,7 +222,18 @@ const openEditTab = (title: number, id: string) => {
             >
               {{ employee.role }}
             </th>
-            <th class="w-[160px] flex items-center justify-start gap-1">
+
+            <th
+              class="w-[270px] flex items-center justify-start text-14-reg text-gray-75-color"
+            >
+              <span class="mr-2" v-for="store in employee.stores.slice(0, 2)">
+                {{ store.name }}
+              </span>
+              <span v-if="employee.stores.length > 2">
+                (+{{ employee.stores.slice(1, -1).length }})
+              </span>
+            </th>
+            <th class="w-[180px] flex items-center justify-start gap-1">
               <span
                 v-if="employee.status == 'on_leave'"
                 class="px-2 py-1 rounded-[20px] text-12-reg bg-yellow-500/15 text-yellow-500"
@@ -262,16 +270,6 @@ const openEditTab = (title: number, id: string) => {
               >
                 Активный
               </span>
-            </th>
-            <th
-              class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
-            >
-              {{ employee.stores.length }} шт
-            </th>
-            <th
-              class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
-            >
-              {{ employee.contact ? employee.contact : "Пусто" }}
             </th>
           </tr>
         </template>

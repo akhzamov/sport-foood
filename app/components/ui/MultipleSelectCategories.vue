@@ -3,13 +3,20 @@ const props = withDefaults(
   defineProps<{
     mainTextColor: string;
     selectBgColor: string;
-    array: any[] | Record<string, any>;
+    disableTextColor: string;
+    disableBgColor: string;
+    array:
+      | Record<string | number | symbol, any>[]
+      | any[]
+      | Record<string | number | symbol, any>;
     showMenu: boolean;
     defaultSelectText: string;
     modelValue: any;
     valueKey: string;
     labelKey: string;
     innerItemKey: string;
+    textCenter: boolean;
+    disable: boolean;
   }>(),
   {
     mainTextColor: "text-gray-90-color",
@@ -34,6 +41,11 @@ const state = reactive({
 const defaultSelectText = ref(props.defaultSelectText);
 const searchValue = ref("");
 let filteredArray = reactive(props.array);
+const isArray = (data: unknown): data is any[] => Array.isArray(data);
+
+const getArrayFromProps = () => {
+  return isArray(filteredArray) ? filteredArray : Object.values(filteredArray);
+};
 
 const filterItems = (array: any[], search: string) => {
   return array
@@ -91,6 +103,23 @@ const removeItem = (index: number) => {
   }
 };
 
+const filterObject = (obj: Record<string, any>, searchValue: string) => {
+  let result: Record<string, any> = {};
+  Object.keys(obj).forEach((key) => {
+    const filteredItem = filterNestedItems(obj[key], searchValue);
+    if (filteredItem) {
+      result[key] = filteredItem;
+    }
+  });
+  return result;
+};
+
+const checkDefaultText = () => {
+  if (state.selectedItems.length == 0 || state.selectedItemIds.length == 0) {
+    defaultSelectText.value = props.defaultSelectText;
+  }
+};
+
 watch(
   () => props.modelValue,
   () => {
@@ -113,23 +142,22 @@ watch(
   }
 );
 
-const filterObject = (obj: Record<string, any>, searchValue: string) => {
-  let result: Record<string, any> = {};
-  Object.keys(obj).forEach((key) => {
-    const filteredItem = filterNestedItems(obj[key], searchValue);
-    if (filteredItem) {
-      result[key] = filteredItem;
-    }
-  });
-  return result;
-};
+watchEffect(() => {
+  const array = getArrayFromProps();
+  if (array.length > 0) {
+    checkDefaultText();
+  }
+});
 </script>
 
 <template>
   <div class="w-[214px] h-[40px] relative">
     <div
-      class="w-full h-full rounded-lg flex items-center justify-between px-4 select-none cursor-pointer"
-      :class="props.selectBgColor"
+      class="w-full h-full rounded-lg flex items-center justify-between px-4 select-none"
+      :class="[
+        props.selectBgColor,
+        props.disable ? 'cursor-not-allowed' : 'cursor-pointer',
+      ]"
       @click="emit('update:showMenu', !props.showMenu)"
     >
       <div
@@ -138,7 +166,9 @@ const filterObject = (obj: Record<string, any>, searchValue: string) => {
       >
         <div
           class="w-max h-[22px] flex items-center gap-1 pl-2 pr-1 rounded-[20px] bg-gray-15-color text-gray-90-color text-12-reg"
-          :class="props.mainTextColor"
+          :class="[
+            props.disable ? props.disableTextColor : props.mainTextColor,
+          ]"
           v-for="(item, index) in state.selectedItems"
           :key="index"
         >
@@ -152,17 +182,26 @@ const filterObject = (obj: Record<string, any>, searchValue: string) => {
         </div>
       </div>
       <span
-        class="text-14-reg"
-        :class="props.mainTextColor"
+        class="w-full text-14-reg"
+        :class="[
+          props.disable ? props.disableTextColor : props.mainTextColor,
+          props.textCenter ? 'text-center' : '',
+        ]"
         v-if="state.selectedItems.length == 0"
       >
         {{ defaultSelectText }}
       </span>
-      <IconChevronUp :class="props.mainTextColor" v-if="!props.showMenu" />
-      <IconChevronDown :class="props.mainTextColor" v-else />
+      <IconChevronUp
+        :class="[props.disable ? props.disableTextColor : props.mainTextColor]"
+        v-if="!props.showMenu && !props.disable"
+      />
+      <IconChevronDown
+        :class="[props.disable ? props.disableTextColor : props.mainTextColor]"
+        v-else
+      />
     </div>
     <div
-      v-if="props.showMenu"
+      v-if="props.showMenu && !props.disable"
       class="absolute max-h-[400px] bg-dark-eerie-black-color top-[105%] left-0 w-full overflow-y-auto rounded-lg px-3 py-3 flex flex-col gap-[10px]"
     >
       <div @click.stop>
@@ -174,7 +213,7 @@ const filterObject = (obj: Record<string, any>, searchValue: string) => {
         />
       </div>
       <div
-        v-for="(item, key) in filteredArray"
+        v-for="(item, key) in getArrayFromProps()"
         :key="key"
         class="flex flex-col gap-2"
       >

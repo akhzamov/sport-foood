@@ -3,18 +3,28 @@ const props = withDefaults(
   defineProps<{
     mainTextColor: string;
     selectBgColor: string;
-    array: any[] | Record<string, any>;
+    disableTextColor: string;
+    disableBgColor: string;
+    array:
+      | Record<string | number | symbol, any>[]
+      | any[]
+      | Record<string | number | symbol, any>;
     showMenu: boolean;
     defaultSelectText: string;
     modelValue: any;
     valueKey: string;
     labelKey: string;
+    textCenter: boolean;
+    disable: boolean;
   }>(),
   {
     mainTextColor: "text-gray-90-color",
-    selectBgColor: "bg-gray-90-color",
+    selectBgColor: "bg-gray-15-color",
+    disableTextColor: "text-gray-40-color",
+    disableBgColor: "bg-gray-15-color",
     array: () => [],
     defaultSelectText: "",
+    texCenter: false,
   }
 );
 
@@ -30,6 +40,12 @@ const state = reactive({
 });
 
 const defaultSelectText = ref(props.defaultSelectText);
+
+const isArray = (data: unknown): data is any[] => Array.isArray(data);
+
+const getArrayFromProps = () => {
+  return isArray(props.array) ? props.array : Object.values(props.array);
+};
 
 // Обработка выбора элемента
 const selectItem = (id: number | string, name: string) => {
@@ -72,10 +88,8 @@ watch(
 );
 
 watchEffect(() => {
-  if (
-    props.array &&
-    (Array.isArray(props.array) || Object.keys(props.array).length > 0)
-  ) {
+  const array = getArrayFromProps();
+  if (array.length > 0) {
     checkDefaultText();
   }
 });
@@ -84,8 +98,11 @@ watchEffect(() => {
 <template>
   <div class="h-[40px] relative">
     <div
-      class="w-full h-full rounded-lg flex items-center justify-between px-4 select-none cursor-pointer"
-      :class="props.selectBgColor"
+      class="w-full h-full rounded-lg flex items-center justify-between px-4 select-none"
+      :class="[
+        props.selectBgColor,
+        props.disable ? 'cursor-not-allowed' : 'cursor-pointer',
+      ]"
       @click="emit('update:showMenu', !props.showMenu)"
     >
       <slot name="icon" />
@@ -95,7 +112,9 @@ watchEffect(() => {
       >
         <div
           class="w-max h-[22px] flex items-center gap-1 pl-2 pr-1 rounded-[20px] bg-gray-15-color text-gray-90-color text-12-reg"
-          :class="props.mainTextColor"
+          :class="[
+            props.disable ? props.disableTextColor : props.mainTextColor,
+          ]"
           v-for="(item, index) in state.selectedItems"
           :key="index"
         >
@@ -109,25 +128,28 @@ watchEffect(() => {
         </div>
       </div>
       <span
-        class="text-14-reg"
-        :class="props.mainTextColor"
+        class="w-full text-14-reg"
+        :class="[
+          props.disable ? props.disableTextColor : props.mainTextColor,
+          props.textCenter ? 'text-center' : '',
+        ]"
         v-if="state.selectedItems.length == 0"
       >
         {{ defaultSelectText }}
       </span>
       <IconChevronUp
         class="w-[24px] h-[24px]"
-        :class="props.mainTextColor"
-        v-if="!props.showMenu"
+        :class="[props.disable ? props.disableTextColor : props.mainTextColor]"
+        v-if="!props.showMenu && !props.disable"
       />
       <IconChevronDown
         class="w-[24px] h-[24px]"
-        :class="props.mainTextColor"
+        :class="[props.disable ? props.disableTextColor : props.mainTextColor]"
         v-else
       />
       <div
         class="absolute bg-dark-eerie-black-color top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px]"
-        v-if="props.showMenu"
+        v-if="props.showMenu && !props.disable"
       >
         <!-- Отображение элементов -->
         <div

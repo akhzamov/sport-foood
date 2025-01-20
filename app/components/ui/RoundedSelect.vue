@@ -37,7 +37,7 @@ const emit = defineEmits([
   "click:selectItem",
 ]);
 
-const selectedItemId = ref(props.modelValue);
+const selectedItemId = ref<null | number>(props.modelValue);
 const selectedItemName = ref(props.defaultSelectText);
 
 const isArray = (data: unknown): data is any[] => Array.isArray(data);
@@ -46,9 +46,8 @@ const getArrayFromProps = () => {
   return isArray(props.array) ? props.array : Object.values(props.array);
 };
 
-const selectItem = (id: number | string, name: string) => {
+const selectItem = (id: number | null, name: string) => {
   emit("update:modelValue", id);
-  emit("click:selectItem", id);
   emit("update:showMenu", false);
   selectedItemId.value = id;
   selectedItemName.value = name;
@@ -130,6 +129,27 @@ watchEffect(() => {
       >
         <div
           class="flex items-center gap-2 cursor-pointer select-item"
+          @click.stop="selectItem(null, 'Все')"
+        >
+          <slot name="value-icon" />
+          <IconBranch class="text-gray-90-color" v-if="props.icon" />
+          <span
+            class="flex-grow text-14-reg"
+            :class="
+              selectedItemName == 'Все'
+                ? 'text-primary-color'
+                : 'text-gray-90-color'
+            "
+          >
+            Все
+          </span>
+          <IconCheck
+            v-if="selectedItemName == 'Все'"
+            class="text-primary-color"
+          />
+        </div>
+        <div
+          class="flex items-center gap-2 cursor-pointer select-item"
           v-for="item in getArrayFromProps()"
           :key="item[props.valueKey]"
           @click.stop="selectItem(item[props.valueKey], item[props.labelKey])"
@@ -137,7 +157,7 @@ watchEffect(() => {
           <slot name="value-icon" />
           <IconBranch class="text-gray-90-color" v-if="props.icon" />
           <span
-            class="flex-grow text-16-med"
+            class="flex-grow text-14-reg"
             :class="
               item[props.labelKey] == selectedItemName
                 ? 'text-primary-color'

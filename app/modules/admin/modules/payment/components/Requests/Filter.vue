@@ -107,30 +107,38 @@ watch(
         <div class="w-full flex items-center justify-between p-4">
           <div class="max-w-[345px] w-full">
             <UiMultipleSelect
-              v-model:model-value="paymentStore.filteredStores"
-              :show-menu="storesMenuShow"
-              :array="paymentStore.stores"
-              @update:show-menu="storesMenuShow = $event"
-              default-select-text="Магазины"
               main-text-color="text-gray-90-color"
               select-bg-color="bg-gray-15-color"
+              disable-text-color="text-gray-40-color"
+              disable-bg-color="bg-gray-15-color"
+              :array="paymentStore.stores"
+              :show-menu="storesMenuShow"
+              default-select-text="Магазины"
+              v-model:model-value="paymentStore.filteredStores"
               value-key="id"
               label-key="name"
+              @update:show-menu="storesMenuShow = $event"
+              :text-center="false"
+              :disable="false"
               class="w-full z-[70]"
             />
           </div>
           <div class="max-w-[345px] w-full">
             <UiMultipleSelectCategories
-              v-model:model-value="paymentStore.filteredCities"
-              :show-menu="citiesMenuShow"
-              :array="paymentStore.areas"
-              @update:show-menu="citiesMenuShow = $event"
-              default-select-text="Города"
               main-text-color="text-gray-90-color"
               select-bg-color="bg-gray-15-color"
+              disable-text-color="text-gray-40-color"
+              disable-bg-color="bg-gray-15-color"
+              :array="paymentStore.areas"
+              :show-menu="citiesMenuShow"
+              default-select-text="Города"
+              v-model:model-value="paymentStore.filteredCities"
               value-key="id"
               label-key="name"
               inner-item-key="cities"
+              @update:show-menu="citiesMenuShow = $event"
+              :text-center="false"
+              :disable="false"
               class="w-full z-[70]"
             />
           </div>

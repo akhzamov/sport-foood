@@ -12,22 +12,41 @@ const schema = yup.object({
     .string()
     .required("Введите Имя Фамилия")
     .min(6, "Не должно быть меньше 6-и символов"),
+  password: yup
+    .string()
+    .required("Введите пароль")
+    .min(6, "Не должно быть меньше 6-и символов"),
   contact: yup
     .string()
     .required("Введите контактные данные")
     .min(6, "Не должно быть меньше 6-и символов"),
+  selectedStore: yup.number().nullable().required("Выберите магазины"),
+  selectedRole: yup.number().nullable().required("Выберите роль"),
+  selectedStatus: yup.number().nullable().required("Выберите статус"),
 });
 interface ISchemaForm {
   username: string;
+  password: string;
   contact: string;
+  selectedStore: number[];
+  selectedRole: number;
+  selectedStatus: number;
 }
 const { handleSubmit } = useForm<ISchemaForm>({
   validationSchema: schema,
 });
 const { value: username, errorMessage: usernameError } =
   useField<string>("username");
+const { value: password, errorMessage: passwordError } =
+  useField<string>("password");
 const { value: contact, errorMessage: contactError } =
   useField<string>("contact");
+const { value: selectedStore, errorMessage: selectedStoreError } =
+  useField<number[]>("selectedStore");
+const { value: selectedRole, errorMessage: selectedRoleError } =
+  useField<number>("selectedRole");
+const { value: selectedStatus, errorMessage: selectedStatusError } =
+  useField<number>("selectedStatus");
 
 const adminStore = useAdminStore();
 const profileStore = useProfileStore();
@@ -40,6 +59,34 @@ const openPermissionSubGroup = ref("");
 const openStoresList = ref(false);
 let checkedStore = reactive<number[]>([]);
 let checkedPermissions = reactive<string[]>([]);
+const storesMenuShow = ref(false);
+const rolesMenuShow = ref(false);
+const statusMenuShow = ref(false);
+const roles = reactive([
+  {
+    id: 1,
+    name: "Администратор",
+  },
+  {
+    id: 2,
+    name: "Главный оператор +",
+  },
+  {
+    id: 3,
+    name: "Главный оператор",
+  },
+  {
+    id: 4,
+    name: "Оператор",
+  },
+]);
+const statuses = reactive([
+  { id: 2, name: "В отпуске" },
+  { id: 3, name: "Работает" },
+  { id: 4, name: "Болен" },
+  { id: 5, name: "Отсутствует" },
+  { id: 6, name: "Уволен" },
+]);
 
 const togglePermission = (permissionName: string, isChecked: boolean) => {
   if (personalStore.employee) {
@@ -91,7 +138,6 @@ const activePermissions = () => {
     }
   }
 };
-
 const updateCheckedStores = () => {
   checkedStore.length = 0;
   if (!personalStore.employee || !profileStore.stores) {
@@ -134,7 +180,6 @@ const toggleStoreChecked = (storeId: number) => {
     }
   }
 };
-
 const openAndClosePermission = (
   key: string | number,
   permissionName: string
@@ -206,14 +251,14 @@ onUnmounted(() => {
     @submit.prevent="onSubmit"
     class="sticky z-[20] w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
   >
-    <div class="flex items-center justify-between gap-3 mt-3">
-      <div class="w-full flex flex-col">
+    <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
+      <div class="w-full h-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">
           Имя пользователя
         </label>
         <UiInput
           v-model:model-value="username"
-          placeholder="SkyHunter"
+          placeholder="malik"
           type="text"
           class="text-gray-90-color"
         />
@@ -221,11 +266,25 @@ onUnmounted(() => {
           {{ usernameError }}
         </span>
       </div>
-      <div class="w-full flex flex-col">
+      <div class="w-full h-full flex flex-col">
+        <label class="text-12-reg text-gray-90-color mb-1"> Пароль </label>
+        <UiInput
+          v-model:model-value="password"
+          placeholder="******"
+          type="password"
+          class="text-gray-90-color"
+        />
+        <span v-if="passwordError" class="text-14-ext text-error-500 mt-[2px]">
+          {{ passwordError }}
+        </span>
+      </div>
+    </div>
+    <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
+      <div class="w-full h-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1"> Контакт </label>
         <UiInput
-          v-model:model-value="contact"
-          placeholder="Телефон или почта"
+          :modelValue="contact"
+          placeholder="+ _ ( _ _ _ ) _ _ _ - _ _ - _ _ | info@gmail.com"
           type="text"
           class="text-gray-90-color"
         />
@@ -233,43 +292,91 @@ onUnmounted(() => {
           {{ contactError }}
         </span>
       </div>
-    </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
-      <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Должность </label>
-        <UiInput
-          :modelValue="personalStore.employee?.role"
-          @update:modelValue="
-            (value) => {
-              if (personalStore.employee) {
-                personalStore.employee.role = value;
-              }
-            }
-          "
-          placeholder="Администратор"
-          type="text"
-          class="text-gray-90-color"
+      <div class="w-full h-full flex flex-col">
+        <label class="text-12-reg text-gray-90-color mb-1">Магазин</label>
+        <UiMultipleSelect
+          main-text-color="text-gray-90-color"
+          select-bg-color="bg-gray-15-color"
+          disable-text-color="text-gray-40-color"
+          disable-bg-color="bg-gray-15-color"
+          :array="profileStore.stores ?? []"
+          :show-menu="storesMenuShow"
+          default-select-text="Выбрать магазины"
+          v-model:model-value="selectedStore"
+          value-key="id"
+          label-key="name"
+          @update:show-menu="storesMenuShow = $event"
+          :text-center="false"
+          :disable="false"
+          class="w-full z-[70]"
         />
+        <span
+          v-if="selectedStoreError"
+          class="text-14-ext text-error-500 mt-[2px]"
+        >
+          {{ selectedStoreError }}
+        </span>
       </div>
-      <div class="w-full flex flex-col">
+    </div>
+    <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
+      <div class="w-full h-full flex flex-col">
+        <label class="text-12-reg text-gray-90-color mb-1"> Роль </label>
+        <UiSelect
+          main-text-color="text-gray-90-color"
+          select-bg-color="bg-gray-15-color"
+          disable-text-color="text-gray-40-color"
+          disable-bg-color="bg-gray-15-color"
+          :array="roles"
+          :show-menu="rolesMenuShow"
+          default-select-text="Выбрать роль"
+          v-model:model-value="selectedRole"
+          :icon="false"
+          value-key="id"
+          label-key="name"
+          @update:model-value="selectedRole = $event"
+          @update:show-menu="rolesMenuShow = $event"
+          width="w-full"
+          :text-center="false"
+          :disable="false"
+          class="h-[40px] z-[60]"
+        />
+        <span
+          v-if="selectedRoleError"
+          class="text-14-ext text-error-500 mt-[2px]"
+        >
+          {{ selectedRoleError }}
+        </span>
+      </div>
+      <div class="w-full h-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">Статус</label>
-        <UiInput
-          :modelValue="personalStore.employee?.status"
-          @update:modelValue="
-            (value) => {
-              if (personalStore.employee) {
-                personalStore.employee.status = value;
-              }
-            }
-          "
-          placeholder="Администратор"
-          type="text"
-          class="text-gray-90-color"
-          disabled
+        <UiSelect
+          main-text-color="text-gray-90-color"
+          select-bg-color="bg-gray-15-color"
+          disable-text-color="text-gray-40-color"
+          disable-bg-color="bg-gray-15-color"
+          :array="statuses"
+          :show-menu="statusMenuShow"
+          default-select-text="Выбрать роль"
+          v-model:model-value="selectedStatus"
+          :icon="false"
+          value-key="id"
+          label-key="name"
+          @update:model-value="selectedStatus = $event"
+          @update:show-menu="statusMenuShow = $event"
+          width="w-full"
+          :text-center="false"
+          :disable="false"
+          class="h-[40px] z-[60]"
         />
+        <span
+          v-if="selectedStatusError"
+          class="text-14-ext text-error-500 mt-[2px]"
+        >
+          {{ selectedStatusError }}
+        </span>
       </div>
     </div>
-    <div class="w-full flex flex-col mt-3">
+    <!-- <div class="w-full flex flex-col mt-3">
       <p class="text-12-reg text-gray-90-color">Магазины</p>
       <div
         class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color mt-2"
@@ -361,7 +468,7 @@ onUnmounted(() => {
           </template>
         </div>
       </template>
-    </div>
+    </div> -->
     <div class="flex items-center justify-between gap-2 mt-3">
       <UiButton
         bgColor="bg-transparent"
