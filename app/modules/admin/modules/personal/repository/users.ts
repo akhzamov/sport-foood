@@ -1,4 +1,7 @@
-import type { IUsers, IUser } from "~/modules/admin/modules/personal/types/Personal/Employees/users.type";
+import type {
+  IUsers,
+  IUser,
+} from "~/modules/admin/modules/personal/types/Personal/Employees/users.type";
 
 export class UsersRep {
   private async request<T>(
@@ -74,8 +77,35 @@ export class UsersRep {
         params: {
           ...params,
         },
-        body:{
-          ...body
+        body: {
+          ...body,
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          // "Origin": window.location.origin,
+          ...headers,
+        },
+      }
+    );
+  }
+  async createUser(
+    body: Record<string, any>,
+    params?: Record<string, any>,
+    headers?: Record<string, string>
+  ): Promise<IUser> {
+    const config = useRuntimeConfig();
+    const authToken = process.client ? localStorage.getItem("authToken") : "";
+    return await this.request<IUser>(
+      "POST",
+      `${config.public.apiBaseUrl}/api/crud/users/store`,
+      {
+        params: {
+          ...params,
+        },
+        body: {
+          ...body,
         },
         headers: {
           Authorization: `Bearer ${authToken}`,

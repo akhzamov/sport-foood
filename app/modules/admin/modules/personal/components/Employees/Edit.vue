@@ -11,40 +11,49 @@ const schema = yup.object({
   username: yup
     .string()
     .required("Введите Имя Фамилия")
-    .min(6, "Не должно быть меньше 6-и символов"),
-  password: yup
-    .string()
-    .required("Введите пароль")
-    .min(6, "Не должно быть меньше 6-и символов"),
-  contact: yup
-    .string()
-    .required("Введите контактные данные")
-    .min(6, "Не должно быть меньше 6-и символов"),
-  selectedStore: yup.number().nullable().required("Выберите магазины"),
-  selectedRole: yup.number().nullable().required("Выберите роль"),
-  selectedStatus: yup.number().nullable().required("Выберите статус"),
+    .min(4, "Не должно быть меньше 4-и символов"),
+  contact: yup.string().min(6, "Не должно быть меньше 6-и символов"),
+  selectedStores: yup
+    .array()
+    .required("Выберите магазины")
+    .min(1, "Выберите хотя бы один магазин"),
+  selectedPermissions: yup
+    .array()
+    .required("Выберите доступ")
+    .min(1, "Выберите хотя бы один доступ"),
+  selectedRole: yup.string().required("Выберите роль"),
+  selectedStatus: yup.number(),
 });
 interface ISchemaForm {
   username: string;
-  password: string;
   contact: string;
-  selectedStore: number[];
-  selectedRole: number;
+  selectedStores: number[];
+  selectedPermissions: string[];
+  selectedRole: string;
   selectedStatus: number;
 }
+const initialValues: ISchemaForm = {
+  username: "",
+  contact: "",
+  selectedStores: [],
+  selectedPermissions: [],
+  selectedRole: "",
+  selectedStatus: null as unknown as number,
+};
 const { handleSubmit } = useForm<ISchemaForm>({
   validationSchema: schema,
+  initialValues,
 });
 const { value: username, errorMessage: usernameError } =
   useField<string>("username");
-const { value: password, errorMessage: passwordError } =
-  useField<string>("password");
 const { value: contact, errorMessage: contactError } =
   useField<string>("contact");
-const { value: selectedStore, errorMessage: selectedStoreError } =
-  useField<number[]>("selectedStore");
+const { value: selectedStores, errorMessage: selectedStoresError } =
+  useField<number[]>("selectedStores");
+const { value: selectedPermissions, errorMessage: selectedPermissionsError } =
+  useField<string[]>("selectedPermissions");
 const { value: selectedRole, errorMessage: selectedRoleError } =
-  useField<number>("selectedRole");
+  useField<string>("selectedRole");
 const { value: selectedStatus, errorMessage: selectedStatusError } =
   useField<number>("selectedStatus");
 
@@ -52,32 +61,16 @@ const adminStore = useAdminStore();
 const profileStore = useProfileStore();
 const mainStore = useMainStore();
 const personalStore = usePersonalStore();
-const toggle = ref(false);
-const openPermission = ref(false);
-const openPermissionName = ref("");
-const openPermissionSubGroup = ref("");
+const openPermissionGroup = reactive<string[]>([]);
+const openPermissionSubGroup = reactive<string[]>([]);
 const openStoresList = ref(false);
-let checkedStore = reactive<number[]>([]);
-let checkedPermissions = reactive<string[]>([]);
-const storesMenuShow = ref(false);
 const rolesMenuShow = ref(false);
 const statusMenuShow = ref(false);
 const roles = reactive([
   {
     id: 1,
-    name: "Администратор",
-  },
-  {
-    id: 2,
-    name: "Главный оператор +",
-  },
-  {
-    id: 3,
-    name: "Главный оператор",
-  },
-  {
-    id: 4,
     name: "Оператор",
+    value: "OPERATOR",
   },
 ]);
 const statuses = reactive([
@@ -94,7 +87,7 @@ const togglePermission = (permissionName: string, isChecked: boolean) => {
     if (isChecked) {
       if (!personalStore.employee.permissions.includes(permissionName)) {
         personalStore.employee.permissions.push(permissionName);
-        checkedPermissions.push(permissionName);
+        selectedPermissions.value.push(permissionName);
       }
     }
     // Если чекбокс снят (isChecked = false), удаляем право
@@ -103,16 +96,16 @@ const togglePermission = (permissionName: string, isChecked: boolean) => {
         personalStore.employee.permissions.filter(
           (perm) => perm !== permissionName
         );
-      const index = checkedPermissions.indexOf(permissionName);
+      const index = selectedPermissions.value.indexOf(permissionName);
       if (index !== -1) {
-        checkedPermissions.slice(index, 1);
+        selectedPermissions.value.slice(index, 1);
       }
     }
   }
 };
 const activePermissions = () => {
   const userPermissions = personalStore.employee?.permissions || []; // Права текущего пользователя
-  checkedPermissions.length = 0;
+  selectedPermissions.value.length = 0;
 
   if (!userPermissions.length || !personalStore.permissions) {
     console.warn("Нет данных для проверки прав");
@@ -131,7 +124,7 @@ const activePermissions = () => {
           // Устанавливаем checked = true, если права совпадают
           permission.checked = userPermissions.includes(permission.name);
           if (permission.checked) {
-            checkedPermissions.push(permission.name);
+            selectedPermissions.value.push(permission.name);
           }
         });
       }
@@ -139,7 +132,7 @@ const activePermissions = () => {
   }
 };
 const updateCheckedStores = () => {
-  checkedStore.length = 0;
+  selectedStores.value.length = 0;
   if (!personalStore.employee || !profileStore.stores) {
     console.warn("Не хватает данных для обработки");
     return;
@@ -153,7 +146,7 @@ const updateCheckedStores = () => {
 
     if (isEmployeeStore) {
       store.checked = true;
-      checkedStore.push(store.id);
+      selectedStores.value.push(store.id);
     }
   });
 };
@@ -169,47 +162,46 @@ const toggleStoreChecked = (storeId: number) => {
 
   if (store.checked) {
     // Если включили checked, добавляем в массив
-    if (!checkedStore.includes(storeId)) {
-      checkedStore.push(storeId);
+    if (!selectedStores.value.includes(storeId)) {
+      selectedStores.value.push(storeId);
     }
   } else {
     // Если отключили checked, удаляем из массива
-    const index = checkedStore.indexOf(storeId);
+    const index = selectedStores.value.indexOf(storeId);
     if (index !== -1) {
-      checkedStore.splice(index, 1);
+      selectedStores.value.splice(index, 1);
     }
   }
 };
-const openAndClosePermission = (
-  key: string | number,
-  permissionName: string
-) => {
-  const isCurrentlyOpen =
-    openPermission.value &&
-    openPermissionName.value === key.toString() &&
-    openPermissionSubGroup.value === permissionName;
-
-  if (isCurrentlyOpen) {
-    // Закрываем окно
-    openPermissionName.value = "";
-    openPermissionSubGroup.value = "";
-    openPermission.value = false;
-  } else {
-    // Открываем окно с новыми значениями
-    openPermissionName.value = key.toString();
-    openPermissionSubGroup.value = permissionName;
-    openPermission.value = true;
+const openAndClosePermissionGroup = (group: string) => {
+  if (group.length > 0) {
+    if (!openPermissionGroup.includes(group)) {
+      openPermissionGroup.push(group);
+    } else {
+      let i = openPermissionGroup.indexOf(group);
+      openPermissionGroup.splice(i, 1);
+    }
+  }
+};
+const openAndClosePermission = (subGroup: string) => {
+  if (subGroup.length > 0) {
+    if (!openPermissionSubGroup.includes(subGroup)) {
+      openPermissionSubGroup.push(subGroup);
+    } else {
+      let i = openPermissionSubGroup.indexOf(subGroup);
+      openPermissionSubGroup.splice(i, 1);
+    }
   }
 };
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    if (!usernameError.value && !contactError.value && adminStore.openUser) {
+    if (adminStore.openUser) {
       const data = {
         username: values.username,
         contact: values.contact,
-        stores: checkedStore,
-        permissions: checkedPermissions,
+        stores: values.selectedStores,
+        permissions: values.selectedPermissions,
       };
       editUserById(adminStore.openUser, data);
     }
@@ -223,7 +215,6 @@ watch(
   () => {
     if (personalStore.employee) {
       activePermissions();
-      checkedStore.length = 0;
       updateCheckedStores();
     }
   },
@@ -242,6 +233,19 @@ onUnmounted(() => {
   profileStore.stores?.forEach((item) => {
     item.checked = false;
   });
+  if (personalStore.permissions) {
+    for (const key in personalStore.permissions) {
+      const group = personalStore.permissions[key];
+      for (const subKey in group) {
+        const permissionsArray = group[subKey];
+        if (Array.isArray(permissionsArray)) {
+          permissionsArray.forEach((permission) => {
+            permission.checked = false;
+          });
+        }
+      }
+    }
+  }
 });
 </script>
 
@@ -251,8 +255,8 @@ onUnmounted(() => {
     @submit.prevent="onSubmit"
     class="sticky z-[20] w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
   >
-    <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
-      <div class="w-full h-full flex flex-col">
+    <div class="w-full h-max flex items-start justify-between gap-[2%] mt-3">
+      <div class="w-[49%] h-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">
           Имя пользователя
         </label>
@@ -266,21 +270,7 @@ onUnmounted(() => {
           {{ usernameError }}
         </span>
       </div>
-      <div class="w-full h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Пароль </label>
-        <UiInput
-          v-model:model-value="password"
-          placeholder="******"
-          type="password"
-          class="text-gray-90-color"
-        />
-        <span v-if="passwordError" class="text-14-ext text-error-500 mt-[2px]">
-          {{ passwordError }}
-        </span>
-      </div>
-    </div>
-    <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
-      <div class="w-full h-full flex flex-col">
+      <div class="w-[49%] h-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1"> Контакт </label>
         <UiInput
           :modelValue="contact"
@@ -288,36 +278,11 @@ onUnmounted(() => {
           type="text"
           class="text-gray-90-color"
         />
-        <span v-if="contactError" class="text-14-ext text-error-500 mt-[2px]">
-          {{ contactError }}
-        </span>
-      </div>
-      <div class="w-full h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Магазин</label>
-        <UiMultipleSelect
-          main-text-color="text-gray-90-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
-          :array="profileStore.stores ?? []"
-          :show-menu="storesMenuShow"
-          default-select-text="Выбрать магазины"
-          v-model:model-value="selectedStore"
-          value-key="id"
-          label-key="name"
-          @update:show-menu="storesMenuShow = $event"
-          :text-center="false"
-          :disable="false"
-          class="w-full z-[70]"
-        />
-        <span
-          v-if="selectedStoreError"
-          class="text-14-ext text-error-500 mt-[2px]"
-        >
-          {{ selectedStoreError }}
-        </span>
       </div>
     </div>
+    <div
+      class="w-full h-max flex items-start justify-between gap-[2%] mt-3"
+    ></div>
     <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
       <div class="w-full h-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1"> Роль </label>
@@ -331,7 +296,7 @@ onUnmounted(() => {
           default-select-text="Выбрать роль"
           v-model:model-value="selectedRole"
           :icon="false"
-          value-key="id"
+          value-key="value"
           label-key="name"
           @update:model-value="selectedRole = $event"
           @update:show-menu="rolesMenuShow = $event"
@@ -376,7 +341,10 @@ onUnmounted(() => {
         </span>
       </div>
     </div>
-    <!-- <div class="w-full flex flex-col mt-3">
+    <div
+      class="w-full h-[1px] block mt-3 border border-dashed border-gray-40-color"
+    ></div>
+    <div class="w-full flex flex-col mt-3">
       <p class="text-12-reg text-gray-90-color">Магазины</p>
       <div
         class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color mt-2"
@@ -415,60 +383,80 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
+      <span
+        v-if="selectedStoresError"
+        class="text-14-ext text-error-500 mt-[2px]"
+      >
+        {{ selectedStoresError }}
+      </span>
     </div>
-    <div
-      class="w-full h-[1px] block mt-3 border border-dashed border-gray-40-color"
-    ></div>
     <div class="flex items-start justify-between flex-col gap-3 mt-3">
       <p class="text-12-reg text-gray-90-color">Доступы</p>
-      <template v-for="(permissionGroup, key) in personalStore.permissions">
+      <div
+        class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color"
+        v-for="(permissionGroup, key) in personalStore.permissions"
+        :key="key"
+      >
         <div
-          class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color"
+          class="w-full flex-grow h-8 flex items-center justify-between"
+          @click="openAndClosePermissionGroup(key.toString())"
         >
-          <div class="w-full h-8 flex items-center justify-between">
-            <p class="text-16-reg text-gray-75-color">{{ key }}</p>
-          </div>
-          <template v-for="(permission, permissionKey) in permissionGroup">
-            <div
-              @click="openAndClosePermission(key, permissionKey)"
-              class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color cursor-pointer select-none"
-            >
-              <p class="text-16-reg text-gray-75-color">
-                {{ permissionKey }}
-              </p>
-              <IconChevronDown class="text-gray-75-color" />
-            </div>
-            <template
-              v-for="(permissionValue, permissionValueKey) in permission"
-            >
-              <div
-                v-if="
-                  openPermissionSubGroup == permissionKey &&
-                  openPermissionName == key &&
-                  openPermission
-                "
-                class="w-full h-max flex flex-col items-center justify-between gap-3 p-2 rounded-lg bg-dark-onix-color cursor-pointer"
-              >
-                <div class="w-full flex items-center justify-between">
-                  <p class="text-16-reg text-gray-75-color">
-                    {{ permissionValue.display_name }}
-                  </p>
-                  <UiToggle
-                    v-model:model-value="permissionValue.checked"
-                    @update:model-value="
-                      togglePermission(
-                        permissionValue.name,
-                        permissionValue.checked
-                      )
-                    "
-                  />
-                </div>
-              </div>
-            </template>
-          </template>
+          <p class="text-16-reg text-gray-75-color">{{ key }}</p>
+          <IconChevronDown
+            class="text-gray-75-color"
+            :class="[
+              openPermissionGroup.includes(key.toString()) ? 'rotate-180' : '',
+            ]"
+          />
         </div>
-      </template>
-    </div> -->
+        <template v-for="(permission, permissionKey) in permissionGroup">
+          <div
+            @click="openAndClosePermission(permissionKey)"
+            class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color cursor-pointer select-none"
+            v-if="openPermissionGroup.includes(key.toString())"
+          >
+            <p class="text-16-reg text-gray-75-color">
+              {{ permissionKey }}
+            </p>
+            <IconChevronDown
+              class="text-gray-75-color"
+              :class="[
+                openPermissionSubGroup.includes(permissionKey)
+                  ? 'rotate-180'
+                  : '',
+              ]"
+            />
+          </div>
+          <template v-for="(permissionValue, permissionValueKey) in permission">
+            <div
+              v-if="openPermissionSubGroup.includes(permissionKey)"
+              class="w-full h-max flex flex-col items-center justify-between gap-3 p-2 rounded-lg bg-dark-onix-color cursor-pointer"
+            >
+              <div class="w-full flex items-center justify-between">
+                <p class="text-16-reg text-gray-75-color">
+                  {{ permissionValue.display_name }}
+                </p>
+                <UiToggle
+                  v-model:model-value="permissionValue.checked"
+                  @update:model-value="
+                    togglePermission(
+                      permissionValue.name,
+                      permissionValue.checked
+                    )
+                  "
+                />
+              </div>
+            </div>
+          </template>
+        </template>
+      </div>
+      <span
+        v-if="selectedPermissionsError"
+        class="text-14-ext text-error-500 mt-[2px]"
+      >
+        {{ selectedPermissionsError }}
+      </span>
+    </div>
     <div class="flex items-center justify-between gap-2 mt-3">
       <UiButton
         bgColor="bg-transparent"

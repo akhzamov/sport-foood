@@ -49,14 +49,21 @@ const getArrayFromProps = () => {
 
 // Обработка выбора элемента
 const selectItem = (id: number | string, name: string) => {
-  if (!state.selectedItemIds.includes(id)) {
+  const idIndex = state.selectedItemIds.indexOf(id);
+  const nameIndex = state.selectedItems.indexOf(name);
+
+  if (idIndex === -1) {
+    // Добавляем, если элемент отсутствует
     state.selectedItemIds.push(id);
-  }
-  if (!state.selectedItems.includes(name)) {
     state.selectedItems.push(name);
+  } else {
+    // Удаляем, если элемент уже существует
+    state.selectedItemIds.splice(idIndex, 1);
+    state.selectedItems.splice(nameIndex, 1);
   }
+
+  // Эмитим изменения
   emit("update:modelValue", state.selectedItemIds);
-  emit("click:selectItem", state.selectedItems);
   emit("update:showMenu", false);
 };
 
