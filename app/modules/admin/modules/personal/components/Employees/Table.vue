@@ -113,7 +113,7 @@ const openEditTab = (title: number, id: string) => {
             value-key="id"
             label-key="name"
             @update:show-menu="selectRoleMenu = $event"
-            width="w-[160px]"
+            width="min-w-[160px]"
             :text-center="false"
             :disable="false"
             class="h-[32px] z-[100]"

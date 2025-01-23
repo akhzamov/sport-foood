@@ -136,15 +136,19 @@ watchEffect(() => {
           <span
             class="flex-grow text-14-reg"
             :class="
+              selectedItemName == props.defaultSelectText ||
               selectedItemName == 'Все'
                 ? 'text-primary-color'
                 : 'text-gray-90-color'
             "
           >
-            Все
+            {{ props.defaultSelectText ?? "Все" }}
           </span>
           <IconCheck
-            v-if="selectedItemName == 'Все'"
+            v-if="
+              selectedItemName == props.defaultSelectText ||
+              selectedItemName == 'Все'
+            "
             class="text-primary-color"
           />
         </div>
