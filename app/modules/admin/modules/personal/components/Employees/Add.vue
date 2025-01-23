@@ -10,7 +10,7 @@ import { usePersonalStore } from "~/modules/admin/stores/personal";
 const schema = yup.object({
   username: yup
     .string()
-    .required("Введите Имя Фамилия")
+    .required("Введите имя пользователя")
     .min(4, "Не должно быть меньше 4-и символов"),
   password: yup
     .string()
