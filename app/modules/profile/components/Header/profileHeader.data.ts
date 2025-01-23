@@ -3,6 +3,7 @@ import { getMarketplacesData } from "~/modules/profile/components/Dashboard/Rati
 import { useRouter } from "#app";
 import { usePaymentStore } from "~/modules/admin/stores/payment";
 import { getSpending } from "../Dashboard/Expenses/expenses.data";
+import { useMainStore } from "~/stores/main";
 
 function formatDate(date: Date) {
   const day = String(date.getDate()).padStart(2, "0");
@@ -33,7 +34,7 @@ function getDateRange(days: number | string) {
 export async function getStores() {
   const { $storesRep } = useNuxtApp();
   const profileStore = useProfileStore();
-  const paymentStore = usePaymentStore();
+  const mainStore = useMainStore();
   const router = useRouter();
   profileStore.salesPlan = null;
   try {
@@ -41,8 +42,7 @@ export async function getStores() {
     res.forEach((item) => {
       item.checked = false;
     });
-    profileStore.stores = res;
-    paymentStore.stores = res;
+    mainStore.stores = res;
     profileStore.selectedBranch = res ? res[0]?.id || 0 : 0;
     if (res.length > 0) {
       const dates = getDateRange(profileStore.activeDayFilter ?? 0);

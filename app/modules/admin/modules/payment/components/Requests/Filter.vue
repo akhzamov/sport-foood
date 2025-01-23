@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { usePaymentStore } from "~/modules/admin/stores/payment";
 import { getPayments } from "./requests.data";
+import { useMainStore } from "~/stores/main";
 
 const paymentStore = usePaymentStore();
+const mainStore = useMainStore();
 const storesMenuShow = ref(false);
 const citiesMenuShow = ref(false);
 const statusesMenuShow = ref(false);
@@ -79,7 +81,7 @@ watch(
     <div
       @click.stop
       v-if="
-        paymentStore.stores &&
+        mainStore.stores &&
         paymentStore.areas &&
         paymentStore.statuses &&
         paymentStore.priorities &&
@@ -111,7 +113,7 @@ watch(
               select-bg-color="bg-gray-15-color"
               disable-text-color="text-gray-40-color"
               disable-bg-color="bg-gray-15-color"
-              :array="paymentStore.stores"
+              :array="mainStore.stores"
               :show-menu="storesMenuShow"
               default-select-text="Магазины"
               v-model:model-value="paymentStore.filteredStores"

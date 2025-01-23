@@ -16,10 +16,15 @@ const schema = yup.object({
     .string()
     .required("Введите контактные данные")
     .min(6, "Не должно быть меньше 6-и символов"),
+  status: yup
+    .string()
+    .required("Введите статус")
+    .min(6, "Не должно быть меньше 6-и символов"),
 });
 interface ISchemaForm {
   username: string;
   contact: string;
+  status: string;
 }
 const { handleSubmit } = useForm<ISchemaForm>({
   validationSchema: schema,
@@ -28,6 +33,7 @@ const { value: username, errorMessage: usernameError } =
   useField<string>("username");
 const { value: contact, errorMessage: contactError } =
   useField<string>("contact");
+const { value: status, errorMessage: statusError } = useField<string>("status");
 
 const adminStore = useAdminStore();
 const profileStore = useProfileStore();
@@ -42,12 +48,12 @@ let checkedStore = reactive<number[]>([]);
 
 const updateCheckedStores = () => {
   checkedStore.length = 0;
-  if (!personalStore.salesAgent || !profileStore.stores) {
+  if (!personalStore.salesAgent || !mainStore.stores) {
     console.warn("Не хватает данных для обработки");
     return;
   }
   // Пройдемся по магазинам из профиля и сверим с магазинами сотрудника
-  profileStore.stores.forEach((store) => {
+  mainStore.stores.forEach((store) => {
     store.checked = false;
     const isEmployeeStore = personalStore.salesAgent?.stores.some(
       (employeeStore) => employeeStore.id === store.id
@@ -60,7 +66,7 @@ const updateCheckedStores = () => {
   });
 };
 const toggleStoreChecked = (storeId: number) => {
-  const store = profileStore.stores?.find((s) => s.id === storeId);
+  const store = mainStore.stores?.find((s) => s.id === storeId);
 
   if (!store) {
     console.warn(`Магазин с ID ${storeId} не найден`);
@@ -143,12 +149,15 @@ watch(
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90-color mb-1">Статус</label>
         <UiInput
-          v-model:model-value="personalStore.salesAgent.status"
+          v-model:model-value="status"
           placeholder="Администратор"
           type="text"
           class="text-gray-90-color"
           disabled
         />
+        <span v-if="statusError" class="text-14-ext text-error-500 mt-[2px]">
+          {{ statusError }}
+        </span>
       </div>
     </div>
     <div class="w-full flex flex-col items-start mt-3">
@@ -207,7 +216,7 @@ watch(
             class="w-full h-max flex flex-col gap-1 mt-4 pb-1"
             v-if="openStoresList"
           >
-            <template v-for="store in profileStore.stores">
+            <template v-for="store in mainStore.stores">
               <div
                 class="w-full h-8 flex items-center justify-between px-2 rounded cursor-pointer hover:bg-dark-onix-color"
                 @click="toggleStoreChecked(store.id)"

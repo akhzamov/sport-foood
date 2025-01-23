@@ -3,10 +3,7 @@ import { useMainStore } from "~/stores/main";
 import { useForm, useField } from "vee-validate";
 import { setAuthToken } from "~/utils/auth";
 import * as yup from "yup";
-import axios from "axios";
-import { baseUrl } from "~/api";
 
-const config = useRuntimeConfig();
 const schema = yup.object({
   login: yup
     .string()
@@ -21,10 +18,15 @@ interface ISchemaForm {
   login: string;
   password: string;
 }
+const initialValues: ISchemaForm = {
+  login: "",
+  password: "",
+};
 
 const { $loginRep } = useNuxtApp();
 const { handleSubmit } = useForm<ISchemaForm>({
   validationSchema: schema,
+  initialValues,
 });
 const { value: login, errorMessage: loginError } = useField<string>("login");
 const { value: password, errorMessage: passwordError } =

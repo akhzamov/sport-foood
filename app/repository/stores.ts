@@ -1,4 +1,4 @@
-import type { IStore } from "~/modules/profile/types/Dashboard/stores.type";
+import type { IStore } from "~/types/stores.type";
 
 export class StoresRep {
   private async request<T>(

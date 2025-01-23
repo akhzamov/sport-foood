@@ -15,7 +15,6 @@ export const usePaymentStore = defineStore("payment", {
     types: null,
     statuses: null,
     priorities: null,
-    stores: null,
     areas: null,
     payments: null,
     filterShow: false,

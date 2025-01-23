@@ -1,7 +1,6 @@
 import type { ISalesPlanMonth } from "~/modules/profile/types/salesPlan.type";
 import type { ISalesPlanDayData } from "~/modules/profile/types/Dashboard/salesPlanDay.type";
 import type { IMarketplaceDataMarket } from "~/modules/profile/types/Dashboard/marketplaceData.type";
-import type { IStore } from "./Dashboard/stores.type";
 import type {
   TIndexAgent,
   TIndexMarketplacesMarket,
@@ -30,7 +29,6 @@ export interface IProfileStore {
   activeStoresSelect: boolean;
   monthAnnotation: number;
   activeMoreInfo: boolean;
-  stores: IStore[] | null;
   selectedBranch: number;
   salesPlan: ISalesPlanMonth | null;
   chartLoader: boolean;

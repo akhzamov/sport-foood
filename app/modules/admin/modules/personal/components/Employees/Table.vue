@@ -8,10 +8,10 @@ const mainStore = useMainStore();
 const adminStore = useAdminStore();
 const personalStore = usePersonalStore();
 const selectedStatus = ref<number | null>(null);
-const selectedPosition = ref<number | null>(null);
+const selectedStore = ref<number | null>(null);
 const selectedRole = ref<number | null>(null);
 const selectStatusMenu = ref(false);
-const selectPositionMenu = ref(false);
+const selectStoreMenu = ref(false);
 const selectRoleMenu = ref(false);
 const search = ref("");
 const statuses = reactive([
@@ -21,22 +21,16 @@ const statuses = reactive([
   { id: 5, name: "Отсутствует" },
   { id: 6, name: "Уволен" },
 ]);
-const positions = reactive([
+const roles = reactive([
   { id: 2, name: "Администратор" },
-  { id: 3, name: "Старший менеджер" },
-  { id: 4, name: "Менеджер" },
+  { id: 3, name: "Главный оператор" },
+  { id: 4, name: "Оператор" },
   { id: 5, name: "Логист" },
   { id: 6, name: "Маркетолог" },
 ]);
-const roles = reactive([
-  { id: 2, name: "Пользователь" },
-  { id: 3, name: "Администратор" },
-  { id: 4, name: "Перемещение" },
-  { id: 5, name: "Просмотр" },
-]);
 const closeMenu = () => {
   selectStatusMenu.value = false;
-  selectPositionMenu.value = false;
+  selectStoreMenu.value = false;
   selectRoleMenu.value = false;
 };
 const openNewTab = (id: string) => {
@@ -78,7 +72,9 @@ const openEditTab = (title: number, id: string) => {
       class="w-full flex-grow h-[40px] bg-dark-gunmental-color px-2 p-2 flex items-center justify-between"
     >
       <div class="w-full h-full flex-grow flex items-center justify-start">
-        <div class="w-auto h-full flex items-center justify-start">
+        <div
+          class="w-auto h-full flex items-center justify-start pr-3 border-r border-gray-15-color"
+        >
           <div
             class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15-color"
           >
@@ -91,46 +87,19 @@ const openEditTab = (title: number, id: string) => {
           <!-- <IconTrash03 class="text-gray-40-color hover:text-error-500 ml-4" /> -->
         </div>
         <div
-          class="w-auto h-full flex items-center gap-3 border-l border-gray-15-color ml-3 pl-3"
+          class="w-[240px] max-h-[32px] flex items-center justify-center pr-2 ml-3 bg-gray-15-color border border-gray-90-color rounded-lg text-gray-90-color"
         >
-          <UiRoundedSelect
-            main-text-color="text-gray-90-color"
-            select-bg-color="bg-gray-15-color"
-            disable-text-color="text-gray-40-color"
-            disable-bg-color="bg-gray-15-color"
-            :array="statuses"
-            :show-menu="selectStatusMenu"
-            default-select-text="Все"
-            v-model:model-value="selectedStatus"
-            :icon="false"
-            value-key="id"
-            label-key="name"
-            @update:show-menu="selectStatusMenu = $event"
-            width="w-[160px]"
-            :text-center="false"
-            :disable="false"
-            class="h-[32px] z-[100]"
-            @click.stop
+          <UiInputIcon
+            v-model:model-value="search"
+            placeholder="Введите имя"
+            type="text"
+            class="max-w-[240px] px-2"
           />
-          <UiRoundedSelect
-            main-text-color="text-gray-90-color text-"
-            select-bg-color="bg-gray-15-color"
-            disable-text-color="text-gray-40-color"
-            disable-bg-color="bg-gray-15-color"
-            :array="positions"
-            :show-menu="selectPositionMenu"
-            default-select-text="Все"
-            v-model:model-value="selectedPosition"
-            :icon="false"
-            value-key="id"
-            label-key="name"
-            @update:show-menu="selectPositionMenu = $event"
-            width="w-[160px]"
-            :text-center="false"
-            :disable="false"
-            class="h-[32px] z-[100]"
-            @click.stop
-          />
+          <IconSearchMd />
+        </div>
+      </div>
+      <div class="w-full h-full flex items-center justify-end">
+        <div class="w-auto h-full flex items-center gap-3 pl-3">
           <UiRoundedSelect
             main-text-color="text-gray-90-color"
             select-bg-color="bg-gray-15-color"
@@ -138,7 +107,7 @@ const openEditTab = (title: number, id: string) => {
             disable-bg-color="bg-gray-15-color"
             :array="roles"
             :show-menu="selectRoleMenu"
-            default-select-text="Все"
+            default-select-text="Все роли"
             v-model:model-value="selectedRole"
             :icon="false"
             value-key="id"
@@ -150,19 +119,44 @@ const openEditTab = (title: number, id: string) => {
             class="h-[32px] z-[100]"
             @click.stop
           />
-        </div>
-      </div>
-      <div class="w-full h-full flex items-center justify-end">
-        <div
-          class="w-[240px] max-h-[32px] flex items-center justify-center pr-2 bg-gray-15-color border border-gray-90-color rounded-lg text-gray-90-color"
-        >
-          <UiInputIcon
-            v-model:model-value="search"
-            placeholder="Поиск..."
-            type="text"
-            class="max-w-[240px] px-2"
+          <UiRoundedSelect
+            main-text-color="text-gray-90-color text-"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
+            :array="mainStore.stores ?? []"
+            :show-menu="selectStoreMenu"
+            default-select-text="Все магазины"
+            v-model:model-value="selectedStore"
+            :icon="false"
+            value-key="id"
+            label-key="name"
+            @update:show-menu="selectStoreMenu = $event"
+            width="w-[160px]"
+            :text-center="false"
+            :disable="false"
+            class="h-[32px] z-[100]"
+            @click.stop
           />
-          <IconSearchMd />
+          <UiRoundedSelect
+            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
+            :array="statuses"
+            :show-menu="selectStatusMenu"
+            default-select-text="Все статусы"
+            v-model:model-value="selectedStatus"
+            :icon="false"
+            value-key="id"
+            label-key="name"
+            @update:show-menu="selectStatusMenu = $event"
+            width="w-[160px]"
+            :text-center="false"
+            :disable="false"
+            class="h-[32px] z-[100]"
+            @click.stop
+          />
         </div>
       </div>
     </div>

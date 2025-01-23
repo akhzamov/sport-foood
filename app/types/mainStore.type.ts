@@ -1,5 +1,6 @@
 import type { IUser } from "~/types/user.type";
 import type { IMarketplace } from "~/types/marketplaces.type";
+import type { IStore } from "./stores.type";
 
 export interface IMainStore {
   user: IUser | null;
@@ -14,4 +15,5 @@ export interface IMainStore {
   confirmModalTitle: string;
   confirmModalText: string;
   isLoading: boolean;
+  stores: IStore[] | null;
 }

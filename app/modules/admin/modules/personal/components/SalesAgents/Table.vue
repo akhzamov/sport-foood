@@ -15,7 +15,6 @@ const selectStatusMenu = ref(false);
 const selectStoreMenu = ref(false);
 const search = ref("");
 const statuses = reactive([
-  { id: 1, name: "Все" },
   { id: 2, name: "В отпуске" },
   { id: 3, name: "Работает" },
   { id: 4, name: "Болен" },
@@ -69,7 +68,9 @@ const selectBranch = (value: number) => {
       class="w-full flex-grow h-[40px] bg-dark-gunmental-color px-2 p-2 flex items-center justify-between"
     >
       <div class="w-full h-full flex-grow flex items-center justify-start">
-        <div class="w-auto h-full flex items-center justify-start">
+        <div
+          class="w-auto h-full flex items-center justify-start border-r border-gray-15-color mr-3"
+        >
           <div
             class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15-color"
           >
@@ -82,34 +83,6 @@ const selectBranch = (value: number) => {
           <!-- <IconTrash03 class="text-gray-40-color hover:text-error-500 ml-4" /> -->
         </div>
         <div
-          class="w-auto h-full flex items-center gap-3 border-l border-gray-15-color ml-3 pl-3"
-        >
-          <UiRoundedSelect
-            :model-value="selectedStatus"
-            :show-menu="selectStatusMenu"
-            :default-select-text="'Выбрать статус'"
-            :array="statuses"
-            @update:model-value="selectedStatus = $event"
-            @update:show-menu="
-              closeMenu();
-              selectStatusMenu = $event;
-            "
-          />
-          <UiRoundedSelect
-            :model-value="profileStore.selectedBranch"
-            :show-menu="selectStoreMenu"
-            :default-select-text="'Выбрать магазин'"
-            :array="profileStore.stores"
-            @update:model-value="selectBranch($event)"
-            @update:show-menu="
-              closeMenu();
-              selectStoreMenu = $event;
-            "
-          />
-        </div>
-      </div>
-      <div class="w-full h-full flex items-center justify-end">
-        <div
           class="w-[240px] max-h-[32px] flex items-center justify-center pr-2 bg-gray-15-color border border-gray-90-color rounded-lg text-gray-90-color"
         >
           <UiInputIcon
@@ -119,6 +92,48 @@ const selectBranch = (value: number) => {
             class="max-w-[240px] px-2"
           />
           <IconSearchMd />
+        </div>
+      </div>
+      <div class="w-full h-full flex items-center justify-end">
+        <div class="w-auto h-full flex items-center gap-3 pl-3">
+          <UiRoundedSelect
+            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
+            :array="statuses"
+            :show-menu="selectStatusMenu"
+            default-select-text="Все статусы"
+            v-model:model-value="selectedStatus"
+            :icon="false"
+            value-key="id"
+            label-key="name"
+            @update:show-menu="selectStatusMenu = $event"
+            width="w-[160px]"
+            :text-center="false"
+            :disable="false"
+            class="h-[32px] z-[100]"
+            @click.stop
+          />
+          <UiRoundedSelect
+            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15-color"
+            disable-text-color="text-gray-40-color"
+            disable-bg-color="bg-gray-15-color"
+            :array="mainStore.stores ?? []"
+            :show-menu="selectStoreMenu"
+            default-select-text="Все магазины"
+            v-model:model-value="selectedStatus"
+            :icon="false"
+            value-key="id"
+            label-key="name"
+            @update:show-menu="selectStoreMenu = $event"
+            width="w-[160px]"
+            :text-center="false"
+            :disable="false"
+            class="h-[32px] z-[100]"
+            @click.stop
+          />
         </div>
       </div>
     </div>
@@ -140,6 +155,9 @@ const selectBranch = (value: number) => {
           </th>
           <th class="w-[180px] flex items-center justify-start">
             <span>Контакт</span>
+          </th>
+          <th class="w-[270px] flex items-center justify-start">
+            <span>Магазины</span>
           </th>
         </tr>
       </thead>
@@ -204,6 +222,22 @@ const selectBranch = (value: number) => {
               class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
             >
               {{ agent.contact ? agent.contact : "Пусто" }}
+            </th>
+            <th class="w-[270px] text-14-reg text-gray-75-color">
+              <div
+                class="w-full flex items-center justify-start"
+                v-if="agent.stores"
+              >
+                <span class="mr-2" v-for="store in agent.stores.slice(0, 2)">
+                  {{ store.name }}
+                </span>
+                <span v-if="agent.stores.length > 2">
+                  (+{{ agent.stores.slice(1, -1).length }})
+                </span>
+              </div>
+              <div class="w-full flex items-center justify-start">
+                <span>Нет магазинов</span>
+              </div>
             </th>
           </tr>
         </template>

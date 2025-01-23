@@ -26,9 +26,9 @@ export default defineNuxtConfig({
   },
 
   extends: [
-    "./app/modules/profile",
-    "./app/modules/auth",
     "./app/modules/admin",
+    "./app/modules/auth",
+    "./app/modules/profile",
     //ADMIN
     "./app/modules/admin/modules/logistic",
     "./app/modules/admin/modules/personal",

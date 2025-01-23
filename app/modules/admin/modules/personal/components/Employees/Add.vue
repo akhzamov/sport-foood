@@ -71,7 +71,7 @@ const { value: selectedPermissions, errorMessage: selectedPermissionsError } =
 const { value: selectedRole, errorMessage: selectedRoleError } =
   useField<string>("selectedRole");
 
-const adminStore = useAdminStore();
+const mainStore = useMainStore();
 const profileStore = useProfileStore();
 const personalStore = usePersonalStore();
 const openPermissionGroup = reactive<string[]>([]);
@@ -136,7 +136,7 @@ const onSubmit = handleSubmit(async (values) => {
 });
 
 onUnmounted(() => {
-  profileStore.stores?.forEach((item) => {
+  mainStore.stores?.forEach((item) => {
     item.checked = false;
   });
   if (personalStore.permissions) {
@@ -255,7 +255,7 @@ onUnmounted(() => {
           select-bg-color="bg-gray-15-color"
           disable-text-color="text-gray-40-color"
           disable-bg-color="bg-gray-15-color"
-          :array="profileStore.stores ?? []"
+          :array="mainStore.stores ?? []"
           :show-menu="storesMenuShow"
           default-select-text="Выбрать магазины"
           v-model:model-value="selectedStores"

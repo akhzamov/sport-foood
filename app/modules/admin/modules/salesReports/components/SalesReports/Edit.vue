@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { usePaymentStore } from "~/modules/admin/stores/payment";
 import { salesReports } from "./salesReports.data";
+import { useMainStore } from "~/stores/main";
 
 const schema = yup.object({
   type: yup.string().required("Выберите тип заявки").nullable(),
@@ -26,12 +27,7 @@ const { handleSubmit } = useForm<ISchemaForm>({
 const { value: type, errorMessage: typeError } = useField<string>("type");
 
 const paymentStore = usePaymentStore();
-const cityMenuShow = ref(false);
-const typeMenuShow = ref(false);
-const storeMenuShow = ref(false);
-const priorityMenuStore = ref(false);
-const statusMenuStore = ref(false);
-const accumulating = ref(false);
+const mainStore = useMainStore();
 const editWindow = ref(false);
 const edit = ref(false);
 const datepicker = ref<any>(null);
@@ -348,7 +344,7 @@ const onSubmit = handleSubmit(async (values) => {});
   </div>
   <form
     @submit.prevent="onSubmit"
-    v-if="paymentStore.stores && editWindow"
+    v-if="mainStore.stores && editWindow"
     class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
   >
     <!-- top lvl - 1 : menu and edit toggle-->
@@ -359,7 +355,7 @@ const onSubmit = handleSubmit(async (values) => {});
           select-bg-color="bg-gray-15-color"
           disable-text-color="text-gray-40-color"
           disable-bg-color="bg-gray-15-color"
-          :array="paymentStore.stores"
+          :array="mainStore.stores"
           :show-menu="selectStore"
           default-select-text="Магазин"
           v-model:model-value="selectedStore"
@@ -420,7 +416,7 @@ const onSubmit = handleSubmit(async (values) => {});
             select-bg-color="bg-gray-15-color"
             disable-text-color="text-gray-40-color"
             disable-bg-color="bg-gray-15-color"
-            :array="paymentStore.stores"
+            :array="mainStore.stores"
             :show-menu="product.productMenu"
             default-select-text="Товар"
             v-model:model-value="product.productId"
@@ -457,7 +453,7 @@ const onSubmit = handleSubmit(async (values) => {});
                 select-bg-color="bg-gray-15-color"
                 disable-text-color="text-gray-40-color"
                 disable-bg-color="bg-gray-15-color"
-                :array="paymentStore.stores"
+                :array="mainStore.stores"
                 :show-menu="city.cityMenu"
                 default-select-text="Товар"
                 v-model:model-value="city.cityId"
@@ -518,7 +514,7 @@ const onSubmit = handleSubmit(async (values) => {});
                   select-bg-color="bg-gray-15-color"
                   disable-text-color="text-gray-40-color"
                   disable-bg-color="bg-gray-15-color"
-                  :array="paymentStore.stores"
+                  :array="mainStore.stores"
                   :show-menu="pack.marketplaceMenu"
                   default-select-text="Площадка"
                   v-model:model-value="pack.marketplaceId"

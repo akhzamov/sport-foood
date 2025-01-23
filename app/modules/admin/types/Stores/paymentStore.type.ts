@@ -1,4 +1,3 @@
-import type { IStore } from "~/modules/profile/types/Dashboard/stores.type";
 import type {
   TRequestPayment,
   TRequestType,
@@ -19,7 +18,6 @@ export interface IPaymentStore {
   types: null | TRequestType[];
   statuses: null | TRequestType[];
   priorities: null | TRequestType[];
-  stores: null | IStore[];
   areas: null | Record<number, TDriverArea>;
   payments: null | Record<number, TRequestPayment>;
   filterShow: boolean;

@@ -2,6 +2,7 @@
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { usePaymentStore } from "~/modules/admin/stores/payment";
+import { useMainStore } from "~/stores/main";
 
 const schema = yup.object({
   type: yup.string().required("Выберите тип заявки").nullable(),
@@ -34,6 +35,7 @@ const { value: recipient, errorMessage: recipientError } =
   useField<string>("recipient");
 
 const paymentStore = usePaymentStore();
+const mainStore = useMainStore();
 const cityMenuShow = ref(false);
 const typeMenuShow = ref(false);
 const storeMenuShow = ref(false);
@@ -65,7 +67,7 @@ const onSubmit = handleSubmit(async (values) => {});
   <form
     v-if="
       paymentStore.areas &&
-      paymentStore.stores &&
+      mainStore.stores &&
       paymentStore.types &&
       paymentStore.priorities &&
       paymentStore.statuses
@@ -145,7 +147,7 @@ const onSubmit = handleSubmit(async (values) => {});
           select-bg-color="bg-gray-15-color"
           disable-text-color="text-gray-40-color"
           disable-bg-color="bg-gray-15-color"
-          :array="paymentStore.stores"
+          :array="mainStore.stores"
           :show-menu="storeMenuShow"
           default-select-text="Выбрать"
           v-model:model-value="selectedStore"

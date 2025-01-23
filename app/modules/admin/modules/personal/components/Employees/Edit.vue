@@ -133,12 +133,12 @@ const activePermissions = () => {
 };
 const updateCheckedStores = () => {
   selectedStores.value.length = 0;
-  if (!personalStore.employee || !profileStore.stores) {
+  if (!personalStore.employee || !mainStore.stores) {
     console.warn("Не хватает данных для обработки");
     return;
   }
   // Пройдемся по магазинам из профиля и сверим с магазинами сотрудника
-  profileStore.stores.forEach((store) => {
+  mainStore.stores.forEach((store) => {
     store.checked = false;
     const isEmployeeStore = personalStore.employee?.stores.some(
       (employeeStore) => employeeStore.id === store.id
@@ -151,7 +151,7 @@ const updateCheckedStores = () => {
   });
 };
 const toggleStoreChecked = (storeId: number) => {
-  const store = profileStore.stores?.find((s) => s.id === storeId);
+  const store = mainStore.stores?.find((s) => s.id === storeId);
 
   if (!store) {
     console.warn(`Магазин с ID ${storeId} не найден`);
@@ -230,7 +230,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  profileStore.stores?.forEach((item) => {
+  mainStore.stores?.forEach((item) => {
     item.checked = false;
   });
   if (personalStore.permissions) {
@@ -366,7 +366,7 @@ onUnmounted(() => {
             class="w-full h-max flex flex-col gap-1 mt-4 pb-1"
             v-if="openStoresList"
           >
-            <template v-for="store in profileStore.stores">
+            <template v-for="store in mainStore.stores">
               <div
                 class="w-full h-8 flex items-center justify-between px-2 rounded cursor-pointer hover:bg-dark-onix-color"
                 @click="toggleStoreChecked(store.id)"
