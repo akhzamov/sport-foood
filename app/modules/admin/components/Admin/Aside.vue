@@ -39,7 +39,38 @@ const links = reactive([
     id: 2,
     name: "Настройки",
     icon: markRaw(IconSettings),
-    children: [],
+    children: [
+      {
+        id: 1,
+        name: "Города",
+        path: "/setting-cities",
+      },
+      {
+        id: 2,
+        name: "Районы",
+        path: "/setting-districts",
+      },
+      {
+        id: 3,
+        name: "Продукты",
+        path: "/setting-products",
+      },
+      {
+        id: 4,
+        name: "Торговые площадки",
+        path: "/setting-trading-marketplaces",
+      },
+      {
+        id: 5,
+        name: "Магазины",
+        path: "/setting-stores",
+      },
+      {
+        id: 6,
+        name: "Поставщики",
+        path: "/setting-vendors",
+      },
+    ],
   },
   {
     id: 3,

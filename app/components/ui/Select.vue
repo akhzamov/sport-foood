@@ -124,7 +124,7 @@ watchEffect(() => {
         v-else
       />
       <div
-        class="absolute bg-dark-eerie-black-color top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px]"
+        class="absolute max-h-[350px] bg-dark-eerie-black-color top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px] overflow-y-auto"
         v-if="props.showMenu && !props.disable"
       >
         <div

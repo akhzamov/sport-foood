@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
+import { usePersonalStore } from "../../stores/personal";
+import { usePaymentStore } from "../../stores/payment";
 import { useAdminLogisticsStore } from "~/modules/admin/modules/logistic/stores/adminLogistics";
 import LogisticsEdit from "~/modules/admin/modules/logistic/components/Logistics/Edit.vue";
 import LogisticsAdd from "~/modules/admin/modules/logistic/components/Logistics/Add.vue";
@@ -12,8 +14,12 @@ import DriversEdit from "~/modules/admin/modules/personal/components/Drivers/Edi
 import PaymentRequestsAdd from "~/modules/admin/modules/payment/components/Requests/Add.vue";
 import PaymentRequestsEdit from "~/modules/admin/modules/payment/components/Requests/Edit.vue";
 import SalesReportsEdit from "~/modules/admin/modules/salesReports/components/SalesReports/Edit.vue";
-import { usePersonalStore } from "../../stores/personal";
-import { usePaymentStore } from "../../stores/payment";
+import SettingCitiesAdd from "~/modules/admin/modules/settings/components/Settings/Cities/Add.vue";
+import SettingCitiesEdit from "~/modules/admin/modules/settings/components/Settings/Cities/Edit.vue";
+import SettingDistrictsAdd from "~/modules/admin/modules/settings/components/Settings/Districts/Add.vue";
+import SettingDistrictsEdit from "~/modules/admin/modules/settings/components/Settings/Districts/Edit.vue";
+
+import { cities } from "../../modules/settings/components/Settings/Cities/cities.data";
 
 const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
@@ -77,6 +83,16 @@ const dynamicTabs = computed(() => [
     data,
     tabId: `admin-sales-reports-edit-${data.id}`,
   })),
+  ...Object.values(cities ?? {}).map((data) => ({
+    component: SettingCitiesEdit,
+    data,
+    tabId: `admin-setting-city-edit-${data.id}`,
+  })),
+  ...Object.values(cities ?? {}).map((data) => ({
+    component: SettingDistrictsEdit,
+    data,
+    tabId: `admin-setting-district-edit-${data.id}`,
+  })),
   {
     component: LogisticsAdd,
     data: null,
@@ -101,6 +117,16 @@ const dynamicTabs = computed(() => [
     component: PaymentRequestsAdd,
     data: null,
     tabId: "admin-payment-requests-add",
+  },
+  {
+    component: SettingCitiesAdd,
+    data: null,
+    tabId: "admin-setting-city-add",
+  },
+  {
+    component: SettingDistrictsAdd,
+    data: null,
+    tabId: "admin-setting-district-add",
   },
 ]);
 
