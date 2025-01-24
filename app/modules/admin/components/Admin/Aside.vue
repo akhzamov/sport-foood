@@ -50,26 +50,26 @@ const links = reactive([
         name: "Районы",
         path: "/setting-districts",
       },
-      {
-        id: 3,
-        name: "Продукты",
-        path: "/setting-products",
-      },
-      {
-        id: 4,
-        name: "Торговые площадки",
-        path: "/setting-trading-marketplaces",
-      },
-      {
-        id: 5,
-        name: "Магазины",
-        path: "/setting-stores",
-      },
-      {
-        id: 6,
-        name: "Поставщики",
-        path: "/setting-vendors",
-      },
+      // {
+      //   id: 3,
+      //   name: "Продукты",
+      //   path: "/setting-products",
+      // },
+      // {
+      //   id: 4,
+      //   name: "Торговые площадки",
+      //   path: "/setting-trading-marketplaces",
+      // },
+      // {
+      //   id: 5,
+      //   name: "Магазины",
+      //   path: "/setting-stores",
+      // },
+      // {
+      //   id: 6,
+      //   name: "Поставщики",
+      //   path: "/setting-vendors",
+      // },
     ],
   },
   {
