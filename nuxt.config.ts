@@ -75,26 +75,26 @@ export default defineNuxtConfig({
 
   routeRules: {
     "/": { prerender: true, redirect: "/profile-dashboard" },
-    "/about": { prerender: true },
     "/sign-in": { prerender: true },
     "/profile-dashboard": { prerender: true },
     "/profile-report": { prerender: true },
     "/profile-warehouse": { prerender: true },
-    "/settings": { prerender: true },
-    "/users": { prerender: true },
     "/admin-new-tab": { prerender: true },
     "/admin-procurement-management": { prerender: true },
     "/admin-employees": { prerender: true },
     "/admin-sales-agents": { prerender: true },
     "/admin-drivers": { prerender: true },
-    "/admin-roles": { prerender: true },
+    "/admin-history": { prerender: true },
+    "/payment-archive": { prerender: true },
+    "/payment-requests": { prerender: true },
+    "/admin-sales-reports-archive": { prerender: true },
+    "/admin-sales-reports": { prerender: true },
+    "/admin-setting-cities": { prerender: true },
+    "/admin-setting-districts": { prerender: true },
     "/:pathMatch(.*)*": { prerender: true },
   },
 
   nitro: {
-    prerender: {
-      routes: ["/index.html", "/404.html"],
-    },
     // preset: "static",
   },
 
