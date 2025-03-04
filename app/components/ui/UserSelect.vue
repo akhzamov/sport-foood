@@ -11,8 +11,8 @@ const props = withDefaults(
     modelValue: any;
   }>(),
   {
-    mainTextColor: "text-gray-90-color",
-    selectBgColor: "bg-gray-90-color",
+    mainTextColor: "text-gray-90",
+    selectBgColor: "bg-gray-90",
     users: () => [],
     defaultSelectText: "",
   }
@@ -81,16 +81,16 @@ watchEffect(() => {
       <IconChevronUp :class="props.mainTextColor" v-if="!showMenu" />
       <IconChevronDown :class="props.mainTextColor" v-else />
       <div
-        class="absolute bg-dark-eerie-black-color top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col"
+        class="absolute bg-dark-eerie-black top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col"
         v-if="showMenu"
       >
         <div
           v-for="(person, key) in props.users"
           :key="key"
           @click="selectItem(key)"
-          class="h-8 flex items-center gap-2 cursor-pointer select-item border-b border-gray-15-color px-1"
+          class="h-8 flex items-center gap-2 cursor-pointer select-item border-b border-gray-15 px-1"
         >
-          <span class="text-12-semi text-gray-90-color mr-1">{{ key }}</span>
+          <span class="text-12-semi text-gray-90 mr-1">{{ key }}</span>
           <div class="flex items-center justify-start gap-2">
             <img
               src="/img/person.jpeg"
@@ -98,10 +98,10 @@ watchEffect(() => {
               class="w-6 h-6 rounded-[50%] object-cover"
             />
             <div class="flex flex-col items-start justify-center">
-              <p class="text-10-semi text-gray-90-color">
+              <p class="text-10-semi text-gray-90">
                 {{ person.name }} {{ person.lastName }}
               </p>
-              <p class="text-10-ext text-gray-90-color">
+              <p class="text-10-ext text-gray-90">
                 {{ person.department }}
               </p>
             </div>
@@ -114,6 +114,6 @@ watchEffect(() => {
 
 <style scoped>
 .select-item:hover {
-  @apply bg-gray-15-color rounded;
+  @apply bg-gray-15 rounded;
 }
 </style>

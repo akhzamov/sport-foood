@@ -126,20 +126,20 @@ watch(
 
 <template>
   <div
-    class="w-full h-[40px] bg-dark-gunmental-color px-2 p-2 overflow-x-hidden"
+    class="w-full h-[40px] bg-dark-gunmental px-2 p-2 overflow-x-hidden"
   >
     <div class="flex-grow h-full flex items-center justify-start">
       <div
-        class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15-color"
+        class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15"
       >
-        <p class="text-16-400 text-gray-40-color">{{ route.name }}</p>
+        <p class="text-16-400 text-gray-40">{{ route.name }}</p>
       </div>
       <IconPlus
-        class="text-gray-40-color hover:text-primary-color ml-4"
+        class="text-gray-40 hover:text-primary ml-4"
         @click="openNewTab('admin-logistics-add')"
       />
       <IconTrash03
-        class="text-gray-40-color hover:text-error-500 ml-4"
+        class="text-gray-40 hover:text-error-500 ml-4"
         @click="deleteItem()"
       />
     </div>
@@ -148,7 +148,7 @@ watch(
     <table class="w-full">
       <thead class="w-full">
         <tr
-          class="w-full h-[32px] flex items-center text-12-med text-gray-40-color border-b border-gray-40-color"
+          class="w-full h-[32px] flex items-center text-12-med text-gray-40 border-b border-gray-40"
         >
           <th class="w-[22px] text-end">№</th>
           <th class="w-[36px] flex justify-center">
@@ -167,12 +167,12 @@ watch(
           <tr
             @click="openEditTab(item.id, `admin-logistics-edit-${item.id}`)"
             :class="[
-              index - 1 !== data.length ? 'border-b border-gray-40-color' : '',
+              index - 1 !== data.length ? 'border-b border-gray-40' : '',
             ]"
-            class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15-color"
+            class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15"
           >
             <th class="w-[22px] h-full flex items-center justify-end">
-              <span class="text-end text-14-ext text-gray-75-color">
+              <span class="text-end text-14-ext text-gray-75">
                 {{ index + 1 }}
               </span>
             </th>
@@ -180,33 +180,33 @@ watch(
               <UiCheckbox v-model="item.checked" />
             </th>
             <th class="w-[72px] flex justify-center">
-              <span class="text-center text-12-reg text-gray-75-color">
+              <span class="text-center text-12-reg text-gray-75">
                 {{ item.id }}
               </span>
             </th>
             <th class="w-[180px] flex items-center justify-start">
-              <span class="pl-3 text-14-reg text-gray-75-color">
+              <span class="pl-3 text-14-reg text-gray-75">
                 {{ item.supplier }}
               </span>
             </th>
             <th class="w-[180px] flex items-center justify-start">
-              <span class="pl-3 text-14-reg text-gray-75-color">
+              <span class="pl-3 text-14-reg text-gray-75">
                 {{ item.driver }}
               </span>
             </th>
             <th class="w-[140px] flex items-center justify-start">
-              <span class="pl-3 text-14-reg text-gray-75-color">
+              <span class="pl-3 text-14-reg text-gray-75">
                 {{ dateFormatter(item.departureDate) }}
               </span>
-              <span class="ml-1 text-12-reg text-gray-40-color">
+              <span class="ml-1 text-12-reg text-gray-40">
                 {{ timeFormatter(item.departureDate) }}
               </span>
             </th>
             <th class="min-w-[320px] flex items-center justify-start">
               <div
-                class="ml-3 w-[6px] h-[6px] block rounded-[50%] bg-gray-75-color"
+                class="ml-3 w-[6px] h-[6px] block rounded-[50%] bg-gray-75"
               ></div>
-              <span class="ml-1 text-14-reg text-gray-75-color">
+              <span class="ml-1 text-14-reg text-gray-75">
                 {{ item.deliveryPoint }}
               </span>
             </th>
@@ -227,7 +227,7 @@ watch(
               </p>
               <p
                 v-if="item.status == 'not_fully_delivered'"
-                class="ml-3 px-2 w-max h-[22px] rounded-[20px] bg-error-500-20 flex items-center justify-start gap-1"
+                class="ml-3 px-2 w-max h-[22px] rounded-[20px] bg-error-500/20 flex items-center justify-start gap-1"
               >
                 <IconAlertTriangle class="w-[12px] h-[12px] text-error-500" />
                 <span class="text-12-reg text-error-500"

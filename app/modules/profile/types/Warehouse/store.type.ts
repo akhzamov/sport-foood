@@ -15,7 +15,7 @@ export interface IWarehouseStore {
   isLoading: boolean;
   areas: Record<string, IAreasArea> | null;
   selectedCities: number[];
-  storageTypes: Record<string, string> | null;
+  storageTypes: Record<string, { [key: string]: string }> | null;
   activeStorageType: string;
   storagesLeft: Record<string, TStoragesLeftCity> | null;
   marketplaceLeft: Record<string, TMarketplaceLeftArea> | null;

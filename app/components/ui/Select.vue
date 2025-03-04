@@ -20,10 +20,10 @@ const props = withDefaults(
     disable: boolean;
   }>(),
   {
-    mainTextColor: "text-gray-90-color",
-    selectBgColor: "bg-gray-15-color",
-    disableTextColor: "text-gray-40-color",
-    disableBgColor: "bg-gray-15-color",
+    mainTextColor: "text-gray-90",
+    selectBgColor: "bg-gray-15",
+    disableTextColor: "text-gray-40",
+    disableBgColor: "bg-gray-15",
     array: () => [],
     defaultSelectText: "",
     icon: false,
@@ -39,6 +39,8 @@ const emit = defineEmits([
 
 const selectedItemId = ref(props.modelValue);
 const selectedItemName = ref(props.defaultSelectText);
+const selectRef = useTemplateRef<HTMLElement>("selectRef");
+onClickOutside(selectRef, () => emit("update:showMenu", false));
 
 const isArray = (data: unknown): data is any[] => Array.isArray(data);
 
@@ -65,39 +67,38 @@ const setDefaultItem = () => {
   }
 };
 
-// Проверяем и устанавливаем текст по умолчанию
 const checkDefaultText = () => {
-  if (props.defaultSelectText) {
+  if (props.modelValue) {
+    selectedItemId.value = props.modelValue;
+    selectedItemName.value =
+      getArrayFromProps().find(
+        (item: any) => item[props.valueKey] === props.modelValue
+      )?.[props.labelKey] || "";
+  } else if (props.defaultSelectText) {
     selectedItemName.value = props.defaultSelectText;
   } else {
     setDefaultItem();
   }
 };
 
-watch(
-  () => props.modelValue,
-  () => {
-    if (
-      !props.modelValue &&
-      selectedItemName.value !== props.defaultSelectText
-    ) {
-      selectedItemName.value = props.defaultSelectText;
-    }
-  }
-);
-
-watchEffect(() => {
-  const array = getArrayFromProps();
-  if (array.length > 0) {
-    checkDefaultText();
-  }
+onMounted(() => {
+  checkDefaultText();
 });
+
+watch(
+  () => props.array,
+  () => {
+    checkDefaultText();
+  },
+  { deep: true, immediate: true }
+);
 </script>
 
 <template>
   <div class="relative">
     <div
       class="h-full rounded-lg flex items-center justify-between px-4 select-none"
+      ref="selectRef"
       :class="[
         props.selectBgColor,
         props.width,
@@ -124,7 +125,7 @@ watchEffect(() => {
         v-else
       />
       <div
-        class="absolute max-h-[350px] bg-dark-eerie-black-color top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px] overflow-y-auto"
+        class="absolute max-h-[350px] bg-dark-eerie-black top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px] overflow-y-auto"
         v-if="props.showMenu && !props.disable"
       >
         <div
@@ -134,20 +135,20 @@ watchEffect(() => {
           @click.stop="selectItem(item[props.valueKey], item[props.labelKey])"
         >
           <slot name="value-icon" />
-          <IconBranch class="text-gray-90-color" v-if="props.icon" />
+          <IconBranch class="text-gray-90" v-if="props.icon" />
           <span
             class="flex-grow text-16-med"
             :class="
               item[props.labelKey] == selectedItemName
-                ? 'text-primary-color'
-                : 'text-gray-90-color'
+                ? 'text-primary'
+                : 'text-gray-90'
             "
           >
             {{ item[props.labelKey] }}
           </span>
           <IconCheck
             v-if="item[props.labelKey] == selectedItemName"
-            class="text-primary-color"
+            class="text-primary"
           />
         </div>
       </div>
@@ -157,10 +158,10 @@ watchEffect(() => {
 
 <style scoped>
 .select-item:hover svg {
-  @apply text-primary-color;
+  @apply text-primary;
 }
 
 .select-item:hover span {
-  @apply text-primary-color;
+  @apply text-primary;
 }
 </style>

@@ -2,8 +2,10 @@
 import { usePaymentStore } from "~/modules/admin/stores/payment";
 import { getPayments } from "./requests.data";
 import { useMainStore } from "~/stores/main";
+import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 const paymentStore = usePaymentStore();
+const localitiesStore = useLocalitiesStore();
 const mainStore = useMainStore();
 const storesMenuShow = ref(false);
 const citiesMenuShow = ref(false);
@@ -75,45 +77,45 @@ watch(
 
 <template>
   <div
-    class="alert-modal fixed z-[300] top-0 left-0 w-full h-screen flex justify-center items-center bg-gray-40-color select-none"
+    class="alert-modal fixed z-[300] top-0 left-0 w-full h-screen flex justify-center items-center bg-gray-40 select-none"
     @click="closeAlertShow()"
   >
     <div
       @click.stop
       v-if="
         mainStore.stores &&
-        paymentStore.areas &&
+        localitiesStore.citiesByArea &&
         paymentStore.statuses &&
         paymentStore.priorities &&
         paymentStore.types &&
         paymentStore.payments
       "
-      class="relative w-[760px] h-max bg-dark-gunmental-color rounded-xl border-[1px] border-gray-15-color p-2 flex flex-col items-center justify-center"
+      class="relative w-[760px] h-max bg-dark-gunmental rounded-xl border-[1px] border-gray-15 p-2 flex flex-col items-center justify-center"
     >
       <div class="w-full h-[64px] flex items-center justify-between">
         <div class="flex items-center justify-start gap-2">
           <div
-            class="w-[48px] h-[48px] flex items-center justify-center rounded-[50%] bg-gray-15-color"
+            class="w-[48px] h-[48px] flex items-center justify-center rounded-[50%] bg-gray-15"
           >
-            <IconFilters class="text-gray-90-color" />
+            <IconFilters class="text-gray-90" />
           </div>
           <p class="text-24-semi text-white">Фильтры</p>
         </div>
         <div
           class="w-[44px] h-[44px] flex items-center justify-center cursor-pointer"
         >
-          <IconClose class="text-gray-75-color" @click="closeAlertShow()" />
+          <IconClose class="text-gray-75" @click="closeAlertShow()" />
         </div>
       </div>
       <div class="w-full h-max">
         <div class="w-full flex items-center justify-between p-4">
           <div class="max-w-[345px] w-full">
             <UiMultipleSelect
-              main-text-color="text-gray-90-color"
-              select-bg-color="bg-gray-15-color"
-              disable-text-color="text-gray-40-color"
-              disable-bg-color="bg-gray-15-color"
-              :array="mainStore.stores"
+              main-text-color="text-gray-90"
+              select-bg-color="bg-gray-15"
+              disable-text-color="text-gray-40"
+              disable-bg-color="bg-gray-15"
+              :array="mainStore.stores ?? []"
               :show-menu="storesMenuShow"
               default-select-text="Магазины"
               v-model:model-value="paymentStore.filteredStores"
@@ -127,11 +129,11 @@ watch(
           </div>
           <div class="max-w-[345px] w-full">
             <UiMultipleSelectCategories
-              main-text-color="text-gray-90-color"
-              select-bg-color="bg-gray-15-color"
-              disable-text-color="text-gray-40-color"
-              disable-bg-color="bg-gray-15-color"
-              :array="paymentStore.areas"
+              main-text-color="text-gray-90"
+              select-bg-color="bg-gray-15"
+              disable-text-color="text-gray-40"
+              disable-bg-color="bg-gray-15"
+              :array="localitiesStore.citiesByArea ?? []"
               :show-menu="citiesMenuShow"
               default-select-text="Города"
               v-model:model-value="paymentStore.filteredCities"
@@ -148,11 +150,11 @@ watch(
         <div class="w-full flex items-center justify-between p-4">
           <div class="max-w-[345px] w-full">
             <UiSelect
-              main-text-color="text-gray-90-color"
-              select-bg-color="bg-gray-15-color"
-              disable-text-color="text-gray-40-color"
-              disable-bg-color="bg-gray-15-color"
-              :array="paymentStore.statuses"
+              main-text-color="text-gray-90"
+              select-bg-color="bg-gray-15"
+              disable-text-color="text-gray-40"
+              disable-bg-color="bg-gray-15"
+              :array="paymentStore.statuses ?? []"
               :show-menu="statusesMenuShow"
               default-select-text="Статус"
               v-model:model-value="paymentStore.filteredStatus"
@@ -168,11 +170,11 @@ watch(
           </div>
           <div class="max-w-[345px] w-full">
             <UiSelect
-              main-text-color="text-gray-90-color"
-              select-bg-color="bg-gray-15-color"
-              disable-text-color="text-gray-40-color"
-              disable-bg-color="bg-gray-15-color"
-              :array="paymentStore.priorities"
+              main-text-color="text-gray-90"
+              select-bg-color="bg-gray-15"
+              disable-text-color="text-gray-40"
+              disable-bg-color="bg-gray-15"
+              :array="paymentStore.priorities ?? []"
               :show-menu="prioritiesMenuShow"
               default-select-text="Приоритет"
               v-model:model-value="paymentStore.filteredPriority"
@@ -190,11 +192,11 @@ watch(
         <div class="w-full flex items-center justify-between p-4">
           <div class="max-w-[345px] w-full">
             <UiSelect
-              main-text-color="text-gray-90-color"
-              select-bg-color="bg-gray-15-color"
-              disable-text-color="text-gray-40-color"
-              disable-bg-color="bg-gray-15-color"
-              :array="paymentStore.types"
+              main-text-color="text-gray-90"
+              select-bg-color="bg-gray-15"
+              disable-text-color="text-gray-40"
+              disable-bg-color="bg-gray-15"
+              :array="paymentStore.types ?? []"
               :show-menu="typesMenuShow"
               default-select-text="Типы заявок"
               v-model:model-value="paymentStore.filteredType"
@@ -210,11 +212,11 @@ watch(
           </div>
           <div class="max-w-[345px] w-full">
             <UiSelect
-              main-text-color="text-gray-90-color"
-              select-bg-color="bg-gray-15-color"
-              disable-text-color="text-gray-40-color"
-              disable-bg-color="bg-gray-15-color"
-              :array="paymentStore.payments"
+              main-text-color="text-gray-90"
+              select-bg-color="bg-gray-15"
+              disable-text-color="text-gray-40"
+              disable-bg-color="bg-gray-15"
+              :array="paymentStore.payments ?? []"
               :show-menu="paymentsMenuShow"
               default-select-text="ID заявки"
               v-model:model-value="paymentStore.filteredPaymentId"
@@ -235,23 +237,21 @@ watch(
             :border="false"
             :icon="false"
             hover="opacity-[0.9]"
-            textColor="text-gray-75-color"
+            textColor="text-gray-75"
             text="Сбросить"
             class="max-w-[140px]"
             @click="resetFilter"
           >
             <template v-slot:icon>
-              <IconRefreshCw05 class="w-[24px] h-[24px] text-gray-75-color" />
+              <IconRefreshCw05 class="w-[24px] h-[24px] text-gray-75" />
             </template>
           </UiButton>
           <UiButton
-            :bgColor="buttonDisabled ? 'bg-gray-15-color' : 'bg-primary-color'"
+            :bgColor="buttonDisabled ? 'bg-gray-15' : 'bg-primary'"
             :border="false"
             :icon="false"
             hover="opacity-[0.9]"
-            :textColor="
-              buttonDisabled ? 'text-dark-onix-color' : 'text-dark-night-color'
-            "
+            :textColor="buttonDisabled ? 'text-dark-onix' : 'text-dark-night'"
             text="Применить"
             class="max-w-[115px]"
             @click="onSubmit"
@@ -261,7 +261,7 @@ watch(
     </div>
     <div
       v-else
-      class="relative w-[760px] h-max bg-dark-gunmental-color rounded-xl border-[1px] border-gray-15-color p-2 flex flex-col items-center justify-center"
+      class="relative w-[760px] h-max bg-dark-gunmental rounded-xl border-[1px] border-gray-15 p-2 flex flex-col items-center justify-center"
     >
       <div class="loader"></div>
     </div>

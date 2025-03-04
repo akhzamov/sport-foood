@@ -2,41 +2,49 @@
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
-import { russiaRegions } from "~/data/localData";
-import type { _1 } from "#tailwind-config/theme/borderSpacing";
+import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 const schema = yup.object({
-  selectedCity: yup
-    .array()
-    .nullable()
-    .min(1, "Выберите Город")
-    .required("Выберите город"),
+  selectedCity: yup.number().nullable().required("Выберите город"),
   district: yup.string().required("Введите название района"),
 });
 interface ISchemaForm {
-  selectedCity: string[];
+  selectedCity: number | null;
   district: string;
 }
 const initialValues: ISchemaForm = {
-  selectedCity: [],
+  selectedCity: null,
   district: "",
 };
 const { handleSubmit } = useForm<ISchemaForm>({
   validationSchema: schema,
   initialValues,
 });
-const { value: selectedCity, errorMessage: selectedCityError } =
-  useField<string[]>("selectedCity");
+const { value: selectedCity, errorMessage: selectedCityError } = useField<
+  number | null
+>("selectedCity");
 const { value: district, errorMessage: districtError } =
   useField<string>("district");
 
 const mainStore = useMainStore();
+const localitiesStore = useLocalitiesStore();
 const selectRegionMenu = ref(false);
+const { createDistrict, getDistricts } = useCrudDistrictsResponse();
 
 const onSubmit = handleSubmit(async (values) => {
-  try {
-  } catch (error) {
-    console.error("Ошибка при создании водителя: ", error);
+  if (values.selectedCity) {
+    try {
+      const body = {
+        name: values.district,
+        city_id: values.selectedCity,
+      };
+      await createDistrict(body);
+      selectedCity.value = null;
+      district.value = "";
+      await getDistricts();
+    } catch (error) {
+      console.error("Ошибка при создании района: ", error);
+    }
   }
 });
 </script>
@@ -45,30 +53,25 @@ const onSubmit = handleSubmit(async (values) => {
   <form
     v-if="!mainStore.isLoading"
     @submit.prevent="onSubmit"
-    class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
       <div class="w-full h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"
-          >Выберите город</label
-        >
+        <label class="text-12-reg text-gray-90 mb-1">Выберите город</label>
         <div class="flex gap-1">
-          <UiSelect
-            main-text-color="text-gray-90-color"
-            select-bg-color="bg-gray-15-color"
-            disable-text-color="text-gray-40-color"
-            disable-bg-color="bg-gray-15-color"
-            :array="russiaRegions"
+          <UiSelectCategories
+            main-text-color="text-gray-90"
+            select-bg-color="bg-gray-15"
+            :array="localitiesStore.citiesByArea ?? []"
             :show-menu="selectRegionMenu"
             default-select-text="Выбрать город"
             v-model:model-value="selectedCity"
             :icon="false"
             value-key="id"
             label-key="name"
+            inner-item-key="cities"
+            :is-object="false"
             @update:show-menu="selectRegionMenu = $event"
-            width="w-full"
-            :text-center="false"
-            :disable="false"
             class="h-[40px] flex-grow z-[70]"
           />
         </div>
@@ -80,14 +83,12 @@ const onSubmit = handleSubmit(async (values) => {
         </span>
       </div>
       <div class="w-full h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">
-          Название района
-        </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Название района </label>
         <UiInput
           v-model:model-value="district"
           placeholder="Измайлово"
           type="text"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
         <span v-if="districtError" class="text-14-ext text-error-500 mt-[2px]">
           {{ districtError }}
@@ -95,27 +96,27 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </div>
     <div
-      class="w-full h-[1px] block mt-3 border border-dashed border-gray-15-color"
+      class="w-full h-[1px] block mt-3 border border-dashed border-gray-15"
     ></div>
     <div class="flex items-center justify-between gap-2 mt-3">
       <UiButton
-        bgColor="bg-gray-15-color"
+        bgColor="bg-gray-15"
         :border="true"
         :icon="false"
         hover="opacity-[0.9]"
-        textColor="text-gray-90-color"
-        border-color="border-gray-90-color"
+        textColor="text-gray-90"
+        border-color="border-gray-90"
         text="Отмена"
         class="w-[93px]"
         type="button"
       >
       </UiButton>
       <UiButton
-        bgColor="bg-primary-color"
+        bgColor="bg-primary"
         :border="false"
         :icon="false"
         hover="opacity-[0.9]"
-        textColor="text-dark-night-color"
+        textColor="text-dark-night"
         text="Создать"
         class="w-[93px]"
         type="submit"
@@ -125,7 +126,7 @@ const onSubmit = handleSubmit(async (values) => {
   </form>
   <div
     v-else
-    class="sticky z-[20] w-full h-[400px] flex items-center justify-center bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="sticky z-[20] w-full h-[400px] flex items-center justify-center bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="loader"></div>
   </div>

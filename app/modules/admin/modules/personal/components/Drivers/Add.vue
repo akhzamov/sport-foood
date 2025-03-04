@@ -58,28 +58,28 @@ const onSubmit = handleSubmit(async (values) => {
   <form
     v-if="personalStore.driverAreas && !mainStore.isLoading"
     @submit.prevent="onSubmit"
-    class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Имя Фамилия </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Имя Фамилия </label>
         <UiInput
           v-model:model-value="name"
           placeholder="Дмитрий Павлов"
           type="text"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
         <span v-if="nameError" class="text-14-ext text-error-500 mt-[2px]">
           {{ nameError }}
         </span>
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Контакт </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Контакт </label>
         <UiInput
           v-model:model-value="contact"
           placeholder="Телефон или почта"
           type="text"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
         <span v-if="contactError" class="text-14-ext text-error-500 mt-[2px]">
           {{ contactError }}
@@ -88,12 +88,12 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Статус </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Статус </label>
         <UiInput
           v-model:model-value="status"
           placeholder="Активный"
           type="text"
-          class="text-gray-90-color"
+          class="text-gray-90"
           disabled
         />
         <!-- <span v-if="nameError" class="text-14-ext text-error-500 mt-[2px]">
@@ -101,15 +101,15 @@ const onSubmit = handleSubmit(async (values) => {
         </span> -->
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Город</label>
+        <label class="text-12-reg text-gray-90 mb-1">Город</label>
         <div class="flex gap-1">
           <UiSelectCategories
             v-model:model-value="selectedCity"
             default-select-text="Выбрать город"
             :show-menu="statusMenu"
             :array="personalStore.driverAreas"
-            select-bg-color="bg-gray-15-color"
-            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15"
+            main-text-color="text-gray-90"
             class="flex-grow z-[70]"
             @update:show-menu="statusMenu = $event"
             :icon="false"
@@ -129,33 +129,33 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">
+        <label class="text-12-reg text-gray-90 mb-1">
           Оплата за километр
         </label>
         <UiInput
           v-model:model-value="cost"
           placeholder="0.00 руб"
           type="number"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"
+        <label class="text-12-reg text-gray-90 mb-1"
           >Прикрепление документов</label
         >
         <UiSelectPhoto v-model:model-value="files" :length="4" />
       </div>
     </div>
     <div
-      class="w-full h-[1px] block mt-3 border border-dashed border-gray-40-color"
+      class="w-full h-[1px] block mt-3 border border-dashed border-gray-40"
     ></div>
     <div class="flex items-center justify-end gap-2 mt-3">
       <UiButton
-        bgColor="bg-primary-color"
+        bgColor="bg-primary"
         :border="false"
         :icon="false"
         hover="opacity-[0.9]"
-        textColor="text-dark-night-color"
+        textColor="text-dark-night"
         text="Создать"
         class="max-w-[110px]"
         type="submit"
@@ -165,7 +165,7 @@ const onSubmit = handleSubmit(async (values) => {
   </form>
   <div
     v-else
-    class="sticky z-[20] w-full h-[400px] flex items-center justify-center bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="sticky z-[20] w-full h-[400px] flex items-center justify-center bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="loader"></div>
   </div>

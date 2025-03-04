@@ -2,6 +2,7 @@
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import { usePersonalStore } from "../../stores/personal";
 import { usePaymentStore } from "../../stores/payment";
+import { useLocalitiesStore } from "../../stores/localities";
 import { useAdminLogisticsStore } from "~/modules/admin/modules/logistic/stores/adminLogistics";
 import LogisticsEdit from "~/modules/admin/modules/logistic/components/Logistics/Edit.vue";
 import LogisticsAdd from "~/modules/admin/modules/logistic/components/Logistics/Add.vue";
@@ -18,13 +19,14 @@ import SettingCitiesAdd from "~/modules/admin/modules/settings/components/Settin
 import SettingCitiesEdit from "~/modules/admin/modules/settings/components/Settings/Cities/Edit.vue";
 import SettingDistrictsAdd from "~/modules/admin/modules/settings/components/Settings/Districts/Add.vue";
 import SettingDistrictsEdit from "~/modules/admin/modules/settings/components/Settings/Districts/Edit.vue";
-
-import { cities } from "../../modules/settings/components/Settings/Cities/cities.data";
+import SettingProductsAdd from "~/modules/admin/modules/settings/components/Settings/Products/Add.vue";
+import SettingProductsEdit from "~/modules/admin/modules/settings/components/Settings/Products/Edit.vue";
 
 const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
 const personalStore = usePersonalStore();
 const paymentStore = usePaymentStore();
+const localitiesStore = useLocalitiesStore();
 const removeTab = (id: string) => {
   const index = adminStore.activeOpenTabs.findIndex((tab) => tab.id === id);
   if (adminStore.activeOpenTabs[index + 1]?.id) {
@@ -44,10 +46,8 @@ const openTab = (id: string) => {
 
   if (numId !== null) {
     adminStore.openUser = numId;
-    console.log(numId);
   } else {
     adminStore.openUser = null;
-    console.warn("Не удалось извлечь числовую часть из строки:", id);
   }
   adminStore.activeOpenTab = id;
 };
@@ -83,15 +83,20 @@ const dynamicTabs = computed(() => [
     data,
     tabId: `admin-sales-reports-edit-${data.id}`,
   })),
-  ...Object.values(cities ?? {}).map((data) => ({
+  ...Object.values(localitiesStore.cities ?? {}).map((data) => ({
     component: SettingCitiesEdit,
     data,
     tabId: `admin-setting-city-edit-${data.id}`,
   })),
-  ...Object.values(cities ?? {}).map((data) => ({
+  ...Object.values(localitiesStore.districts ?? {}).map((data) => ({
     component: SettingDistrictsEdit,
     data,
     tabId: `admin-setting-district-edit-${data.id}`,
+  })),
+  ...Object.values(localitiesStore.products ?? {}).map((data) => ({
+    component: SettingProductsEdit,
+    data,
+    tabId: `admin-setting-product-edit-${data.id}`,
   })),
   {
     component: LogisticsAdd,
@@ -128,6 +133,11 @@ const dynamicTabs = computed(() => [
     data: null,
     tabId: "admin-setting-district-add",
   },
+  {
+    component: SettingProductsAdd,
+    data: null,
+    tabId: "admin-setting-product-add",
+  },
 ]);
 
 onMounted(() => {
@@ -137,7 +147,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="absolute z-[100] top-0 right-0 min-w-[740px] w-[740px] h-[100%] flex flex-col border-l border-gray-15-color p-2 overflow-y-auto pb-[80px] bg-dark-charcoal-color"
+    class="absolute z-[100] top-0 right-0 min-w-[740px] w-[740px] h-[100%] flex flex-col border-l border-gray-15 p-2 overflow-y-auto pb-[80px] bg-dark-charcoal"
   >
     <div class="w-max h-max flex items-center justify-start gap-1">
       <template v-for="(tab, index) in adminStore.activeOpenTabs">
@@ -145,21 +155,21 @@ onMounted(() => {
           v-if="adminStore.activeOpenTabs.length > 0"
           :class="[
             adminStore.activeOpenTab == tab.id
-              ? 'bg-dark-gunmental-color'
-              : 'bg-dark-eerie-black-color',
+              ? 'bg-dark-gunmental'
+              : 'bg-dark-eerie-black',
           ]"
           @click="openTab(tab.id)"
           class="w-max h-[36px] flex items-start gap-9 rounded-t-lg py-1 px-2 cursor-pointer"
         >
           <div class="flex flex-col items-start justify-start">
-            <p class="text-12-ext text-gray-40-color">{{ tab.name }}:</p>
-            <p class="text-10-reg text-gray-90-color">{{ tab.title }}</p>
+            <p class="text-12-ext text-gray-40">{{ tab.name }}:</p>
+            <p class="text-10-reg text-gray-90">{{ tab.title }}</p>
           </div>
           <button
             @click.stop="removeTab(tab.id)"
             class="w-8 h-8 cursor-pointer flex items-start justify-end"
           >
-            <IconClose class="text-gray-40-color" />
+            <IconClose class="text-gray-40" />
           </button>
         </div>
       </template>

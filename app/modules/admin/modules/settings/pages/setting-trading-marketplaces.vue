@@ -9,12 +9,16 @@ definePageMeta({
   name: "Торговые площадки",
 });
 
-onMounted(async () => {});
+const { getMarketplaces } = useCrudMarketplacesResponse();
+
+onMounted(async () => {
+  await getMarketplaces();
+});
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col justify-between pb-[70px]">
-    Trading Marketplaces
+    <SettingsMarketplacesTable />
   </div>
 </template>
 

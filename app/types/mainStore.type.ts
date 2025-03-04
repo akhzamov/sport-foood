@@ -11,6 +11,14 @@ export interface IMainStore {
   alertShowType: string;
   alertShowTitle: string;
   alertShowText: string;
+  confirmAlertShow: boolean;
+  confirmAlertShowType: string;
+  confirmAlertShowTitle: string;
+  confirmAlertShowText: string;
+  confirmCallback: ((confirmed: boolean) => void) | null;
+  rightAlertShow: boolean;
+  rightAlertShowType: string;
+  rightAlertShowText: string;
   confirmModal: boolean;
   confirmModalTitle: string;
   confirmModalText: string;

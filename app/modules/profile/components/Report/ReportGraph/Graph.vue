@@ -78,17 +78,17 @@ onBeforeUnmount(() => {
   <div class="w-full h-max relative z-[70]">
     <!-- graph top -->
     <div
-      class="flex items-center justify-between p-2 rounded-t-lg bg-dark-gunmental-color border-b border-gray-40-color"
+      class="flex items-center justify-between p-2 rounded-t-lg bg-dark-gunmental border-b border-gray-40"
     >
-      <h4 class="text-16-semi text-gray-90-color">
+      <h4 class="text-16-semi text-gray-90">
         Отчет по посещаемости за месяц
       </h4>
       <div ref="reportGraphSelect z-[30]">
         <UiSelect
-          main-text-color="text-gray-90-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
+          main-text-color="text-gray-90"
+          select-bg-color="bg-gray-15"
+          disable-text-color="text-gray-40"
+          disable-bg-color="bg-gray-15"
           :array="months"
           :show-menu="showSelectMenu"
           default-select-text=""
@@ -103,10 +103,10 @@ onBeforeUnmount(() => {
           class="h-[40px] z-[70]"
         >
           <template v-slot:icon>
-            <IconCalendar class="text-gray-90-color" />
+            <IconCalendar class="text-gray-90" />
           </template>
           <template v-slot:value-icon>
-            <IconCalendar class="text-gray-90-color" />
+            <IconCalendar class="text-gray-90" />
           </template>
         </UiSelect>
       </div>
@@ -115,14 +115,14 @@ onBeforeUnmount(() => {
     <div class="w-full">
       <div class="w-full z-[40]">
         <table
-          class="w-full text-sm text-left rtl:text-right text-gray-90-color table-fixed"
+          class="w-full text-sm text-left rtl:text-right text-gray-90 table-fixed"
         >
           <thead class="text-xs">
             <!-- graph body top -->
             <tr class="w-full">
               <th
                 scope="col"
-                class="flex-grow h-[48px] px-6 py-3 bg-dark-charcoal-color text-gray-40-color text-center border-b border-r border-gray-15-color"
+                class="flex-grow h-[48px] px-6 py-3 bg-dark-charcoal text-gray-40 text-center border-b border-r border-gray-15"
               >
                 Имена и роли
               </th>
@@ -130,12 +130,12 @@ onBeforeUnmount(() => {
                 v-for="(key, index) in Object.keys(reportData.days)"
                 :key="index"
                 scope="col"
-                class="w-[30px] bg-dark-charcoal-color text-gray-40-color text-center border-b border-r border-gray-15-color px-[1px]"
+                class="w-[30px] bg-dark-charcoal text-gray-40 text-center border-b border-r border-gray-15 px-[1px]"
               >
                 <div
-                  class="w-[28px] h-full flex flex-col justify-between bg-dark-gunmental-color rounded-md py-1"
+                  class="w-[28px] h-full flex flex-col justify-between bg-dark-gunmental rounded-md py-1"
                 >
-                  <span class="text-8-med text-gray-40-color">
+                  <span class="text-8-med text-gray-40">
                     {{
                       new Date(
                         key.split(".").reverse().join("-")
@@ -144,7 +144,7 @@ onBeforeUnmount(() => {
                       })
                     }}
                   </span>
-                  <span class="text-10-med text-gray-90-color">
+                  <span class="text-10-med text-gray-90">
                     {{
                       new Date(
                         key.split(".").reverse().join("-")
@@ -153,7 +153,7 @@ onBeforeUnmount(() => {
                       })
                     }}
                   </span>
-                  <span class="text-8-med text-gray-40-color">
+                  <span class="text-8-med text-gray-40">
                     {{
                       new Date(
                         key.split(".").reverse().join("-")
@@ -169,17 +169,17 @@ onBeforeUnmount(() => {
           <tbody>
             <!-- graph body data -->
             <template v-for="(person, key) in reportData.employees" :key="key">
-              <tr class="w-full bg-dark-charcoal-color">
+              <tr class="w-full bg-dark-charcoal">
                 <!-- graph body employee names -->
                 <th
                   scope="row"
-                  class="flex-grow h-[30px] border-b border-r border-l border-gray-15-color"
+                  class="flex-grow h-[30px] border-b border-r border-l border-gray-15"
                 >
                   <div
                     class="flex-grow h-[30px] flex items-center justify-between px-1 text-12-semi"
                   >
                     <div class="flex items-center justify-start gap-2">
-                      <span class="text-12-semi text-gray-40-color mr-2">
+                      <span class="text-12-semi text-gray-40 mr-2">
                         {{ key }}
                       </span>
                       <img
@@ -187,27 +187,27 @@ onBeforeUnmount(() => {
                         class="w-8 h-8 rounded-[50%] object-cover"
                       />
                       <div class="flex flex-col items-start justify-center">
-                        <span class="text-12-semi text-gray-90-color">
+                        <span class="text-12-semi text-gray-90">
                           {{ person.name }}
                           {{ person.lastName }}
                         </span>
-                        <span class="text-12-reg text-gray-90-color">
+                        <span class="text-12-reg text-gray-90">
                           {{ person.department }}
                         </span>
                       </div>
                     </div>
                     <div
-                      class="flex items-center justify-self-end gap-2 bg-gray-15-color rounded-md p-[2px]"
+                      class="flex items-center justify-self-end gap-2 bg-gray-15 rounded-md p-[2px]"
                     >
-                      <IconCalendarCheck02 class="text-gray-40-color" />
+                      <IconCalendarCheck02 class="text-gray-40" />
                       <div
-                        class="flex items-center justify-center gap-1 rounded bg-dark-charcoal-color border border-gray-40-color p-[2px]"
+                        class="flex items-center justify-center gap-1 rounded bg-dark-charcoal border border-gray-40 p-[2px]"
                       >
-                        <span class="text-10-reg text-gray-90-color">
+                        <span class="text-10-reg text-gray-90">
                           {{ person.totalWorkDays }}
                         </span>
-                        <span class="text-8-reg text-gray-40-color">/</span>
-                        <span class="text-8-reg text-gray-40-color">
+                        <span class="text-8-reg text-gray-40">/</span>
+                        <span class="text-8-reg text-gray-40">
                           {{ Object.keys(person.days).length }}
                         </span>
                       </div>
@@ -217,7 +217,7 @@ onBeforeUnmount(() => {
                 <!-- graph body day statuses -->
                 <template v-for="(attendance, personKey, index) in person.days">
                   <td
-                    class="relative w-[30px] h-[30px] border-b border-r border-gray-25-color cursor-pointer px-[1px]"
+                    class="relative w-[30px] h-[30px] border-b border-r border-gray-25 cursor-pointer px-[1px]"
                     @click="profileStore.reportGraphAddSettingModal = true"
                     @mouseenter="
                       {
@@ -240,12 +240,12 @@ onBeforeUnmount(() => {
                         attendance.status != 'sick_leave' &&
                         attendance.status != 'absent'
                       "
-                      class="w-[28px] h-[28px] flex items-center justify-center text-gray-40-color rounded text-10-med"
+                      class="w-[28px] h-[28px] flex items-center justify-center text-gray-40 rounded text-10-med"
                       :class="{
-                        'bg-success-500-20': attendance.status == 'worked',
-                        'bg-dark-eerie-black-color':
+                        'bg-success-500/20': attendance.status == 'worked',
+                        'bg-dark-eerie-black':
                           attendance.status == 'weekend',
-                        'border border-gray-90-color':
+                        'border border-gray-90':
                           employeeDay == personKey &&
                           employeeID == key &&
                           attendance.status != 'weekend',
@@ -267,9 +267,9 @@ onBeforeUnmount(() => {
                       >
                         <span
                           v-if="attendance.replaced_id"
-                          class="w-full h-[13.5px] flex items-center justify-center bg-gray-40-color rounded-t-[4px] rounded-b-[2px] text-gray-40-color"
+                          class="w-full h-[13.5px] flex items-center justify-center bg-gray-40 rounded-t-[4px] rounded-b-[2px] text-gray-40"
                           :class="{
-                            'border border-gray-90-color':
+                            'border border-gray-90':
                               employeeDay == personKey && employeeID == key,
                           }"
                         >
@@ -277,9 +277,9 @@ onBeforeUnmount(() => {
                         </span>
                         <span
                           v-if="attendance.replaced_id"
-                          class="w-full h-[13.5px] flex items-center justify-center bg-yellow-500 rounded-t-[2px] rounded-b-[4px] text-gray-90-color"
+                          class="w-full h-[13.5px] flex items-center justify-center bg-yellow-500 rounded-t-[2px] rounded-b-[4px] text-gray-90"
                           :class="{
-                            'border border-gray-90-color':
+                            'border border-gray-90':
                               employeeDay == personKey && employeeID == key,
                           }"
                         >
@@ -287,9 +287,9 @@ onBeforeUnmount(() => {
                         </span>
                         <span
                           v-if="!attendance.replaced_id"
-                          class="w-full h-full flex items-center justify-center bg-gray-40-color rounded text-gray-40-color"
+                          class="w-full h-full flex items-center justify-center bg-gray-40 rounded text-gray-40"
                           :class="{
-                            'border border-gray-90-color':
+                            'border border-gray-90':
                               employeeDay == personKey && employeeID == key,
                           }"
                         >
@@ -305,9 +305,9 @@ onBeforeUnmount(() => {
                             attendance.status == 'sick_leave' &&
                             attendance.replaced_id
                           "
-                          class="w-full h-[13.5px] flex items-center justify-center bg-gray-15-color rounded-t-[4px] rounded-b-[2px] text-gray-40-color"
+                          class="w-full h-[13.5px] flex items-center justify-center bg-gray-15 rounded-t-[4px] rounded-b-[2px] text-gray-40"
                           :class="{
-                            'border border-gray-90-color':
+                            'border border-gray-90':
                               employeeDay == personKey && employeeID == key,
                           }"
                         >
@@ -318,9 +318,9 @@ onBeforeUnmount(() => {
                             attendance.status == 'sick_leave' &&
                             attendance.replaced_id
                           "
-                          class="w-full h-[13.5px] flex items-center justify-center bg-yellow-500 rounded-t-[2px] rounded-b-[4px] text-gray-90-color"
+                          class="w-full h-[13.5px] flex items-center justify-center bg-yellow-500 rounded-t-[2px] rounded-b-[4px] text-gray-90"
                           :class="{
-                            'border border-gray-90-color':
+                            'border border-gray-90':
                               employeeDay == personKey && employeeID == key,
                           }"
                         >
@@ -328,9 +328,9 @@ onBeforeUnmount(() => {
                         </span>
                         <span
                           v-if="!attendance.replaced_id"
-                          class="w-full h-full flex items-center justify-center bg-gray-15-color rounded text-gray-40-color"
+                          class="w-full h-full flex items-center justify-center bg-gray-15 rounded text-gray-40"
                           :class="{
-                            'border border-gray-90-color':
+                            'border border-gray-90':
                               employeeDay == personKey && employeeID == key,
                           }"
                         >
@@ -346,9 +346,9 @@ onBeforeUnmount(() => {
                             attendance.status == 'absent' &&
                             attendance.replaced_id
                           "
-                          class="w-full h-[13.5px] flex items-center justify-center bg-error-500-20 rounded-t-[4px] rounded-b-[2px] text-gray-40-color"
+                          class="w-full h-[13.5px] flex items-center justify-center bg-error-500/20 rounded-t-[4px] rounded-b-[2px] text-gray-40"
                           :class="{
-                            'border border-gray-90-color':
+                            'border border-gray-90':
                               employeeDay == personKey && employeeID == key,
                           }"
                         >
@@ -359,9 +359,9 @@ onBeforeUnmount(() => {
                             attendance.status == 'absent' &&
                             attendance.replaced_id
                           "
-                          class="w-full h-[13.5px] flex items-center justify-center bg-yellow-500 rounded-t-[2px] rounded-b-[4px] text-gray-90-color"
+                          class="w-full h-[13.5px] flex items-center justify-center bg-yellow-500 rounded-t-[2px] rounded-b-[4px] text-gray-90"
                           :class="{
-                            'border border-gray-90-color':
+                            'border border-gray-90':
                               employeeDay == personKey && employeeID == key,
                           }"
                         >
@@ -369,9 +369,9 @@ onBeforeUnmount(() => {
                         </span>
                         <span
                           v-if="!attendance.replaced_id"
-                          class="w-full h-full flex items-center justify-center bg-error-500-20 rounded text-gray-40-color"
+                          class="w-full h-full flex items-center justify-center bg-error-500/20 rounded text-gray-40"
                           :class="{
-                            'border border-gray-90-color':
+                            'border border-gray-90':
                               employeeDay == personKey && employeeID == key,
                           }"
                         >
@@ -389,7 +389,7 @@ onBeforeUnmount(() => {
                     >
                       <div
                         ref="reportStatusModal"
-                        class="absolute top-0 w-[280px] h-max translate-y-[20px] z-[30] bg-dark-gunmental-color p-3 rounded-lg border border-gray-15-color"
+                        class="absolute top-0 w-[280px] h-max translate-y-[20px] z-[30] bg-dark-gunmental p-3 rounded-lg border border-gray-15"
                         :class="{
                           'left-[100%] translate-x-[20px]':
                             reportStatusDistances[0] &&
@@ -408,11 +408,11 @@ onBeforeUnmount(() => {
                             <div
                               class="flex flex-col items-start justify-center"
                             >
-                              <span class="text-12-semi text-gray-90-color">
+                              <span class="text-12-semi text-gray-90">
                                 {{ person.name }}
                                 {{ person.lastName }}
                               </span>
-                              <span class="text-12-ext text-gray-90-color">
+                              <span class="text-12-ext text-gray-90">
                                 {{ person.department }}
                               </span>
                             </div>
@@ -428,34 +428,34 @@ onBeforeUnmount(() => {
                             <div
                               class="w-[20px] h-[20px] block rounded"
                               :class="{
-                                'bg-success-500-20':
+                                'bg-success-500/20':
                                   attendance.status == 'worked',
-                                'bg-error-500-20':
+                                'bg-error-500/20':
                                   attendance.status == 'absent',
-                                'bg-gray-15-color':
+                                'bg-gray-15':
                                   attendance.status == 'sick_leave',
-                                'bg-gray-40-color':
+                                'bg-gray-40':
                                   attendance.status == 'vocation',
                               }"
                             ></div>
                             <span
                               v-if="attendance.status == 'worked'"
-                              class="text-12-med text-gray-90-color"
+                              class="text-12-med text-gray-90"
                               >На работе</span
                             >
                             <span
                               v-if="attendance.status == 'absent'"
-                              class="text-12-med text-gray-90-color"
+                              class="text-12-med text-gray-90"
                               >Отсутствует</span
                             >
                             <span
                               v-if="attendance.status == 'sick_leave'"
-                              class="text-12-med text-gray-90-color"
+                              class="text-12-med text-gray-90"
                               >Больничный</span
                             >
                             <span
                               v-if="attendance.status == 'vocation'"
-                              class="text-12-med text-gray-90-color"
+                              class="text-12-med text-gray-90"
                               >В Отпуске</span
                             >
                           </div>
@@ -466,12 +466,12 @@ onBeforeUnmount(() => {
                             <div
                               class="w-[20px] h-[20px] block bg-yellow-400 rounded"
                             ></div>
-                            <span class="text-12-med text-gray-90-color">
+                            <span class="text-12-med text-gray-90">
                               Заменяет
                             </span>
-                            <IconShuffle01 class="w-3 h-3 text-gray-75-color" />
+                            <IconShuffle01 class="w-3 h-3 text-gray-75" />
                             <span
-                              class="text-12-med text-gray-40-color underline"
+                              class="text-12-med text-gray-40 underline"
                             >
                               {{ attendance.replaced_name }}
 

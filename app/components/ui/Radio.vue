@@ -41,12 +41,12 @@
 			class="w-5 h-5 absolute top-0 left-0 opacity-0 z-20 cursor-pointer"
 		/>
 		<div
-			class="w-5 h-5 rounded-[50%] flex items-center justify-center border border-gray-75-color bg-gray-15-color p-[2.45px] overflow-hidden"
+			class="w-5 h-5 rounded-[50%] flex items-center justify-center border border-gray-75 bg-gray-15 p-[2.45px] overflow-hidden"
 		>
 			<div
 				class="block w-full h-full rounded-[50%]"
 				:class="{
-					'bg-primary-color ': isChecked,
+					'bg-primary ': isChecked,
 					'bg-transparent': !isChecked,
 				}"
 			></div>

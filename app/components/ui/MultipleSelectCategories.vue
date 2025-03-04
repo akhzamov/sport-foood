@@ -19,8 +19,8 @@ const props = withDefaults(
     disable: boolean;
   }>(),
   {
-    mainTextColor: "text-gray-90-color",
-    selectBgColor: "bg-gray-90-color",
+    mainTextColor: "text-gray-90",
+    selectBgColor: "bg-gray-90",
     array: () => [],
     defaultSelectText: "",
     valueKey: "id",
@@ -41,6 +41,9 @@ const state = reactive({
 const defaultSelectText = ref(props.defaultSelectText);
 const searchValue = ref("");
 let filteredArray = reactive(props.array);
+const selectRef = useTemplateRef<HTMLElement>("selectRef");
+onClickOutside(selectRef, () => emit("update:showMenu", false));
+
 const isArray = (data: unknown): data is any[] => Array.isArray(data);
 
 const getArrayFromProps = () => {
@@ -158,7 +161,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="w-[214px] h-[40px] relative">
+  <div class="w-[214px] h-[40px] relative" ref="selectRef">
     <div
       class="w-full h-full rounded-lg flex items-center justify-between px-4 select-none"
       :class="[
@@ -172,7 +175,7 @@ watchEffect(() => {
         v-if="state.selectedItems.length > 0"
       >
         <div
-          class="w-max h-[22px] flex items-center gap-1 pl-2 pr-1 rounded-[20px] bg-gray-15-color text-gray-90-color text-12-reg"
+          class="w-max h-[22px] flex items-center gap-1 pl-2 pr-1 rounded-[20px] bg-gray-15 text-gray-90 text-12-reg"
           :class="[
             props.disable ? props.disableTextColor : props.mainTextColor,
           ]"
@@ -209,14 +212,14 @@ watchEffect(() => {
     </div>
     <div
       v-if="props.showMenu && !props.disable"
-      class="absolute max-h-[400px] bg-dark-eerie-black-color top-[105%] left-0 w-full overflow-y-auto rounded-lg px-3 py-3 flex flex-col gap-[10px]"
+      class="absolute max-h-[400px] bg-dark-eerie-black top-[105%] left-0 w-full overflow-y-auto rounded-lg px-3 py-3 flex flex-col gap-[10px]"
     >
       <div @click.stop>
         <input
           v-model="searchValue"
           type="text"
           placeholder="Поиск города"
-          class="w-full h-[30px] bg-dark-onix-color rounded-md border border-gray-15-color px-2 outline-none text-gray-75-color"
+          class="w-full h-[30px] bg-dark-onix rounded-md border border-gray-15 px-2 outline-none text-gray-75"
         />
       </div>
       <div
@@ -224,17 +227,17 @@ watchEffect(() => {
         :key="key"
         class="flex flex-col gap-2"
       >
-        <span class="text-16-semi text-gray-40-color">{{
+        <span class="text-16-semi text-gray-40">{{
           item[props.labelKey]
         }}</span>
         <template v-for="(label, lKey) in item[props.innerItemKey]" :key="lKey">
           <div
-            class="flex items-center justify-between pl-3 cursor-pointer hover:text-primary-color"
+            class="flex items-center justify-between pl-3 cursor-pointer hover:text-primary"
             @click="selectItem(label[props.valueKey], label[props.labelKey])"
             :class="[
               state.selectedItems.includes(label[props.labelKey])
-                ? 'text-primary-color'
-                : 'text-gray-75-color',
+                ? 'text-primary'
+                : 'text-gray-75',
             ]"
           >
             <span class="text-14-med">{{ label[props.labelKey] }}</span>

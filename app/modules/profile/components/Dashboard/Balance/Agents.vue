@@ -14,37 +14,37 @@ const imgPath = "/img/ozon.png";
 </script>
 
 <template>
-  <div class="flex flex-col w-full h-[360px] bg-dark-charcoal-color">
+  <div class="flex flex-col w-full h-[360px] bg-dark-charcoal">
     <div class="w-full h-[30px] flex items-center bg-white/5">
       <div
-        class="min-w-[132px] flex-grow h-full flex items-center justify-center border-r border-gray-15-color"
+        class="min-w-[132px] flex-grow h-full flex items-center justify-center border-r border-gray-15"
       >
-        <p class="text-10-reg text-gray-40-color">Торговые агенты</p>
+        <p class="text-10-reg text-gray-40">Торговые агенты</p>
       </div>
       <div
-        class="w-[100px] h-full flex flex-col items-center justify-center border-r border-gray-15-color"
+        class="w-[100px] h-full flex flex-col items-center justify-center border-r border-gray-15"
       >
-        <p class="text-10-ext text-center text-gray-40-color">На руках</p>
+        <p class="text-10-ext text-center text-gray-40">На руках</p>
         <div
-          class="w-full h-[14px] flex items-center border-t border-gray-15-color"
+          class="w-full h-[14px] flex items-center border-t border-gray-15"
         >
           <div class="w-[100%] flex items-center justify-end px-1">
-            <p class="text-10-ext text-gray-40-color">Вес</p>
+            <p class="text-10-ext text-gray-40">Вес</p>
           </div>
         </div>
       </div>
       <div class="w-[150px] h-full flex flex-col items-center justify-center">
-        <p class="text-10-ext text-center text-gray-40-color">На витрине</p>
+        <p class="text-10-ext text-center text-gray-40">На витрине</p>
         <div
-          class="w-full h-[14px] flex items-center border-t border-gray-15-color"
+          class="w-full h-[14px] flex items-center border-t border-gray-15"
         >
           <div
-            class="w-[50%] flex items-center justify-end px-1 border-r border-gray-15-color"
+            class="w-[50%] flex items-center justify-end px-1 border-r border-gray-15"
           >
-            <p class="text-10-ext text-gray-40-color">Вес</p>
+            <p class="text-10-ext text-gray-40">Вес</p>
           </div>
           <div class="w-[50%] flex items-center justify-end px-1">
-            <p class="text-10-ext text-gray-40-color">Сумма</p>
+            <p class="text-10-ext text-gray-40">Сумма</p>
           </div>
         </div>
       </div>
@@ -55,24 +55,24 @@ const imgPath = "/img/ozon.png";
     >
       <template v-for="(agent, key, index) in profileStore.indexAgentsLeft">
         <div
-          :class="[index % 2 == 0 ? 'bg-dark-gunmental-color' : '']"
+          :class="[index % 2 == 0 ? 'bg-dark-gunmental' : '']"
           class="w-full min-h-[20px] flex items-center"
         >
           <div
-            class="min-w-[132px] h-full flex-grow flex items-center justify-start border-r border-gray-15-color"
+            class="min-w-[132px] h-full flex-grow flex items-center justify-start border-r border-gray-15"
           >
-            <span class="w-[35px] text-center text-12-semi text-gray-40-color">
+            <span class="w-[35px] text-center text-12-semi text-gray-40">
               {{ agent.id }}
             </span>
-            <p class="w-full ml-1 text-10-semi text-gray-75-color">
+            <p class="w-full ml-1 text-10-semi text-gray-75">
               {{ agent.name }}
             </p>
           </div>
           <div
-            class="max-w-[100px] w-full h-full flex items-center justify-end border-r border-gray-15-color"
+            class="max-w-[100px] w-full h-full flex items-center justify-end border-r border-gray-15"
           >
             <div
-              class="w-full h-full flex items-center justify-end px-1 border-r border-gray-15-color"
+              class="w-full h-full flex items-center justify-end px-1 border-r border-gray-15"
             >
               <span
                 class="text-10-ext"
@@ -93,7 +93,7 @@ const imgPath = "/img/ozon.png";
             class="max-w-[150px] w-full h-full flex items-center justify-end"
           >
             <div
-              class="w-[50%] h-full flex items-center justify-end px-1 border-r border-gray-15-color"
+              class="w-[50%] h-full flex items-center justify-end px-1 border-r border-gray-15"
             >
               <span
                 class="text-10-ext"
@@ -108,7 +108,7 @@ const imgPath = "/img/ozon.png";
               </span>
             </div>
             <div class="w-[50%] h-full flex items-center justify-end px-1">
-              <span class="text-10-reg text-gray-75-color">
+              <span class="text-10-reg text-gray-75">
                 {{
                   Number(agent.store_amount.toFixed(1)).toLocaleString("ru-RU")
                 }}
@@ -128,9 +128,9 @@ const imgPath = "/img/ozon.png";
       </div>
     </div>
     <UiButton
-      bg-color="bg-gray-15-color"
+      bg-color="bg-gray-15"
       :border="true"
-      border-color="bg-gray-15-color"
+      border-color="bg-gray-15"
       hover=""
       :icon="true"
       text="Подробно"

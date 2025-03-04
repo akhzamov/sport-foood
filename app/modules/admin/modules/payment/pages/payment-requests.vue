@@ -4,6 +4,7 @@ import {
   getStatuses,
   getTypes,
 } from "../components/Requests/requests.data";
+import { getPayments } from "~/modules/admin/modules/payment/components/Requests/requests.data";
 
 useSeoMeta({
   title: "Sport Food | Payment Requests",
@@ -19,6 +20,7 @@ onMounted(async () => {
   await getTypes();
   await getStatuses();
   await getPriorities();
+  await getPayments();
 });
 </script>
 

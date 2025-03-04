@@ -67,28 +67,28 @@ const updateShowSelectMenu = (newValue: boolean) => {
 
 <template>
   <div
-    class="alert-modal fixed z-[300] top-0 left-0 w-full h-screen flex justify-center items-center bg-gray-40-color select-none"
+    class="alert-modal fixed z-[300] top-0 left-0 w-full h-screen flex justify-center items-center bg-gray-40 select-none"
     @click="closeAddCityModal()"
   >
     <div
       @click.stop
-      class="relative w-[400px] h-max bg-dark-gunmental-color rounded-xl border-[1px] border-gray-15-color p-6 flex flex-col items-center justify-center"
+      class="relative w-[400px] h-max bg-dark-gunmental rounded-xl border-[1px] border-gray-15 p-6 flex flex-col items-center justify-center"
     >
       <div class="w-full flex items-center justify-between">
         <h4 class="text-24-bold text-white mb-1 text-center">Товар</h4>
         <IconClose
-          class="text-gray-75-color cursor-pointer"
+          class="text-gray-75 cursor-pointer"
           @click="closeAddCityModal()"
         />
       </div>
       <div class="w-full flex flex-col items-start justify-start mt-4">
-        <label class="text-12-reg text-gray-90-color">Продукт</label>
+        <label class="text-12-reg text-gray-90">Продукт</label>
         <div class="w-full flex items-center justify-start gap-2 mt-1">
           <UiSelect
-            main-text-color="text-gray-90-color"
-            select-bg-color="bg-gray-15-color"
-            disable-text-color="text-gray-40-color"
-            disable-bg-color="bg-gray-15-color"
+            main-text-color="text-gray-90"
+            select-bg-color="bg-gray-15"
+            disable-text-color="text-gray-40"
+            disable-bg-color="bg-gray-15"
             :array="props.products"
             :show-menu="props.showSelectMenu"
             default-select-text="Товар"
@@ -104,15 +104,15 @@ const updateShowSelectMenu = (newValue: boolean) => {
             class="h-[40px] flex-grow"
           />
           <button
-            class="min-w-[40px] h-[40px] flex items-center justify-center bg-gray-15-color rounded-lg"
+            class="min-w-[40px] h-[40px] flex items-center justify-center bg-gray-15 rounded-lg"
           >
-            <IconSettings class="text-gray-90-color" />
+            <IconSettings class="text-gray-90" />
           </button>
         </div>
       </div>
       <div class="w-full flex items-start justify-start mt-4 gap-3">
         <div>
-          <label class="text-12-reg text-gray-90-color mb-1">Вес</label>
+          <label class="text-12-reg text-gray-90 mb-1">Вес</label>
           <UiInput
             v-model:model-value="localWeight"
             placeholder="100"
@@ -120,7 +120,7 @@ const updateShowSelectMenu = (newValue: boolean) => {
           />
         </div>
         <div>
-          <label class="text-12-reg text-gray-90-color mb-1">Количество</label>
+          <label class="text-12-reg text-gray-90 mb-1">Количество</label>
           <UiInput
             v-model:model-value="localCount"
             placeholder="20"
@@ -129,7 +129,7 @@ const updateShowSelectMenu = (newValue: boolean) => {
         </div>
       </div>
       <div class="w-full flex flex-col items-start justify-start mt-4">
-        <label class="text-12-reg text-gray-90-color mb-1">Цена за кг.</label>
+        <label class="text-12-reg text-gray-90 mb-1">Цена за кг.</label>
         <UiInput
           v-model:model-value="localPrice"
           placeholder="500 руб."
@@ -139,9 +139,9 @@ const updateShowSelectMenu = (newValue: boolean) => {
       <div class="w-full flex items-center justify-end gap-2 mt-4">
         <UiButton
           text="Добавить"
-          bg-color="bg-primary-color"
-          text-color="text-dark-night-color"
-          hover="hover:opacity-90"
+          bg-color="bg-primary"
+          text-color="text-dark-night"
+          hover="opacity-90"
           :border="false"
           :icon="false"
           class="max-w-[100px]"
@@ -149,10 +149,10 @@ const updateShowSelectMenu = (newValue: boolean) => {
         />
         <UiButton
           text="Отмена"
-          bg-color="bg-gray-15-color"
-          text-color="text-gray-90-color"
-          border-color="border-gray-90-color"
-          hover="hover:bg-gray-25-color"
+          bg-color="bg-gray-15"
+          text-color="text-gray-90"
+          border-color="border-gray-90"
+          hover="bg-gray-25"
           :border="true"
           :icon="false"
           class="max-w-[90px]"

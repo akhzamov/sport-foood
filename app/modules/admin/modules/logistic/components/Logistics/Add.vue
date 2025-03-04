@@ -100,17 +100,17 @@ watch(
     />
   </TransitionGroup>
   <div
-    class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="flex items-center justify-between gap-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Поставщик</label>
+        <label class="text-12-reg text-gray-90 mb-1">Поставщик</label>
         <div class="flex gap-1">
           <UiSelect
-            main-text-color="text-gray-90-color"
-            select-bg-color="bg-gray-15-color"
-            disable-text-color="text-gray-40-color"
-            disable-bg-color="bg-gray-15-color"
+            main-text-color="text-gray-90"
+            select-bg-color="bg-gray-15"
+            disable-text-color="text-gray-40"
+            disable-bg-color="bg-gray-15"
             :array="suppliers"
             :show-menu="supplierMenu"
             default-select-text="Выбор поставщика"
@@ -125,20 +125,20 @@ watch(
             class="h-[40px] flex-grow"
           />
           <button
-            class="w-[40px] h-[40px] bg-gray-15-color rounded-lg flex items-center justify-center cursor-pointer"
+            class="w-[40px] h-[40px] bg-gray-15 rounded-lg flex items-center justify-center cursor-pointer"
           >
-            <IconEdit05 class="text-gray-90-color" />
+            <IconEdit05 class="text-gray-90" />
           </button>
         </div>
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Водитель</label>
+        <label class="text-12-reg text-gray-90 mb-1">Водитель</label>
         <div class="flex gap-1">
           <UiSelect
-            main-text-color="text-gray-90-color"
-            select-bg-color="bg-gray-15-color"
-            disable-text-color="text-gray-40-color"
-            disable-bg-color="bg-gray-15-color"
+            main-text-color="text-gray-90"
+            select-bg-color="bg-gray-15"
+            disable-text-color="text-gray-40"
+            disable-bg-color="bg-gray-15"
             :array="curriers"
             :show-menu="currierMenu"
             default-select-text="Выбор водителя"
@@ -153,16 +153,16 @@ watch(
             class="h-[40px] flex-grow"
           />
           <button
-            class="w-[40px] h-[40px] bg-gray-15-color rounded-lg flex items-center justify-center cursor-pointer"
+            class="w-[40px] h-[40px] bg-gray-15 rounded-lg flex items-center justify-center cursor-pointer"
           >
-            <IconEdit05 class="text-gray-90-color" />
+            <IconEdit05 class="text-gray-90" />
           </button>
         </div>
       </div>
     </div>
     <div class="w-[50%] flex items-center justify-start mt-3 pr-[7px]">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Дата выезда</label>
+        <label class="text-12-reg text-gray-90 mb-1">Дата выезда</label>
         <UiInput
           v-model:model-value="formattedDate"
           placeholder="дд-мм-гггг"
@@ -182,7 +182,7 @@ watch(
     </div>
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">
+        <label class="text-12-reg text-gray-90 mb-1">
           Сумма закупки
         </label>
         <UiInput
@@ -192,7 +192,7 @@ watch(
         />
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">
+        <label class="text-12-reg text-gray-90 mb-1">
           Стоимость поездки
         </label>
         <UiInput
@@ -204,7 +204,7 @@ watch(
     </div>
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Примечание</label>
+        <label class="text-12-reg text-gray-90 mb-1">Примечание</label>
         <UiTextarea
           v-model:model-value="comment"
           placeholder="Текст"
@@ -212,31 +212,31 @@ watch(
         />
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"
+        <label class="text-12-reg text-gray-90 mb-1"
           >Прикрепить фото</label
         >
         <UiSelectPhoto v-model:model-value="photos" :length="4" />
       </div>
     </div>
     <div
-      class="w-full h-[1px] border-b border-dashed border-gray-15-color my-3"
+      class="w-full h-[1px] border-b border-dashed border-gray-15 my-3"
     ></div>
-    <div class="w-full h-max border border-gray-15-color rounded-md">
+    <div class="w-full h-max border border-gray-15 rounded-md">
       <div class="w-full h-[40px] flex items-center justify-between px-4">
-        <p class="text-16-reg text-gray-40-color">Город доставки</p>
+        <p class="text-16-reg text-gray-40">Город доставки</p>
         <div class="w-max h-full flex items-center justify-center gap-2">
           <div
-            class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40-color hover:text-primary-color"
+            class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40 hover:text-primary"
           >
             <IconPlus @click="adminLogisticsStore.addCityModal = true" />
           </div>
           <div
-            class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40-color hover:text-primary-color"
+            class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40 hover:text-primary"
           >
             <IconEdit05 />
           </div>
           <div
-            class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40-color hover:text-error-500"
+            class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40 hover:text-error-500"
           >
             <IconTrash03 />
           </div>
@@ -244,7 +244,7 @@ watch(
       </div>
       <!-- Table -->
       <div
-        class="w-full h-max flex flex-col justify-start items-center bg-gray-15-color p-2 rounded-b-md"
+        class="w-full h-max flex flex-col justify-start items-center bg-gray-15 p-2 rounded-b-md"
       >
         <!-- Table Tabs -->
         <div class="w-full h-[30px] flex items-center justify-start gap-2">
@@ -253,51 +253,51 @@ watch(
               @click="adminLogisticsStore.activeOpenEditTableTab = city.name"
               :class="[
                 adminLogisticsStore.activeOpenEditTableTab == city.name
-                  ? 'bg-gray-25-color'
-                  : 'bg-gray-15-color',
+                  ? 'bg-gray-25'
+                  : 'bg-gray-15',
               ]"
               class="w-max h-full flex items-center justify-center cursor-pointer px-3 rounded-tl-lg rounded-tr-lg"
             >
-              <p class="text-14-reg text-gray-90-color">
+              <p class="text-14-reg text-gray-90">
                 {{ city.name.split(",")[0] }}
               </p>
             </div>
           </template>
           <div
             v-if="tableCity.length <= 0"
-            class="w-max h-full flex items-center justify-center bg-gray-25-color cursor-pointer px-3 rounded-tl-lg rounded-tr-lg"
+            class="w-max h-full flex items-center justify-center bg-gray-25 cursor-pointer px-3 rounded-tl-lg rounded-tr-lg"
           >
-            <p class="text-14-reg text-gray-90-color">Пусто</p>
+            <p class="text-14-reg text-gray-90">Пусто</p>
           </div>
         </div>
         <div class="w-full h-max flex flex-col">
           <!-- Table top -->
           <div
-            class="w-full h-[35px] flex items-center justify-between rounded-tr-lg bg-gray-25-color px-3"
+            class="w-full h-[35px] flex items-center justify-between rounded-tr-lg bg-gray-25 px-3"
           >
             <p
-              class="text-14-semi text-gray-40-color cursor-pointer hover:text-primary-color"
+              class="text-14-semi text-gray-40 cursor-pointer hover:text-primary"
             >
               Выбрать все
             </p>
             <div class="w-max h-max flex items-center justify-center gap-2">
               <div
-                class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40-color hover:text-primary-color"
+                class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40 hover:text-primary"
               >
                 <IconPlus @click="adminLogisticsStore.addProductModal = true" />
               </div>
               <div
-                class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40-color hover:text-error-500"
+                class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40 hover:text-error-500"
               >
                 <IconTrash03 />
               </div>
             </div>
           </div>
           <!-- Table data -->
-          <table class="w-full h-max bg-gray-15-color rounded-b-lg">
+          <table class="w-full h-max bg-gray-15 rounded-b-lg">
             <thead class="w-full h-max">
               <tr
-                class="w-full h-8 flex bg-gray-40-color border-b border-gray-15-color"
+                class="w-full h-8 flex bg-gray-40 border-b border-gray-15"
               >
                 <th class="w-9 h-full">
                   <div class="w-full h-full flex items-center justify-center">
@@ -305,78 +305,78 @@ watch(
                   </div>
                 </th>
                 <th class="w-[14px] h-full flex items-center justify-center">
-                  <span class="text-12-med text-gray-75-color">№</span>
+                  <span class="text-12-med text-gray-75">№</span>
                 </th>
                 <th
                   class="w-[224px] h-full flex items-center justify-start px-3"
                 >
-                  <span class="text-12-med text-gray-75-color">Товар</span>
+                  <span class="text-12-med text-gray-75">Товар</span>
                 </th>
                 <th
                   class="w-[160px] h-full flex items-center justify-start px-3"
                 >
-                  <span class="text-12-med text-gray-75-color">Вес</span>
+                  <span class="text-12-med text-gray-75">Вес</span>
                 </th>
                 <th
                   class="w-[124px] h-full flex items-center justify-start px-3"
                 >
-                  <span class="text-12-med text-gray-75-color">Количество</span>
+                  <span class="text-12-med text-gray-75">Количество</span>
                 </th>
                 <th class="w-[120px] h-full flex items-center justify-end px-3">
-                  <span class="text-12-med text-gray-75-color">Цена за кг</span>
+                  <span class="text-12-med text-gray-75">Цена за кг</span>
                 </th>
               </tr>
             </thead>
             <tbody class="w-full h-max rounded-b-lg">
               <template v-for="(item, index) in tableProduct" :key="item.id">
-                <tr class="w-full h-8 flex border-b border-gray-15-color">
+                <tr class="w-full h-8 flex border-b border-gray-15">
                   <th class="w-9 h-full">
                     <div class="w-full h-full flex items-center justify-center">
                       <UiCheckbox v-model:model-value="item.checked" />
                     </div>
                   </th>
                   <th class="w-[14px] h-full flex items-center justify-center">
-                    <span class="text-12-med text-gray-75-color">
+                    <span class="text-12-med text-gray-75">
                       {{ index }}
                     </span>
                   </th>
                   <th
                     class="w-[224px] h-full flex items-center justify-start px-3"
                   >
-                    <span class="text-12-med text-gray-75-color">
+                    <span class="text-12-med text-gray-75">
                       {{ item.name }}
                     </span>
                   </th>
                   <th
                     class="w-[160px] h-full flex items-center justify-start px-3"
                   >
-                    <span class="text-12-med text-gray-75-color">
+                    <span class="text-12-med text-gray-75">
                       {{ item.weight.toLocaleString() }} гр
                     </span>
                   </th>
                   <th
                     class="w-[124px] h-full flex items-center justify-start px-3"
                   >
-                    <span class="text-12-med text-gray-75-color">
+                    <span class="text-12-med text-gray-75">
                       {{ item.count }} шт
                     </span>
                   </th>
                   <th
                     class="w-[120px] h-full flex items-center justify-end px-3"
                   >
-                    <span class="text-12-med text-gray-75-color">
+                    <span class="text-12-med text-gray-75">
                       {{ item.price.toLocaleString() }} руб
                     </span>
                   </th>
                 </tr>
               </template>
               <tr class="flex items-center justify-center mt-5">
-                <th class="text-12-med text-gray-75-color">
+                <th class="text-12-med text-gray-75">
                   У вас пока нет товаров в списке
                 </th>
               </tr>
               <tr class="flex items-center justify-center mt-2 mb-3">
-                <th class="text-14-semi text-gray-40-color cursor-pointer">
+                <th class="text-14-semi text-gray-40 cursor-pointer">
                   Добавить товар
                 </th>
               </tr>

@@ -70,18 +70,18 @@
 <template>
 	<div class="w-full">
 		<div
-			class="px-5 h-[40px] flex items-center justify-between bg-dark-gunmental-color rounded-tl-lg rounded-tr-lg"
+			class="px-5 h-[40px] flex items-center justify-between bg-dark-gunmental rounded-tl-lg rounded-tr-lg"
 		>
-			<h4 class="text-14-bold text-gray-90-color">
+			<h4 class="text-14-bold text-gray-90">
 				Расшифровка продаж за {{ profileStore.selectedDateRU }}
 			</h4>
 			<IconClose
-				class="text-gray-90-color cursor-pointer"
+				class="text-gray-90 cursor-pointer"
 				@click="closeSalesRanking()"
 			/>
 		</div>
 		<div
-			class="chart-wrapper grid grid-cols-3 grid-rows-subgrid bg-dark-charcoal-color rounded-bl-lg rounded-br-lg"
+			class="chart-wrapper grid grid-cols-3 grid-rows-subgrid bg-dark-charcoal rounded-bl-lg rounded-br-lg"
 		>
 			<template v-if="data">
 				<div
@@ -90,7 +90,7 @@
 					:key="item.name"
 				>
 					<div
-						class="w-full h-9 flex items-center justify-between bg-dark-charcoal-color px-2 border-l border-gray-15-color py-2"
+						class="w-full h-9 flex items-center justify-between bg-dark-charcoal px-2 border-l border-gray-15 py-2"
 					>
 						<div class="flex h-full items-center justify-start gap-2">
 							<img
@@ -99,26 +99,26 @@
 								class="w-7 h-7 object-fill object-center rounded-[50%]"
 							/>
 							<div class="flex flex-col items-start">
-								<p class="text-12-bold text-gray-90-color">
+								<p class="text-12-bold text-gray-90">
 									{{ item.name }}
 								</p>
-								<p class="text-12-ext text-gray-75-color">
+								<p class="text-12-ext text-gray-75">
 									{{ item.type }}
 								</p>
 							</div>
 						</div>
 						<div class="flex h-full items-center justify-end gap-1">
-							<p class="text-12-bold text-gray-90-color">
+							<p class="text-12-bold text-gray-90">
 								{{ item.totalSum.toLocaleString() }}
 							</p>
-							<IconCoinsStacked class="text-gray-90-color" />
+							<IconCoinsStacked class="text-gray-90" />
 						</div>
 					</div>
 					<div
-						class="h-full flex flex-col bg-gray-15-color border-l border-dark-charcoal-color"
+						class="h-full flex flex-col bg-gray-15 border-l border-dark-charcoal"
 					>
 						<div
-							class="relative flex items-center gap-[4px] hover:bg-gray-25-color px-2 py-1 z-[50]"
+							class="relative flex items-center gap-[4px] hover:bg-gray-25 px-2 py-1 z-[50]"
 							v-for="product in item.products"
 							@mouseenter="
 								(showProductItemID = item.id),
@@ -128,15 +128,15 @@
 								(showProductItemID = null), (showProductID = null)
 							"
 						>
-							<p class="flex-grow text-12-reg text-gray-90-color">
+							<p class="flex-grow text-12-reg text-gray-90">
 								{{ product.name }}
 							</p>
 							<div class="w-[150px]">
 								<div
-									class="totalPlan flex w-full h-2 bg-gray-40-color rounded-lg"
+									class="totalPlan flex w-full h-2 bg-gray-40 rounded-lg"
 								>
 									<div
-										class="sold relative flex h-full bg-secondary-color rounded-lg"
+										class="sold relative flex h-full bg-mint rounded-lg"
 										:style="`width: calc(${
 											(product.soldCount /
 												(totalPlan(product) * 1.3)) *
@@ -162,7 +162,7 @@
 							<div
 								class="w-[160px] flex items-center justify-end gap-[7px]"
 							>
-								<span class="text-12-reg text-gray-90-color">
+								<span class="text-12-reg text-gray-90">
 									{{ product.soldWeight.toFixed(2).toLocaleString() }}
 									кг
 								</span>
@@ -190,39 +190,39 @@
 								"
 							>
 								<div
-									class="w-max absolute bottom-[100%] left-[50%] translate-x-[-50%] translate-y-[-8px] z-[50] bg-dark-eerie-black-color border border-gray-40-color rounded-lg p-3 flex flex-col items-start justify-start"
+									class="w-max absolute bottom-[100%] left-[50%] translate-x-[-50%] translate-y-[-8px] z-[50] bg-dark-eerie-black border border-gray-40 rounded-lg p-3 flex flex-col items-start justify-start"
 								>
 									<div class="w-max flex mb-2">
 										<p
-											class="w-[65px] text-10-reg text-gray-90-color text-left"
+											class="w-[65px] text-10-reg text-gray-90 text-left"
 										>
 											Фасовка
 										</p>
 										<p
-											class="w-[50px] text-10-reg text-gray-90-color text-right"
+											class="w-[50px] text-10-reg text-gray-90 text-right"
 										>
 											Кол-во
 										</p>
 										<p
-											class="w-[80px] text-10-reg text-gray-90-color text-right"
+											class="w-[80px] text-10-reg text-gray-90 text-right"
 										>
 											Вес
 										</p>
 										<p
-											class="w-[80px] text-10-reg text-gray-90-color text-right"
+											class="w-[80px] text-10-reg text-gray-90 text-right"
 										>
 											Сумма
 										</p>
 									</div>
 									<div
-										class="w-full h-[1px] bg-dark-charcoal-color"
+										class="w-full h-[1px] bg-dark-charcoal"
 									></div>
 									<div class="w-max flex my-2">
 										<div
 											class="w-[65px] flex gap-2 flex-col items-start justify-center"
 										>
 											<p
-												class="text-10-ext text-gray-40-color"
+												class="text-10-ext text-gray-40"
 												v-for="(pack, index) in product.packages"
 												:key="index"
 											>
@@ -238,7 +238,7 @@
 											class="w-[50px] flex gap-2 flex-col items-end justify-center"
 										>
 											<p
-												class="text-10-ext text-gray-90-color"
+												class="text-10-ext text-gray-90"
 												v-for="(pack, index) in product.packages"
 												:key="index"
 											>
@@ -249,7 +249,7 @@
 											class="w-[80px] flex gap-2 flex-col items-end justify-center"
 										>
 											<p
-												class="text-10-ext text-gray-90-color"
+												class="text-10-ext text-gray-90"
 												v-for="(pack, index) in product.packages"
 												:key="index"
 											>
@@ -263,7 +263,7 @@
 											class="w-[80px] flex gap-2 flex-col items-end justify-center"
 										>
 											<p
-												class="text-10-ext text-secondary-color"
+												class="text-10-ext text-mint"
 												v-for="(pack, index) in product.packages"
 												:key="index"
 											>
@@ -272,46 +272,46 @@
 										</div>
 									</div>
 									<div
-										class="w-full h-[1px] bg-dark-charcoal-color"
+										class="w-full h-[1px] bg-dark-charcoal"
 									></div>
 									<div class="w-max flex my-2">
 										<div
 											class="w-[65px] flex items-center justify-start"
 										>
-											<p class="text-10-ext text-gray-90-color">
+											<p class="text-10-ext text-gray-90">
 												Итого
 											</p>
 										</div>
 										<div
 											class="w-[50px] flex items-center justify-end"
 										>
-											<p class="text-10-ext text-gray-90-color">
+											<p class="text-10-ext text-gray-90">
 												{{ totalCount(product) }}
 											</p>
 										</div>
 										<div
 											class="w-[80px] flex items-center justify-end"
 										>
-											<p class="text-10-ext text-gray-90-color">
+											<p class="text-10-ext text-gray-90">
 												{{ totalWeight(product) }} кг
 											</p>
 										</div>
 										<div
 											class="w-[80px] flex items-center justify-end"
 										>
-											<p class="text-10-ext text-secondary-color">
+											<p class="text-10-ext text-mint">
 												{{ totalSum(product) }}
 											</p>
 										</div>
 									</div>
 									<div
-										class="w-full h-[1px] bg-dark-charcoal-color"
+										class="w-full h-[1px] bg-dark-charcoal"
 									></div>
 									<div class="w-max flex mt-2">
 										<div
 											class="w-[65px] flex items-center justify-start"
 										>
-											<p class="text-10-ext text-secondary-color">
+											<p class="text-10-ext text-mint">
 												План
 											</p>
 										</div>
@@ -321,7 +321,7 @@
 										<div
 											class="w-[80px] flex items-center justify-end"
 										>
-											<p class="text-10-ext text-secondary-color">
+											<p class="text-10-ext text-mint">
 												{{
 													Number(product.plan)
 														.toFixed(2)
@@ -345,7 +345,7 @@
 				class="w-full h-[150px] grid col-start-2 col-end-3"
 			>
 				<div
-					class="salesRanking-loader w-full flex items-center justify-center overflow-y-auto h-full bg-dark-charcoal-color"
+					class="salesRanking-loader w-full flex items-center justify-center overflow-y-auto h-full bg-dark-charcoal"
 				>
 					<div class="lds-ripple">
 						<div></div>
@@ -361,7 +361,7 @@
 	.lds-ripple,
 	.lds-ripple div {
 		box-sizing: border-box;
-		@apply text-primary-color;
+		@apply text-primary;
 	}
 
 	.lds-ripple {

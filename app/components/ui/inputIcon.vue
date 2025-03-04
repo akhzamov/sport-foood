@@ -22,7 +22,7 @@ const onInput = (event: Event) => {
     :type="props.type"
     :placeholder="props.placeholder"
     @input="onInput"
-    class="w-full h-[40px] bg-transparent text-16-ext text-gray-40-color outline-none placeholder:text-gray-40-color"
+    class="w-full h-[40px] bg-transparent text-16-ext text-gray-40 outline-none placeholder:text-gray-40"
   />
 </template>
 

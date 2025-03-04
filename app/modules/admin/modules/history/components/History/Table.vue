@@ -2,6 +2,7 @@
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
 import { useMainStore } from "~/stores/main";
+import { getUsers } from "../../../personal/components/Employees/employees.data";
 
 const route = useRoute();
 const mainStore = useMainStore();
@@ -77,25 +78,29 @@ function selectDate(value: boolean) {
     datepicker.value?.clearValue();
   }
 }
+
+onMounted(async () => {
+  await getUsers();
+});
 </script>
 
 <template>
   <div class="w-full h-full" @click="">
     <div
-      class="w-full flex-grow h-[40px] bg-dark-gunmental-color px-2 p-2 flex items-center justify-between"
+      class="w-full flex-grow h-[40px] bg-dark-gunmental px-2 p-2 flex items-center justify-between"
     >
       <div
         class="w-full h-full flex-grow flex items-center justify-start gap-3"
       >
         <div
-          class="w-max h-full flex items-center justify-start border-r border-gray-15-color"
+          class="w-max h-full flex items-center justify-start border-r border-gray-15"
         >
           <div class="w-max h-full flex items-center justify-start px-3 py-1">
-            <p class="text-16-400 text-gray-40-color">{{ route.name }}</p>
+            <p class="text-16-400 text-gray-40">{{ route.name }}</p>
           </div>
         </div>
         <div
-          class="w-[240px] max-h-[32px] flex items-center justify-center pr-2 bg-gray-15-color border border-gray-90-color rounded-lg text-gray-90-color"
+          class="w-[240px] max-h-[32px] flex items-center justify-center pr-2 bg-gray-15 border border-gray-90 rounded-lg text-gray-90"
         >
           <UiInputIcon
             v-model:model-value="search"
@@ -107,13 +112,13 @@ function selectDate(value: boolean) {
         </div>
       </div>
       <div
-        class="w-full h-full flex items-center justify-end gap-3 border-gray-15-color ml-3 pl-3"
+        class="w-full h-full flex items-center justify-end gap-3 border-gray-15 ml-3 pl-3"
       >
         <UiSelect
-          main-text-color="text-gray-90-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
+          main-text-color="text-gray-90"
+          select-bg-color="bg-gray-15"
+          disable-text-color="text-gray-40"
+          disable-bg-color="bg-gray-15"
           :array="positions"
           :show-menu="selectRoleMenu"
           default-select-text="Категория"
@@ -130,7 +135,7 @@ function selectDate(value: boolean) {
         />
         <div class="w-[180px] h-[36px] flex flex-col">
           <div
-            class="w-full h-full flex items-center justify-start gap-2 rounded-md py-1 px-4 cursor-pointer bg-gray-15-color text-gray-90-color"
+            class="w-full h-full flex items-center justify-start gap-2 rounded-md py-1 px-4 cursor-pointer bg-gray-15 text-gray-90"
             @click="selectDate(true)"
           >
             <IconCalendar />
@@ -152,7 +157,7 @@ function selectDate(value: boolean) {
     <table class="w-full h-max">
       <thead class="w-full">
         <tr
-          class="w-full h-[32px] flex items-center text-12-med text-gray-40-color border-b border-gray-40-color"
+          class="w-full h-[32px] flex items-center text-12-med text-gray-40 border-b border-gray-40"
         >
           <th class="w-[48px] text-start pl-2">ID</th>
           <th class="w-[140px] flex items-center justify-start gap-1 ml-1">
@@ -183,15 +188,15 @@ function selectDate(value: boolean) {
             @click="
               openEditTab(employee.id, `admin-employees-edit-${employee.id}`)
             "
-            class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15-color border-b border-gray-40-color"
+            class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th
-              class="w-[48px] flex items-center justify-start pl-2 text-14-reg text-gray-75-color"
+              class="w-[48px] flex items-center justify-start pl-2 text-14-reg text-gray-75"
             >
               {{ employee.id }}
             </th>
             <th
-              class="w-[140px] flex items-center justify-start ml-1 gap-1 text-14-reg text-gray-75-color"
+              class="w-[140px] flex items-center justify-start ml-1 gap-1 text-14-reg text-gray-75"
             >
               {{ employee.username }}
             </th>
@@ -234,17 +239,17 @@ function selectDate(value: boolean) {
               </span>
             </th>
             <th
-              class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
+              class="w-[180px] flex items-center justify-start text-14-reg text-gray-75"
             >
               {{ employee.contact ? employee.contact : "Пусто" }}
             </th>
             <th
-              class="min-w-[330px] flex-grow flex items-center justify-start text-14-reg text-gray-75-color"
+              class="min-w-[330px] flex-grow flex items-center justify-start text-14-reg text-gray-75"
             >
               {{ employee.stores.length }} шт
             </th>
             <th
-              class="min-w-[330px] flex items-center justify-start text-14-med text-gray-75-color"
+              class="min-w-[330px] flex items-center justify-start text-14-med text-gray-75"
             >
               {{ employee.role }}
             </th>

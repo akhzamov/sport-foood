@@ -1,9 +1,9 @@
+import type { TPagination } from "~/types/pagination.type";
 import type {
   TRequestPayment,
   TRequestType,
 } from "../../modules/payment/types/Requests/paymentRequests.type";
 import type { TDriverArea } from "../../modules/personal/types/Personal/Drivers/drivers.type";
-import type { TPagination } from "../Others/pagination.type";
 
 export interface IPaymentStore {
   perPage: number;

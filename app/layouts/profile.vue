@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import { getStores } from "~/modules/profile/components/Header/profileHeader.data";
+import {
+  getSalesPlan,
+  getStores,
+} from "~/modules/profile/components/Header/profileHeader.data";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import {
   getAreas,
@@ -13,6 +16,8 @@ import {
   getIndexStorages,
 } from "~/modules/profile/components/Dashboard/Balance/balance.data";
 import { getPurchases } from "~/modules/profile/components/Dashboard/Purchases/purchases.data";
+import { getMarketplacesData } from "~/modules/profile/components/Dashboard/Rating/MarketplacesData";
+import { getSpending } from "~/modules/profile/components/Dashboard/Expenses/expenses.data";
 
 const profileStore = useProfileStore();
 const mainStore = useMainStore();
@@ -33,9 +38,9 @@ onMounted(async () => {
   const resUser = await $loginRep.getUser();
   mainStore.user = resUser;
   await getStores();
-  await getAreas();
-  await getStorageTypes();
-  await getStoragesLeft();
+  await getSalesPlan();
+  await getMarketplacesData();
+  await getSpending();
   await getIndexMarketplaces();
   await getIndexAgents();
   await getIndexStorages();

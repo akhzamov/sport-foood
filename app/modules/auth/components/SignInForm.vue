@@ -70,13 +70,13 @@ const onSubmit = handleSubmit(async (values) => {
   <div class="w-full h-screen flex items-center justify-center">
     <div class="flex flex-col items-center justify-center select-none">
       <img src="~/assets/img/logo.svg" alt="Logo" class="w-[70px] h-6 mb-6" />
-      <h3 class="text-32-semi text-gray-90-color text-center mb-8">
+      <h3 class="text-32-semi text-gray-90 text-center mb-8">
         Авторизация
       </h3>
       <form class="flex flex-col gap-4" @submit.prevent="onSubmit">
         <div class="w-[360px] flex flex-col">
           <div
-            class="w-full flex items-center bg-gray-15-color px-3 border-[1px] rounded-lg overflow-hidden"
+            class="w-full flex items-center bg-gray-15 px-3 border-[1px] rounded-lg overflow-hidden"
             :class="loginError ? 'border-error-500' : 'border-transparent'"
           >
             <UiInputIcon
@@ -84,7 +84,7 @@ const onSubmit = handleSubmit(async (values) => {
               placeholder="Введите логин"
               v-model="login"
             />
-            <IconUser class="text-gray-90-color ml-3" />
+            <IconUser class="text-gray-90 ml-3" />
           </div>
           <span v-if="loginError" class="text-14-ext text-error-500 mt-2">{{
             loginError
@@ -92,22 +92,22 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
         <div class="w-[360px] flex flex-col">
           <div
-            class="w-full flex items-center bg-gray-15-color px-3 border-[1px] rounded-lg overflow-hidden"
+            class="w-full flex items-center bg-gray-15 px-3 border-[1px] rounded-lg overflow-hidden"
             :class="loginError ? 'border-error-500' : 'border-transparent'"
           >
             <UiInputIcon
               :type="showPassword ? 'text' : 'password'"
-              placeholder="Введите логин"
+              placeholder="Введите пароль"
               v-model="password"
             />
             <IconEye
               v-if="!showPassword"
-              class="cursor-pointer text-gray-90-color ml-3"
+              class="cursor-pointer text-gray-90 ml-3"
               @click="showPassword = !showPassword"
             />
             <IconEyeOff
               v-if="showPassword"
-              class="cursor-pointer text-gray-90-color ml-3"
+              class="cursor-pointer text-gray-90 ml-3"
               @click="showPassword = !showPassword"
             />
           </div>
@@ -119,11 +119,11 @@ const onSubmit = handleSubmit(async (values) => {
           <UiButton
             text="Войти"
             type="submit"
-            bgColor="bg-primary-color"
+            bgColor="bg-primary"
             :border="false"
-            hover="hover:opacity-[0.8]"
+            hover="opacity-[0.8]"
             :icon="false"
-            textColor="text-dark-night-color"
+            textColor="text-dark-night"
             class="w-full"
           />
         </div>

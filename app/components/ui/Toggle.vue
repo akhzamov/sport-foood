@@ -15,8 +15,8 @@ const onChange = (value: boolean) => {
   <div
     :class="[
       props.modelValue
-        ? 'bg-primary-color justify-end'
-        : 'bg-gray-40-color justify-start',
+        ? 'bg-primary justify-end'
+        : 'bg-gray-40 justify-start',
     ]"
     @click="onChange(!props.modelValue)"
     class="w-[36px] h-[20px] rounded-xl flex items-center p-[2px] cursor-pointer transition-all duration-200"

@@ -18,11 +18,11 @@ const formatDate = (value: string | Date): string => {
 </script>
 
 <template>
-  <div class="w-[390px] rounded-lg overflow-hidden bg-dark-charcoal-color">
+  <div class="w-[390px] rounded-lg overflow-hidden bg-dark-charcoal">
     <div
-      class="h-[40px] flex items-center justify-between bg-dark-gunmental-color pl-5 pr-1"
+      class="h-[40px] flex items-center justify-between bg-dark-gunmental pl-5 pr-1"
     >
-      <h4 class="text-14-bold text-gray-90-color">Закупки</h4>
+      <h4 class="text-14-bold text-gray-90">Закупки</h4>
     </div>
     <div
       class="w-full h-[360px] flex flex-col bg-white/5 overflow-x-auto"
@@ -30,18 +30,18 @@ const formatDate = (value: string | Date): string => {
     >
       <template v-for="purchase in profileStore.purchases" :key="purchase.id">
         <div
-          class="w-full h-[68px] p-1 flex items-center border-b border-gray-15-color"
+          class="w-full h-[68px] p-1 flex items-center border-b border-gray-15"
         >
           <div
-            class="w-[93px] h-full bg-gray-15-color rounded-[4px] flex flex-col items-start gap-1 p-2 mr-3"
+            class="w-[93px] h-full bg-gray-15 rounded-[4px] flex flex-col items-start gap-1 p-2 mr-3"
           >
-            <span class="text-10-ext text-gray-90-color"
+            <span class="text-10-ext text-gray-90"
               >ID {{ purchase.id }}</span
             >
-            <span class="text-10-semi text-gray-90-color">
+            <span class="text-10-semi text-gray-90">
               {{ purchase.supplier_name }}
             </span>
-            <span class="text-8-reg text-gray-75-color">
+            <span class="text-8-reg text-gray-75">
               {{ purchase.driver_name.split(" ")[0] }}
               {{ purchase.driver_name.split(" ")[1]?.[0] }}.
             </span>
@@ -51,16 +51,16 @@ const formatDate = (value: string | Date): string => {
           >
             <div class="w-full flex items-center justify-start">
               <div
-                class="relative z-[20] min-w-[20px] w-[20px] min-h-[20px] h-[20px] bg-primary-color rounded-[50%] flex items-center justify-center"
+                class="relative z-[20] min-w-[20px] w-[20px] min-h-[20px] h-[20px] bg-primary rounded-[50%] flex items-center justify-center"
               >
                 <div
-                  class="absolute z-[20] min-w-[26px] w-[26px] min-h-[26px] h-[26px] flex items-center justify-center rounded-[50%] border-[1px] border-primary-color animation-border-one"
+                  class="absolute z-[20] min-w-[26px] w-[26px] min-h-[26px] h-[26px] flex items-center justify-center rounded-[50%] border-[1px] border-primary animation-border-one"
                 ></div>
                 <div
-                  class="absolute z-[20] min-w-[32px] w-[32px] min-h-[32px] h-[32px] flex items-center justify-center rounded-[50%] border-[1px] border-primary-color animation-border-two"
+                  class="absolute z-[20] min-w-[32px] w-[32px] min-h-[32px] h-[32px] flex items-center justify-center rounded-[50%] border-[1px] border-primary animation-border-two"
                 ></div>
                 <IconCheck
-                  class="w-[15px] h-[15px] text-dark-gunmental-color"
+                  class="w-[15px] h-[15px] text-dark-gunmental"
                 />
               </div>
               <div
@@ -82,8 +82,8 @@ const formatDate = (value: string | Date): string => {
               </div>
             </div>
             <div class="flex flex-col items-start gap-[2px]">
-              <p class="text-10-reg text-gray-90-color">Старт</p>
-              <span class="text-8-ext text-gray-75-color">
+              <p class="text-10-reg text-gray-90">Старт</p>
+              <span class="text-8-ext text-gray-75">
                 {{ purchase.start_date }}
               </span>
             </div>
@@ -104,21 +104,21 @@ const formatDate = (value: string | Date): string => {
                     class="absolute min-w-[32px] w-[32px] min-h-[32px] h-[32px] flex items-center justify-center rounded-[50%] border-[1px] border-error-500 animation-border-two"
                   ></div>
                   <IconAlertTriangle
-                    class="w-[15px] h-[15px] text-dark-gunmental-color"
+                    class="w-[15px] h-[15px] text-dark-gunmental"
                   />
                 </div>
                 <div
                   v-if="
                     Object.keys(purchase.cities).length.toString() != index + 1
                   "
-                  class="flex-grow block w-full h-[2px] bg-gray-40-color"
+                  class="flex-grow block w-full h-[2px] bg-gray-40"
                 ></div>
               </div>
               <div class="flex flex-col items-start gap-[2px]">
-                <p class="text-10-reg text-gray-90-color truncate-text">
+                <p class="text-10-reg text-gray-90 truncate-text">
                   {{ city.name }}
                 </p>
-                <span class="text-8-ext text-gray-75-color">
+                <span class="text-8-ext text-gray-75">
                   Не полностью
                 </span>
               </div>
@@ -138,7 +138,7 @@ const formatDate = (value: string | Date): string => {
                     class="absolute min-w-[32px] w-[32px] min-h-[32px] h-[32px] flex items-center justify-center rounded-[50%] border-[1px] border-success-500 animation-border-two"
                   ></div>
                   <IconCheck
-                    class="w-[15px] h-[15px] text-dark-gunmental-color"
+                    class="w-[15px] h-[15px] text-dark-gunmental"
                   />
                 </div>
                 <div
@@ -163,10 +163,10 @@ const formatDate = (value: string | Date): string => {
                 </div>
               </div>
               <div class="flex flex-col items-start gap-[2px]">
-                <p class="text-10-reg text-gray-90-color truncate-text">
+                <p class="text-10-reg text-gray-90 truncate-text">
                   {{ city.name }}
                 </p>
-                <span class="text-8-ext text-gray-75-color">
+                <span class="text-8-ext text-gray-75">
                   {{ city.arrived_at ? city.arrived_at : "завершен" }}
                 </span>
               </div>
@@ -177,9 +177,9 @@ const formatDate = (value: string | Date): string => {
             >
               <div class="w-full flex items-center justify-start">
                 <div
-                  class="min-w-[20px] max-w-[20px] w-full min-h-[20px] max-h-[20px] h-full bg-gray-40-color rounded-[50%] flex items-center justify-center"
+                  class="min-w-[20px] max-w-[20px] w-full min-h-[20px] max-h-[20px] h-full bg-gray-40 rounded-[50%] flex items-center justify-center"
                 >
-                  <span class="text-10-reg text-gray-90-color">
+                  <span class="text-10-reg text-gray-90">
                     {{ index + 2 }}
                   </span>
                 </div>
@@ -187,14 +187,14 @@ const formatDate = (value: string | Date): string => {
                   v-if="
                     Object.keys(purchase.cities).length.toString() != index + 1
                   "
-                  class="flex-grow block w-full h-[2px] bg-gray-40-color"
+                  class="flex-grow block w-full h-[2px] bg-gray-40"
                 ></div>
               </div>
               <div class="flex flex-col items-start gap-[2px]">
-                <p class="text-10-reg text-gray-90-color truncate-text">
+                <p class="text-10-reg text-gray-90 truncate-text">
                   {{ city.name }}
                 </p>
-                <span class="text-8-ext text-gray-75-color"> В пути </span>
+                <span class="text-8-ext text-gray-75"> В пути </span>
               </div>
             </div>
           </template>

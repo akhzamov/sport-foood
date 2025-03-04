@@ -23,27 +23,27 @@ onMounted(() => {});
 <template>
   <div class="w-[390px] rounded-lg overflow-hidden">
     <h4
-      class="px-5 h-[40px] flex items-center bg-dark-gunmental-color text-14-bold text-gray-90-color"
+      class="px-5 h-[40px] flex items-center bg-dark-gunmental text-14-bold text-gray-90"
     >
       Расходы
     </h4>
     <div
-      class="marketplaces flex flex-col w-full h-[360px] bg-dark-charcoal-color overflow-hidden overflow-y-auto"
+      class="marketplaces flex flex-col w-full h-[360px] bg-dark-charcoal overflow-hidden overflow-y-auto"
     >
       <!-- Заголовок таблицы -->
-      <div class="flex w-full h-max bg-dark-charcoal-color">
+      <div class="flex w-full h-max bg-dark-charcoal">
         <div class="flex w-full h-[37px] py-[4px] pr-1">
           <div class="flex flex-grow items-center gap-2">
             <span class="w-4 h-4 block"></span>
-            <span class="text-12-med text-gray-90-color">Все</span>
+            <span class="text-12-med text-gray-90">Все</span>
           </div>
           <div
-            class="flex w-[90px] h-full flex-col items-end justify-center bg-gray-15-color rounded-[4px] border-[0.5px] border-gray-40-color p-[2px]"
+            class="flex w-[90px] h-full flex-col items-end justify-center bg-gray-15 rounded-[4px] border-[0.5px] border-gray-40 p-[2px]"
           >
-            <span class="text-10-ext text-gray-75-color text-center">
+            <span class="text-10-ext text-gray-75 text-center">
               Сумма
             </span>
-            <span class="text-12-reg text-gray-90-color">
+            <span class="text-12-reg text-gray-90">
               {{
                 profileStore.spendingTotalAmount
                   ? Number(
@@ -64,9 +64,9 @@ onMounted(() => {});
         @mouseenter="activeSpending = Number(index)"
         @mouseleave="activeSpending = null"
         :class="{
-          'bg-dark-gunmental-color': Number(index) % 2 === 0,
-          'bg-dark-charcoal-color': Number(index) % 2 !== 0,
-          'border-gray-90-color': activeSpending == Number(index),
+          'bg-dark-gunmental': Number(index) % 2 === 0,
+          'bg-dark-charcoal': Number(index) % 2 !== 0,
+          'border-gray-90': activeSpending == Number(index),
           'border-transparent': activeSpending != Number(index),
         }"
       >
@@ -76,20 +76,20 @@ onMounted(() => {});
               <div
                 class="w-[1px] h-full block rounded-e-[4px]"
                 :class="{
-                  'bg-success-color': Number(key) == 1,
+                  'bg-success-500': Number(key) == 1,
                   'bg-transparent': Number(key) != 1,
                 }"
               ></div>
-              <span class="text-12-bold text-gray-40-color">
+              <span class="text-12-bold text-gray-40">
                 {{ Number(index + 1) }}
               </span>
             </div>
             <div class="flex items-center justify-start gap-[5px]">
               <div class="flex flex-col items-start justify-center gap-[2px]">
-                <span class="text-10-semi text-gray-90-color">
+                <span class="text-10-semi text-gray-90">
                   {{ spending.name }}
                 </span>
-                <!-- <span class="text-10-reg text-gray-75-color">{{
+                <!-- <span class="text-10-reg text-gray-75">{{
 									market.subtitle
 								}}</span> -->
               </div>
@@ -97,7 +97,7 @@ onMounted(() => {});
           </div>
           <div class="w-[130px] flex items-center justify-center">
             <div
-              class="relative w-full h-[12px] overflow-hidden rounded-lg block bg-gray-40-color"
+              class="relative w-full h-[12px] overflow-hidden rounded-lg block bg-gray-40"
             >
               <!-- Заполненная полоса длs оборота -->
               <div
@@ -123,9 +123,9 @@ onMounted(() => {});
             </div>
           </div>
           <div
-            class="flex w-[90px] h-full flex-col items-end justify-between border-gray-40-color mr-1 p-[1px]"
+            class="flex w-[90px] h-full flex-col items-end justify-between border-gray-40 mr-1 p-[1px]"
           >
-            <span class="text-12-reg text-gray-90-color">
+            <span class="text-12-reg text-gray-90">
               {{ Number(spending.amount.toFixed(1)).toLocaleString("ru-RU") }}
             </span>
           </div>

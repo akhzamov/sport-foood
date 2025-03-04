@@ -9,20 +9,20 @@ const handleRouterWarehouse = () => {
 </script>
 
 <template>
-  <div class="flex flex-col w-full h-[360px] bg-dark-charcoal-color">
+  <div class="flex flex-col w-full h-[360px] bg-dark-charcoal">
     <div class="w-full h-[20px] flex items-center bg-white/5">
       <div
-        class="w-full h-full flex items-center justify-center border-r border-gray-15-color"
+        class="w-full h-full flex items-center justify-center border-r border-gray-15"
       >
-        <p class="text-10-reg text-gray-40-color">Типы товаров</p>
+        <p class="text-10-reg text-gray-40">Типы товаров</p>
       </div>
       <div
-        class="w-full h-full flex items-center justify-center border-r border-gray-15-color"
+        class="w-full h-full flex items-center justify-center border-r border-gray-15"
       >
-        <p class="text-10-reg text-gray-40-color">Вес</p>
+        <p class="text-10-reg text-gray-40">Вес</p>
       </div>
       <div class="w-full h-full flex items-center justify-center">
-        <p class="text-10-reg text-gray-40-color">Сумма</p>
+        <p class="text-10-reg text-gray-40">Сумма</p>
       </div>
     </div>
     <div
@@ -31,21 +31,21 @@ const handleRouterWarehouse = () => {
     >
       <template v-for="(product, key, index) in profileStore.indexStoragesLeft">
         <div
-          :class="[index % 2 == 0 ? 'bg-dark-gunmental-color' : '']"
+          :class="[index % 2 == 0 ? 'bg-dark-gunmental' : '']"
           class="w-full min-h-[20px] flex items-center"
         >
           <div
-            class="w-full h-full flex items-center justify-start border-r border-gray-15-color"
+            class="w-full h-full flex items-center justify-start border-r border-gray-15"
           >
-            <span class="w-[35px] text-center text-12-semi text-gray-40-color">
+            <span class="w-[35px] text-center text-12-semi text-gray-40">
               {{ product.id }}
             </span>
-            <p class="w-full ml-1 text-10-semi text-gray-75-color">
+            <p class="w-full ml-1 text-10-semi text-gray-75">
               {{ product.name }}
             </p>
           </div>
           <div
-            class="w-full h-full flex items-center justify-end border-r border-gray-15-color"
+            class="w-full h-full flex items-center justify-end border-r border-gray-15"
           >
             <p
               :class="[
@@ -57,7 +57,7 @@ const handleRouterWarehouse = () => {
             </p>
           </div>
           <div class="w-full h-full flex items-center justify-end">
-            <p class="text-10-semi text-gray-75-color pr-2">
+            <p class="text-10-semi text-gray-75 pr-2">
               {{ Number(product.amount.toFixed(1)).toLocaleString("ru-RU") }}
             </p>
           </div>
@@ -74,9 +74,9 @@ const handleRouterWarehouse = () => {
       </div>
     </div>
     <UiButton
-      bg-color="bg-gray-15-color"
+      bg-color="bg-gray-15"
       :border="true"
-      border-color="bg-gray-15-color"
+      border-color="bg-gray-15"
       hover=""
       :icon="true"
       text="Подробно"

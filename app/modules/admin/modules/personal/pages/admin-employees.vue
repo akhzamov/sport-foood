@@ -28,13 +28,17 @@ const changePage = (value: number) => {
   personalStore.employeesPage = value;
   getUsers();
 };
+
+onMounted(async () => {
+  await getUsers();
+});
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col justify-between pb-[70px]">
     <EmployeesTable />
     <div
-      class="h-[90px] py-[12px] px-[24px] border-t border-gray-15-color"
+      class="h-[90px] py-[12px] px-[24px] border-t border-gray-15"
       v-if="
         personalStore.employeesPagination &&
         personalStore.employeesPagination.total > personalStore.employeesPerPage

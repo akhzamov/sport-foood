@@ -158,30 +158,30 @@ onUnmounted(() => {
 <template>
   <form
     @submit.prevent="onSubmit"
-    class="sticky z-[20] w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="sticky z-[20] w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
       <div class="w-full h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">
+        <label class="text-12-reg text-gray-90 mb-1">
           Имя пользователя
         </label>
         <UiInput
           v-model:model-value="username"
           placeholder="malik"
           type="text"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
         <span v-if="usernameError" class="text-14-ext text-error-500 mt-[2px]">
           {{ usernameError }}
         </span>
       </div>
       <div class="w-full h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Контакт </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Контакт </label>
         <UiInput
           v-model:model-value="contact"
           placeholder="+ _ ( _ _ _ ) _ _ _ - _ _ - _ _ | info@gmail.com"
           type="text"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
         <span v-if="contactError" class="text-14-ext text-error-500 mt-[2px]">
           {{ contactError }}
@@ -190,26 +190,26 @@ onUnmounted(() => {
     </div>
     <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
       <div class="w-full h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Пароль </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Пароль </label>
         <UiInput
           v-model:model-value="password"
           placeholder="******"
           type="password"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
         <span v-if="passwordError" class="text-14-ext text-error-500 mt-[2px]">
           {{ passwordError }}
         </span>
       </div>
       <div class="w-full h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">
+        <label class="text-12-reg text-gray-90 mb-1">
           Повторите пароль
         </label>
         <UiInput
           v-model:model-value="passwordConfirm"
           placeholder="******"
           type="password"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
         <span
           v-if="passwordConfirmError"
@@ -221,12 +221,12 @@ onUnmounted(() => {
     </div>
     <div class="w-full h-max flex items-start justify-between gap-[2%] mt-3">
       <div class="w-[49%] h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Роль </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Роль </label>
         <UiSelect
-          main-text-color="text-gray-90-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
+          main-text-color="text-gray-90"
+          select-bg-color="bg-gray-15"
+          disable-text-color="text-gray-40"
+          disable-bg-color="bg-gray-15"
           :array="roles"
           :show-menu="rolesMenuShow"
           default-select-text="Выбрать роль"
@@ -249,12 +249,12 @@ onUnmounted(() => {
         </span>
       </div>
       <div class="w-[49%] h-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Магазин</label>
+        <label class="text-12-reg text-gray-90 mb-1">Магазин</label>
         <UiMultipleSelect
-          main-text-color="text-gray-90-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
+          main-text-color="text-gray-90"
+          select-bg-color="bg-gray-15"
+          disable-text-color="text-gray-40"
+          disable-bg-color="bg-gray-15"
           :array="mainStore.stores ?? []"
           :show-menu="storesMenuShow"
           default-select-text="Выбрать магазины"
@@ -275,12 +275,12 @@ onUnmounted(() => {
       </div>
     </div>
     <div
-      class="w-full h-[1px] block mt-3 border border-dashed border-gray-40-color"
+      class="w-full h-[1px] block mt-3 border border-dashed border-gray-40"
     ></div>
     <div class="flex items-start justify-between flex-col gap-3 mt-3">
-      <p class="text-12-reg text-gray-90-color">Доступы</p>
+      <p class="text-12-reg text-gray-90">Доступы</p>
       <div
-        class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15-color"
+        class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15"
         v-for="(permissionGroup, key) in personalStore.permissions"
         :key="key"
       >
@@ -288,9 +288,9 @@ onUnmounted(() => {
           class="w-full flex-grow h-8 flex items-center justify-between"
           @click="openAndClosePermissionGroup(key.toString())"
         >
-          <p class="text-16-reg text-gray-75-color">{{ key }}</p>
+          <p class="text-16-reg text-gray-75">{{ key }}</p>
           <IconChevronDown
-            class="text-gray-75-color"
+            class="text-gray-75"
             :class="[
               openPermissionGroup.includes(key.toString()) ? 'rotate-180' : '',
             ]"
@@ -299,14 +299,14 @@ onUnmounted(() => {
         <template v-for="(permission, permissionKey) in permissionGroup">
           <div
             @click="openAndClosePermission(permissionKey)"
-            class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental-color cursor-pointer select-none"
+            class="w-full h-8 flex items-center justify-between px-2 rounded-lg bg-dark-gunmental cursor-pointer select-none"
             v-if="openPermissionGroup.includes(key.toString())"
           >
-            <p class="text-16-reg text-gray-75-color">
+            <p class="text-16-reg text-gray-75">
               {{ permissionKey }}
             </p>
             <IconChevronDown
-              class="text-gray-75-color"
+              class="text-gray-75"
               :class="[
                 openPermissionSubGroup.includes(permissionKey)
                   ? 'rotate-180'
@@ -317,10 +317,10 @@ onUnmounted(() => {
           <template v-for="(permissionValue, permissionValueKey) in permission">
             <div
               v-if="openPermissionSubGroup.includes(permissionKey)"
-              class="w-full h-max flex flex-col items-center justify-between gap-3 p-2 rounded-lg bg-dark-onix-color cursor-pointer"
+              class="w-full h-max flex flex-col items-center justify-between gap-3 p-2 rounded-lg bg-dark-onix cursor-pointer"
             >
               <div class="w-full flex items-center justify-between">
-                <p class="text-16-reg text-gray-75-color">
+                <p class="text-16-reg text-gray-75">
                   {{ permissionValue.display_name }}
                 </p>
                 <UiToggle
@@ -354,11 +354,11 @@ onUnmounted(() => {
         </template>
       </UiButton>
       <UiButton
-        bgColor="bg-primary-color"
+        bgColor="bg-primary"
         :border="false"
         :icon="false"
         hover="opacity-[0.9]"
-        textColor="text-dark-night-color"
+        textColor="text-dark-night"
         text="Сохранить"
         class="max-w-[110px]"
         @click="onSubmit"

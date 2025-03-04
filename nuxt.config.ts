@@ -48,7 +48,12 @@ export default defineNuxtConfig({
     // baseURL: "/crm",
   },
 
-  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@nuxtjs/google-fonts"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@pinia/nuxt",
+    "@nuxtjs/google-fonts",
+    "@vueuse/nuxt",
+  ],
 
   plugins: ["~/plugins/vue-datepicker.js"],
 

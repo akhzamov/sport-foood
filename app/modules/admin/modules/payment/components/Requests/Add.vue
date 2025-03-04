@@ -73,16 +73,16 @@ const onSubmit = handleSubmit(async (values) => {});
       paymentStore.statuses
     "
     @submit.prevent="onSubmit"
-    class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="w-full flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Тип заявки </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Тип заявки </label>
         <UiSelect
-          main-text-color="text-gray-90-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
+          main-text-color="text-gray-90"
+          select-bg-color="bg-gray-15"
+          disable-text-color="text-gray-40"
+          disable-bg-color="bg-gray-15"
           :array="paymentStore.types"
           :show-menu="typeMenuShow"
           default-select-text="Выбрать"
@@ -101,12 +101,12 @@ const onSubmit = handleSubmit(async (values) => {});
         </span>
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Сумма </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Сумма </label>
         <UiInput
           v-model:model-value="amount"
           placeholder="0.00"
           type="text"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
         <span v-if="amountError" class="text-14-ext text-error-500 mt-[2px]">
           {{ amountError }}
@@ -115,7 +115,7 @@ const onSubmit = handleSubmit(async (values) => {});
     </div>
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Город</label>
+        <label class="text-12-reg text-gray-90 mb-1">Город</label>
         <div class="flex gap-1">
           <UiSelectCategories
             v-model:model-value="selectedCity"
@@ -124,8 +124,8 @@ const onSubmit = handleSubmit(async (values) => {});
             :icon="false"
             :is-object="true"
             default-select-text="Выбрать город"
-            select-bg-color="bg-gray-15-color"
-            main-text-color="text-gray-90-color"
+            select-bg-color="bg-gray-15"
+            main-text-color="text-gray-90"
             value-key="id"
             label-key="name"
             inner-item-key="cities"
@@ -141,12 +141,12 @@ const onSubmit = handleSubmit(async (values) => {});
         </span>
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Магазин </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Магазин </label>
         <UiSelect
-          main-text-color="text-gray-90-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
+          main-text-color="text-gray-90"
+          select-bg-color="bg-gray-15"
+          disable-text-color="text-gray-40"
+          disable-bg-color="bg-gray-15"
           :array="mainStore.stores"
           :show-menu="storeMenuShow"
           default-select-text="Выбрать"
@@ -170,12 +170,12 @@ const onSubmit = handleSubmit(async (values) => {});
     </div>
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Приоритет</label>
+        <label class="text-12-reg text-gray-90 mb-1">Приоритет</label>
         <UiSelect
-          main-text-color="text-gray-90-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
+          main-text-color="text-gray-90"
+          select-bg-color="bg-gray-15"
+          disable-text-color="text-gray-40"
+          disable-bg-color="bg-gray-15"
           :array="paymentStore.priorities"
           :show-menu="priorityMenuStore"
           default-select-text="Выбрать"
@@ -194,12 +194,12 @@ const onSubmit = handleSubmit(async (values) => {});
         </span>
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1"> Получатель </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Получатель </label>
         <UiInput
           v-model:model-value="recipient"
           placeholder="ООО Аксель"
           type="text"
-          class="text-gray-90-color"
+          class="text-gray-90"
         />
         <span v-if="recipientError" class="text-14-ext text-error-500 mt-[2px]">
           {{ recipientError }}
@@ -209,16 +209,16 @@ const onSubmit = handleSubmit(async (values) => {});
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex justify-between items-center">
         <div class="w-[50%] flex items-center gap-1">
-          <p class="text-16-reg text-gray-75-color">Накопительный</p>
+          <p class="text-16-reg text-gray-75">Накопительный</p>
           <UiToggle v-model:model-value="accumulating" />
         </div>
         <div class="w-[50%] flex flex-col items-start justify-center">
-          <p class="text-12-reg text-gray-75-color mb-1">
+          <p class="text-12-reg text-gray-75 mb-1">
             Ожидаемая дата оплаты
           </p>
           <div class="w-full h-full flex flex-col">
             <div
-              class="w-full h-[38px] flex items-center justify-start gap-2 rounded-md py-1 px-4 cursor-pointer bg-gray-15-color text-gray-90-color"
+              class="w-full h-[38px] flex items-center justify-start gap-2 rounded-md py-1 px-4 cursor-pointer bg-gray-15 text-gray-90"
               @click="selectDate(true)"
             >
               <IconCalendar />
@@ -238,12 +238,12 @@ const onSubmit = handleSubmit(async (values) => {});
         </div>
       </div>
       <div class="w-full flex flex-col">
-        <label class="text-12-reg text-gray-90-color mb-1">Статус</label>
+        <label class="text-12-reg text-gray-90 mb-1">Статус</label>
         <UiSelect
-          main-text-color="text-gray-90-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
+          main-text-color="text-gray-90"
+          select-bg-color="bg-gray-15"
+          disable-text-color="text-gray-40"
+          disable-bg-color="bg-gray-15"
           :array="paymentStore.statuses"
           :show-menu="statusMenuStore"
           default-select-text="Выбрать"
@@ -263,15 +263,15 @@ const onSubmit = handleSubmit(async (values) => {});
       </div>
     </div>
     <div
-      class="w-full h-[1px] block mt-3 border border-dashed border-gray-40-color"
+      class="w-full h-[1px] block mt-3 border border-dashed border-gray-40"
     ></div>
     <div class="flex items-center justify-end gap-2 mt-3">
       <UiButton
-        bgColor="bg-primary-color"
+        bgColor="bg-primary"
         :border="false"
         :icon="false"
         hover="opacity-[0.9]"
-        textColor="text-dark-night-color"
+        textColor="text-dark-night"
         text="Создать"
         class="max-w-[110px]"
         type="submit"
@@ -281,7 +281,7 @@ const onSubmit = handleSubmit(async (values) => {});
   </form>
   <div
     v-else
-    class="sticky z-[20] w-full h-[400px] flex items-center justify-center bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="sticky z-[20] w-full h-[400px] flex items-center justify-center bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="loader"></div>
   </div>

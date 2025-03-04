@@ -38,7 +38,7 @@ onBeforeMount(() => {
 
 <template>
   <nav class="flex flex-col">
-    <div class="bg-dark-night-color py-3">
+    <div class="bg-dark-night py-3">
       <div class="px-5 w-full flex items-center justify-between">
         <div class="flex items-center gap-8">
           <NuxtLink to="/">
@@ -47,7 +47,7 @@ onBeforeMount(() => {
         </div>
         <div class="flex items-center gap-4">
           <div class="flex items-center gap-2 mr-2">
-            <div class="flex items-center text-gray-40-color gap-1">
+            <div class="flex items-center text-gray-40 gap-1">
               <IconCalendar class="w-[15px] h-[15px]" />
               <p class="text-12-reg">
                 Сегодня:
@@ -62,7 +62,7 @@ onBeforeMount(() => {
                 </span>
               </p>
             </div>
-            <div class="flex items-center text-gray-40-color gap-1">
+            <div class="flex items-center text-gray-40 gap-1">
               <IconClock class="w-[15px] h-[15px]" />
               <p class="text-12-reg">
                 {{ currentTime }}
@@ -71,12 +71,12 @@ onBeforeMount(() => {
           </div>
           <div class="flex items-center gap-4">
             <div
-              class="flex item-center justify-center w-6 h-6 cursor-pointer text-gray-75-color hover:text-primary-color"
+              class="flex item-center justify-center w-6 h-6 cursor-pointer text-gray-75 hover:text-primary"
             >
               <IconBell class="w-full h-full" />
             </div>
             <div
-              class="flex item-center justify-center w-6 h-6 cursor-pointer text-gray-75-color hover:text-primary-color"
+              class="flex item-center justify-center w-6 h-6 cursor-pointer text-gray-75 hover:text-primary"
             >
               <IconSupport class="w-full h-full" />
             </div>
@@ -84,30 +84,30 @@ onBeforeMount(() => {
           <div class="flex items-center gap-4 w-max">
             <UiButton
               text="Мой профиль"
-              bg-color="bg-primary-color"
-              text-color="text-dark-night-color"
-              hover="hover:opacity-[0.8]"
+              bg-color="bg-primary"
+              text-color="text-dark-night"
+              hover="opacity-[0.8]"
               :icon="true"
               :border="false"
               class="w-max px-4"
             >
               <template v-slot:icon>
-                <IconUserSquare class="text-dark-night-color" />
+                <IconUserSquare class="text-dark-night" />
               </template>
             </UiButton>
             <UiButton
               text="Витрина магазина"
-              bg-color="bg-gray-15-color"
-              text-color="text-gray-90-color"
-              border-color="border-gray-90-color"
-              hover="hover:opacity-[0.8]"
+              bg-color="bg-gray-15"
+              text-color="text-gray-90"
+              border-color="border-gray-90"
+              hover="opacity-[0.8]"
               :icon="true"
               :border="true"
               class="w-max px-4"
               @click="handleRoutPush('/profile-dashboard')"
             >
               <template v-slot:icon>
-                <IconBranch class="text-gray-90-color" />
+                <IconBranch class="text-gray-90" />
               </template>
             </UiButton>
           </div>

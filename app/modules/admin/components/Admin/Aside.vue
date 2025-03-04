@@ -28,11 +28,11 @@ const links = reactive([
         name: "Водители",
         path: "/admin-drivers",
       },
-      // {
-      //   id: 4,
-      //   name: "Роли",
-      //   path: "/admin-roles",
-      // },
+      {
+        id: 4,
+        name: "Роли",
+        path: "/admin-roles",
+      },
     ],
   },
   {
@@ -50,16 +50,16 @@ const links = reactive([
         name: "Районы",
         path: "/setting-districts",
       },
-      // {
-      //   id: 3,
-      //   name: "Продукты",
-      //   path: "/setting-products",
-      // },
-      // {
-      //   id: 4,
-      //   name: "Торговые площадки",
-      //   path: "/setting-trading-marketplaces",
-      // },
+      {
+        id: 3,
+        name: "Продукты",
+        path: "/setting-products",
+      },
+      {
+        id: 4,
+        name: "Торговые площадки",
+        path: "/setting-trading-marketplaces",
+      },
       // {
       //   id: 5,
       //   name: "Магазины",
@@ -115,7 +115,7 @@ const handleActiveLink = (id: number) => {
 
 <template>
   <div
-    class="min-w-[240px] h-full bg-dark-gunmental-color border-r border-gray-15-color"
+    class="min-w-[240px] h-full bg-dark-gunmental border-r border-gray-15"
   >
     <div
       class="w-full h-full flex flex-col items-start justify-start gap-4 py-3 px-2"
@@ -131,16 +131,16 @@ const handleActiveLink = (id: number) => {
               :is="link.icon"
               :class="[
                 link.id != activeLink
-                  ? 'text-gray-40-color'
-                  : 'text-primary-color',
+                  ? 'text-gray-40'
+                  : 'text-primary',
               ]"
             />
             <p
               class="text-12-semi"
               :class="[
                 link.id != activeLink
-                  ? 'text-gray-40-color'
-                  : 'text-primary-color',
+                  ? 'text-gray-40'
+                  : 'text-primary',
               ]"
             >
               {{ link.name }}
@@ -150,16 +150,16 @@ const handleActiveLink = (id: number) => {
             class="transition-all duration-200"
             :class="[
               link.id != activeLink
-                ? 'text-gray-40-color rotate-[180deg]'
-                : 'text-primary-color',
+                ? 'text-gray-40 rotate-[180deg]'
+                : 'text-primary',
             ]"
           />
         </div>
         <NuxtLink
           v-if="!link.children && link.path"
           :to="link.path"
-          class="w-full h-[30px] flex items-center justify-start gap-2 cursor-pointer px-3 text-gray-40-color hover:text-primary-color"
-          :class="[route.path == link.path ? 'text-primary-color' : '']"
+          class="w-full h-[30px] flex items-center justify-start gap-2 cursor-pointer px-3 text-gray-40 hover:text-primary"
+          :class="[route.path == link.path ? 'text-primary' : '']"
         >
           <component :is="link.icon" />
           <p class="text-12-semi">
@@ -172,7 +172,7 @@ const handleActiveLink = (id: number) => {
         >
           <p
             v-if="link.children && link.children.length <= 0"
-            class="text-12-semi text-gray-40-color pl-8"
+            class="text-12-semi text-gray-40 pl-8"
           >
             Пусто
           </p>
@@ -180,11 +180,11 @@ const handleActiveLink = (id: number) => {
             v-for="child in link.children"
             :key="child.id"
             :to="child.path"
-            class="w-full h-[30px] flex items-center justify-start text-12-semi pl-8 rounded-md hover:bg-gray-15-color"
+            class="w-full h-[30px] flex items-center justify-start text-12-semi pl-8 rounded-md hover:bg-gray-15"
             :class="[
               route.path == child.path
-                ? 'text-primary-color'
-                : 'text-gray-40-color',
+                ? 'text-primary'
+                : 'text-gray-40',
             ]"
           >
             {{ child.name }}

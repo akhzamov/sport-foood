@@ -36,9 +36,9 @@ const getWeightColor = (product: TStoragesLeftProduct) => {
   if (weight < minWeight) {
     return "bg-error-500"; // Красный цвет
   } else if (weight >= minWeight && weight < maxWeight) {
-    return "bg-secondary-color"; // Зеленый цвет
+    return "bg-mint"; // Зеленый цвет
   } else {
-    return "bg-primary-color"; // Желтый цвет
+    return "bg-primary"; // Желтый цвет
   }
 };
 
@@ -105,7 +105,7 @@ watch(
           ]"
           @click="warehouseStore.activeStorageType = storageKey"
         >
-          <p class="w-[100%] text-14-reg text-gray-90-color z-[10]">
+          <p class="w-[100%] text-14-reg text-gray-90 z-[10]">
             {{ storage }}
           </p>
           <IconDisableWarehouseMenu
@@ -128,7 +128,7 @@ watch(
       </template>
     </div>
     <div
-      class="w-full border-t border-gray-15-color"
+      class="w-full border-t border-gray-15"
       v-if="warehouseStore.storagesLeft"
     >
       <div
@@ -140,7 +140,7 @@ watch(
             <tr class="rw-full flex">
               <th
                 scope="col"
-                class="min-w-[105px] h-[56px] flex items-center justify-center px-2 bg-dark-charcoal-color border-b border-x border-gray-15-color"
+                class="min-w-[105px] h-[56px] flex items-center justify-center px-2 bg-dark-charcoal border-b border-x border-gray-15"
               >
                 <p class="text-12-semi text-white">Города</p>
               </th>
@@ -155,7 +155,7 @@ watch(
                     v-for="(product, productKey) in storage.products"
                     :key="product.product_id"
                     scope="col"
-                    class="min-w-[84px] h-[56px] flex flex-col items-center justify-center px-2 bg-dark-charcoal-color border-b border-r border-gray-15-color"
+                    class="min-w-[84px] h-[56px] flex flex-col items-center justify-center px-2 bg-dark-charcoal border-b border-r border-gray-15"
                   >
                     <p class="text-8-reg text-white">
                       {{ product.product_name }}
@@ -167,7 +167,7 @@ watch(
           </thead>
           <tbody
             ref="tableRef"
-            class="w-fit bg-gray-15-color rounded-b-lg flex flex-col pb-2"
+            class="w-fit bg-gray-15 rounded-b-lg flex flex-col pb-2"
           >
             <template
               v-for="([storageKey, storage], index) in Object.entries(
@@ -178,7 +178,7 @@ watch(
               <tr
                 class="w-full h-7 flex"
                 :class="[
-                  { 'bg-gray-15-color': index % 2 == 1 },
+                  { 'bg-gray-15': index % 2 == 1 },
                   {
                     'rounded-b-lg':
                       index ===
@@ -188,7 +188,7 @@ watch(
               >
                 <th
                   scope="row"
-                  class="min-w-[105px] h-full flex items-center justify-start pl-2 border-r border-gray-15-color"
+                  class="min-w-[105px] h-full flex items-center justify-start pl-2 border-r border-gray-15"
                 >
                   <p class="text-10-reg text-white">{{ storage.name }}</p>
                 </th>
@@ -197,7 +197,7 @@ watch(
                   class="min-w-[84px] h-full flex items-center justify-center relative"
                   :class="[
                     index - 1 !== Object.values(storage.products).length
-                      ? 'border-r border-gray-15-color'
+                      ? 'border-r border-gray-15'
                       : '',
                   ]"
                   v-for="(product, productKey, index) in storage.products"
@@ -220,7 +220,7 @@ watch(
                   "
                 >
                   <div
-                    class="relative w-[70px] h-[15px] rounded-lg block bg-gray-40-color"
+                    class="relative w-[70px] h-[15px] rounded-lg block bg-gray-40"
                   >
                     <!-- Минимум -->
                     <div
@@ -245,7 +245,7 @@ watch(
                     ></div>
                   </div>
                   <div
-                    class="absolute z-[30] w-[190px] h-auto rounded-md bg-dark-gunmental-color border border-gray-15-color p-3 flex flex-col items-start justify-center"
+                    class="absolute z-[30] w-[190px] h-auto rounded-md bg-dark-gunmental border border-gray-15 p-3 flex flex-col items-start justify-center"
                     ref="productRef"
                     v-if="
                       product.product_id == activeWarehouseHoverMenuId &&
@@ -261,15 +261,15 @@ watch(
                         : 'top-[100%] translate-y-[10%]',
                     ]"
                   >
-                    <h4 class="w-full text-12-reg text-gray-90-color text-left">
+                    <h4 class="w-full text-12-reg text-gray-90 text-left">
                       {{ activeWarehouseHoverMenuCity }}
-                      <span class="text-10-ext text-primary-color">
+                      <span class="text-10-ext text-primary">
                         {{ activeWarehouseHoverMenuProduct }}
                       </span>
                     </h4>
                     <p class="w-full flex items-center justify-between mt-2">
-                      <span class="text-8-ext text-gray-75-color">Остаток</span>
-                      <span class="text-8-reg text-gray-90-color">
+                      <span class="text-8-ext text-gray-75">Остаток</span>
+                      <span class="text-8-reg text-gray-90">
                         {{
                           Number(product.left.toFixed(1)).toLocaleString(
                             "ru-RU"
@@ -279,13 +279,13 @@ watch(
                       </span>
                     </p>
                     <div
-                      class="w-full h-[1px] inline-flex bg-dark-charcoal-color my-1"
+                      class="w-full h-[1px] inline-flex bg-dark-charcoal my-1"
                     ></div>
                     <p class="w-full flex items-center justify-between mt-2">
                       <span class="text-8-ext text-error-500"
                         >Минимальный запас</span
                       >
-                      <span class="text-8-reg text-gray-90-color">
+                      <span class="text-8-reg text-gray-90">
                         {{
                           Number(product.min_limit.toFixed(1)).toLocaleString(
                             "ru-RU"
@@ -298,7 +298,7 @@ watch(
                       <span class="text-8-ext text-success-500"
                         >Максимальный запас</span
                       >
-                      <span class="text-8-reg text-gray-90-color">
+                      <span class="text-8-reg text-gray-90">
                         {{
                           Number(product.max_limit.toFixed(1)).toLocaleString(
                             "ru-RU"

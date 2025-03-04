@@ -132,17 +132,17 @@ watch(date, async (newDate) => {
 
 <template>
   <div class="flex items-center justify-between pt-12">
-    <h2 class="text-32-semi text-gray-90-color">Анализ</h2>
+    <h2 class="text-32-semi text-gray-90">Анализ</h2>
     <div class="h-full flex items-center justify-end gap-3">
       <div class="h-full flex flex-col">
         <div
           class="w-max h-[38px] flex items-center justify-center gap-2 rounded-md py-1 px-2 cursor-pointer"
           :class="{
-            'bg-dark-onix-color': !activeDayFilterBlocked,
-            'bg-gray-15-color': activeDayFilterBlocked,
-            'bg-primary-color text-dark-night-color-color':
+            'bg-dark-onix': !activeDayFilterBlocked,
+            'bg-gray-15': activeDayFilterBlocked,
+            'bg-primary text-dark-night-color':
               profileStore.activeDayFilter == 3 && !activeDayFilterBlocked,
-            'text-gray-90-color': profileStore.activeDayFilter !== 3,
+            'text-gray-90': profileStore.activeDayFilter !== 3,
           }"
           @click="selectDate(true)"
         >
@@ -166,8 +166,8 @@ watch(date, async (newDate) => {
       <div
         class="flex items-center justify-center gap-2 rounded-md p-1"
         :class="{
-          'bg-dark-onix-color': !activeDayFilterBlocked,
-          'bg-gray-15-color': activeDayFilterBlocked,
+          'bg-dark-onix': !activeDayFilterBlocked,
+          'bg-gray-15': activeDayFilterBlocked,
         }"
       >
         <div
@@ -175,10 +175,10 @@ watch(date, async (newDate) => {
           :key="day.id"
           class="w-20 h-[30px] flex items-center justify-center rounded-[4px]"
           :class="{
-            'bg-primary-color':
+            'bg-primary':
               profileStore.activeDayFilter == day.value &&
               !activeDayFilterBlocked,
-            'bg-gray-40-color':
+            'bg-gray-40':
               profileStore.activeDayFilter == day.value &&
               activeDayFilterBlocked,
             'cursor-pointer': !activeDayFilterBlocked,
@@ -190,16 +190,16 @@ watch(date, async (newDate) => {
           <span
             class="text-14-med"
             :class="{
-              'text-dark-night-color':
+              'text-dark-night':
                 profileStore.activeDayFilter == day.value &&
                 !activeDayFilterBlocked,
-              'text-gray-90-color':
+              'text-gray-90':
                 profileStore.activeDayFilter != day.value &&
                 !activeDayFilterBlocked,
-              'text-dark-charcoal-color':
+              'text-dark-charcoal':
                 profileStore.activeDayFilter == day.value &&
                 activeDayFilterBlocked,
-              'text-gray-40-color':
+              'text-gray-40':
                 profileStore.activeDayFilter != day.value &&
                 activeDayFilterBlocked,
             }"

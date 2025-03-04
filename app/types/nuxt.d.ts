@@ -16,6 +16,10 @@ import { SalesAgentsRep } from "~/modules/admin/modules/personal/repository/sale
 import { DriversRep } from "~/modules/admin/modules/personal/repository/drivers";
 import { PaymentRequestsRep } from "~/modules/admin/modules/payment/repository/paymentRequests";
 import { SalesPlanSpendingRep } from "~/modules/profile/repository/salesPlanSpending";
+import { CitiesRep } from "~/modules/admin/repository/cities";
+import { DistrictsRep } from "~/modules/admin/repository/districts";
+import { ProductsRep } from "~/modules/admin/repository/products";
+import { MarketplacesRep } from "~/modules/admin/repository/marketplaces";
 
 declare module "#app" {
   interface NuxtApp {
@@ -37,5 +41,9 @@ declare module "#app" {
     $driversRep: DriversRep;
     $paymentRequestsRep: PaymentRequestsRep;
     $salesPlanSpendingRep: SalesPlanSpendingRep;
+    $citiesRep: CitiesRep;
+    $districtsRep: DistrictsRep;
+    $productsRep: ProductsRep;
+    $marketplacesRep: MarketplacesRep;
   }
 }

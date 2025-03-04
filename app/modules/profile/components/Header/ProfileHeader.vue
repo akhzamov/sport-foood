@@ -45,9 +45,9 @@ const handleClickOutsideSelect = (event: MouseEvent) => {
 };
 
 const handleGetStoreByID = (id: number) => {
-  getSalesPlan();
-  getMarketplacesData();
-  getSpending();
+  // getSalesPlan();
+  // getMarketplacesData();
+  // getSpending();
   profileStore.activeMoreInfo = false;
 };
 
@@ -63,10 +63,10 @@ onBeforeUnmount(() => {
 <template>
   <div class="w-full h-[338px] relative flex items-end justify-center z-[80]">
     <div
-      class="absolute top-0 left-0 w-full h-full bg-dark-charcoal-color z-[-1]"
+      class="absolute top-0 left-0 w-full h-full bg-dark-charcoal z-[-1]"
     >
       <div
-        class="block w-full h-[280px] bg-profile-header-bg-liner absolute"
+        class="block w-full h-[280px] bg-profile-header absolute"
       ></div>
       <img
         src="~/assets/img/background.webp"
@@ -78,26 +78,26 @@ onBeforeUnmount(() => {
       <div
         class="w-[120px] h-[120px] flex items-center justify-center overflow-hidden rounded-[50%] border-[3px] bg-white"
       >
-        <IconUser class="w-[42px] h-[48px] text-dark-charcoal-color" />
+        <IconUser class="w-[42px] h-[48px] text-dark-charcoal" />
       </div>
       <div class="flex flex-col justify-between flex-grow">
         <div class="flex justify-between">
           <div>
             <span
-              class="bg-gray-15-color rounded-[20px] px-3 py-1 text-16-med text-gray-90-color"
+              class="bg-gray-15 rounded-[20px] px-3 py-1 text-16-med text-gray-90"
             >
               id: #{{ mainStore.user?.id }}
             </span>
-            <p class="text-32-semi text-gray-90-color">
+            <p class="text-32-semi text-gray-90">
               {{ mainStore.user?.username }}
             </p>
           </div>
           <div class="w-max h-max" ref="headerSelect">
             <UiSelect
-              main-text-color="text-gray-90-color"
-              select-bg-color="bg-gray-15-color"
-              disable-text-color="text-gray-40-color"
-              disable-bg-color="bg-gray-15-color"
+              main-text-color="text-gray-90"
+              select-bg-color="bg-gray-15"
+              disable-text-color="text-gray-40"
+              disable-bg-color="bg-gray-15"
               :array="mainStore.stores ? mainStore.stores : []"
               :showMenu="showSelectMenu"
               defaultSelectText=""
@@ -113,7 +113,7 @@ onBeforeUnmount(() => {
               class="h-[40px] z-[80]"
             >
               <template v-slot:icon>
-                <IconBranch class="text-gray-90-color" />
+                <IconBranch class="text-gray-90" />
               </template>
             </UiSelect>
           </div>
@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
         <div class="flex gap-8">
           <template v-for="tab in tabs" :key="tab.id">
             <NuxtLink
-              class="px-5 pt-5 rounded-lg cursor-pointer flex flex-col after:w-full after:h-[2px] after:rounded-t-[4px] after:bg-primary-color text-gray-75-color hover:text-primary-color"
+              class="px-5 pt-5 rounded-lg cursor-pointer flex flex-col after:w-full after:h-[2px] after:rounded-t-[4px] after:bg-primary text-gray-75 hover:text-primary"
               :class="
                 route.fullPath == tab.path ? 'after:block' : 'after:hidden'
               "

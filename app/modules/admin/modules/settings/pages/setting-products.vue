@@ -9,12 +9,16 @@ definePageMeta({
   name: "Продукты",
 });
 
-onMounted(async () => {});
+const { getProducts } = useCrudProductsResponse();
+
+onMounted(async () => {
+  await getProducts();
+});
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col justify-between pb-[70px]">
-    Products
+    <SettingsProductsTable />
   </div>
 </template>
 

@@ -20,10 +20,10 @@ const props = withDefaults(
     disable: boolean;
   }>(),
   {
-    mainTextColor: "text-gray-90-color",
-    selectBgColor: "bg-gray-15-color",
-    disableTextColor: "text-gray-40-color",
-    disableBgColor: "bg-gray-15-color",
+    mainTextColor: "text-gray-90",
+    selectBgColor: "bg-gray-15",
+    disableTextColor: "text-gray-40",
+    disableBgColor: "bg-gray-15",
     array: () => [],
     defaultSelectText: "",
     icon: false,
@@ -39,6 +39,8 @@ const emit = defineEmits([
 
 const selectedItemId = ref<null | number>(props.modelValue);
 const selectedItemName = ref(props.defaultSelectText);
+const selectRef = useTemplateRef<HTMLElement>("selectRef");
+onClickOutside(selectRef, () => emit("update:showMenu", false));
 
 const isArray = (data: unknown): data is any[] => Array.isArray(data);
 
@@ -94,13 +96,13 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative" ref="selectRef">
     <div
       class="h-full rounded-[36px] flex items-center justify-between px-4 select-none border"
       :class="[
         props.selectBgColor,
         props.width,
-        props.showMenu ? ' border-gray-40-color' : 'border-transparent',
+        props.showMenu ? ' border-gray-40' : 'border-transparent',
         props.disable ? 'cursor-not-allowed' : 'cursor-pointer',
       ]"
       @click="emit('update:showMenu', props.disable ? false : !props.showMenu)"
@@ -124,7 +126,7 @@ watchEffect(() => {
         v-else
       />
       <div
-        class="absolute bg-dark-eerie-black-color top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px] border border-gray-40-color"
+        class="absolute bg-dark-eerie-black top-[105%] left-0 w-full max-h-[300px] rounded-lg px-3 py-3 flex flex-col gap-[10px] overflow-y-auto border border-gray-40"
         v-if="props.showMenu && !props.disable"
       >
         <div
@@ -132,14 +134,14 @@ watchEffect(() => {
           @click.stop="selectItem(null, 'Все')"
         >
           <slot name="value-icon" />
-          <IconBranch class="text-gray-90-color" v-if="props.icon" />
+          <IconBranch class="text-gray-90" v-if="props.icon" />
           <span
             class="flex-grow text-14-reg"
             :class="
               selectedItemName == props.defaultSelectText ||
               selectedItemName == 'Все'
-                ? 'text-primary-color'
-                : 'text-gray-90-color'
+                ? 'text-primary'
+                : 'text-gray-90'
             "
           >
             {{ props.defaultSelectText ?? "Все" }}
@@ -149,7 +151,7 @@ watchEffect(() => {
               selectedItemName == props.defaultSelectText ||
               selectedItemName == 'Все'
             "
-            class="text-primary-color"
+            class="text-primary"
           />
         </div>
         <div
@@ -159,20 +161,20 @@ watchEffect(() => {
           @click.stop="selectItem(item[props.valueKey], item[props.labelKey])"
         >
           <slot name="value-icon" />
-          <IconBranch class="text-gray-90-color" v-if="props.icon" />
+          <IconBranch class="text-gray-90" v-if="props.icon" />
           <span
             class="flex-grow text-14-reg"
             :class="
               item[props.labelKey] == selectedItemName
-                ? 'text-primary-color'
-                : 'text-gray-90-color'
+                ? 'text-primary'
+                : 'text-gray-90'
             "
           >
             {{ item[props.labelKey] }}
           </span>
           <IconCheck
             v-if="item[props.labelKey] == selectedItemName"
-            class="text-primary-color"
+            class="text-primary"
           />
         </div>
       </div>
@@ -182,10 +184,10 @@ watchEffect(() => {
 
 <style scoped>
 .select-item:hover svg {
-  @apply text-primary-color;
+  @apply text-primary;
 }
 
 .select-item:hover span {
-  @apply text-primary-color;
+  @apply text-primary;
 }
 </style>

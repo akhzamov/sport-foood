@@ -18,10 +18,10 @@ const props = withDefaults(
     disable: boolean;
   }>(),
   {
-    mainTextColor: "text-gray-90-color",
-    selectBgColor: "bg-gray-15-color",
-    disableTextColor: "text-gray-40-color",
-    disableBgColor: "bg-gray-15-color",
+    mainTextColor: "text-gray-90",
+    selectBgColor: "bg-gray-15",
+    disableTextColor: "text-gray-40",
+    disableBgColor: "bg-gray-15",
     array: () => [],
     defaultSelectText: "",
     texCenter: false,
@@ -40,6 +40,8 @@ const state = reactive({
 });
 
 const defaultSelectText = ref(props.defaultSelectText);
+const selectRef = useTemplateRef<HTMLElement>("selectRef");
+onClickOutside(selectRef, () => emit("update:showMenu", false));
 
 const isArray = (data: unknown): data is any[] => Array.isArray(data);
 
@@ -103,7 +105,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="h-[40px] relative">
+  <div class="h-[40px] relative" ref="selectRef">
     <div
       class="w-full h-full rounded-lg flex items-center justify-between px-4 select-none"
       :class="[
@@ -118,7 +120,7 @@ watchEffect(() => {
         v-if="state.selectedItems.length > 0"
       >
         <div
-          class="w-max h-[22px] flex items-center gap-1 pl-2 pr-1 rounded-[20px] bg-gray-15-color text-gray-90-color text-12-reg"
+          class="w-max h-[22px] flex items-center gap-1 pl-2 pr-1 rounded-[20px] bg-gray-15 text-gray-90 text-12-reg"
           :class="[
             props.disable ? props.disableTextColor : props.mainTextColor,
           ]"
@@ -155,7 +157,7 @@ watchEffect(() => {
         v-else
       />
       <div
-        class="absolute bg-dark-eerie-black-color top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px]"
+        class="absolute bg-dark-eerie-black top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px]"
         v-if="props.showMenu && !props.disable"
       >
         <!-- Отображение элементов -->
@@ -172,8 +174,8 @@ watchEffect(() => {
             class="w-full flex items-center justify-between"
             :class="[
               state.selectedItems.includes(item[props.labelKey])
-                ? 'text-primary-color'
-                : 'text-gray-90-color',
+                ? 'text-primary'
+                : 'text-gray-90',
             ]"
           >
             <span class="text-16-med">
@@ -191,11 +193,11 @@ watchEffect(() => {
 
 <style lang="css">
 .select-item:hover svg {
-  @apply text-primary-color;
+  @apply text-primary;
 }
 
 .select-item:hover span {
-  @apply text-primary-color;
+  @apply text-primary;
 }
 .multiple-select-display {
   scrollbar-width: 0;

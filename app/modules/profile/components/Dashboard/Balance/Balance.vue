@@ -13,17 +13,17 @@ const handleRouterWarehouse = () => {
 <template>
   <div class="w-[390px] rounded-lg overflow-hidden">
     <div
-      class="h-[40px] flex items-center justify-between bg-dark-gunmental-color pl-5 pr-1"
+      class="h-[40px] flex items-center justify-between bg-dark-gunmental pl-5 pr-1"
     >
-      <h4 class="text-14-bold text-gray-90-color">Остатки</h4>
+      <h4 class="text-14-bold text-gray-90">Остатки</h4>
       <div
-        class="w-max h-max flex items-center p-[2px] rounded-md bg-dark-onix-color"
+        class="w-max h-max flex items-center p-[2px] rounded-md bg-dark-onix"
       >
         <div
           @click="activeFilter = 'platform'"
           :class="[
             activeFilter == 'platform'
-              ? 'bg-primary-color text-dark-eerie-black-color'
+              ? 'bg-primary text-dark-eerie-black'
               : 'bg-transparent text-white',
           ]"
           class="w-[82px] h-[26px] flex flex-col items-center justify-center cursor-pointer rounded-[4px]"
@@ -35,7 +35,7 @@ const handleRouterWarehouse = () => {
           @click="activeFilter = 'agents'"
           :class="[
             activeFilter == 'agents'
-              ? 'bg-primary-color text-dark-eerie-black-color'
+              ? 'bg-primary text-dark-eerie-black'
               : 'bg-transparent text-white',
           ]"
           class="w-[82px] h-[26px] flex flex-col items-center justify-center cursor-pointer rounded-[4px]"
@@ -47,7 +47,7 @@ const handleRouterWarehouse = () => {
           @click="activeFilter = 'warehouse'"
           :class="[
             activeFilter == 'warehouse'
-              ? 'bg-primary-color text-dark-eerie-black-color'
+              ? 'bg-primary text-dark-eerie-black'
               : 'bg-transparent text-white',
           ]"
           class="w-[82px] h-[26px] flex flex-col items-center justify-center cursor-pointer rounded-[4px]"

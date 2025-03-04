@@ -18,6 +18,10 @@ import { SalesAgentsRep } from "~/modules/admin/modules/personal/repository/sale
 import { DriversRep } from "~/modules/admin/modules/personal/repository/drivers";
 import { PaymentRequestsRep } from "~/modules/admin/modules/payment/repository/paymentRequests";
 import { SalesPlanSpendingRep } from "~/modules/profile/repository/salesPlanSpending";
+import { CitiesRep } from "~/modules/admin/repository/cities";
+import { DistrictsRep } from "~/modules/admin/repository/districts";
+import { ProductsRep } from "~/modules/admin/repository/products";
+import { MarketplacesRep } from "~/modules/admin/repository/marketplaces";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const salesPlanRep = new SalesPlanRep();
@@ -38,6 +42,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   const driversRep = new DriversRep();
   const paymentRequestsRep = new PaymentRequestsRep();
   const salesPlanSpendingRep = new SalesPlanSpendingRep();
+  const citiesRep = new CitiesRep();
+  const districtsRep = new DistrictsRep();
+  const productsRep = new ProductsRep();
+  const marketplacesRep = new MarketplacesRep();
 
   nuxtApp.provide("salesPlanRep", salesPlanRep);
   nuxtApp.provide("storesRep", storesRep);
@@ -57,4 +65,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.provide("driversRep", driversRep);
   nuxtApp.provide("paymentRequestsRep", paymentRequestsRep);
   nuxtApp.provide("salesPlanSpendingRep", salesPlanSpendingRep);
+  nuxtApp.provide("citiesRep", citiesRep);
+  nuxtApp.provide("districtsRep", districtsRep);
+  nuxtApp.provide("productsRep", productsRep);
+  nuxtApp.provide("marketplacesRep", marketplacesRep);
 });

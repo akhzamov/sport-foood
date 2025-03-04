@@ -20,7 +20,7 @@ const onInput = (event: Event) => {
     @input="onInput"
     :placeholder="placeholder"
     :type="type"
-    class="w-full h-[40px] px-3 bg-gray-15-color text-16-ext text-gray-40-color outline-none border-1 placeholder:text-gray-40-color rounded-lg"
+    class="w-full h-[40px] px-3 bg-gray-15 text-16-ext text-gray-40 outline-none border-1 placeholder:text-gray-40 rounded-lg"
   />
 </template>
 

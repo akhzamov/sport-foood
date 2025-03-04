@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { getPayments } from "../../payment/components/Requests/requests.data";
+
 useSeoMeta({
   title: "Sport Food | Sales Reports Archive",
 });
@@ -9,7 +11,9 @@ definePageMeta({
   name: "Архив отчетов по продажам",
 });
 
-onMounted(async () => {});
+onMounted(async () => {
+  await getPayments();
+});
 </script>
 
 <template>

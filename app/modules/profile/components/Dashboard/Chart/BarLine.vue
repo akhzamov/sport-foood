@@ -1,13 +1,13 @@
 <template>
   <div class="w-[390px] rounded-lg overflow-hidden">
     <h4
-      class="px-5 h-[40px] flex items-center bg-dark-gunmental-color text-14-bold text-gray-90-color"
+      class="px-5 h-[40px] flex items-center bg-dark-gunmental text-14-bold text-gray-90"
     >
       План продаж
     </h4>
     <div
       ref="chartWrapper"
-      class="chart-wrapper w-full flex overflow-y-auto h-[360px] bg-dark-charcoal-color"
+      class="chart-wrapper w-full flex overflow-y-auto h-[360px] bg-dark-charcoal"
     >
       <canvas id="chartForMonth" v-if="profileStore.activeDayFilter == 0" />
       <canvas id="chartFor30Days" v-if="profileStore.activeDayFilter == 30" />
@@ -400,7 +400,7 @@ onBeforeUnmount(() => {
 .lds-ripple,
 .lds-ripple div {
   box-sizing: border-box;
-  @apply text-primary-color;
+  @apply text-primary;
 }
 
 .lds-ripple {

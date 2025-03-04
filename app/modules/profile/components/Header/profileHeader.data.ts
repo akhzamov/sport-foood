@@ -51,9 +51,6 @@ export async function getStores() {
         date_to: dates.date_to,
       };
     }
-    getSalesPlan();
-    getMarketplacesData();
-    getSpending();
   } catch (error: any) {
     console.error("Не удалось получить /stores: ", error);
     if (error.status === 401) {

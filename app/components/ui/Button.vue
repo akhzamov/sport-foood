@@ -6,15 +6,15 @@ const props = defineProps({
   },
   bgColor: {
     type: String,
-    default: "bg-primary-color",
+    default: "bg-primary",
   },
   textColor: {
     type: String,
-    default: "text-dark-night-color",
+    default: "text-dark-night",
   },
   borderColor: {
     type: String,
-    default: "border-gray-15-color",
+    default: "border-gray-15",
   },
   hover: {
     type: String,
@@ -33,7 +33,7 @@ const props = defineProps({
     :class="[
       bgColor,
       props.border ? props.borderColor : 'border-transparent',
-      props.hover,
+      props.hover.length > 0 ? `hover:${props.hover}` : '',
     ]"
   >
     <slot name="icon" />

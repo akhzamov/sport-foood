@@ -28,14 +28,14 @@
 			label: "Больничный",
 			value: "sick_leave",
 			name: "status",
-			bg: "bg-gray-15-color",
+			bg: "bg-gray-15",
 		},
 		{
 			id: "vocation-1",
 			label: "Отпуск",
 			value: "vocation",
 			name: "status",
-			bg: "bg-gray-40-color",
+			bg: "bg-gray-40",
 		},
 	]);
 	const userReplace = ref(false);
@@ -83,11 +83,11 @@
 
 <template>
 	<div
-		class="fixed z-[300] top-0 lef-0 w-full h-screen bg-gray-15-color backdrop-blur-[10px] flex items-center justify-center overflow-y-auto"
+		class="fixed z-[300] top-0 lef-0 w-full h-screen bg-gray-15 backdrop-blur-[10px] flex items-center justify-center overflow-y-auto"
 		@click="closeModal"
 	>
 		<div
-			class="w-[440px] h-max bg-dark-gunmental-color border border-gray-15-color rounded-lg p-3"
+			class="w-[440px] h-max bg-dark-gunmental border border-gray-15 rounded-lg p-3"
 			@click.stop
 		>
 			<!-- User Info -->
@@ -98,16 +98,16 @@
 						class="w-12 h-12 rounded-[50%] object-cover"
 					/>
 					<div class="flex flex-col items-start justify-center">
-						<span class="text-14-semi text-gray-90-color">
+						<span class="text-14-semi text-gray-90">
 							Валерий Альбертович
 						</span>
-						<span class="text-14-reg text-gray-90-color">
+						<span class="text-14-reg text-gray-90">
 							Администратор
 						</span>
 					</div>
 				</div>
 				<IconClose
-					class="text-gray-90-color cursor-pointer"
+					class="text-gray-90 cursor-pointer"
 					@click="closeModal"
 				/>
 			</div>
@@ -117,15 +117,15 @@
 					@click="handleCheckToday"
 					class="w-full h-[34px] rounded-lg flex items-center justify-start gap-2 px-2 cursor-pointer"
 					:class="{
-						'bg-gray-15-color': !checkToday,
-						'bg-gray-40-color': checkToday,
+						'bg-gray-15': !checkToday,
+						'bg-gray-40': checkToday,
 					}"
 				>
 					<UiCheckbox
 						v-model="checkToday"
 						@click="handleCheckToday"
 					/>
-					<p class="text-14-reg text-gray-90-color">
+					<p class="text-14-reg text-gray-90">
 						Сегодня <span>{{ formatDate(new Date().toDateString()) }}</span>
 					</p>
 				</div>
@@ -133,15 +133,15 @@
 					@click="handleCheckPeriod"
 					class="w-full h-[34px] rounded-lg flex items-center justify-start gap-2 px-2 cursor-pointer"
 					:class="{
-						'bg-gray-15-color': !checkPeriod,
-						'bg-gray-40-color': checkPeriod,
+						'bg-gray-15': !checkPeriod,
+						'bg-gray-40': checkPeriod,
 					}"
 				>
 					<UiCheckbox
 						v-model="checkPeriod"
 						@click="handleCheckPeriod"
 					/>
-					<p class="text-14-reg text-gray-90-color">
+					<p class="text-14-reg text-gray-90">
 						{{
 							date
 								? `${formatDate(date[0])} - ${formatDate(date[1])}`
@@ -167,7 +167,7 @@
 				>
 					<label
 						:for="status.id"
-						class="flex flex-col gap-1 items-start justify-start w-[100px] h-max rounded-lg p-1 border-2 border-gray-15-color"
+						class="flex flex-col gap-1 items-start justify-start w-[100px] h-max rounded-lg p-1 border-2 border-gray-15"
 					>
 						<UiRadio
 							:id="status.id"
@@ -175,7 +175,7 @@
 							:value="status.value"
 							v-model="selectedStatus"
 						/>
-						<p class="text-12-reg text-gray-90-color">
+						<p class="text-12-reg text-gray-90">
 							{{ status.label }}
 						</p>
 						<div
@@ -200,9 +200,9 @@
 					"
 					defaultSelectText=""
 					v-model="selectedUserID"
-					selectBgColor="bg-gray-15-color"
+					selectBgColor="bg-gray-15"
 					:mainTextColor="
-						userReplace ? 'text-gray-90-color' : 'text-gray-15-color'
+						userReplace ? 'text-gray-90' : 'text-gray-15'
 					"
 					:class="
 						userReplace ? 'cursor-pointer' : 'cursor-not-allowed'
@@ -215,8 +215,8 @@
 						<IconShuffle01
 							:class="
 								userReplace
-									? 'text-gray-90-color'
-									: 'text-gray-15-color'
+									? 'text-gray-90'
+									: 'text-gray-15'
 							"
 						/>
 					</template>
@@ -226,21 +226,21 @@
 			<div class="flex items-center justify-end gap-2 mt-5">
 				<UiButton
 					text="Сохранить"
-					bgColor="bg-primary-color"
-					textColor="text-dark-night-color"
+					bgColor="bg-primary"
+					textColor="text-dark-night"
 					:border="false"
-					hover="hover:opacity-[0.8]"
+					hover="opacity-[0.8]"
 					:icon="false"
 					class="w-[110px]"
 					@click="closeModal"
 				/>
 				<UiButton
 					text="Отменить"
-					bgColor="bg-gray-15-color"
-					textColor="text-gray-90-color"
+					bgColor="bg-gray-15"
+					textColor="text-gray-90"
 					:border="true"
-					borderColor="border-gray-90-color"
-					hover="hover:bg-gray-40-color"
+					borderColor="border-gray-90"
+					hover="bg-gray-40"
 					:icon="false"
 					class="w-[90px]"
 					@click="closeModal"

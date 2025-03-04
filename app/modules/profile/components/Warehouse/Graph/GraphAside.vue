@@ -90,10 +90,10 @@ watchEffect(() => {
 
 <template>
   <div
-    class="w-full min-w-[260px] max-w-[260px] h-[100%] bg-gray-15-color border-r border-gray-15-color rounded-bl-lg"
+    class="w-full min-w-[260px] max-w-[260px] h-[100%] bg-gray-15 border-r border-gray-15 rounded-bl-lg"
   >
     <div
-      class="w-full h-[36px] flex items-center justify-between text-white border-b border-gray-15-color px-2 gap-2"
+      class="w-full h-[36px] flex items-center justify-between text-white border-b border-gray-15 px-2 gap-2"
     >
       <div class="w-max h-full flex items-center justify-start gap-2">
         <IconFilterFunnel01 />
@@ -101,7 +101,7 @@ watchEffect(() => {
       </div>
       <div
         @click="getMarketplaceLeft(); getSalesAgentLeft()"
-        class="w-max h-full flex items-center justify-start gap-1 cursor-pointer text-primary-color"
+        class="w-max h-full flex items-center justify-start gap-1 cursor-pointer text-primary"
       >
         <p class="text-12-semi">Применить</p>
         <IconCheck />
@@ -111,7 +111,7 @@ watchEffect(() => {
       <p class="text-12-reg text-white">Города</p>
       <p class="text-14-semi cursor-pointer" @click="handleClickAllChecked()">
         <span class="text-green-500/45" v-if="!allChecked">Выбрать все</span>
-        <span class="text-gray-40-color" v-else>Отменить все</span>
+        <span class="text-gray-40" v-else>Отменить все</span>
       </p>
     </div>
     <div class="flex flex-col gap-3 px-2 mt-3 mb-3">

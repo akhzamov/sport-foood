@@ -90,53 +90,53 @@ const onSubmit = handleSubmit(async (values) => {});
 <template>
   <div
     v-if="!editWindow"
-    class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="w-full h-[30px] flex gap-4 justify-between items-center">
       <div class="w-max h-full flex gap-3 items-center justify-start">
-        <p class="text-16-reg text-gray-75-color">Магазин 1</p>
-        <div class="w-[1px] h-full block bg-gray-15-color"></div>
+        <p class="text-16-reg text-gray-75">Магазин 1</p>
+        <div class="w-[1px] h-full block bg-gray-15"></div>
         <div class="w-max h-full flex gap-[4px] items-center justify-start">
-          <IconCalendar class="text-gray-40-color" />
-          <p class="text-12-reg text-gray-40-color">13 Дек 2024</p>
+          <IconCalendar class="text-gray-40" />
+          <p class="text-12-reg text-gray-40">13 Дек 2024</p>
         </div>
       </div>
       <div class="w-max h-max flex gap-3 items-center justify-end">
         <UiButton
           text="Распечатать"
-          bg-color="bg-gray-15-color"
-          text-color="text-gray-90-color"
-          hover="hover:opacity-[0.9]"
+          bg-color="bg-gray-15"
+          text-color="text-gray-90"
+          hover="opacity-[0.9]"
           :border="false"
           class="w-[140px] h-[30px]"
         >
           <template v-slot:icon>
-            <IconPrint class="w-[20px] h-[20px] text-gray-90-color" />
+            <IconPrint class="w-[20px] h-[20px] text-gray-90" />
           </template>
         </UiButton>
         <UiButton
           text="Скачать Excel"
-          bg-color="bg-primary-color"
-          text-color="text-dark-night-color"
-          hover="hover:opacity-[0.9]"
+          bg-color="bg-primary"
+          text-color="text-dark-night"
+          hover="opacity-[0.9]"
           :border="false"
           class="w-[150px] h-[30px]"
         >
           <template v-slot:icon>
-            <IconExcel class="w-[20px] h-[25px] text-dark-night-color" />
+            <IconExcel class="w-[20px] h-[25px] text-dark-night" />
           </template>
         </UiButton>
       </div>
     </div>
     <div class="w-full h-[32px] mt-3 flex gap-4 justify-between items-center">
       <div class="w-max h-full flex flex-col items-start justify-center">
-        <p class="text-12-ext text-gray-40-color">
+        <p class="text-12-ext text-gray-40">
           Отчет подготовил(а):
-          <span class="text-12-reg text-gray-75-color">Дмитрий Петров</span>
+          <span class="text-12-reg text-gray-75">Дмитрий Петров</span>
         </p>
-        <p class="text-12-ext text-gray-40-color">
+        <p class="text-12-ext text-gray-40">
           Дата подготовки:
-          <span class="text-12-reg text-gray-75-color">
+          <span class="text-12-reg text-gray-75">
             <b>13 Дек 2024</b> 16:30
           </span>
         </p>
@@ -144,14 +144,14 @@ const onSubmit = handleSubmit(async (values) => {});
       <UiButton
         text="Редактировать отчет"
         bg-color="bg-transparent"
-        text-color="text-gray-75-color"
-        hover="hover:bg-gray-15-color"
+        text-color="text-gray-75"
+        hover="bg-gray-15"
         :border="false"
         class="w-[210px] h-[30px]"
         @click="editWindow = true"
       >
         <template v-slot:icon>
-          <IconEdit05 class="w-[20px] h-[20px] text-gray-90-color" />
+          <IconEdit05 class="w-[20px] h-[20px] text-gray-90" />
         </template>
       </UiButton>
     </div>
@@ -162,8 +162,8 @@ const onSubmit = handleSubmit(async (values) => {});
         <div
           v-for="(report, key) in salesReports"
           :key="report.id"
-          class="w-max h-[24px] flex items-center justify-center px-3 rounded-t-lg text-gray-90-color text-10-reg cursor-pointer"
-          :class="[activeReport == key ? 'bg-gray-15-color' : 'bg-white/5']"
+          class="w-max h-[24px] flex items-center justify-center px-3 rounded-t-lg text-gray-90 text-10-reg cursor-pointer"
+          :class="[activeReport == key ? 'bg-gray-15' : 'bg-white/5']"
           @click="activeReport = key"
         >
           <p>{{ report.name }}</p>
@@ -179,128 +179,128 @@ const onSubmit = handleSubmit(async (values) => {});
           v-if="activeReport == key"
         >
           <div
-            class="w-full h-max flex flex-col rounded-[4px] bg-gray-15-color px-2 py-1"
+            class="w-full h-max flex flex-col rounded-[4px] bg-gray-15 px-2 py-1"
             v-for="(city, cityKey) in report.cities"
           >
             <div
               class="w-full h-[24px] flex items-center justify-between cursor-pointer"
               @click="activeCityPackage(cityKey)"
             >
-              <p class="w-[35%] text-14-reg text-gray-90-color">
+              <p class="w-[35%] text-14-reg text-gray-90">
                 {{ city.name }}
               </p>
-              <p class="w-[30%] text-center text-14-ext text-gray-75-color">
+              <p class="w-[30%] text-center text-14-ext text-gray-75">
                 170 567 гр
               </p>
               <div class="w-[30%] flex gap-2 items-center justify-end">
                 <p
-                  class="text-14-reg text-gray-90-color flex items-center gap-[2px]"
+                  class="text-14-reg text-gray-90 flex items-center gap-[2px]"
                 >
                   9 490 000
-                  <span class="text-10-ext text-primary-color uppercase">
+                  <span class="text-10-ext text-primary uppercase">
                     rub
                   </span>
                 </p>
-                <IconChevronDown class="text-gray-90-color" />
+                <IconChevronDown class="text-gray-90" />
               </div>
             </div>
             <Transition name="cityPackage">
               <div
                 v-if="activeCityPackagingIds.includes(cityKey)"
-                class="w-full h-max mt-2 flex flex-col rounded-md overflow-hidden bg-dark-gunmental-color"
+                class="w-full h-max mt-2 flex flex-col rounded-md overflow-hidden bg-dark-gunmental"
               >
-                <div class="w-full h-[32px] flex border-b border-gray-25-color">
+                <div class="w-full h-[32px] flex border-b border-gray-25">
                   <div
                     class="min-w-[170px] flex-grow h-full flex items-center justify-start pl-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">Фасовка</p>
+                    <p class="text-12-reg text-gray-40">Фасовка</p>
                   </div>
                   <div
                     class="w-[90px] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">Количество</p>
+                    <p class="text-12-reg text-gray-40">Количество</p>
                   </div>
                   <div
                     class="w-[100px] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">Общий вес</p>
+                    <p class="text-12-reg text-gray-40">Общий вес</p>
                   </div>
                   <div
                     class="w-[130px] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">
+                    <p class="text-12-reg text-gray-40">
                       Торговая площадка
                     </p>
                   </div>
                   <div
                     class="w-[170px] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">Сумма</p>
+                    <p class="text-12-reg text-gray-40">Сумма</p>
                   </div>
                 </div>
                 <div
-                  class="w-full h-[36px] flex bg-gray-15-color"
+                  class="w-full h-[36px] flex bg-gray-15"
                   v-for="(item, key, index) in city.packaging"
                   :class="[
                     Object.values(city.packaging).length !== index - 1
-                      ? 'border-b border-gray-15-color'
+                      ? 'border-b border-gray-15'
                       : '',
                   ]"
                 >
                   <div
                     class="min-w-[170px] flex-grow h-full flex items-center justify-start pl-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">
+                    <p class="text-12-reg text-gray-40">
                       {{ item.package.toLocaleString() }} гр
                     </p>
                   </div>
                   <div
                     class="w-[90px] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">
+                    <p class="text-12-reg text-gray-40">
                       {{ item.count.toLocaleString() }}
                     </p>
                   </div>
                   <div
                     class="w-[100px] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">
+                    <p class="text-12-reg text-gray-40">
                       {{ (item.package * item.count).toLocaleString() }} гр
                     </p>
                   </div>
                   <div
                     class="w-[130px] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">
+                    <p class="text-12-reg text-gray-40">
                       {{ item.marketplace_id }}
                     </p>
                   </div>
                   <div
                     class="w-[170px] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-12-reg text-gray-40-color">
+                    <p class="text-12-reg text-gray-40">
                       {{ item.amount.toLocaleString() }}
-                      <span class="text-10-ext text-primary-color uppercase">
+                      <span class="text-10-ext text-primary uppercase">
                         rub
                       </span>
                     </p>
                   </div>
                 </div>
-                <div class="w-full h-[32px] flex border-b border-gray-25-color">
+                <div class="w-full h-[32px] flex border-b border-gray-25">
                   <div
                     class="min-w-[35%] flex-grow h-full flex items-center justify-start pl-2"
                   >
-                    <p class="text-14-reg text-gray-75-color">Сумма</p>
+                    <p class="text-14-reg text-gray-75">Сумма</p>
                   </div>
                   <div class="w-[30%] h-full flex items-center justify-center">
-                    <p class="text-14-reg text-gray-75-color">170 567 гр</p>
+                    <p class="text-14-reg text-gray-75">170 567 гр</p>
                   </div>
                   <div
                     class="w-[30%] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-14-reg text-gray-75-color">
+                    <p class="text-14-reg text-gray-75">
                       9 490 000
-                      <span class="text-10-ext text-primary-color uppercase">
+                      <span class="text-10-ext text-primary uppercase">
                         rub
                       </span>
                     </p>
@@ -314,30 +314,30 @@ const onSubmit = handleSubmit(async (values) => {});
     </div>
     <div class="w-full h-max flex flex-col items-end mt-3">
       <div class="w-[200px] flex items-center justify-between">
-        <p class="text-12-reg text-gray-40-color">Общий вес:</p>
-        <p class="text-12-reg text-gray-75-color">
+        <p class="text-12-reg text-gray-40">Общий вес:</p>
+        <p class="text-12-reg text-gray-75">
           9 490 000
-          <span class="text-10-ext text-primary-color uppercase">rub</span>
+          <span class="text-10-ext text-primary uppercase">rub</span>
         </p>
       </div>
       <div
-        class="w-[200px] my-2 block border-b border-dashed border-gray-40-color"
+        class="w-[200px] my-2 block border-b border-dashed border-gray-40"
       ></div>
       <div class="w-[200px] flex items-center justify-between">
-        <p class="text-12-reg text-gray-40-color">Сумма продаж:</p>
-        <p class="text-12-reg text-gray-75-color">
+        <p class="text-12-reg text-gray-40">Сумма продаж:</p>
+        <p class="text-12-reg text-gray-75">
           9 490 000
-          <span class="text-10-ext text-primary-color uppercase">rub</span>
+          <span class="text-10-ext text-primary uppercase">rub</span>
         </p>
       </div>
       <div
-        class="w-[200px] my-2 block border-b border-dashed border-gray-40-color"
+        class="w-[200px] my-2 block border-b border-dashed border-gray-40"
       ></div>
       <div class="w-[200px] flex items-center justify-between">
-        <p class="text-12-reg text-gray-40-color">Себестоимость:</p>
-        <p class="text-12-reg text-gray-75-color">
+        <p class="text-12-reg text-gray-40">Себестоимость:</p>
+        <p class="text-12-reg text-gray-75">
           9 490 000
-          <span class="text-10-ext text-primary-color uppercase">rub</span>
+          <span class="text-10-ext text-primary uppercase">rub</span>
         </p>
       </div>
     </div>
@@ -345,16 +345,16 @@ const onSubmit = handleSubmit(async (values) => {});
   <form
     @submit.prevent="onSubmit"
     v-if="mainStore.stores && editWindow"
-    class="w-full h-max bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <!-- top lvl - 1 : menu and edit toggle-->
     <div class="w-full h-[36px] flex items-center justify-between">
       <div class="w-max h-full flex items-center justify-start gap-3">
         <UiSelect
-          main-text-color="text-gray-75-color"
-          select-bg-color="bg-gray-15-color"
-          disable-text-color="text-gray-40-color"
-          disable-bg-color="bg-gray-15-color"
+          main-text-color="text-gray-75"
+          select-bg-color="bg-gray-15"
+          disable-text-color="text-gray-40"
+          disable-bg-color="bg-gray-15"
           :array="mainStore.stores"
           :show-menu="selectStore"
           default-select-text="Магазин"
@@ -370,12 +370,12 @@ const onSubmit = handleSubmit(async (values) => {});
         />
         <div class="w-full h-full flex flex-col">
           <div
-            class="w-full h-[38px] flex items-center justify-start gap-2 rounded-md py-1 px-4 bg-gray-15-color"
+            class="w-full h-[38px] flex items-center justify-start gap-2 rounded-md py-1 px-4 bg-gray-15"
             @click="selectDate(edit ? true : false)"
             :class="[
               edit
-                ? 'text-gray-90-color cursor-pointer'
-                : 'text-gray-40-color cursor-not-allowed',
+                ? 'text-gray-90 cursor-pointer'
+                : 'text-gray-40 cursor-not-allowed',
             ]"
           >
             <IconCalendar />
@@ -397,25 +397,25 @@ const onSubmit = handleSubmit(async (values) => {});
         <div
           class="w-max h-[28px] flex items-center gap-3 px-2 bg-white/5 rounded-lg"
         >
-          <p class="text-12-reg text-gray-75-color">Редактирование</p>
+          <p class="text-12-reg text-gray-75">Редактирование</p>
           <UiToggle v-model:model-value="edit" class="w-[36px]" />
         </div>
       </div>
     </div>
     <!-- lvl - 2 : select product -->
-    <div class="w-full mt-3 border border-gray-15-color rounded-lg p-3">
+    <div class="w-full mt-3 border border-gray-15 rounded-lg p-3">
       <div
         class="w-full flex flex-col items-start"
         v-for="(product, key) in products"
         :key="product.id"
       >
-        <p class="text-12-reg text-gray-90-color">Товар {{ key }}</p>
+        <p class="text-12-reg text-gray-90">Товар {{ key }}</p>
         <div class="w-full flex items-center justify-between mt-1">
           <UiSelect
-            main-text-color="text-gray-75-color"
-            select-bg-color="bg-gray-15-color"
-            disable-text-color="text-gray-40-color"
-            disable-bg-color="bg-gray-15-color"
+            main-text-color="text-gray-75"
+            select-bg-color="bg-gray-15"
+            disable-text-color="text-gray-40"
+            disable-bg-color="bg-gray-15"
             :array="mainStore.stores"
             :show-menu="product.productMenu"
             default-select-text="Товар"
@@ -432,27 +432,27 @@ const onSubmit = handleSubmit(async (values) => {});
           <div
             class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer"
           >
-            <IconClose class="text-gray-40-color" />
+            <IconClose class="text-gray-40" />
           </div>
         </div>
         <div
-          class="w-full block border-dashed border-b border-gray-15-color my-2"
+          class="w-full block border-dashed border-b border-gray-15 my-2"
         ></div>
         <!-- lvl - 3 : select city -->
         <div
-          class="w-full flex flex-col items-start border border-gray-15-color rounded-lg p-3"
+          class="w-full flex flex-col items-start border border-gray-15 rounded-lg p-3"
         >
           <div
             class="w-full flex flex-col"
             v-for="(city, key) in product.cities"
           >
-            <p class="text-12-reg text-gray-90-color">Город</p>
+            <p class="text-12-reg text-gray-90">Город</p>
             <div class="w-full flex items-center justify-between mt-1">
               <UiSelect
-                main-text-color="text-gray-75-color"
-                select-bg-color="bg-gray-15-color"
-                disable-text-color="text-gray-40-color"
-                disable-bg-color="bg-gray-15-color"
+                main-text-color="text-gray-75"
+                select-bg-color="bg-gray-15"
+                disable-text-color="text-gray-40"
+                disable-bg-color="bg-gray-15"
                 :array="mainStore.stores"
                 :show-menu="city.cityMenu"
                 default-select-text="Товар"
@@ -469,11 +469,11 @@ const onSubmit = handleSubmit(async (values) => {});
               <div
                 class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer"
               >
-                <IconClose class="text-gray-40-color" />
+                <IconClose class="text-gray-40" />
               </div>
             </div>
             <div
-              class="w-full block border-dashed border-b border-gray-15-color my-2"
+              class="w-full block border-dashed border-b border-gray-15 my-2"
             ></div>
             <!-- lvl - 4 : packages -->
             <div
@@ -481,7 +481,7 @@ const onSubmit = handleSubmit(async (values) => {});
               v-for="(pack, key) in city.packaging"
             >
               <div class="w-[124px] flex flex-col items-start">
-                <p class="text-12-reg text-gray-90-color">Фасовка</p>
+                <p class="text-12-reg text-gray-90">Фасовка</p>
                 <UiInput
                   v-model:model-value="pack.package"
                   placeholder="В граммах"
@@ -490,7 +490,7 @@ const onSubmit = handleSubmit(async (values) => {});
                 />
               </div>
               <div class="w-[116px] flex flex-col items-start ml-1">
-                <p class="text-12-reg text-gray-90-color">Количество</p>
+                <p class="text-12-reg text-gray-90">Количество</p>
                 <UiInput
                   v-model:model-value="pack.count"
                   placeholder="В штуках"
@@ -499,7 +499,7 @@ const onSubmit = handleSubmit(async (values) => {});
                 />
               </div>
               <div class="w-[167px] flex flex-col items-start ml-1">
-                <p class="text-12-reg text-gray-90-color">Сумма</p>
+                <p class="text-12-reg text-gray-90">Сумма</p>
                 <UiInput
                   v-model:model-value="pack.amount"
                   placeholder="В рублях"
@@ -508,12 +508,12 @@ const onSubmit = handleSubmit(async (values) => {});
                 />
               </div>
               <div class="w-[167px] flex flex-col items-start ml-1">
-                <p class="text-12-reg text-gray-90-color">Торговая площадка</p>
+                <p class="text-12-reg text-gray-90">Торговая площадка</p>
                 <UiSelect
-                  main-text-color="text-gray-75-color"
-                  select-bg-color="bg-gray-15-color"
-                  disable-text-color="text-gray-40-color"
-                  disable-bg-color="bg-gray-15-color"
+                  main-text-color="text-gray-75"
+                  select-bg-color="bg-gray-15"
+                  disable-text-color="text-gray-40"
+                  disable-bg-color="bg-gray-15"
                   :array="mainStore.stores"
                   :show-menu="pack.marketplaceMenu"
                   default-select-text="Площадка"
@@ -529,67 +529,67 @@ const onSubmit = handleSubmit(async (values) => {});
                 />
               </div>
               <div
-                class="w-[1px] h-[58px] block border-r border-gray-15-color mx-2"
+                class="w-[1px] h-[58px] block border-r border-gray-15 mx-2"
               ></div>
               <div
                 class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer"
               >
-                <IconClose class="text-gray-40-color" />
+                <IconClose class="text-gray-40" />
               </div>
             </div>
             <UiButton
               text="Добавить фасовку"
-              bg-color="bg-gray-15-color"
-              text-color="text-gray-90-color text-14-reg"
-              hover="hover:opacity-[0.9]"
+              bg-color="bg-gray-15"
+              text-color="text-gray-90 text-14-reg"
+              hover="opacity-[0.9]"
               :border="false"
               :icon="false"
               class="w-[180px] h-[30px] mt-4"
             >
               <template v-slot:icon>
-                <IconPlus class="text-gray-90-color" />
+                <IconPlus class="text-gray-90" />
               </template>
             </UiButton>
           </div>
         </div>
         <UiButton
           text="Добавить город"
-          bg-color="bg-gray-15-color"
-          text-color="text-gray-90-color text-14-reg"
-          hover="hover:opacity-[0.9]"
-          border-color="border-gray-90-color"
+          bg-color="bg-gray-15"
+          text-color="text-gray-90 text-14-reg"
+          hover="opacity-[0.9]"
+          border-color="border-gray-90"
           :border="true"
           :icon="false"
           class="w-[180px] h-[30px] mt-4"
         >
           <template v-slot:icon>
-            <IconPlus class="text-gray-90-color" />
+            <IconPlus class="text-gray-90" />
           </template>
         </UiButton>
       </div>
     </div>
     <UiButton
       text="Добавить товар"
-      bg-color="bg-primary-color"
-      text-color="text-dark-night-color text-16-reg"
-      hover="hover:opacity-[0.9]"
+      bg-color="bg-primary"
+      text-color="text-dark-night text-16-reg"
+      hover="opacity-[0.9]"
       :border="false"
       :icon="false"
       class="w-[190px] h-[40px] mt-4"
     >
       <template v-slot:icon>
-        <IconPlus class="text-dark-night-color" />
+        <IconPlus class="text-dark-night" />
       </template>
     </UiButton>
     <div
-      class="w-full block border-dashed border-b border-gray-15-color my-2"
+      class="w-full block border-dashed border-b border-gray-15 my-2"
     ></div>
     <div class="w-full flex items-center justify-between">
       <UiButton
         text="Удалить"
         bg-color="bg-transparent"
         text-color="text-error-500 text-14-bold"
-        hover="hover:opacity-[0.9]"
+        hover="opacity-[0.9]"
         :border="false"
         :icon="false"
         class="w-[140px] h-[30px] mt-4 p-0"
@@ -600,9 +600,9 @@ const onSubmit = handleSubmit(async (values) => {});
       </UiButton>
       <UiButton
         text="Сохранить"
-        bg-color="bg-primary-color"
-        text-color="text-dark-night-color text-16-reg"
-        hover="hover:opacity-[0.9]"
+        bg-color="bg-primary"
+        text-color="text-dark-night text-16-reg"
+        hover="opacity-[0.9]"
         :border="false"
         :icon="false"
         class="w-[90px] h-[30px] mt-4"
@@ -612,7 +612,7 @@ const onSubmit = handleSubmit(async (values) => {});
   </form>
   <!-- <div
     v-else
-    class="sticky z-[20] w-full h-[400px] flex items-center justify-center bg-dark-gunmental-color rounded-tr-md rounded-b-md p-3"
+    class="sticky z-[20] w-full h-[400px] flex items-center justify-center bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="loader"></div>
   </div> -->

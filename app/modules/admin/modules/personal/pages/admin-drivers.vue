@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
-import { getDrivers } from "../components/Drivers/drivers.data";
+import { getDrivers, getDriverAreas } from "../components/Drivers/drivers.data";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 useSeoMeta({
@@ -29,13 +29,17 @@ const changePage = (value: number) => {
   personalStore.employeesPage = value;
   getDrivers();
 };
+
+onMounted(async () => {
+  await getDrivers();
+});
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col justify-between pb-[70px]">
     <DriversTable />
     <div
-      class="h-[90px] py-[12px] px-[24px] border-t border-gray-15-color"
+      class="h-[90px] py-[12px] px-[24px] border-t border-gray-15"
       v-if="
         personalStore.driversPagination &&
         personalStore.driversPagination.total > personalStore.driversPerPage

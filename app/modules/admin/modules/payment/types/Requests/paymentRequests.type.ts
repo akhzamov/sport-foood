@@ -1,4 +1,4 @@
-import type { TPagination } from "~/modules/admin/types/Others/pagination.type";
+import type { TPagination } from "~/types/pagination.type";
 
 export type TRequestType = {
   key: string;

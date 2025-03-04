@@ -18,7 +18,7 @@ const onInput = (event: Event) => {
     :value="props.modelValue"
     @input="onInput"
     :placeholder="placeholder"
-    class="px-3 py-3 bg-gray-15-color text-16-ext text-gray-40-color outline-none border-1 placeholder:text-gray-40-color rounded-lg resize-none"
+    class="px-3 py-3 bg-gray-15 text-16-ext text-gray-40 outline-none border-1 placeholder:text-gray-40 rounded-lg resize-none"
   />
 </template>
 

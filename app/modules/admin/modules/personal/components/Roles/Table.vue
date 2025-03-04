@@ -63,7 +63,7 @@ const employees = reactive([
     <table class="w-full">
       <thead class="w-full">
         <tr
-          class="w-full h-[32px] flex items-center text-12-med text-gray-40-color border-b border-gray-40-color"
+          class="w-full h-[32px] flex items-center text-12-med text-gray-40 border-b border-gray-40"
         >
           <th class="w-[22px] text-end">№</th>
           <th class="w-[36px] flex items-center justify-center">
@@ -96,10 +96,10 @@ const employees = reactive([
       <tbody>
         <template v-for="employee in employees" :key="employee.id">
           <tr
-            class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15-color border-b border-gray-40-color"
+            class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th
-              class="w-[22px] flex items-center justify-end text-14-reg text-gray-75-color"
+              class="w-[22px] flex items-center justify-end text-14-reg text-gray-75"
             >
               {{ employee.id }}
             </th>
@@ -107,7 +107,7 @@ const employees = reactive([
               <UiCheckbox v-model:model-value="employee.checked" />
             </th>
             <th
-              class="min-w-[394px] flex-grow flex items-center justify-start gap-1 text-14-reg text-gray-75-color"
+              class="min-w-[394px] flex-grow flex items-center justify-start gap-1 text-14-reg text-gray-75"
             >
               {{ employee.name }}
             </th>
@@ -144,17 +144,17 @@ const employees = reactive([
               </span>
             </th>
             <th
-              class="w-[180px] flex items-center justify-start text-14-reg text-gray-75-color"
+              class="w-[180px] flex items-center justify-start text-14-reg text-gray-75"
             >
               {{ employee.phone }}
             </th>
             <th
-              class="w-[180px] flex items-center justify-start text-14-med text-gray-75-color"
+              class="w-[180px] flex items-center justify-start text-14-med text-gray-75"
             >
               {{ employee.position }}
             </th>
             <th
-              class="w-[180px] flex items-center justify-start text-14-med text-gray-75-color"
+              class="w-[180px] flex items-center justify-start text-14-med text-gray-75"
             >
               {{ employee.role }}
             </th>

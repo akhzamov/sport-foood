@@ -43,11 +43,11 @@ const openEditTab = (id: number, textId: string) => {
   <RequestsFilter v-if="paymentStore.filterShow" />
   <div class="w-full h-full">
     <div
-      class="w-full flex-grow h-[40px] bg-dark-charcoal-color flex items-center justify-start gap-1"
+      class="w-full flex-grow h-[40px] bg-dark-charcoal flex items-center justify-start gap-1"
     >
       <NuxtLink
         to="/admin-sales-reports"
-        class="w-max h-[40px] relative flex flex-col justify-center px-2 text-14-semi text-gray-40-color payment-requests-link"
+        class="w-max h-[40px] relative flex flex-col justify-center px-2 text-14-semi text-gray-40 payment-requests-link"
       >
         <p class="flex items-center justify-center gap-2">
           <IconTrendUp />
@@ -56,7 +56,7 @@ const openEditTab = (id: number, textId: string) => {
       </NuxtLink>
       <NuxtLink
         to="/admin-sales-reports-archive"
-        class="w-max h-[40px] relative flex flex-col justify-center px-2 text-14-semi text-gray-40-color payment-requests-link"
+        class="w-max h-[40px] relative flex flex-col justify-center px-2 text-14-semi text-gray-40 payment-requests-link"
       >
         <p class="flex items-center justify-center gap-2">
           <IconArchive />
@@ -65,15 +65,15 @@ const openEditTab = (id: number, textId: string) => {
       </NuxtLink>
     </div>
     <div
-      class="w-full flex-grow h-[40px] bg-dark-gunmental-color p-2 flex items-center justify-between"
+      class="w-full flex-grow h-[40px] bg-dark-gunmental p-2 flex items-center justify-between"
     >
       <div class="w-full h-full flex-grow flex items-center justify-start">
         <div class="w-auto h-full flex items-center justify-start">
           <div
             @click="openNewTab('admin-sales-reports-add')"
-            class="w-max h-[30px] px-3 flex items-center justify-center border-r border-gray-15-color cursor-pointer"
+            class="w-max h-[30px] px-3 flex items-center justify-center border-r border-gray-15 cursor-pointer"
           >
-            <IconPlus class="w-[30px] h-[30px] text-gray-40-color" />
+            <IconPlus class="w-[30px] h-[30px] text-gray-40" />
           </div>
         </div>
       </div>
@@ -81,7 +81,7 @@ const openEditTab = (id: number, textId: string) => {
     <table class="w-full">
       <thead class="w-full">
         <tr
-          class="w-full h-[32px] flex items-center text-12-med text-gray-40-color border-b border-gray-40-color"
+          class="w-full h-[32px] flex items-center text-12-med text-gray-40 border-b border-gray-40"
         >
           <th class="w-[72px] text-start pl-2">ID</th>
           <th
@@ -101,26 +101,26 @@ const openEditTab = (id: number, textId: string) => {
         <template v-for="(request, key) in paymentStore.payments" :key="key">
           <tr
             @click="openEditTab(key, `admin-sales-reports-edit-${key}`)"
-            class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15-color border-b border-gray-40-color"
+            class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th
-              class="w-[72px] flex items-center justify-start pl-2 text-14-reg text-gray-75-color"
+              class="w-[72px] flex items-center justify-start pl-2 text-14-reg text-gray-75"
             >
               {{ key }}
             </th>
             <th
-              class="min-w-[178px] flex-grow flex items-center justify-start gap-1 pl-2 text-14-reg text-gray-75-color"
+              class="min-w-[178px] flex-grow flex items-center justify-start gap-1 pl-2 text-14-reg text-gray-75"
             >
               {{ request.store.name }}
             </th>
             <th
-              class="w-[200px] flex items-center justify-start gap-1 pl-2 text-14-reg text-gray-75-color"
+              class="w-[200px] flex items-center justify-start gap-1 pl-2 text-14-reg text-gray-75"
             >
               {{ Number(request.amount).toLocaleString("ru-RU") }}
               {{ request.currency }}
             </th>
             <th
-              class="w-[200px] flex items-center justify-start pl-2 text-14-reg text-gray-75-color"
+              class="w-[200px] flex items-center justify-start pl-2 text-14-reg text-gray-75"
             >
               {{ request.created_at }}
             </th>
@@ -146,10 +146,10 @@ const openEditTab = (id: number, textId: string) => {
 }
 
 .payment-requests-link::after.router-link-active {
-  @apply bg-primary-color text-primary-color;
+  @apply bg-primary text-primary;
 }
 
 .router-link-active p {
-  @apply text-primary-color;
+  @apply text-primary;
 }
 </style>

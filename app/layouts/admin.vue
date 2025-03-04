@@ -1,29 +1,19 @@
 <script lang="ts" setup>
-import { useAdminLogisticsStore } from "~/modules/admin/modules/logistic/stores/adminLogistics";
-import { getPermissions } from "~/modules/admin/modules/personal/components/Roles/roles.data";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
-import { getUsers } from "~/modules/admin/modules/personal/components/Employees/employees.data";
-import { getSalesAgents } from "~/modules/admin/modules/personal/components/SalesAgents/salesAgents.data";
 import { getStores } from "~/modules/profile/components/Header/profileHeader.data";
-import { getDriverAreas, getDrivers } from "~/modules/admin/modules/personal/components/Drivers/drivers.data";
-import { getPayments } from "~/modules/admin/modules/payment/components/Requests/requests.data";
 
-const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
 const mainStore = useMainStore();
 const { $loginRep } = useNuxtApp();
+const { getAreas, getCitiesByArea } = useCrudCitiesResponse();
 
 onMounted(async () => {
   const resUser = await $loginRep.getUser();
   mainStore.user = resUser;
   await getStores();
-  await getPermissions();
-  await getUsers();
-  await getSalesAgents();
-  await getDrivers();
-  await getDriverAreas();
-  await getPayments();
+  await getAreas();
+  await getCitiesByArea();
 });
 </script>
 
@@ -41,12 +31,23 @@ onMounted(async () => {
       :title="mainStore.alertShowTitle"
       :text="mainStore.alertShowText"
     />
+    <UiRightAlert
+      v-if="mainStore.rightAlertShow"
+      :type="mainStore.rightAlertShowType"
+      :text="mainStore.rightAlertShowText"
+    />
+    <UiConfirmAlert
+      v-if="mainStore.confirmAlertShow"
+      :type="mainStore.confirmAlertShowType"
+      :title="mainStore.confirmAlertShowTitle"
+      :text="mainStore.confirmAlertShowText"
+    />
   </TransitionGroup>
   <div class="w-full h-screen overflow-x-hidden overflow-y-hidden">
     <AdminAppHeader />
     <div class="w-full h-full flex">
       <AdminAside />
-      <div class="relative w-full h-full flex bg-dark-charcoal-color">
+      <div class="relative w-full h-full flex bg-dark-charcoal">
         <div class="w-full h-auto flex-grow z-[0]">
           <NuxtPage />
         </div>

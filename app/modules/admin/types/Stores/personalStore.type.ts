@@ -1,3 +1,4 @@
+import type { TPagination } from "~/types/pagination.type";
 import type {
   TDriver,
   TDriverArea,
@@ -8,7 +9,6 @@ import type {
 } from "../../modules/personal/types/Personal/Employees/users.type";
 import type { TPermissions } from "../../modules/personal/types/Personal/Roles/permissions.type";
 import type { TSalesAgent } from "../../modules/personal/types/Personal/SalesAgents/salesAgents.type";
-import type { TPagination } from "../Others/pagination.type";
 
 export interface IPersonalStore {
   employees: TUser[] | null;

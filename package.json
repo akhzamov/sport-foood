@@ -15,6 +15,7 @@
     "@pinia/nuxt": "^0.5.4",
     "@vee-validate/yup": "^4.13.2",
     "@vuepic/vue-datepicker": "^9.0.3",
+    "@vueuse/nuxt": "^12.7.0",
     "axios": "^1.7.5",
     "chart.js": "^4.4.4",
     "chartjs-plugin-annotation": "^3.0.1",

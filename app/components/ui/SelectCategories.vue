@@ -14,8 +14,8 @@ const props = withDefaults(
     isObject: boolean; // Указывает, объект или массив передан
   }>(),
   {
-    mainTextColor: "text-gray-90-color",
-    selectBgColor: "bg-gray-90-color",
+    mainTextColor: "text-gray-90",
+    selectBgColor: "bg-gray-90",
     array: () => ({}),
     defaultSelectText: "",
     icon: false,
@@ -34,6 +34,8 @@ const emit = defineEmits([
 const selectedItemId = ref(props.modelValue);
 const selectedItemName = ref(props.defaultSelectText);
 const searchValue = ref("");
+const selectRef = useTemplateRef<HTMLElement>("selectRef");
+onClickOutside(selectRef, () => emit("update:showMenu", false));
 
 let filteredData = ref(props.array);
 
@@ -82,6 +84,12 @@ const filterItems = (data: any, search: string): any => {
   return null;
 };
 
+const isArray = (data: unknown): data is any[] => Array.isArray(data);
+
+const getArrayFromProps = () => {
+  return isArray(props.array) ? props.array : Object.values(props.array);
+};
+
 const selectItem = (id: string | number, name: string) => {
   selectedItemId.value = id;
   selectedItemName.value = name;
@@ -89,6 +97,47 @@ const selectItem = (id: string | number, name: string) => {
   emit("click:selectItem", id);
   emit("update:showMenu", false);
 };
+
+const checkDefaultText = () => {
+  if (props.modelValue) {
+    selectedItemId.value = props.modelValue;
+
+    const foundItem = getArrayFromProps().find((firstItem: any) => {
+      const firstItemArray = isArray(firstItem[props.innerItemKey])
+        ? firstItem[props.innerItemKey]
+        : Object.values(firstItem[props.innerItemKey]);
+
+      return firstItemArray.some(
+        (secondItem: any) => secondItem[props.valueKey] === props.modelValue
+      );
+    });
+
+    if (foundItem) {
+      const firstItemArray = isArray(foundItem[props.innerItemKey])
+        ? foundItem[props.innerItemKey]
+        : Object.values(foundItem[props.innerItemKey]);
+
+      selectedItemName.value =
+        firstItemArray.find(
+          (secondItem: any) => secondItem[props.valueKey] === props.modelValue
+        )?.[props.labelKey] || "";
+    }
+  } else if (props.defaultSelectText) {
+    selectedItemName.value = props.defaultSelectText;
+  }
+};
+
+onMounted(() => {
+  checkDefaultText();
+});
+
+watch(
+  () => props.array,
+  () => {
+    checkDefaultText();
+  },
+  { deep: true, immediate: true }
+);
 
 watch(
   () => searchValue.value,
@@ -100,7 +149,7 @@ watch(
 </script>
 
 <template>
-  <div class="w-[214px] h-[40px] relative">
+  <div class="w-[214px] relative" ref="selectRef">
     <div
       class="w-full h-full rounded-lg flex items-center justify-between px-4 select-none cursor-pointer"
       :class="props.selectBgColor"
@@ -114,14 +163,14 @@ watch(
     </div>
     <div
       v-if="props.showMenu"
-      class="absolute max-h-[400px] bg-dark-eerie-black-color top-[105%] left-0 w-full overflow-y-auto rounded-lg px-3 py-3 flex flex-col gap-[10px]"
+      class="absolute max-h-[400px] bg-dark-eerie-black top-[105%] left-0 w-full overflow-y-auto rounded-lg px-3 py-3 flex flex-col gap-[10px]"
     >
       <div>
         <input
           v-model="searchValue"
           type="text"
           placeholder="Поиск"
-          class="w-full h-[30px] bg-dark-onix-color rounded-md border border-gray-15-color px-2 outline-none text-gray-75-color"
+          class="w-full h-[30px] bg-dark-onix rounded-md border border-gray-15 px-2 outline-none text-gray-75"
         />
       </div>
       <div
@@ -129,29 +178,26 @@ watch(
         :key="key"
         class="flex flex-col gap-2"
       >
-        <span
-          class="text-16-semi text-gray-40-color"
-          v-if="!Array.isArray(item)"
-        >
+        <span class="text-16-semi text-gray-40" v-if="!Array.isArray(item)">
           {{ item[props.labelKey] }}
         </span>
         <template v-for="(label, lKey) in item[props.innerItemKey]" :key="lKey">
           <div
-            class="flex items-center justify-between pl-3 cursor-pointer hover:text-primary-color"
+            class="flex items-center justify-between pl-3 cursor-pointer hover:text-primary"
             @click="selectItem(label[props.valueKey], label[props.labelKey])"
           >
             <span
               class="text-14-med"
               :class="
                 label[props.labelKey] == selectedItemName
-                  ? 'text-primary-color'
-                  : 'text-gray-75-color'
+                  ? 'text-primary'
+                  : 'text-gray-75'
               "
               >{{ label[props.labelKey] }}</span
             >
             <IconCheck
               v-if="label[props.labelKey] == selectedItemName"
-              class="text-primary-color"
+              class="text-primary"
             />
           </div>
         </template>

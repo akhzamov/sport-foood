@@ -35,9 +35,9 @@ const getWeightColor = (marketplace: TMarketplaceLEftProductMarketplace) => {
   if (weight < minWeight) {
     return "bg-error-500"; // Красный цвет
   } else if (weight >= minWeight && weight < maxWeight) {
-    return "bg-secondary-color"; // Зеленый цвет
+    return "bg-mint"; // Зеленый цвет
   } else {
-    return "bg-primary-color"; // Желтый цвет
+    return "bg-primary"; // Желтый цвет
   }
 };
 
@@ -71,7 +71,7 @@ const checkPosition = async () => {
 
 <template>
   <div
-    class="flex flex-col items-start w-full h-full border border-gray-40-color bg-gray-15-color rounded-lg mt-7 overflow-visible"
+    class="flex flex-col items-start w-full h-full border border-gray-40 bg-gray-15 rounded-lg mt-7 overflow-visible"
   >
     <div class="w-full h-[38px] flex items-center justify-between px-3">
       <p class="text-14-semi text-white">Остатки по торговым площадкам</p>
@@ -90,10 +90,10 @@ const checkPosition = async () => {
           />
         </div>
         <div
-          class="flex-grow flex flex-col items-start w-full h-max border border-gray-40-color rounded-lg overflow-visible"
+          class="flex-grow flex flex-col items-start w-full h-max border border-gray-40 rounded-lg overflow-visible"
         >
           <div
-            class="w-full h-[38px] bg-gray-15-color flex items-center justify-between px-3 rounded-t-lg"
+            class="w-full h-[38px] bg-gray-15 flex items-center justify-between px-3 rounded-t-lg"
           >
             <p class="text-14-semi text-white">{{ country.name }}</p>
           </div>
@@ -104,13 +104,13 @@ const checkPosition = async () => {
                   <tr class="w-full flex">
                     <th
                       scope="col"
-                      class="min-w-[105px] h-[36px] flex items-center justify-center px-2 bg-dark-charcoal-color border-b border-x border-gray-15-color"
+                      class="min-w-[105px] h-[36px] flex items-center justify-center px-2 bg-dark-charcoal border-b border-x border-gray-15"
                     >
                       <p class="text-12-semi text-white">Товары</p>
                     </th>
                     <th
                       scope="col"
-                      class="min-w-[120px] h-[36px] flex items-center justify-center px-2 bg-dark-charcoal-color border-b border-r border-gray-15-color"
+                      class="min-w-[120px] h-[36px] flex items-center justify-center px-2 bg-dark-charcoal border-b border-r border-gray-15"
                       v-for="(market, marketKey) in Object.values(
                         country.round_marketplaces
                       )"
@@ -123,17 +123,17 @@ const checkPosition = async () => {
                           alt=""
                         />
                         <div class="flex flex-col items-start justify-center">
-                          <p class="text-10-semi text-gray-90-color">
+                          <p class="text-10-semi text-gray-90">
                             {{ market.marketplace_name }}
                           </p>
-                          <p class="text-10-ext text-gray-75-color">Площадка</p>
+                          <p class="text-10-ext text-gray-75">Площадка</p>
                         </div>
                       </div>
                     </th>
                   </tr>
                 </thead>
                 <tbody
-                  class="w-fit bg-gray-15-color rounded-b-lg flex flex-col"
+                  class="w-fit bg-gray-15 rounded-b-lg flex flex-col"
                 >
                   <template
                     v-for="([productKey, product], index) in Object.entries(
@@ -143,7 +143,7 @@ const checkPosition = async () => {
                     <tr
                       class="w-full h-6 flex"
                       :class="[
-                        { 'bg-gray-15-color': index % 2 == 1 },
+                        { 'bg-gray-15': index % 2 == 1 },
                         {
                           'rounded-b-lg':
                             index ===
@@ -153,7 +153,7 @@ const checkPosition = async () => {
                     >
                       <th
                         scope="row"
-                        class="min-w-[105px] h-full flex items-center justify-start pl-2 border-r border-gray-15-color"
+                        class="min-w-[105px] h-full flex items-center justify-start pl-2 border-r border-gray-15"
                       >
                         <p class="text-10-reg text-white">
                           {{ product.product_name }}
@@ -179,7 +179,7 @@ const checkPosition = async () => {
                           }
                         "
                         scope="row"
-                        class="min-w-[120px] h-full flex items-center justify-center border-r border-gray-15-color"
+                        class="min-w-[120px] h-full flex items-center justify-center border-r border-gray-15"
                       >
                         <div
                           :class="[
@@ -190,7 +190,7 @@ const checkPosition = async () => {
                               ? 'border border-white'
                               : '',
                           ]"
-                          class="relative w-[110px] h-[15px] rounded-lg block bg-gray-40-color"
+                          class="relative w-[110px] h-[15px] rounded-lg block bg-gray-40"
                         >
                           <!-- Минимум -->
                           <div
@@ -228,26 +228,26 @@ const checkPosition = async () => {
                                 ? 'left-[-100%] translate-x-[-45%]'
                                 : 'right-[-100%] translate-x-[45%]',
                             ]"
-                            class="absolute top-[-50%] z-[30] w-[200px] h-max flex flex-col gap-2 p-2 bg-dark-gunmental-color rounded-lg"
+                            class="absolute top-[-50%] z-[30] w-[200px] h-max flex flex-col gap-2 p-2 bg-dark-gunmental rounded-lg"
                           >
                             <div
                               v-for="city in marketplace.cities"
                               :key="city.city_id"
-                              class="w-full h-max flex flex-col bg-dark-charcoal-color rounded-[4px] p-[1px]"
+                              class="w-full h-max flex flex-col bg-dark-charcoal rounded-[4px] p-[1px]"
                             >
-                              <h5 class="text-10-reg text-gray-90-color">
+                              <h5 class="text-10-reg text-gray-90">
                                 {{ city.city_name }}
                               </h5>
                               <p
                                 class="w-full h-[14px] flex items-center justify-center gap-[1px] pb-[1px]"
                               >
                                 <span
-                                  class="w-full h-full flex items-center justify-center bg-dark-gunmental-color text-8-ext text-white"
+                                  class="w-full h-full flex items-center justify-center bg-dark-gunmental text-8-ext text-white"
                                 >
                                   Район
                                 </span>
                                 <span
-                                  class="w-full h-full flex items-center justify-center bg-dark-gunmental-color text-8-ext text-white"
+                                  class="w-full h-full flex items-center justify-center bg-dark-gunmental text-8-ext text-white"
                                 >
                                   Остаток
                                 </span>
@@ -258,12 +258,12 @@ const checkPosition = async () => {
                                 class="w-full h-[22px] flex items-center justify-center gap-[1px]"
                               >
                                 <span
-                                  class="w-full h-full flex items-center justify-center bg-dark-gunmental-color text-8-ext text-gray-75-color"
+                                  class="w-full h-full flex items-center justify-center bg-dark-gunmental text-8-ext text-gray-75"
                                 >
                                   {{ district.district_name }}
                                 </span>
                                 <span
-                                  class="w-full h-full flex items-center justify-center bg-dark-gunmental-color text-8-ext text-gray-75-color"
+                                  class="w-full h-full flex items-center justify-center bg-dark-gunmental text-8-ext text-gray-75"
                                 >
                                   {{
                                     Number(
