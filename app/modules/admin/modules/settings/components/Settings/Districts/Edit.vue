@@ -33,6 +33,7 @@ const localitiesStore = useLocalitiesStore();
 const selectRegionMenu = ref(false);
 const { getDistrict, deleteDistrict, getDistricts, editDistrict } =
   useCrudDistrictsResponse();
+const { closeTab } = useTabs();
 
 const onDelete = handleSubmit(async (values) => {
   try {
@@ -72,8 +73,6 @@ const onSubmit = handleSubmit(async (values) => {
         city_id: values.selectedCity,
       };
       await editDistrict(id, body);
-      selectedCity.value = null;
-      district.value = "";
       await getDistricts();
     } catch (error) {
       console.error("Ошибка при создании водителя: ", error);
@@ -84,8 +83,10 @@ const onSubmit = handleSubmit(async (values) => {
 onBeforeMount(async () => {
   mainStore.isLoading = true;
   await getDistrict(adminStore.openUser ?? 0);
-  selectedCity.value = localitiesStore.district?.city_id ?? null;
-  district.value = localitiesStore.district?.name ?? "";
+  if (localitiesStore.district) {
+    selectedCity.value = localitiesStore.district?.city_id;
+    district.value = localitiesStore.district?.name;
+  }
   mainStore.isLoading = false;
 });
 onUnmounted(() => {
@@ -96,7 +97,7 @@ onUnmounted(() => {
 
 <template>
   <form
-    v-if="!mainStore.isLoading"
+    v-if="!mainStore.isLoading && localitiesStore.citiesByArea"
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
@@ -105,10 +106,9 @@ onUnmounted(() => {
         <label class="text-12-reg text-gray-90 mb-1">Выберите город</label>
         <div class="flex gap-1">
           <UiSelectCategories
-            v-if="selectedCity"
             main-text-color="text-gray-90"
             select-bg-color="bg-gray-15"
-            :array="localitiesStore.citiesByArea ?? []"
+            :array="localitiesStore.citiesByArea"
             :show-menu="selectRegionMenu"
             default-select-text="Выбрать город"
             v-model:model-value="selectedCity"
@@ -155,10 +155,11 @@ onUnmounted(() => {
         text="Отмена"
         class="w-[93px]"
         type="button"
+        @click="closeTab(`settings-city-edit-${adminStore.openUser}`)"
       >
       </UiButton>
       <div class="flex items-center justify-center gap-4">
-        <UiButton
+        <UiButtons
           bgColor="bg-transparent"
           :border="true"
           border-color="border-error-500"
@@ -173,7 +174,7 @@ onUnmounted(() => {
           <template v-slot:icon>
             <IconTrash03 class="text-error-500" />
           </template>
-        </UiButton>
+        </UiButtons>
         <UiButton
           bgColor="bg-primary"
           :border="false"

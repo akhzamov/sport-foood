@@ -57,7 +57,7 @@ const openEditTab = (id: number, textId: string) => {
           </div>
           <IconPlus
             class="text-gray-40 hover:text-primary ml-4"
-            @click="openNewTab('admin-drivers-add')"
+            @click="openNewTab('drivers-add')"
           />
           <!-- <IconTrash03 class="text-gray-40 hover:text-error-500 ml-4" /> -->
         </div>
@@ -103,7 +103,7 @@ const openEditTab = (id: number, textId: string) => {
       <tbody>
         <template v-for="driver in personalStore.drivers" :key="driver.id">
           <tr
-            @click="openEditTab(driver.id, `admin-drivers-edit-${driver.id}`)"
+            @click="openEditTab(driver.id, `drivers-edit-${driver.id}`)"
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

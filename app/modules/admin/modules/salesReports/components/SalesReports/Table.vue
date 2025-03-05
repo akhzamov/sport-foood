@@ -70,7 +70,6 @@ const openEditTab = (id: number, textId: string) => {
       <div class="w-full h-full flex-grow flex items-center justify-start">
         <div class="w-auto h-full flex items-center justify-start">
           <div
-            @click="openNewTab('admin-sales-reports-add')"
             class="w-max h-[30px] px-3 flex items-center justify-center border-r border-gray-15 cursor-pointer"
           >
             <IconPlus class="w-[30px] h-[30px] text-gray-40" />
@@ -100,7 +99,6 @@ const openEditTab = (id: number, textId: string) => {
       <tbody v-if="paymentStore.payments">
         <template v-for="(request, key) in paymentStore.payments" :key="key">
           <tr
-            @click="openEditTab(key, `admin-sales-reports-edit-${key}`)"
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

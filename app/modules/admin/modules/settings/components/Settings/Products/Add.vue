@@ -16,7 +16,7 @@ const initialValues: ISchemaForm = {
   name: "",
   description: "",
 };
-const { handleSubmit } = useForm<ISchemaForm>({
+const { handleSubmit, resetForm } = useForm<ISchemaForm>({
   validationSchema: schema,
   initialValues,
 });
@@ -27,6 +27,7 @@ const { value: description, errorMessage: descriptionError } =
 const mainStore = useMainStore();
 const localitiesStore = useLocalitiesStore();
 const { createProduct, getProducts } = useCrudProductsResponse();
+const { closeTab } = useTabs();
 const file = ref<Record<number, File> | null>(null);
 
 const onSubmit = handleSubmit(async (values) => {
@@ -40,8 +41,7 @@ const onSubmit = handleSubmit(async (values) => {
     } else {
       await createProduct(body);
     }
-    name.value = "";
-    description.value = "";
+    resetForm();
     file.value = null;
     await getProducts();
   } catch (error) {
@@ -56,7 +56,7 @@ const onSubmit = handleSubmit(async (values) => {
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
-    <div class="w-full h-[158px] flex items-start justify-center gap-3">
+    <div class="w-full h-max flex items-start justify-center gap-3">
       <div class="w-[140px] h-[158px] flex flex-col">
         <span class="text-12-reg text-gray-90 mb-1">Фотография</span>
         <UiSelectPhoto
@@ -65,7 +65,7 @@ const onSubmit = handleSubmit(async (values) => {
           class="w-[140px] h-[140px]"
         />
       </div>
-      <div class="h-[158px] flex flex-grow flex-col items-start gap-3">
+      <div class="h-max flex flex-grow flex-col items-start gap-3">
         <div class="w-full h-full flex flex-col">
           <label class="text-12-reg text-gray-90 mb-1">
             Название продукта
@@ -112,6 +112,7 @@ const onSubmit = handleSubmit(async (values) => {
         text="Отмена"
         class="w-[93px]"
         type="button"
+        @click="closeTab('settings-product-add')"
       >
       </UiButton>
       <UiButton

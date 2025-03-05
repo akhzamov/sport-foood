@@ -2,8 +2,16 @@
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 const localitiesStore = useLocalitiesStore();
-const { openEditTab } = useCrudCitiesResponse();
+const { openEditTab } = useCrudProductsResponse();
 const hoverItemId = ref<number | null>(null);
+const getImageSrc = (imageUrl: string) => {
+  const baseUrl = "https://crm-api.autosale.pw/"; // Укажи свой домен
+
+  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+    return imageUrl; // Если уже полный URL, оставляем как есть
+  }
+  return baseUrl + imageUrl; // Если относительный путь, добавляем домен
+};
 </script>
 
 <template>
@@ -29,10 +37,7 @@ const hoverItemId = ref<number | null>(null);
         <template v-for="product in localitiesStore.products" :key="product.id">
           <tr
             @click="
-              openEditTab(
-                product.id,
-                `admin-setting-product-edit-${product.id}`
-              )
+              openEditTab(product.id, `settings-product-edit-${product.id}`)
             "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
@@ -49,7 +54,7 @@ const hoverItemId = ref<number | null>(null);
                 :class="hoverItemId == product.id ? 'image-hover' : ''"
                 @mouseenter="hoverItemId = product.id"
                 @mouseleave="hoverItemId = null"
-                :src="product.image"
+                :src="getImageSrc(product.image)"
                 alt=""
               />
             </th>

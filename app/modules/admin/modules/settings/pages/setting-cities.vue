@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 useSeoMeta({
@@ -12,10 +13,13 @@ definePageMeta({
 });
 
 const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const { getCities } = useCrudCitiesResponse();
-const changePage = (page: number) => {
+const changePage = async (page: number) => {
+  const currentTab = adminStore.activeOpenTab; // Сохраняем текущую активную вкладку
   localitiesStore.citiesPage = page;
-  getCities();
+  await getCities();
+  adminStore.activeOpenTab = currentTab;
 };
 const totalPages = computed(() => {
   if (localitiesStore.citiesPagination) {

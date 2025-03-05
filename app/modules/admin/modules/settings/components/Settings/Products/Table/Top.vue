@@ -3,26 +3,7 @@ import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 const route = useRoute();
 const localitiesStore = useLocalitiesStore();
-const { getCities, openNewTab } = useCrudCitiesResponse();
-const search = ref(localitiesStore.searchCities);
-const selectAreaMenu = ref(false);
-
-const selectArea = (region: number) => {
-  localitiesStore.selectedArea = region;
-  getCities();
-};
-
-const debouncedGetCities = useDebounceFn(() => {
-  getCities();
-}, 500);
-
-watch(
-  () => localitiesStore.searchCities,
-  () => {
-    debouncedGetCities();
-  },
-  { deep: true }
-);
+const { openNewTab } = useCrudProductsResponse();
 </script>
 
 <template>
@@ -38,7 +19,7 @@ watch(
         </div>
         <IconPlus
           class="text-gray-40 hover:text-primary ml-4"
-          @click="openNewTab('admin-setting-product-add')"
+          @click="openNewTab('settings-product-add')"
         />
       </div>
     </div>

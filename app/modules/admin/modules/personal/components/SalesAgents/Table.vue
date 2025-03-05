@@ -69,7 +69,7 @@ const selectBranch = (value: number) => {
     >
       <div class="w-full h-full flex-grow flex items-center justify-start">
         <div
-          class="w-auto h-full flex items-center justify-start border-r border-gray-15 mr-3"
+          class="w-auto h-full flex items-center justify-start border-r border-gray-15 mr-4"
         >
           <div
             class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15"
@@ -77,8 +77,8 @@ const selectBranch = (value: number) => {
             <p class="text-16-400 text-gray-40">{{ route.name }}</p>
           </div>
           <IconPlus
-            class="text-gray-40 hover:text-primary ml-4"
-            @click="openNewTab('admin-salesAgents-add')"
+            class="text-gray-40 hover:text-primary mx-4"
+            @click="openNewTab('sales-agents-add')"
           />
           <!-- <IconTrash03 class="text-gray-40 hover:text-error-500 ml-4" /> -->
         </div>
@@ -167,7 +167,7 @@ const selectBranch = (value: number) => {
           :key="agent.id"
         >
           <tr
-            @click="openEditTab(agent.id, `admin-salesAgents-edit-${agent.id}`)"
+            @click="openEditTab(agent.id, `sales-agents-edit-${agent.id}`)"
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

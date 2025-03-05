@@ -28,7 +28,6 @@ export const useCrudCitiesResponse = () => {
   async function getCities() {
     const { $citiesRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
-    localitiesStore.cities = null;
     try {
       const params: {
         page: number;

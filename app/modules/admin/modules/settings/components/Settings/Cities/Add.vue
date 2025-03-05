@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
   selectedArea: yup.number().nullable().required("Выберите область"),
@@ -16,7 +17,7 @@ const initialValues: ISchemaForm = {
   selectedArea: null,
   city: "",
 };
-const { handleSubmit } = useForm<ISchemaForm>({
+const { handleSubmit, resetForm } = useForm<ISchemaForm>({
   validationSchema: schema,
   initialValues,
 });
@@ -26,9 +27,11 @@ const { value: selectedArea, errorMessage: selectedAreaError } = useField<
 const { value: city, errorMessage: cityError } = useField<string>("city");
 
 const mainStore = useMainStore();
+const adminStore = useAdminStore();
 const localitiesStore = useLocalitiesStore();
 const selectRegionMenu = ref(false);
 const { createCity, getCities } = useCrudCitiesResponse();
+const { closeTab } = useTabs();
 
 const onSubmit = handleSubmit(async (values) => {
   if (values.selectedArea) {
@@ -38,8 +41,7 @@ const onSubmit = handleSubmit(async (values) => {
         area_id: values.selectedArea,
       };
       await createCity(body);
-      selectedArea.value = null;
-      city.value = "";
+      resetForm();
       await getCities();
     } catch (error) {
       console.error("Ошибка при создании города: ", error);
@@ -111,6 +113,7 @@ const onSubmit = handleSubmit(async (values) => {
         text="Отмена"
         class="w-[93px]"
         type="button"
+        @click="closeTab('settings-city-add')"
       >
       </UiButton>
       <UiButton

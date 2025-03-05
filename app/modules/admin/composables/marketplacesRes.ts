@@ -128,48 +128,11 @@ export const useCrudMarketplacesResponse = () => {
     }
   }
 
-  const openNewTab = (id: string) => {
-    const adminStore = useAdminStore();
-    const mainStore = useMainStore();
-    const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-    if (exists) {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "error";
-      mainStore.alertShowTitle = "Ошибка";
-      mainStore.alertShowText =
-        "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
-    } else {
-      adminStore.activeOpenTabs.push({
-        id,
-        title: "Новая",
-        name: "Площадка",
-      });
-    }
-  };
-  const openEditTab = (id: number, textId: string) => {
-    const adminStore = useAdminStore();
-    const exists = adminStore.activeOpenTabs.some((item) => item.id === textId);
-    adminStore.openUser = id;
-
-    if (exists) {
-      adminStore.activeOpenTab = textId;
-    } else {
-      adminStore.activeOpenTabs.push({
-        id: textId,
-        title: `#${id}`,
-        name: "Площадка",
-      });
-    }
-  };
-
   return {
     getMarketplaces,
     getMarketplace,
     createMarketplace,
     editMarketplace,
     deleteMarketplace,
-    openNewTab,
-    openEditTab,
   };
 };

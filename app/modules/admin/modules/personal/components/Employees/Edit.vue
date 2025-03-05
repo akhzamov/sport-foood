@@ -66,6 +66,7 @@ const openPermissionSubGroup = reactive<string[]>([]);
 const openStoresList = ref(false);
 const rolesMenuShow = ref(false);
 const statusMenuShow = ref(false);
+const { closeTab } = useTabs();
 const roles = reactive([
   {
     id: 1,
@@ -257,9 +258,7 @@ onUnmounted(() => {
   >
     <div class="w-full h-max flex items-start justify-between gap-[2%] mt-3">
       <div class="w-[49%] h-full flex flex-col">
-        <label class="text-12-reg text-gray-90 mb-1">
-          Имя пользователя
-        </label>
+        <label class="text-12-reg text-gray-90 mb-1"> Имя пользователя </label>
         <UiInput
           v-model:model-value="username"
           placeholder="malik"
@@ -459,28 +458,43 @@ onUnmounted(() => {
     </div>
     <div class="flex items-center justify-between gap-2 mt-3">
       <UiButton
-        bgColor="bg-transparent"
-        :border="false"
-        :icon="true"
-        hover="opacity-[0.9]"
-        textColor="text-error-500"
-        text="Удалить"
-        class="max-w-[120px] px-0"
-      >
-        <template v-slot:icon>
-          <IconTrash03 class="text-error-500 w-[24px] h-[24px]" />
-        </template>
-      </UiButton>
-      <UiButton
-        bgColor="bg-primary"
-        :border="false"
+        bgColor="bg-gray-15"
+        :border="true"
         :icon="false"
         hover="opacity-[0.9]"
-        textColor="text-dark-night"
-        text="Сохранить"
-        class="max-w-[110px]"
-        @click="onSubmit"
-      />
+        textColor="text-gray-90"
+        border-color="border-gray-90"
+        text="Отмена"
+        class="w-[93px]"
+        type="button"
+        @click="closeTab(`employees-edit-${adminStore.openUser}`)"
+      >
+      </UiButton>
+      <div class="flex items-center justify-center gap-4">
+        <UiButton
+          bgColor="bg-transparent"
+          :border="false"
+          :icon="true"
+          hover="opacity-[0.9]"
+          textColor="text-error-500"
+          text="Удалить"
+          class="max-w-[120px] px-0"
+        >
+          <template v-slot:icon>
+            <IconTrash03 class="text-error-500 w-[24px] h-[24px]" />
+          </template>
+        </UiButton>
+        <UiButton
+          bgColor="bg-primary"
+          :border="false"
+          :icon="false"
+          hover="opacity-[0.9]"
+          textColor="text-dark-night"
+          text="Сохранить"
+          class="max-w-[110px]"
+          @click="onSubmit"
+        />
+      </div>
     </div>
   </form>
   <div

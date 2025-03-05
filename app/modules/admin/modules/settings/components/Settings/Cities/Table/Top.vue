@@ -38,13 +38,14 @@ watch(
         </div>
         <IconPlus
           class="text-gray-40 hover:text-primary ml-4"
-          @click="openNewTab('admin-setting-city-add')"
+          @click="openNewTab('settings-city-add')"
         />
       </div>
     </div>
     <div class="w-full flex-grow h-full flex items-center justify-end gap-5">
       <div class="w-auto h-full flex items-center gap-3 pl-3">
         <UiSelect
+          v-if="localitiesStore.areas"
           main-text-color="text-gray-90"
           select-bg-color="bg-gray-15"
           disable-text-color="text-gray-40"

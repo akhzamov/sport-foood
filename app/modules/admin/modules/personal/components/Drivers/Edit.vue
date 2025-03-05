@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
+import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 const schema = yup.object({
   name: yup
@@ -32,11 +33,13 @@ const { value: selectedCity, errorMessage: selectedCityError } =
   useField<number>("selectedCity");
 
 const adminStore = useAdminStore();
+const localitiesStore = useLocalitiesStore();
 const personalStore = usePersonalStore();
 const mainStore = useMainStore();
 const cost = ref<number | null>(null);
 const statusMenu = ref(false);
 const files = ref(null);
+const { closeTab } = useTabs();
 
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -71,11 +74,13 @@ onMounted(async () => {
 <template>
   <div
     v-if="
-      personalStore.driver && personalStore.driverAreas && !mainStore.isLoading
+      personalStore.driver &&
+      localitiesStore.citiesByArea &&
+      !mainStore.isLoading
     "
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="h-max flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Имя Фамилия </label>
         <UiInput
@@ -101,7 +106,7 @@ onMounted(async () => {
         </span>
       </div>
     </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Статус </label>
         <UiInput
@@ -119,16 +124,16 @@ onMounted(async () => {
             v-model:model-value="selectedCity"
             :default-select-text="personalStore.driver.city.name"
             :show-menu="statusMenu"
-            :array="personalStore.driverAreas"
+            :array="localitiesStore.citiesByArea"
             select-bg-color="bg-gray-15"
             main-text-color="text-gray-90"
-            class="flex-grow z-[70]"
             @update:show-menu="statusMenu = $event"
             :icon="false"
             :is-object="true"
             value-key="id"
             label-key="name"
             inner-item-key="cities"
+            class="flex-grow z-[70] h-[40px]"
           />
         </div>
         <span
@@ -139,7 +144,7 @@ onMounted(async () => {
         </span>
       </div>
     </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1">
           Оплата за километр
@@ -163,28 +168,43 @@ onMounted(async () => {
     ></div>
     <div class="flex items-center justify-between gap-2 mt-3">
       <UiButton
-        bgColor="bg-transparent"
-        :border="false"
-        :icon="true"
-        hover="opacity-[0.9]"
-        textColor="text-error-500"
-        text="Удалить"
-        class="max-w-[120px] px-0"
-      >
-        <template v-slot:icon>
-          <IconTrash03 class="text-error-500 w-[24px] h-[24px]" />
-        </template>
-      </UiButton>
-      <UiButton
-        bgColor="bg-primary"
-        :border="false"
+        bgColor="bg-gray-15"
+        :border="true"
         :icon="false"
         hover="opacity-[0.9]"
-        textColor="text-dark-night"
-        text="Сохранить"
-        class="max-w-[110px]"
-        @click="onSubmit"
-      />
+        textColor="text-gray-90"
+        border-color="border-gray-90"
+        text="Отмена"
+        class="w-[93px]"
+        type="button"
+        @click="closeTab(`drivers-edit-${adminStore.openUser}`)"
+      >
+      </UiButton>
+      <div class="flex items-center justify-center gap-4">
+        <UiButton
+          bgColor="bg-transparent"
+          :border="false"
+          :icon="true"
+          hover="opacity-[0.9]"
+          textColor="text-error-500"
+          text="Удалить"
+          class="max-w-[120px] px-0"
+        >
+          <template v-slot:icon>
+            <IconTrash03 class="text-error-500 w-[24px] h-[24px]" />
+          </template>
+        </UiButton>
+        <UiButton
+          bgColor="bg-primary"
+          :border="false"
+          :icon="false"
+          hover="opacity-[0.9]"
+          textColor="text-dark-night"
+          text="Сохранить"
+          class="max-w-[110px]"
+          @click="onSubmit"
+        />
+      </div>
     </div>
   </div>
   <div

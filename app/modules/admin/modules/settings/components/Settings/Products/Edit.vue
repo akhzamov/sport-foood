@@ -30,16 +30,16 @@ const mainStore = useMainStore();
 const adminStore = useAdminStore();
 const localitiesStore = useLocalitiesStore();
 const file = ref<Record<string, File> | null>(null);
-const { getCity, deleteCity, getCities, editCity } = useCrudCitiesResponse();
 const { getProduct, deleteProduct, getProducts, editProduct } =
   useCrudProductsResponse();
+const { closeTab } = useTabs();
 
 const onDelete = handleSubmit(async (values) => {
   try {
     const confirmed = await mainStore.showConfirm(
       "warning",
-      "Внимательно!",
-      `Вы точно хотите удалить город: ${localitiesStore.city?.name}?`
+      "Внимание",
+      `Вы точно хотите удалить продукт: ${localitiesStore.city?.name}?`
     );
 
     if (confirmed) {
@@ -77,20 +77,28 @@ const onSubmit = handleSubmit(async (values) => {
     } else {
       await editProduct(id, body);
     }
-    name.value = "";
-    description.value = "";
-    file.value = null;
     await getProducts();
   } catch (error) {
     console.error("Ошибка при создании водителя: ", error);
   }
 });
 
-onBeforeMount(async () => {
+const getImageSrc = (imageUrl: string) => {
+  const baseUrl = "https://crm-api.autosale.pw/"; // Укажи свой домен
+
+  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+    return imageUrl; // Если уже полный URL, оставляем как есть
+  }
+  return baseUrl + imageUrl; // Если относительный путь, добавляем домен
+};
+
+onMounted(async () => {
   mainStore.isLoading = true;
   await getProduct(adminStore.openUser ?? 0);
-  name.value = localitiesStore.product?.name ?? "";
-  description.value = localitiesStore.product?.description ?? "";
+  if (localitiesStore.product) {
+    name.value = localitiesStore.product?.name;
+    description.value = localitiesStore.product?.description ?? "";
+  }
   mainStore.isLoading = false;
 });
 onUnmounted(() => {
@@ -111,7 +119,7 @@ onUnmounted(() => {
         <span class="text-12-reg text-gray-90 mb-1">Фотография</span>
         <UiSelectPhoto
           :length="1"
-          :images="[localitiesStore.product.image]"
+          :images="[getImageSrc(localitiesStore.product.image)]"
           v-model:model-value="file"
           class="w-[140px] h-[140px]"
         />
@@ -163,6 +171,7 @@ onUnmounted(() => {
         text="Отмена"
         class="w-[93px]"
         type="button"
+        @click="closeTab(`settings-product-edit-${adminStore.openUser}`)"
       >
       </UiButton>
       <div class="flex items-center justify-center gap-4">

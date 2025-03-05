@@ -185,9 +185,6 @@ onMounted(async () => {
           :key="employee.id"
         >
           <tr
-            @click="
-              openEditTab(employee.id, `admin-employees-edit-${employee.id}`)
-            "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

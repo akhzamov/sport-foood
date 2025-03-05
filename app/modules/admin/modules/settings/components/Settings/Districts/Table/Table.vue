@@ -34,7 +34,7 @@ const { openEditTab } = useCrudDistrictsResponse();
             @click="
               openEditTab(
                 district.id,
-                `admin-setting-district-edit-${district.id}`
+                `settings-district-edit-${district.id}`
               )
             "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"

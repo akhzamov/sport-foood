@@ -45,6 +45,7 @@ const openPermissionID = ref("");
 const openPermissionName = ref("");
 const openStoresList = ref(false);
 let checkedStore = reactive<number[]>([]);
+const { closeTab } = useTabs();
 
 const updateCheckedStores = () => {
   checkedStore.length = 0;
@@ -236,17 +237,17 @@ watch(
     </div>
     <div class="flex items-center justify-between gap-2 mt-3">
       <UiButton
-        bgColor="bg-transparent"
-        :border="false"
-        :icon="true"
+        bgColor="bg-gray-15"
+        :border="true"
+        :icon="false"
         hover="opacity-[0.9]"
-        textColor="text-error-500"
-        text="Удалить"
-        class="max-w-[120px] px-0"
+        textColor="text-gray-90"
+        border-color="border-gray-90"
+        text="Отмена"
+        class="w-[93px]"
+        type="button"
+        @click="closeTab('sales-agents-add')"
       >
-        <template v-slot:icon>
-          <IconTrash03 class="text-error-500 w-[24px] h-[24px]" />
-        </template>
       </UiButton>
       <UiButton
         bgColor="bg-primary"
@@ -271,20 +272,14 @@ watch(
         <IconPlus class="text-gray-40 hover:text-primary ml-4" />
       </div>
       <div class="w-full h-max flex flex-col p-2">
-        <div
-          class="w-full h-max flex flex-col px-2 py-1 bg-gray-15 rounded"
-        >
+        <div class="w-full h-max flex flex-col px-2 py-1 bg-gray-15 rounded">
           <div
             class="w-full min-h-[24px] h-[24px] flex items-center gap-1 pl-[5px]"
           >
-            <p
-              class="flex-grow h-full text-left text-14-reg text-gray-90"
-            >
+            <p class="flex-grow h-full text-left text-14-reg text-gray-90">
               ID 345871
             </p>
-            <p
-              class="w-[104px] h-full text-center text-14-ext text-gray-75"
-            >
+            <p class="w-[104px] h-full text-center text-14-ext text-gray-75">
               27.11.2024
             </p>
             <p
@@ -304,9 +299,7 @@ watch(
               <p class="w-[140px] text-end text-14-reg text-gray-40">
                 3 980 гр
               </p>
-              <p class="w-[148px] text-end text-14-reg text-gray-75">
-                3 980
-              </p>
+              <p class="w-[148px] text-end text-14-reg text-gray-75">3 980</p>
             </div>
             <div
               class="w-full h-[32px] flex items-center justify-between rounded-lg pl-2 pr-[40px] bg-dark-gunmental"
@@ -317,9 +310,7 @@ watch(
               <p class="w-[140px] text-end text-14-reg text-gray-40">
                 3 980 гр
               </p>
-              <p class="w-[148px] text-end text-14-reg text-gray-75">
-                3 980
-              </p>
+              <p class="w-[148px] text-end text-14-reg text-gray-75">3 980</p>
             </div>
             <div
               class="w-full h-[32px] flex items-center justify-between rounded-lg pl-2 pr-[40px] bg-dark-gunmental"
@@ -330,9 +321,7 @@ watch(
               <p class="w-[140px] text-end text-14-reg text-gray-40">
                 3 980 гр
               </p>
-              <p class="w-[148px] text-end text-14-reg text-gray-75">
-                3 980
-              </p>
+              <p class="w-[148px] text-end text-14-reg text-gray-75">3 980</p>
             </div>
           </div>
         </div>

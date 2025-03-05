@@ -53,7 +53,7 @@ export const useCrudProductsResponse = () => {
       const res = await $productsRep.createProductById(formData);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
-      mainStore.rightAlertShowText = "Район успешно создан!";
+      mainStore.rightAlertShowText = "Продукт успешно создан!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -66,7 +66,7 @@ export const useCrudProductsResponse = () => {
     } catch (error: any) {
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "error";
-      mainStore.rightAlertShowText = "Не удалось создать район!";
+      mainStore.rightAlertShowText = "Не удалось создать продукт!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -106,7 +106,7 @@ export const useCrudProductsResponse = () => {
       const res = await $productsRep.editProductById(id, formData);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
-      mainStore.rightAlertShowText = "Район успешно изменен!";
+      mainStore.rightAlertShowText = "Продукт успешно изменен!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -119,7 +119,7 @@ export const useCrudProductsResponse = () => {
     } catch (error: any) {
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "error";
-      mainStore.rightAlertShowText = "Не удалось изменить район!";
+      mainStore.rightAlertShowText = "Не удалось изменить продукт!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -140,7 +140,7 @@ export const useCrudProductsResponse = () => {
       const res = await $productsRep.deleteProductById(id);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
-      mainStore.rightAlertShowText = "Район успешно удален!";
+      mainStore.rightAlertShowText = "Продукт успешно удален!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -153,7 +153,7 @@ export const useCrudProductsResponse = () => {
     } catch (error: any) {
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "error";
-      mainStore.rightAlertShowText = "Не удалось удалить район!";
+      mainStore.rightAlertShowText = "Не удалось удалить продукт!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;

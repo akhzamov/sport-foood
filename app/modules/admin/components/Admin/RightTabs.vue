@@ -1,9 +1,8 @@
 <script lang="ts" setup>
+import { computed, onMounted } from "vue";
 import { useAdminStore } from "~/modules/admin/stores/admin";
-import { usePersonalStore } from "../../stores/personal";
-import { usePaymentStore } from "../../stores/payment";
-import { useLocalitiesStore } from "../../stores/localities";
-import { useAdminLogisticsStore } from "~/modules/admin/modules/logistic/stores/adminLogistics";
+
+// Import all components
 import LogisticsEdit from "~/modules/admin/modules/logistic/components/Logistics/Edit.vue";
 import LogisticsAdd from "~/modules/admin/modules/logistic/components/Logistics/Add.vue";
 import EmployeesEdit from "~/modules/admin/modules/personal/components/Employees/Edit.vue";
@@ -22,126 +21,85 @@ import SettingDistrictsEdit from "~/modules/admin/modules/settings/components/Se
 import SettingProductsAdd from "~/modules/admin/modules/settings/components/Settings/Products/Add.vue";
 import SettingProductsEdit from "~/modules/admin/modules/settings/components/Settings/Products/Edit.vue";
 
-const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
-const personalStore = usePersonalStore();
-const paymentStore = usePaymentStore();
-const localitiesStore = useLocalitiesStore();
+
 const removeTab = (id: string) => {
   const index = adminStore.activeOpenTabs.findIndex((tab) => tab.id === id);
-  if (adminStore.activeOpenTabs[index + 1]?.id) {
-    adminStore.activeOpenTab = adminStore.activeOpenTabs[index + 1]?.id;
-  } else {
-    adminStore.activeOpenTab = adminStore.activeOpenTabs[index - 1]?.id;
-  }
   if (index !== -1) {
+    // Выбираем следующий или предыдущий таб при закрытии
+    const nextTab = adminStore.activeOpenTabs[index + 1];
+    const prevTab = adminStore.activeOpenTabs[index - 1];
+
+    if (nextTab) {
+      adminStore.activeOpenTab = nextTab.id;
+      const match = nextTab.title.match(/\d+$/);
+      const numId = match ? Number(match[0]) : null;
+      if (numId) {
+        adminStore.openUser = numId;
+      }
+    } else if (prevTab) {
+      adminStore.activeOpenTab = prevTab.id;
+      const match = prevTab.title.match(/\d+$/);
+      const numId = match ? Number(match[0]) : null;
+      if (numId) {
+        adminStore.openUser = numId;
+      }
+    } else {
+      adminStore.activeOpenTab = "";
+    }
+    // Удаляем таб
     adminStore.activeOpenTabs.splice(index, 1);
   }
 };
 
+// Функция открытия таба
 const openTab = (id: string) => {
-  // Извлекаем числовую часть в конце строки
-  const match = id.match(/\d+$/); // Ищем число в конце строки
-  const numId = match ? Number(match[0]) : null;
-
-  if (numId !== null) {
-    adminStore.openUser = numId;
-  } else {
-    adminStore.openUser = null;
-  }
+  const match = id.match(/\d+$/);
+  adminStore.openUser = match ? Number(match[0]) : null;
   adminStore.activeOpenTab = id;
 };
 
-const dynamicTabs = computed(() => [
-  ...(adminLogisticsStore.logisticsData?.map((data: any) => ({
-    component: LogisticsEdit,
-    data,
-    tabId: `admin-logistics-edit-${data.id}`,
-  })) ?? []),
-  ...(personalStore.employees?.map((data) => ({
-    component: EmployeesEdit,
-    data,
-    tabId: `admin-employees-edit-${data.id}`,
-  })) ?? []),
-  ...Object.values(personalStore.salesAgents ?? {}).map((data) => ({
-    component: SalesAgentsEdit,
-    data,
-    tabId: `admin-salesAgents-edit-${data.id}`,
-  })),
-  ...Object.values(personalStore.drivers ?? {}).map((data) => ({
-    component: DriversEdit,
-    data,
-    tabId: `admin-drivers-edit-${data.id}`,
-  })),
-  ...Object.values(paymentStore.payments ?? {}).map((data) => ({
-    component: PaymentRequestsEdit,
-    data,
-    tabId: `admin-payment-requests-edit-${data.id}`,
-  })),
-  ...Object.values(paymentStore.payments ?? {}).map((data) => ({
-    component: SalesReportsEdit,
-    data,
-    tabId: `admin-sales-reports-edit-${data.id}`,
-  })),
-  ...Object.values(localitiesStore.cities ?? {}).map((data) => ({
-    component: SettingCitiesEdit,
-    data,
-    tabId: `admin-setting-city-edit-${data.id}`,
-  })),
-  ...Object.values(localitiesStore.districts ?? {}).map((data) => ({
-    component: SettingDistrictsEdit,
-    data,
-    tabId: `admin-setting-district-edit-${data.id}`,
-  })),
-  ...Object.values(localitiesStore.products ?? {}).map((data) => ({
-    component: SettingProductsEdit,
-    data,
-    tabId: `admin-setting-product-edit-${data.id}`,
-  })),
-  {
-    component: LogisticsAdd,
-    data: null,
-    tabId: "admin-logistics-add",
-  },
-  {
-    component: EmployeesAdd,
-    data: null,
-    tabId: "admin-employees-add",
-  },
-  {
-    component: SalesAgentsAdd,
-    data: null,
-    tabId: "admin-salesAgents-add",
-  },
-  {
-    component: DriversAdd,
-    data: null,
-    tabId: "admin-drivers-add",
-  },
-  {
-    component: PaymentRequestsAdd,
-    data: null,
-    tabId: "admin-payment-requests-add",
-  },
-  {
-    component: SettingCitiesAdd,
-    data: null,
-    tabId: "admin-setting-city-add",
-  },
-  {
-    component: SettingDistrictsAdd,
-    data: null,
-    tabId: "admin-setting-district-add",
-  },
-  {
-    component: SettingProductsAdd,
-    data: null,
-    tabId: "admin-setting-product-add",
-  },
-]);
+// Словарь компонентов для более надежного маппинга
+const componentMap = reactive({
+  "logistics-edit": markRaw(LogisticsEdit),
+  "logistics-add": markRaw(LogisticsAdd),
+  "employees-edit": markRaw(EmployeesEdit),
+  "employees-add": markRaw(EmployeesAdd),
+  "sales-agents-edit": markRaw(SalesAgentsEdit),
+  "sales-agents-add": markRaw(SalesAgentsAdd),
+  "drivers-edit": markRaw(DriversEdit),
+  "drivers-add": markRaw(DriversAdd),
+  "payment-requests-edit": markRaw(PaymentRequestsEdit),
+  "payment-requests-add": markRaw(PaymentRequestsAdd),
+  "sales-reports-edit": markRaw(SalesReportsEdit),
+  "settings-city-edit": markRaw(SettingCitiesEdit),
+  "settings-city-add": markRaw(SettingCitiesAdd),
+  "settings-district-edit": markRaw(SettingDistrictsEdit),
+  "settings-district-add": markRaw(SettingDistrictsAdd),
+  "settings-product-edit": markRaw(SettingProductsEdit),
+  "settings-product-add": markRaw(SettingProductsAdd),
+});
+
+// Улучшенный computed для динамических табов
+const dynamicTabs = computed(() => {
+  return adminStore.activeOpenTabs
+    .map((tab) => {
+      const componentKey = tab.id.replace(/-\d+$/, "");
+      return {
+        component: (componentMap as any)[componentKey] || "",
+        tabId: tab.id,
+      };
+    })
+    .filter((tab) => tab.component !== null);
+});
 
 onMounted(() => {
-  adminStore.activeOpenTab = adminStore.activeOpenTabs[0]?.id;
+  if (adminStore.activeOpenTabs.length > 0) {
+    const firstTab = adminStore.activeOpenTabs[0];
+    if (firstTab) {
+      adminStore.activeOpenTab = firstTab.id;
+    }
+  }
 });
 </script>
 
@@ -150,9 +108,8 @@ onMounted(() => {
     class="absolute z-[100] top-0 right-0 min-w-[740px] w-[740px] h-[100%] flex flex-col border-l border-gray-15 p-2 overflow-y-auto pb-[80px] bg-dark-charcoal"
   >
     <div class="w-max h-max flex items-center justify-start gap-1">
-      <template v-for="(tab, index) in adminStore.activeOpenTabs">
+      <template v-for="(tab, index) in adminStore.activeOpenTabs" :key="tab.id">
         <div
-          v-if="adminStore.activeOpenTabs.length > 0"
           :class="[
             adminStore.activeOpenTab == tab.id
               ? 'bg-dark-gunmental'
@@ -174,14 +131,10 @@ onMounted(() => {
         </div>
       </template>
     </div>
-    <template v-for="(item, index) in dynamicTabs">
+    <template v-for="item in dynamicTabs" :key="item.tabId">
       <component
+        v-if="item.tabId === adminStore.activeOpenTab"
         :is="item.component"
-        :data="item.data"
-        v-if="
-          item.tabId === adminStore.activeOpenTab &&
-          adminStore.activeOpenTabs.length > 0
-        "
       />
     </template>
   </div>

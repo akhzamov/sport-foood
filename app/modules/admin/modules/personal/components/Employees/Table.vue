@@ -73,7 +73,7 @@ const openEditTab = (title: number, id: string) => {
     >
       <div class="w-full h-full flex-grow flex items-center justify-start">
         <div
-          class="w-auto h-full flex items-center justify-start pr-3 border-r border-gray-15"
+          class="w-auto h-full flex items-center justify-start border-r border-gray-15"
         >
           <div
             class="min-w-[170px] h-full flex items-center justify-start px-3 py-1 border-r border-gray-15"
@@ -81,13 +81,13 @@ const openEditTab = (title: number, id: string) => {
             <p class="text-16-400 text-gray-40">{{ route.name }}</p>
           </div>
           <IconPlus
-            class="text-gray-40 hover:text-primary ml-4"
-            @click="openNewTab('admin-employees-add')"
+            class="text-gray-40 hover:text-primary mx-4"
+            @click="openNewTab('employees-add')"
           />
           <!-- <IconTrash03 class="text-gray-40 hover:text-error-500 ml-4" /> -->
         </div>
         <div
-          class="w-[240px] max-h-[32px] flex items-center justify-center pr-2 ml-3 bg-gray-15 border border-gray-90 rounded-lg text-gray-90"
+          class="w-[240px] max-h-[32px] flex items-center justify-center pr-2 ml-4 bg-gray-15 border border-gray-90 rounded-lg text-gray-90"
         >
           <UiInputIcon
             v-model:model-value="search"
@@ -196,9 +196,7 @@ const openEditTab = (title: number, id: string) => {
           :key="employee.id"
         >
           <tr
-            @click="
-              openEditTab(employee.id, `admin-employees-edit-${employee.id}`)
-            "
+            @click="openEditTab(employee.id, `employees-edit-${employee.id}`)"
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

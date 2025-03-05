@@ -81,6 +81,13 @@ const checkDefaultText = () => {
   }
 };
 
+const clearValue = () => {
+  emit("update:modelValue", null);
+  emit("update:showMenu", false);
+  selectedItemId.value = props.modelValue;
+  selectedItemName.value = props.defaultSelectText;
+};
+
 onMounted(() => {
   checkDefaultText();
 });
@@ -116,13 +123,18 @@ watch(
       >
         {{ selectedItemName }}
       </span>
+      <IconClose
+        @click.stop="clearValue()"
+        :class="[props.disable ? props.disableTextColor : props.mainTextColor]"
+        v-if="!props.showMenu && !props.disable && selectedItemId"
+      />
       <IconChevronUp
         :class="[props.disable ? props.disableTextColor : props.mainTextColor]"
-        v-if="!props.showMenu && !props.disable"
+        v-if="!props.showMenu && !props.disable && !selectedItemId"
       />
       <IconChevronDown
         :class="[props.disable ? props.disableTextColor : props.mainTextColor]"
-        v-else
+        v-if="props.showMenu && props.disable"
       />
       <div
         class="absolute max-h-[350px] bg-dark-eerie-black top-[105%] left-0 w-full rounded-lg px-3 py-3 flex flex-col gap-[10px] overflow-y-auto"

@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
+import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 const schema = yup.object({
   name: yup
@@ -32,11 +33,13 @@ const { value: selectedCity, errorMessage: selectedCityError } =
   useField<number>("selectedCity");
 
 const personalStore = usePersonalStore();
+const localitiesStore = useLocalitiesStore();
 const mainStore = useMainStore();
 const status = ref("");
 const cost = ref<number | null>(null);
 const statusMenu = ref(false);
 const files = ref(null);
+const { closeTab } = useTabs();
 
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -56,11 +59,11 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <form
-    v-if="personalStore.driverAreas && !mainStore.isLoading"
+    v-if="localitiesStore.citiesByArea && !mainStore.isLoading"
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Имя Фамилия </label>
         <UiInput
@@ -86,7 +89,7 @@ const onSubmit = handleSubmit(async (values) => {
         </span>
       </div>
     </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Статус </label>
         <UiInput
@@ -107,16 +110,16 @@ const onSubmit = handleSubmit(async (values) => {
             v-model:model-value="selectedCity"
             default-select-text="Выбрать город"
             :show-menu="statusMenu"
-            :array="personalStore.driverAreas"
+            :array="localitiesStore.citiesByArea"
             select-bg-color="bg-gray-15"
             main-text-color="text-gray-90"
-            class="flex-grow z-[70]"
             @update:show-menu="statusMenu = $event"
             :icon="false"
             :is-object="true"
             value-key="id"
             label-key="name"
             inner-item-key="cities"
+            class="flex-grow z-[70] h-[40px]"
           />
         </div>
         <span
@@ -127,7 +130,7 @@ const onSubmit = handleSubmit(async (values) => {
         </span>
       </div>
     </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1">
           Оплата за километр
@@ -149,7 +152,20 @@ const onSubmit = handleSubmit(async (values) => {
     <div
       class="w-full h-[1px] block mt-3 border border-dashed border-gray-40"
     ></div>
-    <div class="flex items-center justify-end gap-2 mt-3">
+    <div class="flex items-center justify-between gap-2 mt-3">
+      <UiButton
+        bgColor="bg-gray-15"
+        :border="true"
+        :icon="false"
+        hover="opacity-[0.9]"
+        textColor="text-gray-90"
+        border-color="border-gray-90"
+        text="Отмена"
+        class="w-[93px]"
+        type="button"
+        @click="closeTab('drivers-add')"
+      >
+      </UiButton>
       <UiButton
         bgColor="bg-primary"
         :border="false"

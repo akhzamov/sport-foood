@@ -40,7 +40,7 @@ const onDelete = async (id: number) => {
       await getMarketplace(id);
       const confirmed = await mainStore.showConfirm(
         "warning",
-        "Внимательно!",
+        "Внимание",
         `Вы точно хотите удалить торговую площадку: ${localitiesStore.marketplace?.name}?`
       );
 
@@ -228,17 +228,12 @@ watch(
             N
           </th>
           <th
-            class="w-[46px] h-[36px] relative flex items-center justify-center gap-1 text-14-reg text-gray-75 rounded"
-          >
-            <UiCheckbox v-model:model-value="checkbox" />
-          </th>
-          <th
             class="w-[385px] flex items-center justify-start ml-3 text-14-reg text-gray-75"
           >
             <div class="flex items-center justify-start gap-4">
               <UiInput
                 v-model:model-value="name"
-                placeholder="Имя торговой площадки"
+                placeholder="НазваниеВи торговой площадки"
                 type="string"
                 class="min-w-[165px] w-max max-h-[28px]"
                 :class="[nameError ? 'border border-error-500' : '']"

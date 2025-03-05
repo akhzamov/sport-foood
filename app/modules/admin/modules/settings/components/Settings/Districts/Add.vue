@@ -16,7 +16,7 @@ const initialValues: ISchemaForm = {
   selectedCity: null,
   district: "",
 };
-const { handleSubmit } = useForm<ISchemaForm>({
+const { handleSubmit, resetForm } = useForm<ISchemaForm>({
   validationSchema: schema,
   initialValues,
 });
@@ -30,6 +30,7 @@ const mainStore = useMainStore();
 const localitiesStore = useLocalitiesStore();
 const selectRegionMenu = ref(false);
 const { createDistrict, getDistricts } = useCrudDistrictsResponse();
+const { closeTab } = useTabs();
 
 const onSubmit = handleSubmit(async (values) => {
   if (values.selectedCity) {
@@ -39,8 +40,7 @@ const onSubmit = handleSubmit(async (values) => {
         city_id: values.selectedCity,
       };
       await createDistrict(body);
-      selectedCity.value = null;
-      district.value = "";
+      resetForm();
       await getDistricts();
     } catch (error) {
       console.error("Ошибка при создании района: ", error);
@@ -109,6 +109,7 @@ const onSubmit = handleSubmit(async (values) => {
         text="Отмена"
         class="w-[93px]"
         type="button"
+        @click="closeTab('settings-city-add')"
       >
       </UiButton>
       <UiButton

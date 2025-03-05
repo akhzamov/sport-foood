@@ -127,6 +127,13 @@ const checkDefaultText = () => {
   }
 };
 
+const clearValue = () => {
+  emit("update:modelValue", null);
+  emit("update:showMenu", false);
+  selectedItemId.value = props.modelValue;
+  selectedItemName.value = props.defaultSelectText;
+};
+
 onMounted(() => {
   checkDefaultText();
 });
@@ -158,8 +165,16 @@ watch(
       <span class="text-14-reg" :class="props.mainTextColor">
         {{ selectedItemName }}
       </span>
-      <IconChevronUp :class="props.mainTextColor" v-if="!props.showMenu" />
-      <IconChevronDown :class="props.mainTextColor" v-else />
+      <IconClose
+        @click.stop="clearValue()"
+        :class="props.mainTextColor"
+        v-if="!props.showMenu && selectedItemId"
+      />
+      <IconChevronUp
+        :class="props.mainTextColor"
+        v-if="!props.showMenu && !selectedItemId"
+      />
+      <IconChevronDown :class="props.mainTextColor" v-if="props.showMenu" />
     </div>
     <div
       v-if="props.showMenu"

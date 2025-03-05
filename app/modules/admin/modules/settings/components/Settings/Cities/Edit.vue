@@ -33,12 +33,13 @@ const localitiesStore = useLocalitiesStore();
 const router = useRouter();
 const selectRegionMenu = ref(false);
 const { getCity, deleteCity, getCities, editCity } = useCrudCitiesResponse();
+const { closeTab } = useTabs();
 
 const onDelete = handleSubmit(async (values) => {
   try {
     const confirmed = await mainStore.showConfirm(
       "warning",
-      "Внимательно!",
+      "Внимание",
       `Вы точно хотите удалить город: ${localitiesStore.city?.name}?`
     );
 
@@ -74,8 +75,6 @@ const onSubmit = handleSubmit(async (values) => {
         area_id: values.selectedArea,
       };
       await editCity(id, body);
-      selectedArea.value = null;
-      city.value = "";
       await getCities();
     } catch (error) {
       console.error("Ошибка при создании водителя: ", error);
@@ -83,11 +82,13 @@ const onSubmit = handleSubmit(async (values) => {
   }
 });
 
-onBeforeMount(async () => {
+onMounted(async () => {
   mainStore.isLoading = true;
   await getCity(adminStore.openUser ?? 0);
-  selectedArea.value = localitiesStore.city?.area_id ?? null;
-  city.value = localitiesStore.city?.name ?? "";
+  if (localitiesStore.city) {
+    selectedArea.value = localitiesStore.city?.area_id;
+    city.value = localitiesStore.city?.name;
+  }
   mainStore.isLoading = false;
 });
 onUnmounted(() => {
@@ -98,7 +99,7 @@ onUnmounted(() => {
 
 <template>
   <form
-    v-if="!mainStore.isLoading"
+    v-if="!mainStore.isLoading && localitiesStore.areas"
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
@@ -107,12 +108,11 @@ onUnmounted(() => {
         <label class="text-12-reg text-gray-90 mb-1"> Выберите область </label>
         <div class="flex gap-1">
           <UiSelect
-            v-if="selectedArea"
             main-text-color="text-gray-90"
             select-bg-color="bg-gray-15"
             disable-text-color="text-gray-40"
             disable-bg-color="bg-gray-15"
-            :array="localitiesStore.areas ?? []"
+            :array="localitiesStore.areas"
             :show-menu="selectRegionMenu"
             default-select-text="Выбрать область"
             v-model:model-value="selectedArea"
@@ -160,6 +160,7 @@ onUnmounted(() => {
         text="Отмена"
         class="w-[93px]"
         type="button"
+        @click="closeTab(`settings-city-edit-${adminStore.openUser}`)"
       >
       </UiButton>
       <div class="flex items-center justify-center gap-4">

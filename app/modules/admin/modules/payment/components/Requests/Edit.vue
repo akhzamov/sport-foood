@@ -3,6 +3,8 @@ import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { usePaymentStore } from "~/modules/admin/stores/payment";
 import { useMainStore } from "~/stores/main";
+import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
   type: yup.string().required("Выберите тип заявки").nullable(),
@@ -35,6 +37,8 @@ const { value: recipient, errorMessage: recipientError } =
   useField<string>("recipient");
 
 const paymentStore = usePaymentStore();
+const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const mainStore = useMainStore();
 const cityMenuShow = ref(false);
 const typeMenuShow = ref(false);
@@ -44,6 +48,7 @@ const statusMenuStore = ref(false);
 const accumulating = ref(false);
 const datepicker = ref<any>(null);
 const date = ref<Date>();
+const { closeTab } = useTabs();
 
 function formatDate(date: Date) {
   const day = String(date.getDate()).padStart(2, "0");
@@ -66,7 +71,7 @@ const onSubmit = handleSubmit(async (values) => {});
 <template>
   <form
     v-if="
-      paymentStore.areas &&
+      localitiesStore.citiesByArea &&
       mainStore.stores &&
       paymentStore.types &&
       paymentStore.priorities &&
@@ -120,7 +125,7 @@ const onSubmit = handleSubmit(async (values) => {});
           <UiSelectCategories
             v-model:model-value="selectedCity"
             :show-menu="cityMenuShow"
-            :array="paymentStore.areas"
+            :array="localitiesStore.citiesByArea"
             :icon="false"
             :is-object="true"
             default-select-text="Выбрать город"
@@ -129,7 +134,7 @@ const onSubmit = handleSubmit(async (values) => {});
             value-key="id"
             label-key="name"
             inner-item-key="cities"
-            class="flex-grow z-[70]"
+            class="flex-grow z-[70] h-[40px]"
             @update:show-menu="cityMenuShow = $event"
           />
         </div>
@@ -213,9 +218,7 @@ const onSubmit = handleSubmit(async (values) => {});
           <UiToggle v-model:model-value="accumulating" />
         </div>
         <div class="w-[50%] flex flex-col items-start justify-center">
-          <p class="text-12-reg text-gray-75 mb-1">
-            Ожидаемая дата оплаты
-          </p>
+          <p class="text-12-reg text-gray-75 mb-1">Ожидаемая дата оплаты</p>
           <div class="w-full h-full flex flex-col">
             <div
               class="w-full h-[38px] flex items-center justify-start gap-2 rounded-md py-1 px-4 cursor-pointer bg-gray-15 text-gray-90"
@@ -265,18 +268,48 @@ const onSubmit = handleSubmit(async (values) => {});
     <div
       class="w-full h-[1px] block mt-3 border border-dashed border-gray-40"
     ></div>
-    <div class="flex items-center justify-end gap-2 mt-3">
+    <div class="flex items-center justify-between gap-2 mt-3">
       <UiButton
-        bgColor="bg-primary"
-        :border="false"
+        bgColor="bg-gray-15"
+        :border="true"
         :icon="false"
         hover="opacity-[0.9]"
-        textColor="text-dark-night"
-        text="Создать"
-        class="max-w-[110px]"
-        type="submit"
-        @click="onSubmit"
-      />
+        textColor="text-gray-90"
+        border-color="border-gray-90"
+        text="Отмена"
+        class="w-[93px]"
+        type="button"
+        @click="closeTab(`payment-requests-edit-${adminStore.openUser}`)"
+      >
+      </UiButton>
+      <div class="flex items-center justify-center gap-4">
+        <UiButton
+          bgColor="bg-transparent"
+          :border="true"
+          border-color="border-error-500"
+          :icon="true"
+          hover="opacity-[0.9]"
+          textColor="text-error-500"
+          text="Удалить"
+          class="w-[123px]"
+          type="submit"
+        >
+          <template v-slot:icon>
+            <IconTrash03 class="text-error-500" />
+          </template>
+        </UiButton>
+        <UiButton
+          bgColor="bg-primary"
+          :border="false"
+          :icon="false"
+          hover="opacity-[0.9]"
+          textColor="text-dark-night"
+          text="Изменить"
+          class="w-[93px]"
+          type="submit"
+          @click="onSubmit"
+        />
+      </div>
     </div>
   </form>
   <div

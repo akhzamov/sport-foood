@@ -38,16 +38,17 @@ watch(
         </div>
         <IconPlus
           class="text-gray-40 hover:text-primary ml-4"
-          @click="openNewTab('admin-setting-district-add')"
+          @click="openNewTab('settings-district-add')"
         />
       </div>
     </div>
     <div class="w-full flex-grow h-full flex items-center justify-end gap-5">
       <div class="w-auto h-full flex items-center gap-3 pl-3">
         <UiSelectCategories
+          v-if="localitiesStore.citiesByArea"
           main-text-color="text-gray-90"
           select-bg-color="bg-gray-15"
-          :array="localitiesStore.citiesByArea || []"
+          :array="localitiesStore.citiesByArea"
           :show-menu="selectCityMenu"
           default-select-text="Все города"
           v-model:model-value="localitiesStore.selectedCityByArea"
