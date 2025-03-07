@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useAdminStore } from "~/modules/admin/stores/admin";
 import { getUsers } from "~/modules/admin/modules/personal/components/Employees/employees.data";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
+import { getPermissions } from "../components/Roles/roles.data";
 
 useSeoMeta({
   title: "Sport Food | Admin Employees",
@@ -10,7 +10,7 @@ useSeoMeta({
 definePageMeta({
   middleware: "auth",
   layout: "admin",
-  name: "Пользователи",
+  name: "Сотрудники",
 });
 
 const personalStore = usePersonalStore();
@@ -31,6 +31,7 @@ const changePage = (value: number) => {
 
 onMounted(async () => {
   await getUsers();
+  await getPermissions();
 });
 </script>
 

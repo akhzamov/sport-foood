@@ -86,7 +86,7 @@ const onSubmit = handleSubmit(async (values) => {
         <label class="text-12-reg text-gray-90 mb-1"> Название района </label>
         <UiInput
           v-model:model-value="district"
-          placeholder="Измайлово"
+          placeholder=""
           type="text"
           class="text-gray-90"
         />
@@ -109,7 +109,7 @@ const onSubmit = handleSubmit(async (values) => {
         text="Отмена"
         class="w-[93px]"
         type="button"
-        @click="closeTab('settings-city-add')"
+        @click="closeTab('settings-district-add')"
       >
       </UiButton>
       <UiButton

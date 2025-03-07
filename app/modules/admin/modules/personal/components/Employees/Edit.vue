@@ -22,7 +22,7 @@ const schema = yup.object({
     .required("Выберите доступ")
     .min(1, "Выберите хотя бы один доступ"),
   selectedRole: yup.string().required("Выберите роль"),
-  selectedStatus: yup.number(),
+  selectedStatus: yup.number().nullable().required("Выберите статус"),
 });
 interface ISchemaForm {
   username: string;
@@ -30,7 +30,7 @@ interface ISchemaForm {
   selectedStores: number[];
   selectedPermissions: string[];
   selectedRole: string;
-  selectedStatus: number;
+  selectedStatus: number | null;
 }
 const initialValues: ISchemaForm = {
   username: "",
@@ -38,7 +38,7 @@ const initialValues: ISchemaForm = {
   selectedStores: [],
   selectedPermissions: [],
   selectedRole: "",
-  selectedStatus: null as unknown as number,
+  selectedStatus: null,
 };
 const { handleSubmit } = useForm<ISchemaForm>({
   validationSchema: schema,
@@ -54,8 +54,9 @@ const { value: selectedPermissions, errorMessage: selectedPermissionsError } =
   useField<string[]>("selectedPermissions");
 const { value: selectedRole, errorMessage: selectedRoleError } =
   useField<string>("selectedRole");
-const { value: selectedStatus, errorMessage: selectedStatusError } =
-  useField<number>("selectedStatus");
+const { value: selectedStatus, errorMessage: selectedStatusError } = useField<
+  number | null
+>("selectedStatus");
 
 const adminStore = useAdminStore();
 const profileStore = useProfileStore();
@@ -261,7 +262,7 @@ onUnmounted(() => {
         <label class="text-12-reg text-gray-90 mb-1"> Имя пользователя </label>
         <UiInput
           v-model:model-value="username"
-          placeholder="malik"
+          placeholder=""
           type="text"
           class="text-gray-90"
         />
@@ -273,7 +274,7 @@ onUnmounted(() => {
         <label class="text-12-reg text-gray-90 mb-1"> Контакт </label>
         <UiInput
           :modelValue="contact"
-          placeholder="+ _ ( _ _ _ ) _ _ _ - _ _ - _ _ | info@gmail.com"
+          placeholder=""
           type="text"
           class="text-gray-90"
         />

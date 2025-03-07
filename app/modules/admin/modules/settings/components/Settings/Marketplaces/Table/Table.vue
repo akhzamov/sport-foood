@@ -233,7 +233,7 @@ watch(
             <div class="flex items-center justify-start gap-4">
               <UiInput
                 v-model:model-value="name"
-                placeholder="НазваниеВи торговой площадки"
+                placeholder="Название торговой площадки"
                 type="string"
                 class="min-w-[165px] w-max max-h-[28px]"
                 :class="[nameError ? 'border border-error-500' : '']"

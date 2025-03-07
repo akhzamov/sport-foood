@@ -166,7 +166,7 @@ onUnmounted(() => {
         <label class="text-12-reg text-gray-90 mb-1"> Имя пользователя </label>
         <UiInput
           v-model:model-value="username"
-          placeholder="malik"
+          placeholder=""
           type="text"
           class="text-gray-90"
         />
@@ -178,7 +178,7 @@ onUnmounted(() => {
         <label class="text-12-reg text-gray-90 mb-1"> Контакт </label>
         <UiInput
           v-model:model-value="contact"
-          placeholder="+ _ ( _ _ _ ) _ _ _ - _ _ - _ _ | info@gmail.com"
+          placeholder=""
           type="text"
           class="text-gray-90"
         />

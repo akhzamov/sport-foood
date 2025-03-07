@@ -193,13 +193,9 @@ const onSubmit = handleSubmit(async (values) => {});
                 170 567 гр
               </p>
               <div class="w-[30%] flex gap-2 items-center justify-end">
-                <p
-                  class="text-14-reg text-gray-90 flex items-center gap-[2px]"
-                >
+                <p class="text-14-reg text-gray-90 flex items-center gap-[2px]">
                   9 490 000
-                  <span class="text-10-ext text-primary uppercase">
-                    rub
-                  </span>
+                  <span class="text-10-ext text-primary uppercase"> rub </span>
                 </p>
                 <IconChevronDown class="text-gray-90" />
               </div>
@@ -228,9 +224,7 @@ const onSubmit = handleSubmit(async (values) => {});
                   <div
                     class="w-[130px] h-full flex items-center justify-end pr-2"
                   >
-                    <p class="text-12-reg text-gray-40">
-                      Торговая площадка
-                    </p>
+                    <p class="text-12-reg text-gray-40">Торговая площадка</p>
                   </div>
                   <div
                     class="w-[170px] h-full flex items-center justify-end pr-2"
@@ -581,18 +575,16 @@ const onSubmit = handleSubmit(async (values) => {});
         <IconPlus class="text-dark-night" />
       </template>
     </UiButton>
-    <div
-      class="w-full block border-dashed border-b border-gray-15 my-2"
-    ></div>
+    <div class="w-full block border-dashed border-b border-gray-15 my-2"></div>
     <div class="w-full flex items-center justify-between">
       <UiButton
-        text="Удалить"
-        bg-color="bg-transparent"
-        text-color="text-error-500 text-14-bold"
-        hover="opacity-[0.9]"
+        bgColor="bg-transparent"
         :border="false"
-        :icon="false"
-        class="w-[140px] h-[30px] mt-4 p-0"
+        :icon="true"
+        hover="opacity-[0.9]"
+        textColor="text-error-500"
+        text="Удалить"
+        class="max-w-[120px] px-0"
       >
         <template v-slot:icon>
           <IconTrash03 class="text-error-500" />

@@ -2,57 +2,66 @@ import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 import { useAdminStore } from "../stores/admin";
 import { useMainStore } from "~/stores/main";
 
-export const useCrudProductsResponse = () => {
-  async function getProducts() {
-    const { $crudProductsRep } = useNuxtApp();
+export const useCrudStoresResponse = () => {
+  async function getCrudStores() {
+    const { $crudStoresRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
-      const res = await $crudProductsRep.getProducts();
-      localitiesStore.products = res.data.products ? res.data.products : [];
+      const res = await $crudStoresRep.getStores();
+      localitiesStore.stores = res.data.stores ? res.data.stores : [];
     } catch (error: any) {
       console.error(error.response?.data);
     }
   }
 
-  async function getProduct(id: number) {
-    const { $crudProductsRep } = useNuxtApp();
+  async function getCrudStore(id: number) {
+    const { $crudStoresRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
-      const res = await $crudProductsRep.getProductById(id);
-      localitiesStore.product = res.data ?? null;
+      const res = await $crudStoresRep.getStoreById(id);
+      localitiesStore.store = res.data ?? null;
     } catch (error: any) {
       console.error(error.response?.data);
     }
   }
 
-  async function createProduct(
-    body: {
-      name: string;
-      description?: string;
-    },
-    photo?: File
-  ) {
-    const { $crudProductsRep } = useNuxtApp();
+  type storeBody = {
+    name: string;
+    sort: number;
+    syncStoreId?: number;
+    products: number[];
+    cities: number[];
+  };
+
+  async function createStore(body: storeBody, photo?: File) {
+    const { $crudStoresRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
       const formData = new FormData();
       formData.append("name", body.name);
+      formData.append("sort", body.sort.toString());
+
+      body.products.forEach((productId, index) => {
+        formData.append(`products[${index}]`, productId.toString());
+      });
+
+      body.cities.forEach((cityId, index) => {
+        formData.append(`cities[${index}]`, cityId.toString());
+      });
+
       if (photo) {
         formData.append("photo", photo);
       }
-      if (body.description) {
-        formData.append("description", body.description);
+
+      if (body.syncStoreId) {
+        formData.append("sync_store_id", body.syncStoreId.toString());
       }
 
-      for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]); // Должно вывести ключи и значения
-      }
-
-      const res = await $crudProductsRep.createProductById(formData);
+      const res = await $crudStoresRep.createStore(formData);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
-      mainStore.rightAlertShowText = "Продукт успешно создан!";
+      mainStore.rightAlertShowText = "Магазин успешно создан!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -65,7 +74,7 @@ export const useCrudProductsResponse = () => {
     } catch (error: any) {
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "error";
-      mainStore.rightAlertShowText = "Не удалось создать продукт!";
+      mainStore.rightAlertShowText = "Не удалось создать магазин!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -78,34 +87,37 @@ export const useCrudProductsResponse = () => {
     }
   }
 
-  async function editProduct(
-    id: number,
-    body: {
-      name: string;
-      description?: string;
-    },
-    photo?: File
-  ) {
-    const { $crudProductsRep } = useNuxtApp();
+  async function editStore(id: number, body: storeBody, photo?: File) {
+    const { $crudStoresRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
       const formData = new FormData();
       formData.append("name", body.name);
+      formData.append("sort", body.sort.toString());
+
+      // Для массива products
+      body.products.forEach((productId, index) => {
+        formData.append(`products[${index}]`, productId.toString());
+      });
+
+      // Для массива cities
+      body.cities.forEach((cityId, index) => {
+        formData.append(`cities[${index}]`, cityId.toString());
+      });
+
       if (photo) {
         formData.append("photo", photo);
       }
-      if (body.description) {
-        formData.append("description", body.description);
+
+      if (body.syncStoreId) {
+        formData.append("sync_store_id", body.syncStoreId.toString());
       }
 
-      for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]); // Должно вывести ключи и значения
-      }
-      const res = await $crudProductsRep.editProductById(id, formData);
+      const res = await $crudStoresRep.editStoreById(id, formData);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
-      mainStore.rightAlertShowText = "Продукт успешно изменен!";
+      mainStore.rightAlertShowText = "Магазин успешно изменен!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -118,7 +130,7 @@ export const useCrudProductsResponse = () => {
     } catch (error: any) {
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "error";
-      mainStore.rightAlertShowText = "Не удалось изменить продукт!";
+      mainStore.rightAlertShowText = "Не удалось изменить магазин!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -131,15 +143,15 @@ export const useCrudProductsResponse = () => {
     }
   }
 
-  async function deleteProduct(id: number) {
-    const { $crudProductsRep } = useNuxtApp();
+  async function deleteStore(id: number) {
+    const { $crudStoresRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $crudProductsRep.deleteProductById(id);
+      const res = await $crudStoresRep.deleteStoreById(id);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
-      mainStore.rightAlertShowText = "Продукт успешно удален!";
+      mainStore.rightAlertShowText = "Магазин успешно удален!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -152,7 +164,7 @@ export const useCrudProductsResponse = () => {
     } catch (error: any) {
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "error";
-      mainStore.rightAlertShowText = "Не удалось удалить продукт!";
+      mainStore.rightAlertShowText = "Не удалось удалить магазин!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -180,7 +192,7 @@ export const useCrudProductsResponse = () => {
       adminStore.activeOpenTabs.push({
         id,
         title: "Новый",
-        name: "Продукт",
+        name: "Магазин",
       });
     }
   };
@@ -194,17 +206,17 @@ export const useCrudProductsResponse = () => {
       adminStore.activeOpenTabs.push({
         id: textId,
         title: `#${id}`,
-        name: "Продукт",
+        name: "Магазин",
       });
     }
   };
 
   return {
-    getProducts,
-    getProduct,
-    createProduct,
-    editProduct,
-    deleteProduct,
+    getCrudStores,
+    getCrudStore,
+    createStore,
+    editStore,
+    deleteStore,
     openNewTab,
     openEditTab,
   };

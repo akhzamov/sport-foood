@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { IPersonalStore } from "../types/Stores/personalStore.type";
+import { useSessionStorage } from "@vueuse/core";
 
 export const usePersonalStore = defineStore("personal", {
   state: (): IPersonalStore => ({
@@ -8,9 +9,10 @@ export const usePersonalStore = defineStore("personal", {
     isAscendingUsername: false,
     isAscendingStatus: false,
     employeesPagination: null,
-    employeesPage: 1,
+    employeesPage: useSessionStorage('employeesPage', 1),
     employeesPerPage: 15,
     employee: null,
+    searchEmployee: "",
     permissions: null,
     salesAgents: null,
     salesAgent: null,

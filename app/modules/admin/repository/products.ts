@@ -1,12 +1,4 @@
 import type {
-  ICreateDistrictsErrorResponse,
-  ICreateDistrictsResponse,
-  IDeleteDistrictsErrorResponse,
-  IDeleteDistrictsResponse,
-  IDistrictByIdResponse,
-  IDistrictsResponse,
-} from "../types/Others/Settings/Districts/districts.type";
-import type {
   IDeleteProductResponse,
   IProductByIdResponse,
   IProductCreateErrorResponse,
@@ -14,7 +6,7 @@ import type {
   IProductResponse,
 } from "../types/Others/Settings/Products/products.type";
 
-export class ProductsRep {
+export class CrudProductsRep {
   private async request<T>(
     method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
     url: string,

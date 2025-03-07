@@ -74,7 +74,7 @@ const onSubmit = handleSubmit(async (values) => {
             <UiInput
               v-model:model-value="name"
               type="text"
-              placeholder="Протеин"
+              placeholder=""
               class="text-gray-90"
             />
           </div>
@@ -86,7 +86,7 @@ const onSubmit = handleSubmit(async (values) => {
           <label class="text-12-reg text-gray-90 mb-1">Примечание</label>
           <UiTextarea
             v-model:model-value="description"
-            placeholder="Сывороточный протеин ISO WHEY..."
+            placeholder=""
             class="text-gray-90 h-[70px]"
           />
           <span

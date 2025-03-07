@@ -9,7 +9,7 @@ import type {
 } from "~/modules/admin/types/Others/Settings/Cities/cities.type";
 import type { ICitiesByAreaResponse } from "../types/Others/Settings/Cities/citiesByArea.type";
 
-export class CitiesRep {
+export class CrudCitiesRep {
   private async request<T>(
     method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
     url: string,

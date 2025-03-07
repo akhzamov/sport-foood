@@ -1,19 +1,11 @@
 import type {
-  ICreateDistrictsErrorResponse,
-  ICreateDistrictsResponse,
-  IDeleteDistrictsErrorResponse,
-  IDeleteDistrictsResponse,
-  IDistrictByIdResponse,
-  IDistrictsResponse,
-} from "../types/Others/Settings/Districts/districts.type";
-import type {
   IDeleteMarketplaceResponse,
   IMarketplaceByIdErrorResponse,
   IMarketplaceByIdResponse,
   IMarketplaceResponse,
 } from "../types/Others/Settings/Marketplaces/marketplaces.type";
 
-export class MarketplacesRep {
+export class CrudMarketplacesRep {
   private async request<T>(
     method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
     url: string,

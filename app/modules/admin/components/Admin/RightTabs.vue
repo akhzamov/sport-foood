@@ -20,6 +20,8 @@ import SettingDistrictsAdd from "~/modules/admin/modules/settings/components/Set
 import SettingDistrictsEdit from "~/modules/admin/modules/settings/components/Settings/Districts/Edit.vue";
 import SettingProductsAdd from "~/modules/admin/modules/settings/components/Settings/Products/Add.vue";
 import SettingProductsEdit from "~/modules/admin/modules/settings/components/Settings/Products/Edit.vue";
+import SettingStoresAdd from "~/modules/admin/modules/settings/components/Settings/Stores/Add.vue";
+import SettingStoresEdit from "~/modules/admin/modules/settings/components/Settings/Stores/Edit.vue";
 
 const adminStore = useAdminStore();
 
@@ -78,6 +80,8 @@ const componentMap = reactive({
   "settings-district-add": markRaw(SettingDistrictsAdd),
   "settings-product-edit": markRaw(SettingProductsEdit),
   "settings-product-add": markRaw(SettingProductsAdd),
+  "settings-store-edit": markRaw(SettingStoresEdit),
+  "settings-store-add": markRaw(SettingStoresAdd),
 });
 
 // Улучшенный computed для динамических табов
@@ -101,6 +105,18 @@ onMounted(() => {
     }
   }
 });
+
+watch(
+  () => adminStore.activeOpenTab,
+  () => {
+    if (adminStore.activeOpenTab) {
+      let match = adminStore.activeOpenTab.match(/\d+$/);
+      if (match) {
+        adminStore.openUser = Number(match[0]);
+      }
+    }
+  }
+);
 </script>
 
 <template>

@@ -4,11 +4,10 @@ import { useMainStore } from "~/stores/main";
 
 export const useCrudMarketplacesResponse = () => {
   async function getMarketplaces() {
-    const { $marketplacesRep } = useNuxtApp();
+    const { $crudMarketplacesRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
-    localitiesStore.districts = null;
     try {
-      const res = await $marketplacesRep.getMarketplaces();
+      const res = await $crudMarketplacesRep.getMarketplaces();
       localitiesStore.marketplaces = res.data ? res.data : [];
     } catch (error: any) {
       console.error(error.response?.data);
@@ -16,10 +15,10 @@ export const useCrudMarketplacesResponse = () => {
   }
 
   async function getMarketplace(id: number) {
-    const { $marketplacesRep } = useNuxtApp();
+    const { $crudMarketplacesRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
-      const res = await $marketplacesRep.getMarketplaceById(id);
+      const res = await $crudMarketplacesRep.getMarketplaceById(id);
       localitiesStore.marketplace = res.data ?? null;
     } catch (error: any) {
       console.error(error.response?.data);
@@ -27,11 +26,11 @@ export const useCrudMarketplacesResponse = () => {
   }
 
   async function createMarketplace(body: { name: string }) {
-    const { $marketplacesRep } = useNuxtApp();
+    const { $crudMarketplacesRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $marketplacesRep.createMarketplace(body);
+      const res = await $crudMarketplacesRep.createMarketplace(body);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Торговая площадка успешно создан!";
@@ -61,11 +60,11 @@ export const useCrudMarketplacesResponse = () => {
   }
 
   async function editMarketplace(id: number, body: { name: string }) {
-    const { $marketplacesRep } = useNuxtApp();
+    const { $crudMarketplacesRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $marketplacesRep.editMarketplaceById(id, body);
+      const res = await $crudMarketplacesRep.editMarketplaceById(id, body);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Торговая площадка успешно изменен!";
@@ -95,11 +94,11 @@ export const useCrudMarketplacesResponse = () => {
   }
 
   async function deleteMarketplace(id: number) {
-    const { $marketplacesRep } = useNuxtApp();
+    const { $crudMarketplacesRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $marketplacesRep.deleteMarketplaceById(id);
+      const res = await $crudMarketplacesRep.deleteMarketplaceById(id);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Торговая площадка успешно удалена!";

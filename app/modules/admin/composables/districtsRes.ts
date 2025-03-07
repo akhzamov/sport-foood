@@ -4,9 +4,8 @@ import { useMainStore } from "~/stores/main";
 
 export const useCrudDistrictsResponse = () => {
   async function getDistricts() {
-    const { $districtsRep } = useNuxtApp();
+    const { $crudDistrictsRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
-    localitiesStore.districts = null;
     try {
       const params: {
         page: number;
@@ -26,7 +25,7 @@ export const useCrudDistrictsResponse = () => {
         params.name = localitiesStore.searchDistricts;
       }
 
-      const res = await $districtsRep.getDistricts(params);
+      const res = await $crudDistrictsRep.getDistricts(params);
       localitiesStore.districts = res.data.districts ? res.data.districts : [];
       localitiesStore.districtsPagination = res.pagination;
     } catch (error: any) {
@@ -35,10 +34,10 @@ export const useCrudDistrictsResponse = () => {
   }
 
   async function getDistrict(id: number) {
-    const { $districtsRep } = useNuxtApp();
+    const { $crudDistrictsRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
-      const res = await $districtsRep.getDistrictById(id);
+      const res = await $crudDistrictsRep.getDistrictById(id);
       localitiesStore.district = res.data ?? null;
     } catch (error: any) {
       console.error(error.response?.data);
@@ -46,11 +45,11 @@ export const useCrudDistrictsResponse = () => {
   }
 
   async function createDistrict(body: { name: string; city_id: number }) {
-    const { $districtsRep } = useNuxtApp();
+    const { $crudDistrictsRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $districtsRep.createDistrictById(body);
+      const res = await $crudDistrictsRep.createDistrictById(body);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Район успешно создан!";
@@ -83,11 +82,11 @@ export const useCrudDistrictsResponse = () => {
     id: number,
     body: { name: string; city_id: number }
   ) {
-    const { $districtsRep } = useNuxtApp();
+    const { $crudDistrictsRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $districtsRep.editDistrictById(id, body);
+      const res = await $crudDistrictsRep.editDistrictById(id, body);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Район успешно изменен!";
@@ -117,11 +116,11 @@ export const useCrudDistrictsResponse = () => {
   }
 
   async function deleteDistrict(id: number) {
-    const { $districtsRep } = useNuxtApp();
+    const { $crudDistrictsRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $districtsRep.deleteDistrictById(id);
+      const res = await $crudDistrictsRep.deleteDistrictById(id);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Район успешно удален!";
@@ -172,7 +171,6 @@ export const useCrudDistrictsResponse = () => {
   const openEditTab = (id: number, textId: string) => {
     const adminStore = useAdminStore();
     const exists = adminStore.activeOpenTabs.some((item) => item.id === textId);
-    adminStore.openUser = id;
 
     if (exists) {
       adminStore.activeOpenTab = textId;

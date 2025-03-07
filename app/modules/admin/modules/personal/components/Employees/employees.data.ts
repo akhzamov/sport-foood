@@ -5,10 +5,17 @@ export async function getUsers() {
   const { $usersRep } = useNuxtApp();
   const personalStore = usePersonalStore();
   try {
-    const params = {
+    const params: {
+      page: number;
+      per_page: number;
+      username?: string;
+    } = {
       page: personalStore.employeesPage,
       per_page: personalStore.employeesPerPage,
     };
+    if (personalStore.searchEmployee) {
+      params.username = personalStore.searchEmployee;
+    }
     const res = await $usersRep.getUsers(params);
     personalStore.employees = res.data;
     personalStore.employeesFiltered = res.data;

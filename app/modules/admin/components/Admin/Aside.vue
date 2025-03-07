@@ -60,11 +60,11 @@ const links = reactive([
         name: "Торговые площадки",
         path: "/setting-trading-marketplaces",
       },
-      // {
-      //   id: 5,
-      //   name: "Магазины",
-      //   path: "/setting-stores",
-      // },
+      {
+        id: 5,
+        name: "Магазины",
+        path: "/setting-stores",
+      },
       // {
       //   id: 6,
       //   name: "Поставщики",

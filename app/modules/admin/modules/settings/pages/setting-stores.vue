@@ -9,12 +9,18 @@ definePageMeta({
   name: "Магазины",
 });
 
-onMounted(async () => {});
+const { getCrudStores } = useCrudStoresResponse();
+const { getProducts } = useCrudProductsResponse();
+
+onMounted(async () => {
+  await getCrudStores();
+  await getProducts();
+});
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col justify-between pb-[70px]">
-    Stores
+    <SettingsStoresTable />
   </div>
 </template>
 

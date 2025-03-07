@@ -79,9 +79,21 @@ const removeItem = (index: number) => {
   }
 };
 
-// Проверка текста по умолчанию
 const checkDefaultText = () => {
-  if (state.selectedItems.length == 0 || state.selectedItemIds.length == 0) {
+  if (props.modelValue) {
+    const modelArray = Array.isArray(props.modelValue)
+      ? [...props.modelValue] // Копируем массив
+      : [props.modelValue];
+
+    state.selectedItemIds = modelArray;
+
+    state.selectedItems = modelArray.map((id) => {
+      const foundItem = getArrayFromProps().find(
+        (item: any) => item[props.valueKey] === id
+      );
+      return foundItem ? foundItem[props.labelKey] : "";
+    });
+  } else {
     defaultSelectText.value = props.defaultSelectText;
   }
 };

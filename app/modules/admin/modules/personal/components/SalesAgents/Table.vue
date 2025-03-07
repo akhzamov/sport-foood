@@ -44,7 +44,6 @@ const openNewTab = (id: string) => {
 };
 const openEditTab = (title: number, id: string) => {
   const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-  adminStore.openUser = title;
 
   if (exists) {
     adminStore.activeOpenTab = id;

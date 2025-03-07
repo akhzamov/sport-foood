@@ -120,7 +120,7 @@ watch(
     @submit.prevent="onSubmit"
     class="sticky z-[20] w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Имя Фамилия </label>
         <UiInput
@@ -134,7 +134,7 @@ watch(
         </span>
       </div>
     </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Контакт </label>
         <UiInput

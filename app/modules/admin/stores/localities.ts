@@ -23,6 +23,8 @@ export const useLocalitiesStore = defineStore("localities", {
     marketplaces: null,
     marketplace: null,
     newMarketplace: null,
+    stores: null,
+    store: null,
     perPage: 15,
   }),
   actions: {},

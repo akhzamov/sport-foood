@@ -16,9 +16,10 @@ export interface IPersonalStore {
   isAscendingUsername: boolean;
   isAscendingStatus: boolean;
   employeesPagination: TPagination | null;
-  employeesPage: number;
+  employeesPage: Ref<number>;
   employeesPerPage: number;
   employee: TUserID | null;
+  searchEmployee: string;
   permissions: TPermissions | null;
   salesAgents: Record<number, TSalesAgent> | null;
   salesAgent: TSalesAgent | null;

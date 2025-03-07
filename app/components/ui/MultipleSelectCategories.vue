@@ -125,7 +125,23 @@ const filterObject = (obj: Record<string, any>, searchValue: string) => {
 };
 
 const checkDefaultText = () => {
-  if (state.selectedItems.length == 0 || state.selectedItemIds.length == 0) {
+  if (props.modelValue) {
+    const modelArray = Array.isArray(props.modelValue)
+      ? [...props.modelValue]
+      : [props.modelValue];
+
+    state.selectedItemIds = modelArray;
+
+    state.selectedItems = modelArray.map((id) => {
+      const foundItem = getArrayFromProps()
+        .flatMap((first) => {
+          const innerItems = first[props.innerItemKey] as Record<string, any>;
+          return innerItems ? Object.values(innerItems) : [];
+        })
+        .find((item: any) => item[props.valueKey] === id);
+      return foundItem ? foundItem[props.labelKey] : "";
+    });
+  } else {
     defaultSelectText.value = props.defaultSelectText;
   }
 };

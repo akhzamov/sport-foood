@@ -132,7 +132,7 @@ onUnmounted(() => {
         <label class="text-12-reg text-gray-90 mb-1"> Название района </label>
         <UiInput
           v-model:model-value="district"
-          placeholder="Измайлово"
+          placeholder=""
           type="text"
           class="text-gray-90"
         />
@@ -155,33 +155,32 @@ onUnmounted(() => {
         text="Отмена"
         class="w-[93px]"
         type="button"
-        @click="closeTab(`settings-city-edit-${adminStore.openUser}`)"
+        @click="closeTab(`settings-district-edit-${adminStore.openUser}`)"
       >
       </UiButton>
       <div class="flex items-center justify-center gap-4">
-        <UiButtons
-          bgColor="bg-transparent"
-          :border="true"
-          border-color="border-error-500"
+        <UiButton
+        bgColor="bg-transparent"
+          :border="false"
           :icon="true"
           hover="opacity-[0.9]"
           textColor="text-error-500"
           text="Удалить"
-          class="w-[123px]"
+          class="max-w-[120px] px-0"
           type="submit"
           @click="onDelete"
         >
           <template v-slot:icon>
             <IconTrash03 class="text-error-500" />
           </template>
-        </UiButtons>
+        </UiButton>
         <UiButton
           bgColor="bg-primary"
           :border="false"
           :icon="false"
           hover="opacity-[0.9]"
           textColor="text-dark-night"
-          text="Изменить"
+          text="Сохранить"
           class="w-[93px]"
           type="submit"
           @click="onSubmit"

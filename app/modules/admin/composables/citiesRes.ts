@@ -4,10 +4,10 @@ import { useMainStore } from "~/stores/main";
 
 export const useCrudCitiesResponse = () => {
   async function getAreas() {
-    const { $citiesRep } = useNuxtApp();
+    const { $crudCitiesRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
-      const res = await $citiesRep.getAreas();
+      const res = await $crudCitiesRep.getAreas();
       localitiesStore.areas = res.data.areas;
     } catch (error: any) {
       console.error(error.response?.data);
@@ -15,10 +15,10 @@ export const useCrudCitiesResponse = () => {
   }
 
   async function getCitiesByArea() {
-    const { $citiesRep } = useNuxtApp();
+    const { $crudCitiesRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
-      const res = await $citiesRep.getCitiesByArea();
+      const res = await $crudCitiesRep.getCitiesByArea();
       localitiesStore.citiesByArea = res.data.areas;
     } catch (error: any) {
       console.error(error.response?.data);
@@ -26,7 +26,7 @@ export const useCrudCitiesResponse = () => {
   }
 
   async function getCities() {
-    const { $citiesRep } = useNuxtApp();
+    const { $crudCitiesRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
       const params: {
@@ -47,7 +47,7 @@ export const useCrudCitiesResponse = () => {
         params.name = localitiesStore.searchCities;
       }
 
-      const res = await $citiesRep.getCities(params);
+      const res = await $crudCitiesRep.getCities(params);
       localitiesStore.cities = res.data.cities ? res.data.cities : [];
       localitiesStore.citiesPagination = res.pagination;
     } catch (error: any) {
@@ -56,10 +56,10 @@ export const useCrudCitiesResponse = () => {
   }
 
   async function getCity(id: number) {
-    const { $citiesRep } = useNuxtApp();
+    const { $crudCitiesRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
-      const res = await $citiesRep.getCityById(id);
+      const res = await $crudCitiesRep.getCityById(id);
       localitiesStore.city = res.data ?? null;
     } catch (error: any) {
       console.error(error.response?.data);
@@ -67,11 +67,11 @@ export const useCrudCitiesResponse = () => {
   }
 
   async function createCity(body: { name: string; area_id: number }) {
-    const { $citiesRep } = useNuxtApp();
+    const { $crudCitiesRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $citiesRep.createCityById(body);
+      const res = await $crudCitiesRep.createCityById(body);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Город успешно создан!";
@@ -101,11 +101,11 @@ export const useCrudCitiesResponse = () => {
   }
 
   async function editCity(id: number, body: { name: string; area_id: number }) {
-    const { $citiesRep } = useNuxtApp();
+    const { $crudCitiesRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $citiesRep.editCityById(id, body);
+      const res = await $crudCitiesRep.editCityById(id, body);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Город успешно изменен!";
@@ -135,11 +135,11 @@ export const useCrudCitiesResponse = () => {
   }
 
   async function deleteCity(id: number) {
-    const { $citiesRep } = useNuxtApp();
+    const { $crudCitiesRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $citiesRep.deleteCityById(id);
+      const res = await $crudCitiesRep.deleteCityById(id);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Город успешно удален!";
@@ -171,8 +171,7 @@ export const useCrudCitiesResponse = () => {
   const openEditTab = (id: number, textId: string) => {
     const adminStore = useAdminStore();
     const exists = adminStore.activeOpenTabs.some((item) => item.id === textId);
-    adminStore.openUser = id;
-
+    
     if (exists) {
       adminStore.activeOpenTab = textId;
     } else {

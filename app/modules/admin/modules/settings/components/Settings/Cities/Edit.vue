@@ -166,13 +166,12 @@ onUnmounted(() => {
       <div class="flex items-center justify-center gap-4">
         <UiButton
           bgColor="bg-transparent"
-          :border="true"
-          border-color="border-error-500"
+          :border="false"
           :icon="true"
           hover="opacity-[0.9]"
           textColor="text-error-500"
           text="Удалить"
-          class="w-[123px]"
+          class="max-w-[120px] px-0"
           type="submit"
           @click="onDelete"
         >
@@ -186,7 +185,7 @@ onUnmounted(() => {
           :icon="false"
           hover="opacity-[0.9]"
           textColor="text-dark-night"
-          text="Изменить"
+          text="Сохранить"
           class="w-[93px]"
           type="submit"
           @click="onSubmit"

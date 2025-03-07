@@ -1,13 +1,12 @@
 import type {
-  ICreateDistrictsErrorResponse,
-  ICreateDistrictsResponse,
-  IDeleteDistrictsErrorResponse,
-  IDeleteDistrictsResponse,
-  IDistrictByIdResponse,
-  IDistrictsResponse,
-} from "../types/Others/Settings/Districts/districts.type";
+  ICrudStoreDeleteResponse,
+  ICrudStoreIdResponse,
+  ICrudStoreResponse,
+  ICrudStoreCreateResponse,
+  ICrudStoreIdErrorResponse,
+} from "../types/Others/Settings/Stores/stores.type";
 
-export class CrudDistrictsRep {
+export class CrudStoresRep {
   private async request<T>(
     method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
     url: string,
@@ -19,15 +18,15 @@ export class CrudDistrictsRep {
     });
   }
 
-  async getDistricts(
+  async getStores(
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<IDistrictsResponse> {
+  ): Promise<ICrudStoreResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IDistrictsResponse>(
+    return await this.request<ICrudStoreResponse>(
       "GET",
-      `${config.public.apiBaseUrl}/api/crud/districts`,
+      `${config.public.apiBaseUrl}/api/crud/stores`,
       {
         params: {
           ...params,
@@ -42,16 +41,16 @@ export class CrudDistrictsRep {
     );
   }
 
-  async getDistrictById(
+  async getStoreById(
     id: number,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<IDistrictByIdResponse> {
+  ): Promise<ICrudStoreIdResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IDistrictByIdResponse>(
+    return await this.request<ICrudStoreIdResponse>(
       "GET",
-      `${config.public.apiBaseUrl}/api/crud/districts/${id}/get`,
+      `${config.public.apiBaseUrl}/api/crud/stores/${id}/get`,
       {
         params: {
           ...params,
@@ -66,23 +65,22 @@ export class CrudDistrictsRep {
     );
   }
 
-  async createDistrictById(
-    body: Record<string, any>,
+  async createStore(
+    formData: FormData,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ICreateDistrictsResponse | ICreateDistrictsErrorResponse> {
+  ): Promise<ICrudStoreCreateResponse | ICrudStoreIdErrorResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
-      const response = await this.request<ICreateDistrictsResponse>(
+      const response = await this.request<ICrudStoreCreateResponse>(
         "POST",
-        `${config.public.apiBaseUrl}/api/crud/districts/create`,
+        `${config.public.apiBaseUrl}/api/crud/stores/create`,
         {
           params: { ...params },
-          body: { ...body },
+          body: formData,
           headers: {
             Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
             "Accept": "application/json",
             ...headers,
           },
@@ -90,28 +88,27 @@ export class CrudDistrictsRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ICreateDistrictsErrorResponse;
+      return error.response?.data as ICrudStoreIdErrorResponse;
     }
   }
 
-  async editDistrictById(
+  async editStoreById(
     id: number,
-    body: Record<string, any>,
+    formData: FormData,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ICreateDistrictsResponse | ICreateDistrictsErrorResponse> {
+  ): Promise<ICrudStoreCreateResponse | ICrudStoreIdErrorResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
-      const response = await this.request<ICreateDistrictsResponse>(
+      const response = await this.request<ICrudStoreCreateResponse>(
         "POST",
-        `${config.public.apiBaseUrl}/api/crud/districts/${id}/update`,
+        `${config.public.apiBaseUrl}/api/crud/stores/${id}/update`,
         {
           params: { ...params },
-          body: { ...body },
+          body: formData,
           headers: {
             Authorization: `Bearer ${authToken}`,
-            "Content-Type": "application/json",
             "Accept": "application/json",
             ...headers,
           },
@@ -119,20 +116,20 @@ export class CrudDistrictsRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ICreateDistrictsErrorResponse;
+      return error.response?.data as ICrudStoreIdErrorResponse;
     }
   }
 
-  async deleteDistrictById(
+  async deleteStoreById(
     id: number,
     headers?: Record<string, string>
-  ): Promise<IDeleteDistrictsResponse | IDeleteDistrictsErrorResponse> {
+  ): Promise<ICrudStoreDeleteResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
-      const response = await this.request<IDeleteDistrictsResponse>(
+      const response = await this.request<ICrudStoreDeleteResponse>(
         "DELETE",
-        `${config.public.apiBaseUrl}/api/crud/districts/${id}/delete`,
+        `${config.public.apiBaseUrl}/api/crud/stores/${id}/delete`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -144,7 +141,7 @@ export class CrudDistrictsRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as IDeleteDistrictsErrorResponse;
+      return error.response?.data as ICrudStoreDeleteResponse;
     }
   }
 }

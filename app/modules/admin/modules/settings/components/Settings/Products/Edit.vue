@@ -39,7 +39,7 @@ const onDelete = handleSubmit(async (values) => {
     const confirmed = await mainStore.showConfirm(
       "warning",
       "Внимание",
-      `Вы точно хотите удалить продукт: ${localitiesStore.city?.name}?`
+      `Вы точно хотите удалить продукт: ${localitiesStore.product?.name}?`
     );
 
     if (confirmed) {
@@ -133,7 +133,7 @@ onUnmounted(() => {
             <UiInput
               v-model:model-value="name"
               type="text"
-              placeholder="Протеин"
+              placeholder=""
               class="text-gray-90"
             />
           </div>
@@ -145,7 +145,7 @@ onUnmounted(() => {
           <label class="text-12-reg text-gray-90 mb-1">Примечание</label>
           <UiTextarea
             v-model:model-value="description"
-            placeholder="Сывороточный протеин ISO WHEY..."
+            placeholder=""
             class="text-gray-90 h-[70px]"
           />
           <span
@@ -177,13 +177,12 @@ onUnmounted(() => {
       <div class="flex items-center justify-center gap-4">
         <UiButton
           bgColor="bg-transparent"
-          :border="true"
-          border-color="border-error-500"
+          :border="false"
           :icon="true"
           hover="opacity-[0.9]"
           textColor="text-error-500"
           text="Удалить"
-          class="w-[123px]"
+          class="max-w-[120px] px-0"
           type="submit"
           @click="onDelete"
         >
@@ -197,7 +196,7 @@ onUnmounted(() => {
           :icon="false"
           hover="opacity-[0.9]"
           textColor="text-dark-night"
-          text="Изменить"
+          text="Сохранить"
           class="w-[93px]"
           type="submit"
           @click="onSubmit"

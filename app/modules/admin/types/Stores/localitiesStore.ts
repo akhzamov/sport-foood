@@ -14,6 +14,10 @@ import type {
   TProductId,
 } from "../Others/Settings/Products/products.type";
 import type { TMarketplace } from "../Others/Settings/Marketplaces/marketplaces.type";
+import type {
+  TCrudStore,
+  TCrudStoreId,
+} from "../Others/Settings/Stores/stores.type";
 
 export interface ILocalitiesStore {
   areas: TAreas[] | null;
@@ -35,5 +39,7 @@ export interface ILocalitiesStore {
   marketplaces: TMarketplace[] | null;
   marketplace: TMarketplace | null;
   newMarketplace: { name: string } | null;
+  stores: TCrudStore[] | null;
+  store: TCrudStoreId | null;
   perPage: number;
 }
