@@ -25,8 +25,10 @@ import SettingStoresAdd from "~/modules/admin/modules/settings/components/Settin
 import SettingStoresEdit from "~/modules/admin/modules/settings/components/Settings/Stores/Edit.vue";
 
 const adminStore = useAdminStore();
-const containerRef = ref(null);
 const modules = [Navigation];
+const swiperRef = ref<any>(null);
+const isBeginning = ref(true);
+const isEnd = ref(false);
 
 const removeTab = (id: string) => {
   const index = adminStore.activeOpenTabs.findIndex((tab) => tab.id === id);
@@ -100,6 +102,22 @@ const dynamicTabs = computed(() => {
     .filter((tab) => tab.component !== null);
 });
 
+const slidePrev = () => {
+  if (swiperRef.value) {
+    swiperRef.value.swiper.slidePrev();
+    isBeginning.value = swiperRef.value.swiper.isBeginning;
+    isEnd.value = swiperRef.value.swiper.isEnd;
+  }
+};
+
+const slideNext = () => {
+  if (swiperRef.value) {
+    swiperRef.value.swiper.slideNext();
+    isBeginning.value = swiperRef.value.swiper.isBeginning;
+    isEnd.value = swiperRef.value.swiper.isEnd;
+  }
+};
+
 onMounted(() => {
   if (adminStore.activeOpenTabs.length > 0) {
     const firstTab = adminStore.activeOpenTabs[0];
@@ -120,6 +138,26 @@ watch(
     }
   }
 );
+
+// watch(
+//   () => swiperRef.value.swiper.isBeginning,
+//   () => {
+//     if (swiperRef.value) {
+//       isBeginning.value = swiperRef.value.swiper.isBeginning;
+//     }
+//   },
+//   { deep: true }
+// );
+
+// watch(
+//   () => swiperRef.value.swiper.isEnd,
+//   () => {
+//     if (swiperRef.value) {
+//       isEnds.value = swiperRef.value.swiper.isEnd;
+//     }
+//   },
+//   { deep: true }
+// );
 </script>
 
 <template>
@@ -153,16 +191,28 @@ watch(
         </div>
       </template>
     </div>
-    <swiper-container
-      v-else
-      :navigation="true"
-      :modules="modules"
-      :slidesPerView="5"
-      :slides-per-group="1"
-      class="swiper"
-    >
-      <template v-for="(tab, index) in adminStore.activeOpenTabs" :key="tab.id">
+    <div v-else class="relative w-full">
+      <button
+        @click="slidePrev"
+        class="custom-swiper-button-prev"
+        :class="{ 'button-disabled': isBeginning }"
+      >
+        <span><IconChevronLeft class="text-gray-40" /></span>
+      </button>
+      <swiper-container
+        :navigation="{
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        }"
+        :modules="modules"
+        :slidesPerView="5"
+        :slides-per-group="1"
+        class="swiper"
+        ref="swiperRef"
+      >
         <swiper-slide
+          v-for="(tab, index) in adminStore.activeOpenTabs"
+          :key="tab.id"
           :class="[
             adminStore.activeOpenTab == tab.id
               ? 'bg-dark-gunmental'
@@ -182,8 +232,17 @@ watch(
             <IconClose class="text-gray-40" />
           </button>
         </swiper-slide>
-      </template>
-    </swiper-container>
+      </swiper-container>
+      <button
+        @click="slideNext"
+        class="custom-swiper-button-next"
+        :class="{ 'button-disabled': isEnd }"
+      >
+        <span>
+          <IconChevronRight class="text-gray-40" />
+        </span>
+      </button>
+    </div>
     <template v-for="item in dynamicTabs" :key="item.tabId">
       <component
         v-if="item.tabId === adminStore.activeOpenTab"
@@ -204,11 +263,55 @@ watch(
   width: 100%;
   display: flex;
 }
-.swiper-button-next,
-.swiper-button-prev {
-  width: 40px !important;
-  height: 40px !important;
-  background: #000 !important;
-  color: #fff !important;
+
+.custom-swiper-button-prev,
+.custom-swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 150px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+}
+
+.custom-swiper-button-prev {
+  justify-content: start;
+  background: linear-gradient(90deg, #3b424a 30.25%, rgba(59, 66, 74, 0) 100%);
+  padding-left: 5px;
+}
+
+.custom-swiper-button-next {
+  justify-content: end;
+  background: linear-gradient(270deg, #3b424a 30.25%, rgba(59, 66, 74, 0) 100%);
+  padding-right: 5px;
+}
+
+.custom-swiper-button-prev span,
+.custom-swiper-button-next span {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-swiper-button-prev {
+  left: 0;
+}
+
+.custom-swiper-button-next {
+  right: 0;
+}
+
+.custom-swiper-button-prev.button-disabled,
+.custom-swiper-button-next.button-disabled {
+  opacity: 0;
+  pointer-events: none;
 }
 </style>
