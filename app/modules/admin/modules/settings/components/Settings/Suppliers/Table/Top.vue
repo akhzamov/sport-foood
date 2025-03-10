@@ -1,9 +1,34 @@
 <script lang="ts" setup>
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
-const { openNewTab } = useTabs();
 const route = useRoute();
 const localitiesStore = useLocalitiesStore();
+const { getCities, openNewTab } = useCrudCitiesResponse();
+const search = ref(localitiesStore.searchCities);
+const selectAreaMenu = ref(false);
+
+const selectArea = (region: number) => {
+  localitiesStore.selectedArea = region;
+  getCities();
+};
+
+const debouncedGetCities = useDebounceFn(() => {
+  getCities();
+}, 500);
+
+watch(
+  () => localitiesStore.searchCities,
+  () => {
+    debouncedGetCities();
+  },
+  { deep: true }
+);
+
+const newMarketplace = () => {
+  localitiesStore.newMarketplace = {
+    name: "",
+  };
+};
 </script>
 
 <template>
@@ -19,7 +44,7 @@ const localitiesStore = useLocalitiesStore();
         </div>
         <IconPlus
           class="text-gray-40 hover:text-primary ml-4"
-          @click="openNewTab('settings-product-add', 'Продукт')"
+          @click="newMarketplace"
         />
       </div>
     </div>

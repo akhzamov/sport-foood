@@ -4,28 +4,11 @@ import { usePersonalStore } from "~/modules/admin/stores/personal";
 import { useMainStore } from "~/stores/main";
 import { getUsers } from "~/modules/admin/modules/personal/components/Employees/employees.data";
 
+const { openNewTab } = useTabs();
 const adminStore = useAdminStore();
 const mainStore = useMainStore();
 const personalStore = usePersonalStore();
 const route = useRoute();
-
-const openNewTab = (id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    mainStore.alertShow = true;
-    mainStore.alertShowType = "error";
-    mainStore.alertShowTitle = "Ошибка";
-    mainStore.alertShowText =
-      "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: "Новый",
-      name: "Сотрудник",
-    });
-  }
-};
 
 const debouncedGetCities = useDebounceFn(() => {
   getUsers();
@@ -56,7 +39,7 @@ watch(
         </div>
         <IconPlus
           class="text-gray-40 hover:text-primary mx-4"
-          @click="openNewTab('employees-add')"
+          @click="openNewTab('employees-add', 'Сотрудник')"
         />
         <!-- <IconTrash03 class="text-gray-40 hover:text-error-500 ml-4" /> -->
       </div>

@@ -1,30 +1,15 @@
 <script lang="ts" setup>
-import { useAdminStore } from "~/modules/admin/stores/admin";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
-import { useMainStore } from "~/stores/main";
 import { getUsers } from "../../../personal/components/Employees/employees.data";
 
+const { openNewTab, openEditTab } = useTabs();
 const route = useRoute();
-const mainStore = useMainStore();
-const adminStore = useAdminStore();
 const personalStore = usePersonalStore();
-const selectedStatus = ref<number | null>(null);
-const selectedPosition = ref<number | null>(null);
 const selectedRole = ref<number | null>(null);
-const selectStatusMenu = ref(false);
-const selectPositionMenu = ref(false);
 const selectRoleMenu = ref(false);
 const search = ref("");
 const datepicker = ref<any>(null);
 const date = ref<Date>();
-const statuses = reactive([
-  { id: 1, name: "Все" },
-  { id: 2, name: "В отпуске" },
-  { id: 3, name: "Работает" },
-  { id: 4, name: "Болен" },
-  { id: 5, name: "Отсутствует" },
-  { id: 6, name: "Уволен" },
-]);
 const positions = reactive([
   { id: 1, name: "Все" },
   { id: 2, name: "Администратор" },
@@ -33,36 +18,7 @@ const positions = reactive([
   { id: 5, name: "Логист" },
   { id: 6, name: "Маркетолог" },
 ]);
-const openNewTab = (id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
 
-  if (exists) {
-    mainStore.alertShow = true;
-    mainStore.alertShowType = "error";
-    mainStore.alertShowTitle = "Ошибка";
-    mainStore.alertShowText =
-      "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: "Новый",
-      name: "Сотрудник",
-    });
-  }
-};
-const openEditTab = (title: number, id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    adminStore.activeOpenTab = id;
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: `#${title}`,
-      name: "Сотрудник",
-    });
-  }
-};
 function formatDate(date: Date) {
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");

@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
+const { getDistricts } = useCrudDistrictsResponse();
+const { openNewTab } = useTabs();
 const route = useRoute();
 const localitiesStore = useLocalitiesStore();
-const { getDistricts, openNewTab } = useCrudDistrictsResponse();
 const search = ref("");
 const selectCityMenu = ref(false);
 
@@ -38,7 +39,7 @@ watch(
         </div>
         <IconPlus
           class="text-gray-40 hover:text-primary ml-4"
-          @click="openNewTab('settings-district-add')"
+          @click="openNewTab('settings-district-add', 'Район')"
         />
       </div>
     </div>

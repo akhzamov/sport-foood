@@ -1,14 +1,10 @@
 <script lang="ts" setup>
-import { useAdminStore } from "~/modules/admin/stores/admin";
-import { useProfileStore } from "~/modules/profile/stores/profile";
 import { useMainStore } from "~/stores/main";
-import { getSalesAgents } from "~/modules/admin/modules/personal/components/SalesAgents/salesAgents.data";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
 
+const { openNewTab, openEditTab } = useTabs();
 const route = useRoute();
 const mainStore = useMainStore();
-const adminStore = useAdminStore();
-const profileStore = useProfileStore();
 const personalStore = usePersonalStore();
 const selectedStatus = ref<number | null>(null);
 const selectStatusMenu = ref(false);
@@ -24,40 +20,6 @@ const statuses = reactive([
 const closeMenu = () => {
   selectStatusMenu.value = false;
   selectStoreMenu.value = false;
-};
-const openNewTab = (id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    mainStore.alertShow = true;
-    mainStore.alertShowType = "error";
-    mainStore.alertShowTitle = "Ошибка";
-    mainStore.alertShowText =
-      "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: "Новый",
-      name: "Торговый Агент",
-    });
-  }
-};
-const openEditTab = (title: number, id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    adminStore.activeOpenTab = id;
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: `#${title}`,
-      name: "Торговый гент",
-    });
-  }
-};
-const selectBranch = (value: number) => {
-  profileStore.selectedBranch = value;
-  getSalesAgents();
 };
 </script>
 
@@ -77,7 +39,7 @@ const selectBranch = (value: number) => {
           </div>
           <IconPlus
             class="text-gray-40 hover:text-primary mx-4"
-            @click="openNewTab('sales-agents-add')"
+            @click="openNewTab('sales-agents-add', 'Торговый агент')"
           />
           <!-- <IconTrash03 class="text-gray-40 hover:text-error-500 ml-4" /> -->
         </div>
@@ -166,7 +128,13 @@ const selectBranch = (value: number) => {
           :key="agent.id"
         >
           <tr
-            @click="openEditTab(agent.id, `sales-agents-edit-${agent.id}`)"
+            @click="
+              openEditTab(
+                agent.id,
+                `sales-agents-edit-${agent.id}`,
+                'Торговый агент'
+              )
+            "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

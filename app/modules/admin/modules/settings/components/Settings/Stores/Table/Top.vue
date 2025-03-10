@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+const { openNewTab } = useTabs();
 const route = useRoute();
-const { openNewTab } = useCrudStoresResponse();
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const { openNewTab } = useCrudStoresResponse();
         </div>
         <IconPlus
           class="text-gray-40 hover:text-primary ml-4"
-          @click="openNewTab('settings-store-add')"
+          @click="openNewTab('settings-store-add', 'Магазин')"
         />
       </div>
     </div>

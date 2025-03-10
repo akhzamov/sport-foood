@@ -2,7 +2,7 @@
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 const localitiesStore = useLocalitiesStore();
-const { openEditTab } = useCrudStoresResponse();
+const { openEditTab } = useTabs();
 </script>
 
 <template>
@@ -30,7 +30,13 @@ const { openEditTab } = useCrudStoresResponse();
       <tbody v-if="localitiesStore.stores">
         <template v-for="store in localitiesStore.stores" :key="store.id">
           <tr
-            @click="openEditTab(store.id, `settings-store-edit-${store.id}`)"
+            @click="
+              openEditTab(
+                store.id,
+                `settings-store-edit-${store.id}`,
+                'Магазин'
+              )
+            "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

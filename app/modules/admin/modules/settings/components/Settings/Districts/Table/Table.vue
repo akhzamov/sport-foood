@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
+const { openEditTab } = useTabs();
 const localitiesStore = useLocalitiesStore();
-const { openEditTab } = useCrudDistrictsResponse();
 </script>
 
 <template>
@@ -34,7 +34,8 @@ const { openEditTab } = useCrudDistrictsResponse();
             @click="
               openEditTab(
                 district.id,
-                `settings-district-edit-${district.id}`
+                `settings-district-edit-${district.id}`,
+                'Район'
               )
             "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"

@@ -58,18 +58,18 @@ const links = reactive([
       {
         id: 4,
         name: "Торговые площадки",
-        path: "/setting-trading-marketplaces",
+        path: "/setting-marketplaces",
       },
       {
         id: 5,
         name: "Магазины",
         path: "/setting-stores",
       },
-      // {
-      //   id: 6,
-      //   name: "Поставщики",
-      //   path: "/setting-vendors",
-      // },
+      {
+        id: 6,
+        name: "Поставщики",
+        path: "/setting-suppliers",
+      },
     ],
   },
   {
@@ -114,9 +114,7 @@ const handleActiveLink = (id: number) => {
 </script>
 
 <template>
-  <div
-    class="min-w-[240px] h-full bg-dark-gunmental border-r border-gray-15"
-  >
+  <div class="min-w-[240px] h-full bg-dark-gunmental border-r border-gray-15">
     <div
       class="w-full h-full flex flex-col items-start justify-start gap-4 py-3 px-2"
     >
@@ -129,19 +127,11 @@ const handleActiveLink = (id: number) => {
           <div class="flex items-center justify-start gap-2">
             <component
               :is="link.icon"
-              :class="[
-                link.id != activeLink
-                  ? 'text-gray-40'
-                  : 'text-primary',
-              ]"
+              :class="[link.id != activeLink ? 'text-gray-40' : 'text-primary']"
             />
             <p
               class="text-12-semi"
-              :class="[
-                link.id != activeLink
-                  ? 'text-gray-40'
-                  : 'text-primary',
-              ]"
+              :class="[link.id != activeLink ? 'text-gray-40' : 'text-primary']"
             >
               {{ link.name }}
             </p>
@@ -182,9 +172,7 @@ const handleActiveLink = (id: number) => {
             :to="child.path"
             class="w-full h-[30px] flex items-center justify-start text-12-semi pl-8 rounded-md hover:bg-gray-15"
             :class="[
-              route.path == child.path
-                ? 'text-primary'
-                : 'text-gray-40',
+              route.path == child.path ? 'text-primary' : 'text-gray-40',
             ]"
           >
             {{ child.name }}

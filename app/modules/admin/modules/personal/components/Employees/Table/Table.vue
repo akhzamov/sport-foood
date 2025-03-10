@@ -1,23 +1,8 @@
 <script lang="ts" setup>
-import { useAdminStore } from "~/modules/admin/stores/admin";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
 
-const adminStore = useAdminStore();
 const personalStore = usePersonalStore();
-
-const openEditTab = (title: number, id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    adminStore.activeOpenTab = id;
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: `#${title}`,
-      name: "Сотрудник",
-    });
-  }
-};
+const { openNewTab, openEditTab } = useTabs();
 </script>
 
 <template>
@@ -59,7 +44,13 @@ const openEditTab = (title: number, id: string) => {
           :key="employee.id"
         >
           <tr
-            @click="openEditTab(employee.id, `employees-edit-${employee.id}`)"
+            @click="
+              openEditTab(
+                employee.id,
+                `employees-edit-${employee.id}`,
+                'Сотрудник'
+              )
+            "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

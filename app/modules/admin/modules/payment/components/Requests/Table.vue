@@ -1,41 +1,8 @@
 <script lang="ts" setup>
-import { useAdminStore } from "~/modules/admin/stores/admin";
 import { usePaymentStore } from "~/modules/admin/stores/payment";
-import { useMainStore } from "~/stores/main";
 
-const adminStore = useAdminStore();
-const mainStore = useMainStore();
 const paymentStore = usePaymentStore();
-const openNewTab = (id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    mainStore.alertShow = true;
-    mainStore.alertShowType = "error";
-    mainStore.alertShowTitle = "Ошибка";
-    mainStore.alertShowText =
-      "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: "Новая",
-      name: "Заявка",
-    });
-  }
-};
-const openEditTab = (id: number, textId: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === textId);
-
-  if (exists) {
-    adminStore.activeOpenTab = textId;
-  } else {
-    adminStore.activeOpenTabs.push({
-      id: textId,
-      title: `#${id}`,
-      name: "Заявка",
-    });
-  }
-};
+const { openNewTab, openEditTab } = useTabs();
 </script>
 
 <template>
@@ -69,7 +36,7 @@ const openEditTab = (id: number, textId: string) => {
       <div class="w-full h-full flex-grow flex items-center justify-start">
         <div class="w-auto h-full flex items-center justify-start">
           <div
-            @click="openNewTab('payment-requests-add')"
+            @click="openNewTab('payment-requests-add', 'Заявка')"
             class="w-max h-[30px] px-3 flex items-center justify-center border-r border-gray-15 cursor-pointer"
           >
             <IconPlus class="w-[30px] h-[30px] text-gray-40" />
@@ -125,7 +92,7 @@ const openEditTab = (id: number, textId: string) => {
       <tbody v-if="paymentStore.payments">
         <template v-for="(request, key) in paymentStore.payments" :key="key">
           <tr
-            @click="openEditTab(key, `payment-requests-edit-${key}`)"
+            @click="openEditTab(key, `payment-requests-edit-${key}`, 'Заявка')"
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

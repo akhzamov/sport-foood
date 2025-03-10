@@ -18,6 +18,7 @@ import type {
   TCrudStore,
   TCrudStoreId,
 } from "../Others/Settings/Stores/stores.type";
+import type { TSupplier } from "../Others/Settings/Suppliers/suppliers.type";
 
 export interface ILocalitiesStore {
   areas: TAreas[] | null;
@@ -41,5 +42,9 @@ export interface ILocalitiesStore {
   newMarketplace: { name: string } | null;
   stores: TCrudStore[] | null;
   store: TCrudStoreId | null;
+  suppliers: TSupplier[] | null;
+  supplier: TSupplier | null;
+  suppliersPage: Ref<number>;
+  supplierPagination: TPagination | null;
   perPage: number;
 }

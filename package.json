@@ -21,6 +21,7 @@
     "chartjs-plugin-annotation": "^3.0.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "nuxt": "^3.13.0",
+    "nuxt-swiper": "^2.0.0",
     "pinia": "^2.2.2",
     "vee-validate": "^4.13.2",
     "vue": "latest",

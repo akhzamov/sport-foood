@@ -5,7 +5,7 @@ import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 import { useMainStore } from "~/stores/main";
 
 const schema = yup.object({
-  name: yup.string().required("Введите название продукта"),
+  name: yup.string().required("Введите название поставщика"),
 });
 interface ISchemaForm {
   name: string;
@@ -21,35 +21,35 @@ const { value: name, errorMessage: nameError } = useField<string>("name");
 
 const localitiesStore = useLocalitiesStore();
 const mainStore = useMainStore();
-const editMarketplaceId = ref<number | null>(null);
-const marketplaceEditName = ref("");
-const newMarketplaceActive = ref(false);
+const editSupplierId = ref<number | null>(null);
+const supplierEditName = ref("");
+const newSupplierActive = ref(false);
 const {
-  getMarketplaces,
-  editMarketplace,
-  deleteMarketplace,
-  createMarketplace,
-  getMarketplace,
-} = useCrudMarketplacesResponse();
+  getSuppliers,
+  getSupplier,
+  deleteSupplier,
+  editSupplier,
+  createSupplier,
+} = useCrudSuppliersResponse();
 
 const onDelete = async (id: number) => {
   {
     try {
-      await getMarketplace(id);
+      await getSupplier(id);
       const confirmed = await mainStore.showConfirm(
         "warning",
         "Внимание",
-        `Вы точно хотите удалить торговую площадку: ${localitiesStore.marketplace?.name}?`
+        `Вы точно хотите удалить поставщика: ${localitiesStore.supplier?.name}?`
       );
 
       if (confirmed) {
-        await deleteMarketplace(id);
-        await getMarketplaces();
+        await deleteSupplier(id);
+        await getSuppliers();
       } else {
         console.log("Deletion cancelled");
       }
     } catch (error) {
-      console.error("Ошибка при удалении торговой площадки: ", error);
+      console.error("Ошибка при удалении поставщика: ", error);
     }
   }
 };
@@ -58,14 +58,14 @@ const onEdit = async (id: number, name: string) => {
   {
     try {
       const body = {
-        name: marketplaceEditName.value,
+        name: supplierEditName.value,
       };
-      await editMarketplace(id, body);
-      editMarketplaceId.value = null;
-      marketplaceEditName.value = "";
-      await getMarketplaces();
+      await editSupplier(id, body);
+      editSupplierId.value = null;
+      supplierEditName.value = "";
+      await getSuppliers();
     } catch (error) {
-      console.error("Ошибка при изменении торговой площадки: ", error);
+      console.error("Ошибка при изменении поставщика: ", error);
     }
   }
 };
@@ -75,19 +75,19 @@ const onSubmit = handleSubmit(async (values) => {
       const body = {
         name: values.name,
       };
-      await createMarketplace(body);
+      await createSupplier(body);
       name.value = "";
-      newMarketplaceActive.value = false;
+      newSupplierActive.value = false;
       localitiesStore.newMarketplace = null;
-      await getMarketplaces();
+      await getSuppliers();
     } catch (error) {
-      console.error("Ошибка при изменении торговой площадки: ", error);
+      console.error("Ошибка при создании поставщика: ", error);
     }
   }
 });
 
 const cancelNewMarketplace = () => {
-  newMarketplaceActive.value = false;
+  newSupplierActive.value = false;
   name.value = "";
   resetForm();
   localitiesStore.newMarketplace = null;
@@ -97,9 +97,9 @@ watch(
   () => localitiesStore.newMarketplace,
   () => {
     if (localitiesStore.newMarketplace) {
-      newMarketplaceActive.value = true;
+      newSupplierActive.value = true;
     } else {
-      newMarketplaceActive.value = false;
+      newSupplierActive.value = false;
     }
   },
   { deep: true }
@@ -108,16 +108,13 @@ watch(
 
 <template>
   <div class="w-full h-full overflow-auto">
-    <SettingsMarketplacesTableTop />
+    <SettingsSuppliersTableTop />
     <table class="w-full">
       <thead class="w-full">
         <tr
           class="w-full h-[32px] flex items-center justify-center text-12-med text-gray-40 border-b border-gray-40"
         >
           <th class="w-[36px] flex items-center justify-center">№</th>
-          <!-- <th class="w-[46px] flex items-center justify-center">
-            <UiCheckbox v-model:model-value="checkbox" />
-          </th> -->
           <th
             class="min-w-[385px] flex-grow flex items-center justify-start ml-3"
           >
@@ -125,10 +122,10 @@ watch(
           </th>
         </tr>
       </thead>
-      <tbody v-if="localitiesStore.marketplaces" class="overflow-auto">
+      <tbody v-if="localitiesStore.suppliers" class="overflow-auto">
         <template
-          v-for="marketplace in localitiesStore.marketplaces"
-          :key="marketplace.id"
+          v-for="supplier in localitiesStore.suppliers"
+          :key="supplier.id"
         >
           <tr
             class="w-full h-[36px] flex items-center hover:bg-gray-15 border-b border-gray-40"
@@ -136,38 +133,33 @@ watch(
             <th
               class="w-[36px] flex items-center justify-center text-14-reg text-gray-75"
             >
-              {{ marketplace.id }}
+              {{ supplier.id }}
             </th>
-            <!-- <th
-              class="w-[46px] h-[36px] relative flex items-center justify-center gap-1 text-14-reg text-gray-75 rounded"
-            >
-              <UiCheckbox v-model:model-value="checkbox" />
-            </th> -->
             <th
               class="w-[385px] flex items-center justify-start ml-3 text-14-reg text-gray-75"
             >
               <div
                 class="flex items-center justify-start gap-4"
-                v-if="editMarketplaceId != marketplace.id"
+                v-if="editSupplierId != supplier.id"
               >
                 <div
                   class="min-w-[165px] w-max h-[28px] px-3 bg-gray-15 rounded-lg shadow-xl flex items-center justify-start"
                 >
-                  {{ marketplace.name }}
+                  {{ supplier.name }}
                 </div>
                 <div class="flex items-center justify-start gap-1">
                   <div
                     class="w-8 h-8 flex items-center justify-center cursor-pointer"
                     @click="
-                      editMarketplaceId = marketplace.id;
-                      marketplaceEditName = marketplace.name;
+                      editSupplierId = supplier.id;
+                      supplierEditName = supplier.name;
                     "
                   >
                     <IconEdit05 class="text-gray-40" />
                   </div>
                   <div
                     class="w-8 h-8 flex items-center justify-center cursor-pointer"
-                    @click="onDelete(marketplace.id)"
+                    @click="onDelete(supplier.id)"
                   >
                     <IconTrash03 class="text-gray-40" />
                   </div>
@@ -175,10 +167,10 @@ watch(
               </div>
               <div
                 class="flex items-center justify-start gap-4"
-                v-if="editMarketplaceId == marketplace.id"
+                v-if="editSupplierId == supplier.id"
               >
                 <UiInput
-                  v-model:model-value="marketplaceEditName"
+                  v-model:model-value="supplierEditName"
                   placeholder="Имя торговой площадки"
                   type="string"
                   class="min-w-[165px] w-max max-h-[28px]"
@@ -195,8 +187,8 @@ watch(
                     class="w-[93px] max-h-[28px]"
                     type="button"
                     @click="
-                      editMarketplaceId = null;
-                      marketplaceEditName = '';
+                      editSupplierId = null;
+                      supplierEditName = '';
                     "
                   >
                   </UiButton>
@@ -209,7 +201,7 @@ watch(
                     text="Сохранить"
                     class="w-[93px] max-h-[28px]"
                     type="submit"
-                    @click="onEdit(marketplace.id, marketplace.name)"
+                    @click="onEdit(supplier.id, supplier.name)"
                   />
                 </div>
               </div>
@@ -217,7 +209,7 @@ watch(
           </tr>
         </template>
         <tr
-          v-if="newMarketplaceActive"
+          v-if="newSupplierActive"
           class="w-full h-[36px] flex items-center hover:bg-gray-15 border-b border-gray-40"
         >
           <th
@@ -231,7 +223,7 @@ watch(
             <div class="flex items-center justify-start gap-4">
               <UiInput
                 v-model:model-value="name"
-                placeholder="Название торговой площадки"
+                placeholder="Название поставщика"
                 type="string"
                 class="min-w-[165px] w-max max-h-[28px]"
                 :class="[nameError ? 'border border-error-500' : '']"
@@ -267,13 +259,13 @@ watch(
         </tr>
       </tbody>
       <div
-        v-if="!localitiesStore.marketplaces"
+        v-if="!localitiesStore.suppliers"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <div class="loader"></div>
       </div>
       <div
-        v-if="localitiesStore.marketplaces?.length == 0"
+        v-if="localitiesStore.suppliers?.length == 0"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <span class="text-16-med text-gray-75">

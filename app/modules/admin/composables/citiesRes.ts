@@ -168,41 +168,6 @@ export const useCrudCitiesResponse = () => {
     }
   }
 
-  const openEditTab = (id: number, textId: string) => {
-    const adminStore = useAdminStore();
-    const exists = adminStore.activeOpenTabs.some((item) => item.id === textId);
-    
-    if (exists) {
-      adminStore.activeOpenTab = textId;
-    } else {
-      adminStore.activeOpenTabs.push({
-        id: textId,
-        title: `#${id}`,
-        name: "Город",
-      });
-    }
-  };
-
-  const openNewTab = (id: string) => {
-    const adminStore = useAdminStore();
-    const mainStore = useMainStore();
-    const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-    if (exists) {
-      mainStore.alertShow = true;
-      mainStore.alertShowType = "error";
-      mainStore.alertShowTitle = "Ошибка";
-      mainStore.alertShowText =
-        "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
-    } else {
-      adminStore.activeOpenTabs.push({
-        id,
-        title: "Новый",
-        name: "Город",
-      });
-    }
-  };
-
   return {
     getAreas,
     getCities,
@@ -211,7 +176,5 @@ export const useCrudCitiesResponse = () => {
     createCity,
     editCity,
     deleteCity,
-    openEditTab,
-    openNewTab,
   };
 };

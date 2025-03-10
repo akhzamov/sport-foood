@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted } from "vue";
 import { useAdminStore } from "~/modules/admin/stores/admin";
+import { Navigation } from "swiper/modules";
 
 // Import all components
 import LogisticsEdit from "~/modules/admin/modules/logistic/components/Logistics/Edit.vue";
@@ -24,6 +25,8 @@ import SettingStoresAdd from "~/modules/admin/modules/settings/components/Settin
 import SettingStoresEdit from "~/modules/admin/modules/settings/components/Settings/Stores/Edit.vue";
 
 const adminStore = useAdminStore();
+const containerRef = ref(null);
+const modules = [Navigation];
 
 const removeTab = (id: string) => {
   const index = adminStore.activeOpenTabs.findIndex((tab) => tab.id === id);
@@ -111,8 +114,8 @@ watch(
   () => {
     if (adminStore.activeOpenTab) {
       let match = adminStore.activeOpenTab.match(/\d+$/);
-      if (match) {
-        adminStore.openUser = Number(match[0]);
+      if (!match) {
+        adminStore.openUser = null;
       }
     }
   }
@@ -123,7 +126,10 @@ watch(
   <div
     class="absolute z-[100] top-0 right-0 min-w-[740px] w-[740px] h-[100%] flex flex-col border-l border-gray-15 p-2 overflow-y-auto pb-[80px] bg-dark-charcoal"
   >
-    <div class="w-max h-max flex items-center justify-start gap-1">
+    <div
+      v-if="adminStore.activeOpenTabs.length < 6"
+      class="w-full h-max flex items-center justify-start gap-1 overflow-x-auto"
+    >
       <template v-for="(tab, index) in adminStore.activeOpenTabs" :key="tab.id">
         <div
           :class="[
@@ -147,6 +153,37 @@ watch(
         </div>
       </template>
     </div>
+    <swiper-container
+      v-else
+      :navigation="true"
+      :modules="modules"
+      :slidesPerView="5"
+      :slides-per-group="1"
+      class="swiper"
+    >
+      <template v-for="(tab, index) in adminStore.activeOpenTabs" :key="tab.id">
+        <swiper-slide
+          :class="[
+            adminStore.activeOpenTab == tab.id
+              ? 'bg-dark-gunmental'
+              : 'bg-dark-eerie-black',
+          ]"
+          @click="openTab(tab.id)"
+          class="swiper-slide h-[36px] flex items-start gap-9 rounded-t-lg py-1 px-2 cursor-pointer"
+        >
+          <div class="flex flex-col items-start justify-start">
+            <p class="text-12-ext text-gray-40">{{ tab.name }}:</p>
+            <p class="text-10-reg text-gray-90">{{ tab.title }}</p>
+          </div>
+          <button
+            @click.stop="removeTab(tab.id)"
+            class="w-8 h-8 cursor-pointer flex items-start justify-end"
+          >
+            <IconClose class="text-gray-40" />
+          </button>
+        </swiper-slide>
+      </template>
+    </swiper-container>
     <template v-for="item in dynamicTabs" :key="item.tabId">
       <component
         v-if="item.tabId === adminStore.activeOpenTab"
@@ -156,4 +193,22 @@ watch(
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.swiper {
+  width: 100%;
+  margin: 0 0;
+}
+
+.swiper-slide {
+  max-width: 120px;
+  width: 100%;
+  display: flex;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  width: 40px !important;
+  height: 40px !important;
+  background: #000 !important;
+  color: #fff !important;
+}
+</style>

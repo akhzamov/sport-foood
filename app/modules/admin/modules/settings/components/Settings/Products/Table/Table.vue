@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
+const { openEditTab } = useTabs();
 const localitiesStore = useLocalitiesStore();
-const { openEditTab } = useCrudProductsResponse();
 const hoverItemId = ref<number | null>(null);
 const getImageSrc = (imageUrl: string) => {
   const baseUrl = "https://crm-api.autosale.pw/"; // Укажи свой домен
@@ -37,7 +37,11 @@ const getImageSrc = (imageUrl: string) => {
         <template v-for="product in localitiesStore.products" :key="product.id">
           <tr
             @click="
-              openEditTab(product.id, `settings-product-edit-${product.id}`)
+              openEditTab(
+                product.id,
+                `settings-product-edit-${product.id}`,
+                'Продукт'
+              )
             "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >

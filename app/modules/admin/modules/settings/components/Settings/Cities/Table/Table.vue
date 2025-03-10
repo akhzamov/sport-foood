@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
+const { openEditTab } = useTabs();
 const localitiesStore = useLocalitiesStore();
-const { openEditTab } = useCrudCitiesResponse();
 </script>
 
 <template>
@@ -28,7 +28,9 @@ const { openEditTab } = useCrudCitiesResponse();
       <tbody v-if="localitiesStore.cities">
         <template v-for="city in localitiesStore.cities" :key="city.id">
           <tr
-            @click="openEditTab(city.id, `settings-city-edit-${city.id}`)"
+            @click="
+              openEditTab(city.id, `settings-city-edit-${city.id}`, 'Город')
+            "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

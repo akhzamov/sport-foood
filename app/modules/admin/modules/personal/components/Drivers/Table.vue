@@ -1,45 +1,10 @@
 <script lang="ts" setup>
-import { useAdminStore } from "~/modules/admin/stores/admin";
-import { useMainStore } from "~/stores/main";
-import { getDriverById } from "./drivers.data";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
 
-const adminStore = useAdminStore();
-const mainStore = useMainStore();
 const personalStore = usePersonalStore();
 const route = useRoute();
 const search = ref("");
-
-const openNewTab = (id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    mainStore.alertShow = true;
-    mainStore.alertShowType = "error";
-    mainStore.alertShowTitle = "Ошибка";
-    mainStore.alertShowText =
-      "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: "Новый",
-      name: "Водитель",
-    });
-  }
-};
-const openEditTab = (id: number, textId: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === textId);
-
-  if (exists) {
-    adminStore.activeOpenTab = textId;
-  } else {
-    adminStore.activeOpenTabs.push({
-      id: textId,
-      title: `#${id}`,
-      name: "Водитель",
-    });
-  }
-};
+const { openNewTab, openEditTab } = useTabs();
 </script>
 
 <template>
@@ -56,7 +21,7 @@ const openEditTab = (id: number, textId: string) => {
           </div>
           <IconPlus
             class="text-gray-40 hover:text-primary ml-4"
-            @click="openNewTab('drivers-add')"
+            @click="openNewTab('drivers-add', 'Водитель')"
           />
           <!-- <IconTrash03 class="text-gray-40 hover:text-error-500 ml-4" /> -->
         </div>
@@ -102,7 +67,9 @@ const openEditTab = (id: number, textId: string) => {
       <tbody>
         <template v-for="driver in personalStore.drivers" :key="driver.id">
           <tr
-            @click="openEditTab(driver.id, `drivers-edit-${driver.id}`)"
+            @click="
+              openEditTab(driver.id, `drivers-edit-${driver.id}`, 'Водитель')
+            "
             class="w-full h-[36px] flex items-center cursor-pointer hover:bg-gray-15 border-b border-gray-40"
           >
             <th

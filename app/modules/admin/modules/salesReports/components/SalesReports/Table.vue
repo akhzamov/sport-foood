@@ -1,41 +1,8 @@
 <script lang="ts" setup>
-import { useAdminStore } from "~/modules/admin/stores/admin";
 import { usePaymentStore } from "~/modules/admin/stores/payment";
-import { useMainStore } from "~/stores/main";
 
-const mainStore = useMainStore();
-const adminStore = useAdminStore();
+const { openNewTab, openEditTab } = useTabs();
 const paymentStore = usePaymentStore();
-const openNewTab = (id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    mainStore.alertShow = true;
-    mainStore.alertShowType = "error";
-    mainStore.alertShowTitle = "Ошибка";
-    mainStore.alertShowText =
-      "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: "Новая",
-      name: "Отчет",
-    });
-  }
-};
-const openEditTab = (id: number, textId: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === textId);
-
-  if (exists) {
-    adminStore.activeOpenTab = textId;
-  } else {
-    adminStore.activeOpenTabs.push({
-      id: textId,
-      title: `#${id}`,
-      name: "Отчет",
-    });
-  }
-};
 </script>
 
 <template>

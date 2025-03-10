@@ -1,19 +1,14 @@
 <script lang="ts" setup>
 import { useMainStore } from "~/stores/main";
-import { useAdminLogisticsStore } from "../../stores/adminLogistics";
 import { logisticData } from "./logisticsTable.data";
-import { useAdminStore } from "~/modules/admin/stores/admin";
 
-const adminStore = useAdminStore();
-const adminLogisticsStore = useAdminLogisticsStore();
+const { openNewTab, openEditTab } = useTabs();
 const mainStore = useMainStore();
 const route = useRoute();
 const data = reactive(logisticData);
 const allChecked = ref(false);
 const itemIds = reactive<string[]>([]);
 const suppliers = reactive<string[]>([]);
-const deleteItemTitle = ref("");
-const deleteItemText = ref("");
 const dateFormatter = (date: string) => {
   let nDate = new Date(date);
   let day = nDate.getDate() > 9 ? nDate.getDate() : `0${nDate.getDate()}`;
@@ -56,36 +51,6 @@ const deleteItem = () => {
       .map((supplier) => `${supplier}`)
       .join(", ")}`;
     mainStore.confirmModal = true;
-  }
-};
-const openNewTab = (id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    mainStore.alertShow = true;
-    mainStore.alertShowType = "error";
-    mainStore.alertShowTitle = "Ошибка";
-    mainStore.alertShowText =
-      "Нельзя открыть несколько одинаковых окон! Закройте или сохраните предыдущее окно";
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title: "Новый",
-      name: "ID заказа",
-    });
-  }
-};
-const openEditTab = (title: string, id: string) => {
-  const exists = adminStore.activeOpenTabs.some((item) => item.id === id);
-
-  if (exists) {
-    adminStore.activeOpenTab = id;
-  } else {
-    adminStore.activeOpenTabs.push({
-      id,
-      title,
-      name: "ID заказа",
-    });
   }
 };
 

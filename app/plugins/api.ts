@@ -23,6 +23,7 @@ import { CrudDistrictsRep } from "~/modules/admin/repository/districts";
 import { CrudProductsRep } from "~/modules/admin/repository/products";
 import { CrudMarketplacesRep } from "~/modules/admin/repository/marketplaces";
 import { CrudStoresRep } from "~/modules/admin/repository/stores";
+import { CrudSuppliersRep } from "~/modules/admin/repository/suppliers";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const salesPlanRep = new SalesPlanRep();
@@ -48,6 +49,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const crudProductsRep = new CrudProductsRep();
   const crudMarketplacesRep = new CrudMarketplacesRep();
   const crudStoresRep = new CrudStoresRep();
+  const crudSuppliersRep = new CrudSuppliersRep();
 
   nuxtApp.provide("salesPlanRep", salesPlanRep);
   nuxtApp.provide("storesRep", storesRep);
@@ -72,4 +74,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.provide("crudProductsRep", crudProductsRep);
   nuxtApp.provide("crudMarketplacesRep", crudMarketplacesRep);
   nuxtApp.provide("crudStoresRep", crudStoresRep);
+  nuxtApp.provide("crudSuppliersRep", crudSuppliersRep);
 });

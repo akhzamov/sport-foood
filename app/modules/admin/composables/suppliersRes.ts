@@ -1,58 +1,38 @@
 import { useLocalitiesStore } from "~/modules/admin/stores/localities";
-import { useAdminStore } from "../stores/admin";
 import { useMainStore } from "~/stores/main";
 
-export const useCrudProductsResponse = () => {
-  async function getProducts() {
-    const { $crudProductsRep } = useNuxtApp();
+export const useCrudSuppliersResponse = () => {
+  async function getSuppliers() {
+    const { $crudSuppliersRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
-      const res = await $crudProductsRep.getProducts();
-      localitiesStore.products = res.data.products ? res.data.products : [];
+      const res = await $crudSuppliersRep.getSuppliers();
+      localitiesStore.suppliers = res.data ? res.data : [];
     } catch (error: any) {
       console.error(error.response?.data);
     }
   }
 
-  async function getProduct(id: number) {
-    const { $crudProductsRep } = useNuxtApp();
+  async function getSupplier(id: number) {
+    const { $crudSuppliersRep } = useNuxtApp();
     const localitiesStore = useLocalitiesStore();
     try {
-      const res = await $crudProductsRep.getProductById(id);
-      localitiesStore.product = res.data ?? null;
+      const res = await $crudSuppliersRep.getSupplierById(id);
+      localitiesStore.supplier = res.data ?? null;
     } catch (error: any) {
       console.error(error.response?.data);
     }
   }
 
-  async function createProduct(
-    body: {
-      name: string;
-      description?: string;
-    },
-    photo?: File
-  ) {
-    const { $crudProductsRep } = useNuxtApp();
+  async function createSupplier(body: { name: string }) {
+    const { $crudSuppliersRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const formData = new FormData();
-      formData.append("name", body.name);
-      if (photo) {
-        formData.append("photo", photo);
-      }
-      if (body.description) {
-        formData.append("description", body.description);
-      }
-
-      for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]); // Должно вывести ключи и значения
-      }
-
-      const res = await $crudProductsRep.createProductById(formData);
+      const res = await $crudSuppliersRep.createSupplier(body);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
-      mainStore.rightAlertShowText = "Продукт успешно создан!";
+      mainStore.rightAlertShowText = "Поставщик успешно создан!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -65,7 +45,7 @@ export const useCrudProductsResponse = () => {
     } catch (error: any) {
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "error";
-      mainStore.rightAlertShowText = "Не удалось создать продукт!";
+      mainStore.rightAlertShowText = "Не удалось создать поставщика!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -78,34 +58,20 @@ export const useCrudProductsResponse = () => {
     }
   }
 
-  async function editProduct(
+  async function editSupplier(
     id: number,
     body: {
       name: string;
-      description?: string;
-    },
-    photo?: File
+    }
   ) {
-    const { $crudProductsRep } = useNuxtApp();
+    const { $crudSuppliersRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const formData = new FormData();
-      formData.append("name", body.name);
-      if (photo) {
-        formData.append("photo", photo);
-      }
-      if (body.description) {
-        formData.append("description", body.description);
-      }
-
-      for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]); // Должно вывести ключи и значения
-      }
-      const res = await $crudProductsRep.editProductById(id, formData);
+      const res = await $crudSuppliersRep.editSupplierById(id, body);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
-      mainStore.rightAlertShowText = "Продукт успешно изменен!";
+      mainStore.rightAlertShowText = "Поставщик успешно изменен!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -118,7 +84,7 @@ export const useCrudProductsResponse = () => {
     } catch (error: any) {
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "error";
-      mainStore.rightAlertShowText = "Не удалось изменить продукт!";
+      mainStore.rightAlertShowText = "Не удалось изменить поставщика!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -131,15 +97,15 @@ export const useCrudProductsResponse = () => {
     }
   }
 
-  async function deleteProduct(id: number) {
-    const { $crudProductsRep } = useNuxtApp();
+  async function deleteSupplier(id: number) {
+    const { $crudSuppliersRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
-      const res = await $crudProductsRep.deleteProductById(id);
+      const res = await $crudSuppliersRep.deleteSupplierById(id);
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
-      mainStore.rightAlertShowText = "Продукт успешно удален!";
+      mainStore.rightAlertShowText = "Поставщик успешно удален!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -152,7 +118,7 @@ export const useCrudProductsResponse = () => {
     } catch (error: any) {
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "error";
-      mainStore.rightAlertShowText = "Не удалось удалить продукт!";
+      mainStore.rightAlertShowText = "Не удалось удалить поставщика!";
 
       setTimeout(() => {
         mainStore.rightAlertShow = false;
@@ -166,10 +132,10 @@ export const useCrudProductsResponse = () => {
   }
 
   return {
-    getProducts,
-    getProduct,
-    createProduct,
-    editProduct,
-    deleteProduct,
+    getSuppliers,
+    getSupplier,
+    createSupplier,
+    editSupplier,
+    deleteSupplier,
   };
 };

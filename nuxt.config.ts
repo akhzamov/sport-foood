@@ -53,6 +53,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/google-fonts",
     "@vueuse/nuxt",
+    "nuxt-swiper",
   ],
 
   plugins: ["~/plugins/vue-datepicker.js"],
@@ -61,7 +62,7 @@ export default defineNuxtConfig({
     storesDirs: ["~/stores/**", "~/layers/**/stores/**"],
   },
 
-  css: ["~/assets/css/tailwind.css"],
+  css: ["~/assets/css/tailwind.css", "swiper/css", "swiper/css/navigation"],
 
   tailwindcss: {
     cssPath: "~/assets/css/tailwind.css",
