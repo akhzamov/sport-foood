@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
-import type { IAdminStore } from "~/modules/admin/types/Stores/adminStore.type";
+import { useSessionStorage } from "@vueuse/core";
+import type { IAdminStore } from "../types/Stores/adminStore";
 
 export const useAdminStore = defineStore("admin", {
   state: (): IAdminStore => ({
@@ -7,6 +8,36 @@ export const useAdminStore = defineStore("admin", {
     activeOpenTab: "",
     activeOpenEditTableTab: "",
     openUser: null,
+    areas: null,
+    selectedArea: null,
+    city: null,
+    cities: null,
+    citiesPagination: null,
+    citiesPage: useSessionStorage("citiesPage", 1),
+    citiesByArea: null,
+    searchCities: useSessionStorage("searchCities", ""),
+    searchDistricts: useSessionStorage("searchDistricts", ""),
+    selectedCityByArea: null,
+    districts: null,
+    district: null,
+    districtsPagination: null,
+    districtsPage: useSessionStorage("districtsPage", 1),
+    products: null,
+    product: null,
+    marketplaces: null,
+    marketplace: null,
+    newMarketplace: null,
+    stores: null,
+    store: null,
+    suppliers: null,
+    supplier: null,
+    suppliersPage: useSessionStorage("suppliersPage", 1),
+    supplierPagination: null,
+    drivers: null,
+    driver: null,
+    driversPagination: null,
+    driversPage: useSessionStorage("driversPage", 1),
+    perPage: 15,
   }),
   actions: {},
 });

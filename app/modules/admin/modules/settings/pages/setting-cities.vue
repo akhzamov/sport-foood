@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 useSeoMeta({
   title: "Sport Food | Setting Cities",
@@ -12,20 +11,18 @@ definePageMeta({
   name: "Города",
 });
 
-const localitiesStore = useLocalitiesStore();
 const adminStore = useAdminStore();
 const { getCities } = useCrudCitiesResponse();
 const changePage = async (page: number) => {
   const currentTab = adminStore.activeOpenTab; // Сохраняем текущую активную вкладку
-  localitiesStore.citiesPage = page;
+  adminStore.citiesPage = page;
   await getCities();
   adminStore.activeOpenTab = currentTab;
 };
 const totalPages = computed(() => {
-  if (localitiesStore.citiesPagination) {
+  if (adminStore.citiesPagination) {
     return Math.ceil(
-      localitiesStore.citiesPagination.total /
-        localitiesStore.citiesPagination.per_page
+      adminStore.citiesPagination.total / adminStore.citiesPagination.per_page
     );
   } else {
     return 0;
@@ -43,14 +40,14 @@ onMounted(async () => {
     <div
       class="h-[90px] py-[12px] px-[24px] border-t border-gray-15"
       v-if="
-        localitiesStore.citiesPagination &&
-        localitiesStore.citiesPagination.total > localitiesStore.perPage
+        adminStore.citiesPagination &&
+        adminStore.citiesPagination.total > adminStore.perPage
       "
     >
       <UiAdminPagination
         :total-pages="totalPages"
-        :current-page="localitiesStore.citiesPage"
-        v-model:model-value="localitiesStore.citiesPage"
+        :current-page="adminStore.citiesPage"
+        v-model:model-value="adminStore.citiesPage"
         @update:model-value="changePage($event)"
       />
     </div>

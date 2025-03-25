@@ -1,11 +1,10 @@
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
-import { useAdminStore } from "../stores/admin";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
 
 export const useCrudDistrictsResponse = () => {
   async function getDistricts() {
     const { $crudDistrictsRep } = useNuxtApp();
-    const localitiesStore = useLocalitiesStore();
+    const adminStore = useAdminStore();
     try {
       const params: {
         page: number;
@@ -13,21 +12,21 @@ export const useCrudDistrictsResponse = () => {
         city_id?: number;
         name?: string;
       } = {
-        page: localitiesStore.districtsPage,
-        per_page: localitiesStore.perPage,
+        page: adminStore.districtsPage,
+        per_page: adminStore.perPage,
       };
 
-      if (localitiesStore.selectedCityByArea) {
-        params.city_id = localitiesStore.selectedCityByArea;
+      if (adminStore.selectedCityByArea) {
+        params.city_id = adminStore.selectedCityByArea;
       }
 
-      if (localitiesStore.searchDistricts) {
-        params.name = localitiesStore.searchDistricts;
+      if (adminStore.searchDistricts) {
+        params.name = adminStore.searchDistricts;
       }
 
       const res = await $crudDistrictsRep.getDistricts(params);
-      localitiesStore.districts = res.data.districts ? res.data.districts : [];
-      localitiesStore.districtsPagination = res.pagination;
+      adminStore.districts = res.data.districts ? res.data.districts : [];
+      adminStore.districtsPagination = res.pagination;
     } catch (error: any) {
       console.error(error.response?.data);
     }
@@ -35,10 +34,10 @@ export const useCrudDistrictsResponse = () => {
 
   async function getDistrict(id: number) {
     const { $crudDistrictsRep } = useNuxtApp();
-    const localitiesStore = useLocalitiesStore();
+    const adminStore = useAdminStore();
     try {
       const res = await $crudDistrictsRep.getDistrictById(id);
-      localitiesStore.district = res.data ?? null;
+      adminStore.district = res.data ?? null;
     } catch (error: any) {
       console.error(error.response?.data);
     }

@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const route = useRoute();
-const localitiesStore = useLocalitiesStore();
-const { getCities, openNewTab } = useCrudCitiesResponse();
-const search = ref(localitiesStore.searchCities);
+const adminStore = useAdminStore();
+const { getCities } = useCrudCitiesResponse();
+const search = ref(adminStore.searchCities);
 const selectAreaMenu = ref(false);
 
 const selectArea = (region: number) => {
-  localitiesStore.selectedArea = region;
+  adminStore.selectedArea = region;
   getCities();
 };
 
@@ -17,7 +17,7 @@ const debouncedGetCities = useDebounceFn(() => {
 }, 500);
 
 watch(
-  () => localitiesStore.searchCities,
+  () => adminStore.searchCities,
   () => {
     debouncedGetCities();
   },
@@ -25,7 +25,7 @@ watch(
 );
 
 const newMarketplace = () => {
-  localitiesStore.newMarketplace = {
+  adminStore.newMarketplace = {
     name: "",
   };
 };

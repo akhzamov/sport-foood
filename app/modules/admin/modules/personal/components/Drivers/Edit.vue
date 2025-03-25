@@ -1,11 +1,8 @@
 <script lang="ts" setup>
-import { useAdminStore } from "~/modules/admin/stores/admin";
-import { editDriverById, getDriverById } from "./drivers.data";
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
-import { usePersonalStore } from "~/modules/admin/stores/personal";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
   name: yup
@@ -33,13 +30,12 @@ const { value: selectedCity, errorMessage: selectedCityError } =
   useField<number>("selectedCity");
 
 const adminStore = useAdminStore();
-const localitiesStore = useLocalitiesStore();
-const personalStore = usePersonalStore();
 const mainStore = useMainStore();
 const cost = ref<number | null>(null);
 const statusMenu = ref(false);
 const files = ref(null);
 const { closeTab } = useTabs();
+const { editDriverById, getDriverById } = useCrudDriversResponse();
 
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -63,21 +59,17 @@ const onSubmit = handleSubmit(async (values) => {
 
 onMounted(async () => {
   await getDriverById(adminStore.openUser ? adminStore.openUser : 0);
-  if (personalStore.driver) {
-    name.value = personalStore.driver.name;
-    contact.value = personalStore.driver.contact;
-    selectedCity.value = personalStore.driver.city.id;
+  if (adminStore.driver) {
+    name.value = adminStore.driver.name;
+    contact.value = adminStore.driver.contact;
+    selectedCity.value = adminStore.driver.city.id;
   }
 });
 </script>
 
 <template>
   <div
-    v-if="
-      personalStore.driver &&
-      localitiesStore.citiesByArea &&
-      !mainStore.isLoading
-    "
+    v-if="adminStore.driver && adminStore.citiesByArea && !mainStore.isLoading"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
     <div class="h-max flex items-start justify-between gap-3 mt-3">
@@ -110,7 +102,7 @@ onMounted(async () => {
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Статус </label>
         <UiInput
-          v-model:model-value="personalStore.driver.status"
+          v-model:model-value="adminStore.driver.status"
           placeholder="Активный"
           type="text"
           class="text-gray-90"
@@ -122,9 +114,9 @@ onMounted(async () => {
         <div class="flex gap-1">
           <UiSelectCategories
             v-model:model-value="selectedCity"
-            :default-select-text="personalStore.driver.city.name"
+            :default-select-text="adminStore.driver.city.name"
             :show-menu="statusMenu"
-            :array="localitiesStore.citiesByArea"
+            :array="adminStore.citiesByArea"
             select-bg-color="bg-gray-15"
             main-text-color="text-gray-90"
             @update:show-menu="statusMenu = $event"

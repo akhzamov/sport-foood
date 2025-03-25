@@ -3,7 +3,7 @@ import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { usePaymentStore } from "~/modules/admin/stores/payment";
 import { useMainStore } from "~/stores/main";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
   type: yup.string().required("Выберите тип заявки").nullable(),
@@ -36,7 +36,7 @@ const { value: recipient, errorMessage: recipientError } =
   useField<string>("recipient");
 
 const paymentStore = usePaymentStore();
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const mainStore = useMainStore();
 const cityMenuShow = ref(false);
 const typeMenuShow = ref(false);
@@ -69,7 +69,7 @@ const onSubmit = handleSubmit(async (values) => {});
 <template>
   <form
     v-if="
-      localitiesStore.citiesByArea &&
+      adminStore.citiesByArea &&
       mainStore.stores &&
       paymentStore.types &&
       paymentStore.priorities &&
@@ -123,7 +123,7 @@ const onSubmit = handleSubmit(async (values) => {});
           <UiSelectCategories
             v-model:model-value="selectedCity"
             :show-menu="cityMenuShow"
-            :array="localitiesStore.citiesByArea"
+            :array="adminStore.citiesByArea"
             :icon="false"
             :is-object="true"
             default-select-text="Выбрать город"

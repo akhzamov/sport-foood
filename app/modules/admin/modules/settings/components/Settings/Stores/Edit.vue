@@ -3,7 +3,6 @@ import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
 import { russiaRegions } from "~/data/localData";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
@@ -50,7 +49,6 @@ const { value: syncStoreId, errorMessage: syncStoreIdError } = useField<
 
 const mainStore = useMainStore();
 const adminStore = useAdminStore();
-const localitiesStore = useLocalitiesStore();
 const router = useRouter();
 const selectRegionMenu = ref(false);
 const { getCrudStore, getCrudStores, deleteStore, editStore } =
@@ -66,7 +64,7 @@ const onDelete = handleSubmit(async (values) => {
     const confirmed = await mainStore.showConfirm(
       "warning",
       "Внимание",
-      `Вы точно хотите удалить магазин: ${localitiesStore.store?.name}?`
+      `Вы точно хотите удалить магазин: ${adminStore.store?.name}?`
     );
 
     if (confirmed) {
@@ -130,18 +128,16 @@ const onSubmit = handleSubmit(async (values) => {
 onMounted(async () => {
   mainStore.isLoading = true;
   await getCrudStore(adminStore.openUser ?? 0);
-  if (localitiesStore.store) {
-    name.value = localitiesStore.store.name;
-    sort.value = localitiesStore.store.sort;
-    let productsId = localitiesStore.store.products.map(
+  if (adminStore.store) {
+    name.value = adminStore.store.name;
+    sort.value = adminStore.store.sort;
+    let productsId = adminStore.store.products.map(
       (product: any) => product.product_id
     );
     selectedProducts.value = productsId;
-    let citiesId = localitiesStore.store.cities.map(
-      (city: any) => city.city_id
-    );
+    let citiesId = adminStore.store.cities.map((city: any) => city.city_id);
     selectedCities.value = citiesId;
-    syncStoreId.value = localitiesStore.store.sync_id ?? null;
+    syncStoreId.value = adminStore.store.sync_id ?? null;
   }
   mainStore.isLoading = false;
 });
@@ -159,7 +155,7 @@ onUnmounted(() => {});
 
 <template>
   <form
-    v-if="!mainStore.isLoading && localitiesStore.areas"
+    v-if="!mainStore.isLoading && adminStore.areas"
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
@@ -198,7 +194,7 @@ onUnmounted(() => {});
           <div class="flex gap-1">
             <UiSelectPhoto
               :length="1"
-              :images="[getImageSrc(localitiesStore.store?.photo ?? '')]"
+              :images="[getImageSrc(adminStore.store?.photo ?? '')]"
               v-model:model-value="photo"
               class="w-[80px] h-[80px]"
             />
@@ -215,7 +211,7 @@ onUnmounted(() => {});
         select-bg-color="bg-gray-15"
         disable-text-color="text-gray-40"
         disable-bg-color="bg-gray-15"
-        :array="localitiesStore.products ?? []"
+        :array="adminStore.products ?? []"
         :show-menu="productsMenu"
         default-select-text="Товары"
         v-model:model-value="selectedProducts"
@@ -233,7 +229,7 @@ onUnmounted(() => {});
         select-bg-color="bg-gray-15"
         disable-text-color="text-gray-40"
         disable-bg-color="bg-gray-15"
-        :array="localitiesStore.citiesByArea ?? []"
+        :array="adminStore.citiesByArea ?? []"
         :show-menu="citiesMenu"
         default-select-text="Города"
         v-model:model-value="selectedCities"
@@ -252,7 +248,7 @@ onUnmounted(() => {});
         select-bg-color="bg-gray-15"
         disable-text-color="text-gray-40"
         disable-bg-color="bg-gray-15"
-        :array="localitiesStore.stores ?? []"
+        :array="adminStore.stores ?? []"
         :show-menu="storeMenu"
         default-select-text="Магазин для синхронизации"
         v-model:model-value="syncStoreId"

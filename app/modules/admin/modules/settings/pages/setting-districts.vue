@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 useSeoMeta({
   title: "Sport Food | Setting Districts",
@@ -11,17 +11,17 @@ definePageMeta({
   name: "Районы",
 });
 
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const { getDistricts } = useCrudDistrictsResponse();
 const changePage = (page: number) => {
-  localitiesStore.districtsPage = page;
+  adminStore.districtsPage = page;
   getDistricts();
 };
 const totalPages = computed(() => {
-  if (localitiesStore.districtsPagination) {
+  if (adminStore.districtsPagination) {
     return Math.ceil(
-      localitiesStore.districtsPagination.total /
-        localitiesStore.districtsPagination.per_page
+      adminStore.districtsPagination.total /
+        adminStore.districtsPagination.per_page
     );
   } else {
     return 0;
@@ -39,14 +39,14 @@ onMounted(async () => {
     <div
       class="h-[90px] py-[12px] px-[24px] border-t border-gray-15"
       v-if="
-        localitiesStore.districtsPagination &&
-        localitiesStore.districtsPagination.total > localitiesStore.perPage
+        adminStore.districtsPagination &&
+        adminStore.districtsPagination.total > adminStore.perPage
       "
     >
       <UiAdminPagination
         :total-pages="totalPages"
-        :current-page="localitiesStore.districtsPage"
-        v-model:model-value="localitiesStore.districtsPage"
+        :current-page="adminStore.districtsPage"
+        v-model:model-value="adminStore.districtsPage"
         @update:model-value="changePage($event)"
       />
     </div>

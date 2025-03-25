@@ -1,11 +1,10 @@
 import { defineStore } from "pinia";
 import type { IAdminLogisticsStore } from "~/modules/admin/modules/logistic/types/Stores/adminLogistics.type";
-import { logisticData } from "~/modules/admin/modules/logistic/components/Logistics/logisticsTable.data";
 
 export const useAdminLogisticsStore = defineStore("adminLogistics", {
   state: (): IAdminLogisticsStore => ({
-    activeOpenEditTableTab: "",
-    logisticsData: logisticData,
+    activeOpenEditTableTab: null,
+    logisticsData: null,
     addCityModal: false,
     showSelectMenuAddCityModal: false,
     selectedCityAddCityModal: null,
@@ -16,6 +15,7 @@ export const useAdminLogisticsStore = defineStore("adminLogistics", {
     ],
     addProductModal: false,
     showSelectMenuProductModal: false,
+    showSelectMenuWeightModal: false,
     selectedItemProductModal: null,
     productsProductModal: [
       { id: 1, name: "BCAA", weight: 30000, count: 20, price: 1000 },

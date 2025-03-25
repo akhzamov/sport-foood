@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-import { createDriverById } from "./drivers.data";
-import { useAdminStore } from "~/modules/admin/stores/admin";
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
   name: yup
@@ -33,13 +31,14 @@ const { value: selectedCity, errorMessage: selectedCityError } =
   useField<number>("selectedCity");
 
 const personalStore = usePersonalStore();
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const mainStore = useMainStore();
 const status = ref("");
 const cost = ref<number | null>(null);
 const statusMenu = ref(false);
 const files = ref(null);
 const { closeTab } = useTabs();
+const { createDriver } = useCrudDriversResponse();
 
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -49,7 +48,7 @@ const onSubmit = handleSubmit(async (values) => {
         contact: values.contact,
         city_id: values.selectedCity,
       };
-      await createDriverById(data);
+      await createDriver(data);
     }
   } catch (error) {
     console.error("Ошибка при создании водителя: ", error);
@@ -59,7 +58,7 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <form
-    v-if="localitiesStore.citiesByArea && !mainStore.isLoading"
+    v-if="adminStore.citiesByArea && !mainStore.isLoading"
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
@@ -110,7 +109,7 @@ const onSubmit = handleSubmit(async (values) => {
             v-model:model-value="selectedCity"
             default-select-text="Выбрать город"
             :show-menu="statusMenu"
-            :array="localitiesStore.citiesByArea"
+            :array="adminStore.citiesByArea"
             select-bg-color="bg-gray-15"
             main-text-color="text-gray-90"
             @update:show-menu="statusMenu = $event"

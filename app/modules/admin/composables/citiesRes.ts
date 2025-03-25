@@ -1,14 +1,13 @@
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
-import { useAdminStore } from "../stores/admin";
 import { useMainStore } from "~/stores/main";
+import { useAdminStore } from "../stores/admin";
 
 export const useCrudCitiesResponse = () => {
   async function getAreas() {
     const { $crudCitiesRep } = useNuxtApp();
-    const localitiesStore = useLocalitiesStore();
+    const adminStore = useAdminStore();
     try {
       const res = await $crudCitiesRep.getAreas();
-      localitiesStore.areas = res.data.areas;
+      adminStore.areas = res.data.areas;
     } catch (error: any) {
       console.error(error.response?.data);
     }
@@ -16,10 +15,10 @@ export const useCrudCitiesResponse = () => {
 
   async function getCitiesByArea() {
     const { $crudCitiesRep } = useNuxtApp();
-    const localitiesStore = useLocalitiesStore();
+    const adminStore = useAdminStore();
     try {
       const res = await $crudCitiesRep.getCitiesByArea();
-      localitiesStore.citiesByArea = res.data.areas;
+      adminStore.citiesByArea = res.data.areas;
     } catch (error: any) {
       console.error(error.response?.data);
     }
@@ -27,7 +26,7 @@ export const useCrudCitiesResponse = () => {
 
   async function getCities() {
     const { $crudCitiesRep } = useNuxtApp();
-    const localitiesStore = useLocalitiesStore();
+    const adminStore = useAdminStore();
     try {
       const params: {
         page: number;
@@ -35,21 +34,21 @@ export const useCrudCitiesResponse = () => {
         area_id?: number;
         name?: string;
       } = {
-        page: localitiesStore.citiesPage,
-        per_page: localitiesStore.perPage,
+        page: adminStore.citiesPage,
+        per_page: adminStore.perPage,
       };
 
-      if (localitiesStore.selectedArea) {
-        params.area_id = localitiesStore.selectedArea;
+      if (adminStore.selectedArea) {
+        params.area_id = adminStore.selectedArea;
       }
 
-      if (localitiesStore.searchCities) {
-        params.name = localitiesStore.searchCities;
+      if (adminStore.searchCities) {
+        params.name = adminStore.searchCities;
       }
 
       const res = await $crudCitiesRep.getCities(params);
-      localitiesStore.cities = res.data.cities ? res.data.cities : [];
-      localitiesStore.citiesPagination = res.pagination;
+      adminStore.cities = res.data.cities ? res.data.cities : [];
+      adminStore.citiesPagination = res.pagination;
     } catch (error: any) {
       console.error(error.response?.data);
     }
@@ -57,10 +56,10 @@ export const useCrudCitiesResponse = () => {
 
   async function getCity(id: number) {
     const { $crudCitiesRep } = useNuxtApp();
-    const localitiesStore = useLocalitiesStore();
+    const adminStore = useAdminStore();
     try {
       const res = await $crudCitiesRep.getCityById(id);
-      localitiesStore.city = res.data ?? null;
+      adminStore.city = res.data ?? null;
     } catch (error: any) {
       console.error(error.response?.data);
     }

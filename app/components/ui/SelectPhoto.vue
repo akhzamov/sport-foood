@@ -60,7 +60,7 @@ const previewUrls = computed<Record<number, string>>(() => {
         v-if="previewUrls[index - 1]"
         :src="previewUrls[index - 1]"
         alt="Selected photo"
-        class="w-full h-full object-cover rounded-lg"
+        class="w-full h-full object-contain rounded-lg"
       />
       <div
         v-else

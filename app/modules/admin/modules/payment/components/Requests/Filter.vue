@@ -2,10 +2,10 @@
 import { usePaymentStore } from "~/modules/admin/stores/payment";
 import { getPayments } from "./requests.data";
 import { useMainStore } from "~/stores/main";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const paymentStore = usePaymentStore();
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const mainStore = useMainStore();
 const storesMenuShow = ref(false);
 const citiesMenuShow = ref(false);
@@ -84,7 +84,7 @@ watch(
       @click.stop
       v-if="
         mainStore.stores &&
-        localitiesStore.citiesByArea &&
+        adminStore.citiesByArea &&
         paymentStore.statuses &&
         paymentStore.priorities &&
         paymentStore.types &&
@@ -133,7 +133,7 @@ watch(
               select-bg-color="bg-gray-15"
               disable-text-color="text-gray-40"
               disable-bg-color="bg-gray-15"
-              :array="localitiesStore.citiesByArea ?? []"
+              :array="adminStore.citiesByArea ?? []"
               :show-menu="citiesMenuShow"
               default-select-text="Города"
               v-model:model-value="paymentStore.filteredCities"

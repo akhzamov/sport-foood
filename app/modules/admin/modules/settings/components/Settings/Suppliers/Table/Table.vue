@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
 
 const schema = yup.object({
@@ -19,7 +19,7 @@ const { handleSubmit, resetForm } = useForm<ISchemaForm>({
 });
 const { value: name, errorMessage: nameError } = useField<string>("name");
 
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const mainStore = useMainStore();
 const editSupplierId = ref<number | null>(null);
 const supplierEditName = ref("");
@@ -39,7 +39,7 @@ const onDelete = async (id: number) => {
       const confirmed = await mainStore.showConfirm(
         "warning",
         "Внимание",
-        `Вы точно хотите удалить поставщика: ${localitiesStore.supplier?.name}?`
+        `Вы точно хотите удалить поставщика: ${adminStore.supplier?.name}?`
       );
 
       if (confirmed) {
@@ -78,7 +78,7 @@ const onSubmit = handleSubmit(async (values) => {
       await createSupplier(body);
       name.value = "";
       newSupplierActive.value = false;
-      localitiesStore.newMarketplace = null;
+      adminStore.newMarketplace = null;
       await getSuppliers();
     } catch (error) {
       console.error("Ошибка при создании поставщика: ", error);
@@ -90,13 +90,13 @@ const cancelNewMarketplace = () => {
   newSupplierActive.value = false;
   name.value = "";
   resetForm();
-  localitiesStore.newMarketplace = null;
+  adminStore.newMarketplace = null;
 };
 
 watch(
-  () => localitiesStore.newMarketplace,
+  () => adminStore.newMarketplace,
   () => {
-    if (localitiesStore.newMarketplace) {
+    if (adminStore.newMarketplace) {
       newSupplierActive.value = true;
     } else {
       newSupplierActive.value = false;
@@ -122,11 +122,8 @@ watch(
           </th>
         </tr>
       </thead>
-      <tbody v-if="localitiesStore.suppliers" class="overflow-auto">
-        <template
-          v-for="supplier in localitiesStore.suppliers"
-          :key="supplier.id"
-        >
+      <tbody v-if="adminStore.suppliers" class="overflow-auto">
+        <template v-for="supplier in adminStore.suppliers" :key="supplier.id">
           <tr
             class="w-full h-[36px] flex items-center hover:bg-gray-15 border-b border-gray-40"
           >
@@ -259,13 +256,13 @@ watch(
         </tr>
       </tbody>
       <div
-        v-if="!localitiesStore.suppliers"
+        v-if="!adminStore.suppliers"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <div class="loader"></div>
       </div>
       <div
-        v-if="localitiesStore.suppliers?.length == 0"
+        v-if="adminStore.suppliers?.length == 0"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <span class="text-16-med text-gray-75">

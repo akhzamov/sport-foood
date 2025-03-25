@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { getStores } from "../components/Header/profileHeader.data";
 import {
   getAreas,
   getStorageTypes,
@@ -15,6 +16,7 @@ definePageMeta({
 });
 
 onMounted(async () => {
+  await getStores();
   await getAreas();
   await getStorageTypes();
   await getStoragesLeft();

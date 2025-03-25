@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const { openEditTab } = useTabs();
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const hoverItemId = ref<number | null>(null);
 const getImageSrc = (imageUrl: string) => {
   const baseUrl = "https://crm-api.autosale.pw/"; // Укажи свой домен
@@ -33,8 +33,8 @@ const getImageSrc = (imageUrl: string) => {
           </th>
         </tr>
       </thead>
-      <tbody v-if="localitiesStore.products" class="overflow-auto">
-        <template v-for="product in localitiesStore.products" :key="product.id">
+      <tbody v-if="adminStore.products" class="overflow-auto">
+        <template v-for="product in adminStore.products" :key="product.id">
           <tr
             @click="
               openEditTab(
@@ -71,13 +71,13 @@ const getImageSrc = (imageUrl: string) => {
         </template>
       </tbody>
       <div
-        v-if="!localitiesStore.products"
+        v-if="!adminStore.products"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <div class="loader"></div>
       </div>
       <div
-        v-if="localitiesStore.products?.length == 0"
+        v-if="adminStore.products?.length == 0"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <span class="text-16-med text-gray-75">

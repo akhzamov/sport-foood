@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const { openEditTab } = useTabs();
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 </script>
 
 <template>
@@ -28,8 +28,8 @@ const localitiesStore = useLocalitiesStore();
           </th>
         </tr>
       </thead>
-      <tbody v-if="localitiesStore.districts">
-        <div v-for="district in localitiesStore.districts" :key="district.id">
+      <tbody v-if="adminStore.districts">
+        <template v-for="district in adminStore.districts" :key="district.id">
           <tr
             @click="
               openEditTab(
@@ -66,16 +66,16 @@ const localitiesStore = useLocalitiesStore();
               {{ district.country.name }}
             </th>
           </tr>
-        </div>
+        </template>
       </tbody>
       <div
-        v-if="!localitiesStore.districts"
+        v-if="!adminStore.districts"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <div class="loader"></div>
       </div>
       <div
-        v-if="localitiesStore.districts?.length == 0"
+        v-if="adminStore.districts?.length == 0"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <span class="text-16-med text-gray-75">

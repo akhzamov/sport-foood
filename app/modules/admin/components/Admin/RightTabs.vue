@@ -4,8 +4,9 @@ import { useAdminStore } from "~/modules/admin/stores/admin";
 import { Navigation } from "swiper/modules";
 
 // Import all components
-import LogisticsEdit from "~/modules/admin/modules/logistic/components/Logistics/Edit.vue";
-import LogisticsAdd from "~/modules/admin/modules/logistic/components/Logistics/Add.vue";
+import LogisticsEdit from "~/modules/admin/modules/logistic/components/Logistics/Edit/Edit.vue";
+import LogisticsEditView from "~/modules/admin/modules/logistic/components/Logistics/Edit/View.vue";
+import LogisticsAdd from "~/modules/admin/modules/logistic/components/Logistics/Add/Add.vue";
 import EmployeesEdit from "~/modules/admin/modules/personal/components/Employees/Edit.vue";
 import EmployeesAdd from "~/modules/admin/modules/personal/components/Employees/Add.vue";
 import SalesAgentsEdit from "~/modules/admin/modules/personal/components/SalesAgents/Edit.vue";
@@ -69,6 +70,7 @@ const openTab = (id: string) => {
 // Словарь компонентов для более надежного маппинга
 const componentMap = reactive({
   "logistics-edit": markRaw(LogisticsEdit),
+  "logistics-edit-view": markRaw(LogisticsEditView),
   "logistics-add": markRaw(LogisticsAdd),
   "employees-edit": markRaw(EmployeesEdit),
   "employees-add": markRaw(EmployeesAdd),

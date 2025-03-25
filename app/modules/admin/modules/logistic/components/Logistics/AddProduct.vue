@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from "vue";
 import { useAdminLogisticsStore } from "~/modules/admin/modules/logistic/stores/adminLogistics";
+import { useLogisticStore } from "~/modules/admin/stores/logistic";
 
 // Pinia store
 const adminLogisticsStore = useAdminLogisticsStore();
@@ -9,22 +10,31 @@ const adminLogisticsStore = useAdminLogisticsStore();
 const props = withDefaults(
   defineProps<{
     showSelectMenu: boolean;
+    showSelectWeight: boolean;
     selectedProduct: number | null;
     products: any;
   }>(),
   {
     showSelectMenu: false,
+    showSelectWeight: false,
     selectedProduct: null,
   }
 );
 
 // Emit
-const emit = defineEmits(["update:selectedProduct", "update:showSelectMenu"]);
+const emit = defineEmits([
+  "update:selectedProduct",
+  "update:showSelectMenu",
+  "update:showSelectWeightMenu",
+]);
 
 // Local state to track
+const logisticStore = useLogisticStore();
 const localSelectedProduct = ref(props.selectedProduct);
 const localShowSelectMenu = ref(props.showSelectMenu);
-const localWeight = ref<number | null>(null);
+const localShowSelectWeightMenu = ref(props.showSelectWeight);
+const localPackageId = ref<number | null>(null);
+const localPackageName = ref<string>("");
 const localCount = ref<number | null>(null);
 const localPrice = ref<number | null>(null);
 
@@ -52,7 +62,14 @@ const closeAddCityModal = () => {
 
 // Update selected city function
 const updateSelectedCity = () => {
-  emit("update:selectedProduct", localSelectedProduct.value);
+  const product = {
+    id: localSelectedProduct.value,
+    packageId: localPackageId.value,
+    packageName: localPackageName.value,
+    quantity: localCount.value,
+    kg_price: localPrice.value,
+  };
+  emit("update:selectedProduct", product);
   adminLogisticsStore.addProductModal = false;
   adminLogisticsStore.showSelectMenuProductModal = false;
   adminLogisticsStore.selectedItemProductModal = null;
@@ -62,6 +79,23 @@ const updateSelectedCity = () => {
 const updateShowSelectMenu = (newValue: boolean) => {
   localShowSelectMenu.value = newValue;
   emit("update:showSelectMenu", newValue);
+};
+const updateShowSelectWeightMenu = (newValue: boolean) => {
+  localShowSelectWeightMenu.value = newValue;
+  emit("update:showSelectWeightMenu", newValue);
+};
+const selectPackage = (id: number) => {
+  localPackageId.value = id;
+
+  const foundPackage = logisticStore.shipmentPackages
+    ?.flatMap((item) => item.packages)
+    .find((pkg) => pkg.id === id);
+
+  if (foundPackage) {
+    localPackageName.value = foundPackage.value;
+  }
+
+  console.log(localPackageName.value);
 };
 </script>
 
@@ -101,22 +135,28 @@ const updateShowSelectMenu = (newValue: boolean) => {
             width="w-full"
             :text-center="false"
             :disable="false"
-            class="h-[40px] flex-grow"
+            class="z-[60] h-[40px] flex-grow"
           />
-          <button
-            class="min-w-[40px] h-[40px] flex items-center justify-center bg-gray-15 rounded-lg"
-          >
-            <IconSettings class="text-gray-90" />
-          </button>
         </div>
       </div>
       <div class="w-full flex items-start justify-start mt-4 gap-3">
         <div>
-          <label class="text-12-reg text-gray-90 mb-1">Вес</label>
-          <UiInput
-            v-model:model-value="localWeight"
-            placeholder="100"
-            type="number"
+          <label class="text-12-reg text-gray-90 mb-1">Фасовка</label>
+          <UiSelectCategories
+            v-model:model-value="localPackageId"
+            :show-menu="props.showSelectWeight"
+            :array="logisticStore.shipmentPackages ?? []"
+            :icon="false"
+            :is-object="false"
+            default-select-text="Выберите фасовку"
+            select-bg-color="bg-gray-15"
+            main-text-color="text-gray-90"
+            value-key="id"
+            label-key="value"
+            inner-item-key="packages"
+            @update:model-value="selectPackage($event)"
+            @update:show-menu="updateShowSelectWeightMenu"
+            class="z-[30] h-[40px] flex-grow"
           />
         </div>
         <div>

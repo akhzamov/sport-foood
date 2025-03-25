@@ -26,10 +26,4 @@ export interface IPersonalStore {
   salesAgentsPagination: TPagination | null;
   salesAgentsPage: number;
   salesAgentsPerPage: number;
-  drivers: Record<string, TDriver> | null;
-  driver: TDriver | null;
-  driverAreas: Record<number, TDriverArea> | null;
-  driversPagination: TPagination | null;
-  driversPage: number;
-  driversPerPage: number;
 }

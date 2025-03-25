@@ -2,7 +2,7 @@
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
   name: yup.string().required("Введите название продукта"),
@@ -25,7 +25,7 @@ const { value: description, errorMessage: descriptionError } =
   useField<string>("description");
 
 const mainStore = useMainStore();
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const { createProduct, getProducts } = useCrudProductsResponse();
 const { closeTab } = useTabs();
 const file = ref<Record<number, File> | null>(null);

@@ -2,7 +2,7 @@
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
   selectedCity: yup.number().nullable().required("Выберите город"),
@@ -27,7 +27,7 @@ const { value: district, errorMessage: districtError } =
   useField<string>("district");
 
 const mainStore = useMainStore();
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const selectRegionMenu = ref(false);
 const { createDistrict, getDistricts } = useCrudDistrictsResponse();
 const { closeTab } = useTabs();
@@ -62,7 +62,7 @@ const onSubmit = handleSubmit(async (values) => {
           <UiSelectCategories
             main-text-color="text-gray-90"
             select-bg-color="bg-gray-15"
-            :array="localitiesStore.citiesByArea ?? []"
+            :array="adminStore.citiesByArea ?? []"
             :show-menu="selectRegionMenu"
             default-select-text="Выбрать город"
             v-model:model-value="selectedCity"

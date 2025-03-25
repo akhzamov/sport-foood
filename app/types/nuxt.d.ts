@@ -22,6 +22,7 @@ import { CrudProductsRep } from "~/modules/admin/repository/products";
 import { CrudMarketplacesRep } from "~/modules/admin/repository/marketplaces";
 import { CrudStoresRep } from "~/modules/admin/repository/stores";
 import { CrudSuppliersRep } from "~/modules/admin/repository/suppliers";
+import type { CrudLogisticRep } from "~/modules/admin/repository/logistic";
 
 declare module "#app" {
   interface NuxtApp {
@@ -49,5 +50,6 @@ declare module "#app" {
     $crudMarketplacesRep: CrudMarketplacesRep;
     $crudStoresRep: CrudStoresRep;
     $crudSuppliersRep: CrudSuppliersRep;
+    $crudLogisticRep: CrudLogisticRep;
   }
 }

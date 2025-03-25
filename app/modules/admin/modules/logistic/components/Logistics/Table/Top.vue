@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-const route = useRoute()
+const { openNewTab } = useTabs();
+const route = useRoute();
 </script>
 
 <template>
@@ -10,8 +11,10 @@ const route = useRoute()
       >
         <p class="text-16-400 text-gray-40">{{ route.name }}</p>
       </div>
-      <IconPlus class="text-gray-40 hover:text-primary ml-4"/>
-      <IconTrash03 class="text-gray-40 hover:text-error-500 ml-4"/>
+      <IconPlus
+        @click="openNewTab('logistics-add', 'Закуп')"
+        class="text-gray-40 hover:text-primary ml-4"
+      />
     </div>
   </div>
 </template>

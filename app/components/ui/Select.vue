@@ -99,6 +99,13 @@ watch(
   },
   { deep: true, immediate: true }
 );
+watch(
+  () => props.modelValue,
+  () => {
+    checkDefaultText();
+  },
+  { deep: true, immediate: true }
+);
 </script>
 
 <template>

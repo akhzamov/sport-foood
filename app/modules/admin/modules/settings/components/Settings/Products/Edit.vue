@@ -2,8 +2,6 @@
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
-import { russiaRegions } from "~/data/localData";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
@@ -28,7 +26,6 @@ const { value: description, errorMessage: descriptionError } =
 
 const mainStore = useMainStore();
 const adminStore = useAdminStore();
-const localitiesStore = useLocalitiesStore();
 const file = ref<Record<string, File> | null>(null);
 const { getProduct, deleteProduct, getProducts, editProduct } =
   useCrudProductsResponse();
@@ -39,7 +36,7 @@ const onDelete = handleSubmit(async (values) => {
     const confirmed = await mainStore.showConfirm(
       "warning",
       "Внимание",
-      `Вы точно хотите удалить продукт: ${localitiesStore.product?.name}?`
+      `Вы точно хотите удалить продукт: ${adminStore.product?.name}?`
     );
 
     if (confirmed) {
@@ -95,9 +92,9 @@ const getImageSrc = (imageUrl: string) => {
 onMounted(async () => {
   mainStore.isLoading = true;
   await getProduct(adminStore.openUser ?? 0);
-  if (localitiesStore.product) {
-    name.value = localitiesStore.product?.name;
-    description.value = localitiesStore.product?.description ?? "";
+  if (adminStore.product) {
+    name.value = adminStore.product?.name;
+    description.value = adminStore.product?.description ?? "";
   }
   mainStore.isLoading = false;
 });
@@ -110,7 +107,7 @@ onUnmounted(() => {
 
 <template>
   <form
-    v-if="!mainStore.isLoading && localitiesStore.product"
+    v-if="!mainStore.isLoading && adminStore.product"
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
@@ -119,7 +116,7 @@ onUnmounted(() => {
         <span class="text-12-reg text-gray-90 mb-1">Фотография</span>
         <UiSelectPhoto
           :length="1"
-          :images="[getImageSrc(localitiesStore.product.image)]"
+          :images="[getImageSrc(adminStore.product.image)]"
           v-model:model-value="file"
           class="w-[140px] h-[140px]"
         />

@@ -1,7 +1,7 @@
 import type { ILogistics } from "../Logistics/logisticsDatat.type";
 
 export interface IAdminLogisticsStore {
-  activeOpenEditTableTab: string;
+  activeOpenEditTableTab: number | null;
   logisticsData: ILogistics[] | null;
   addCityModal: boolean;
   showSelectMenuAddCityModal: boolean;
@@ -9,6 +9,7 @@ export interface IAdminLogisticsStore {
   citiesAddCityModal: any;
   addProductModal: boolean;
   showSelectMenuProductModal: boolean;
+  showSelectMenuWeightModal: boolean;
   selectedItemProductModal: null | number;
   productsProductModal: any;
 }

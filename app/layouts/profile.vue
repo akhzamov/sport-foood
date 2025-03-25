@@ -4,11 +4,6 @@ import {
   getStores,
 } from "~/modules/profile/components/Header/profileHeader.data";
 import { useProfileStore } from "~/modules/profile/stores/profile";
-import {
-  getAreas,
-  getStorageTypes,
-} from "~/modules/profile/components/Warehouse/warehouse.data";
-import { getStoragesLeft } from "~/modules/profile/components/Warehouse/Warehouse/warehouseBalance.data";
 import { useMainStore } from "~/stores/main";
 import {
   getIndexMarketplaces,

@@ -2,7 +2,6 @@
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
@@ -28,7 +27,6 @@ const { value: city, errorMessage: cityError } = useField<string>("city");
 
 const mainStore = useMainStore();
 const adminStore = useAdminStore();
-const localitiesStore = useLocalitiesStore();
 const selectRegionMenu = ref(false);
 const { createCity, getCities } = useCrudCitiesResponse();
 const { closeTab } = useTabs();
@@ -65,7 +63,7 @@ const onSubmit = handleSubmit(async (values) => {
             select-bg-color="bg-gray-15"
             disable-text-color="text-gray-40"
             disable-bg-color="bg-gray-15"
-            :array="localitiesStore.areas ?? []"
+            :array="adminStore.areas ?? []"
             :show-menu="selectRegionMenu"
             default-select-text="Выбрать область"
             v-model:model-value="selectedArea"

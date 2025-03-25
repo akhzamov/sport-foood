@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const { openNewTab } = useTabs();
 const route = useRoute();
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 </script>
 
 <template>

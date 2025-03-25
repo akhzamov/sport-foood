@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const { openEditTab } = useTabs();
 </script>
 
@@ -27,8 +27,8 @@ const { openEditTab } = useTabs();
           </th>
         </tr>
       </thead>
-      <tbody v-if="localitiesStore.stores">
-        <template v-for="store in localitiesStore.stores" :key="store.id">
+      <tbody v-if="adminStore.stores">
+        <template v-for="store in adminStore.stores" :key="store.id">
           <tr
             @click="
               openEditTab(
@@ -64,13 +64,13 @@ const { openEditTab } = useTabs();
         </template>
       </tbody>
       <div
-        v-if="!localitiesStore.stores"
+        v-if="!adminStore.stores"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <div class="loader"></div>
       </div>
       <div
-        v-if="localitiesStore.stores?.length == 0"
+        v-if="adminStore.stores?.length == 0"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <span class="text-16-med text-gray-75">

@@ -19,8 +19,22 @@ import type {
   TCrudStoreId,
 } from "../Others/Settings/Stores/stores.type";
 import type { TSupplier } from "../Others/Settings/Suppliers/suppliers.type";
+import type {
+  TDriver,
+  TDriverArea,
+} from "../../modules/personal/types/Personal/Drivers/drivers.type";
 
-export interface ILocalitiesStore {
+interface IAdminLogisticsTab {
+  id: string;
+  title: string;
+  name: string;
+}
+
+export interface IAdminStore {
+  activeOpenTabs: IAdminLogisticsTab[];
+  activeOpenTab: string | undefined;
+  activeOpenEditTableTab: string;
+  openUser: number | null;
   areas: TAreas[] | null;
   selectedArea: number | null;
   city: TCityCreate | null;
@@ -46,5 +60,9 @@ export interface ILocalitiesStore {
   supplier: TSupplier | null;
   suppliersPage: Ref<number>;
   supplierPagination: TPagination | null;
+  drivers: Record<string, TDriver> | null;
+  driver: TDriver | null;
+  driversPagination: TPagination | null;
+  driversPage: Ref<number>;
   perPage: number;
 }

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
-import { getDrivers, getDriverAreas } from "../components/Drivers/drivers.data";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 useSeoMeta({
@@ -15,11 +14,12 @@ definePageMeta({
 
 const route = useRoute();
 const personalStore = usePersonalStore();
+const { getDrivers } = useCrudDriversResponse();
+const adminStore = useAdminStore();
 const totalPages = computed(() => {
-  if (personalStore.driversPagination) {
+  if (adminStore.driversPagination) {
     return Math.ceil(
-      personalStore.driversPagination.total /
-        personalStore.driversPagination.per_page
+      adminStore.driversPagination.total / adminStore.driversPagination.per_page
     );
   } else {
     return 0;
@@ -41,14 +41,14 @@ onMounted(async () => {
     <div
       class="h-[90px] py-[12px] px-[24px] border-t border-gray-15"
       v-if="
-        personalStore.driversPagination &&
-        personalStore.driversPagination.total > personalStore.driversPerPage
+        adminStore.driversPagination &&
+        adminStore.driversPagination.total > adminStore.perPage
       "
     >
       <UiAdminPagination
         :total-pages="totalPages"
-        :current-page="personalStore.employeesPage"
-        v-model:model-value="personalStore.employeesPage"
+        :current-page="personalStore.driversPage"
+        v-model:model-value="personalStore.driversPage"
         @update:model-value="changePage"
       />
     </div>

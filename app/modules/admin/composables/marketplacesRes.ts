@@ -1,14 +1,13 @@
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
-import { useAdminStore } from "../stores/admin";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
 
 export const useCrudMarketplacesResponse = () => {
   async function getMarketplaces() {
     const { $crudMarketplacesRep } = useNuxtApp();
-    const localitiesStore = useLocalitiesStore();
+    const adminStore = useAdminStore();
     try {
       const res = await $crudMarketplacesRep.getMarketplaces();
-      localitiesStore.marketplaces = res.data ? res.data : [];
+      adminStore.marketplaces = res.data ? res.data : [];
     } catch (error: any) {
       console.error(error.response?.data);
     }
@@ -16,10 +15,10 @@ export const useCrudMarketplacesResponse = () => {
 
   async function getMarketplace(id: number) {
     const { $crudMarketplacesRep } = useNuxtApp();
-    const localitiesStore = useLocalitiesStore();
+    const adminStore = useAdminStore();
     try {
       const res = await $crudMarketplacesRep.getMarketplaceById(id);
-      localitiesStore.marketplace = res.data ?? null;
+      adminStore.marketplace = res.data ?? null;
     } catch (error: any) {
       console.error(error.response?.data);
     }

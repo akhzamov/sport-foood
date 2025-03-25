@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { usePersonalStore } from "~/modules/admin/stores/personal";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
-const personalStore = usePersonalStore();
+const adminStore = useAdminStore();
 const route = useRoute();
 const search = ref("");
 const { openNewTab, openEditTab } = useTabs();
@@ -65,7 +65,7 @@ const { openNewTab, openEditTab } = useTabs();
         </tr>
       </thead>
       <tbody>
-        <template v-for="driver in personalStore.drivers" :key="driver.id">
+        <template v-for="driver in adminStore.drivers" :key="driver.id">
           <tr
             @click="
               openEditTab(driver.id, `drivers-edit-${driver.id}`, 'Водитель')

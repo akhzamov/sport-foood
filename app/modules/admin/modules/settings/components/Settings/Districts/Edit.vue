@@ -3,7 +3,6 @@ import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
 import { useAdminStore } from "~/modules/admin/stores/admin";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 
 const schema = yup.object({
   selectedCity: yup.number().nullable().required("Выберите город"),
@@ -29,7 +28,6 @@ const { value: district, errorMessage: districtError } =
 
 const mainStore = useMainStore();
 const adminStore = useAdminStore();
-const localitiesStore = useLocalitiesStore();
 const selectRegionMenu = ref(false);
 const { getDistrict, deleteDistrict, getDistricts, editDistrict } =
   useCrudDistrictsResponse();
@@ -40,7 +38,7 @@ const onDelete = handleSubmit(async (values) => {
     const confirmed = await mainStore.showConfirm(
       "warning",
       "Внимательно",
-      `Вы точно хотите удалить район: ${localitiesStore.district?.name}`
+      `Вы точно хотите удалить район: ${adminStore.district?.name}`
     );
 
     if (confirmed) {
@@ -83,9 +81,9 @@ const onSubmit = handleSubmit(async (values) => {
 onBeforeMount(async () => {
   mainStore.isLoading = true;
   await getDistrict(adminStore.openUser ?? 0);
-  if (localitiesStore.district) {
-    selectedCity.value = localitiesStore.district?.city_id;
-    district.value = localitiesStore.district?.name;
+  if (adminStore.district) {
+    selectedCity.value = adminStore.district?.city_id;
+    district.value = adminStore.district?.name;
   }
   mainStore.isLoading = false;
 });
@@ -97,7 +95,7 @@ onUnmounted(() => {
 
 <template>
   <form
-    v-if="!mainStore.isLoading && localitiesStore.citiesByArea"
+    v-if="!mainStore.isLoading && adminStore.citiesByArea"
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
@@ -108,7 +106,7 @@ onUnmounted(() => {
           <UiSelectCategories
             main-text-color="text-gray-90"
             select-bg-color="bg-gray-15"
-            :array="localitiesStore.citiesByArea"
+            :array="adminStore.citiesByArea"
             :show-menu="selectRegionMenu"
             default-select-text="Выбрать город"
             v-model:model-value="selectedCity"
@@ -160,7 +158,7 @@ onUnmounted(() => {
       </UiButton>
       <div class="flex items-center justify-center gap-4">
         <UiButton
-        bgColor="bg-transparent"
+          bgColor="bg-transparent"
           :border="false"
           :icon="true"
           hover="opacity-[0.9]"

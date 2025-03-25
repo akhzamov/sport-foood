@@ -2,8 +2,6 @@
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
-import { russiaRegions } from "~/data/localData";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
@@ -29,7 +27,6 @@ const { value: city, errorMessage: cityError } = useField<string>("city");
 
 const mainStore = useMainStore();
 const adminStore = useAdminStore();
-const localitiesStore = useLocalitiesStore();
 const router = useRouter();
 const selectRegionMenu = ref(false);
 const { getCity, deleteCity, getCities, editCity } = useCrudCitiesResponse();
@@ -40,7 +37,7 @@ const onDelete = handleSubmit(async (values) => {
     const confirmed = await mainStore.showConfirm(
       "warning",
       "Внимание",
-      `Вы точно хотите удалить город: ${localitiesStore.city?.name}?`
+      `Вы точно хотите удалить город: ${adminStore.city?.name}?`
     );
 
     if (confirmed) {
@@ -85,9 +82,9 @@ const onSubmit = handleSubmit(async (values) => {
 onMounted(async () => {
   mainStore.isLoading = true;
   await getCity(adminStore.openUser ?? 0);
-  if (localitiesStore.city) {
-    selectedArea.value = localitiesStore.city?.area_id;
-    city.value = localitiesStore.city?.name;
+  if (adminStore.city) {
+    selectedArea.value = adminStore.city?.area_id;
+    city.value = adminStore.city?.name;
   }
   mainStore.isLoading = false;
 });
@@ -99,7 +96,7 @@ onUnmounted(() => {
 
 <template>
   <form
-    v-if="!mainStore.isLoading && localitiesStore.areas"
+    v-if="!mainStore.isLoading && adminStore.areas"
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
@@ -112,7 +109,7 @@ onUnmounted(() => {
             select-bg-color="bg-gray-15"
             disable-text-color="text-gray-40"
             disable-bg-color="bg-gray-15"
-            :array="localitiesStore.areas"
+            :array="adminStore.areas"
             :show-menu="selectRegionMenu"
             default-select-text="Выбрать область"
             v-model:model-value="selectedArea"

@@ -9,7 +9,7 @@ export const usePersonalStore = defineStore("personal", {
     isAscendingUsername: false,
     isAscendingStatus: false,
     employeesPagination: null,
-    employeesPage: useSessionStorage('employeesPage', 1),
+    employeesPage: useSessionStorage("employeesPage", 1),
     employeesPerPage: 15,
     employee: null,
     searchEmployee: "",
@@ -19,12 +19,6 @@ export const usePersonalStore = defineStore("personal", {
     salesAgentsPagination: null,
     salesAgentsPage: 1,
     salesAgentsPerPage: 15,
-    drivers: null,
-    driver: null,
-    driverAreas: null,
-    driversPagination: null,
-    driversPage: 1,
-    driversPerPage: 15,
   }),
   actions: {
     nameFilter() {

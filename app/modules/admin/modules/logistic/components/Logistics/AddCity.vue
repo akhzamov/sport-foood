@@ -81,30 +81,22 @@ const updateShowSelectMenu = (newValue: boolean) => {
       <div class="w-full flex flex-col items-start justify-start mt-4">
         <label class="text-12-reg text-gray-90">Город</label>
         <div class="w-full flex items-center justify-start gap-2 mt-1">
-          <UiSelect
-            main-text-color="text-gray-90"
-            select-bg-color="bg-gray-15"
-            disable-text-color="text-gray-40"
-            disable-bg-color="bg-gray-15"
-            :array="props.cities"
+          <UiSelectCategories
+            v-model:model-value="localSelectedCity"
             :show-menu="props.showSelectMenu"
-            default-select-text="Выберите город"
-            v-model:model-value="props.selectedCity"
+            :array="props.cities"
             :icon="false"
+            :is-object="true"
+            default-select-text="Выберите город"
+            select-bg-color="bg-gray-15"
+            main-text-color="text-gray-90"
             value-key="id"
             label-key="name"
+            inner-item-key="cities"
             @update:model-value="localSelectedCity = $event"
             @update:show-menu="updateShowSelectMenu"
-            width="w-full"
-            :text-center="false"
-            :disable="false"
             class="h-[40px] flex-grow"
           />
-          <button
-            class="min-w-[40px] h-[40px] flex items-center justify-center bg-gray-15 rounded-lg"
-          >
-            <IconSettings class="text-gray-90" />
-          </button>
         </div>
       </div>
       <div class="w-full flex items-center justify-end gap-2 mt-4">

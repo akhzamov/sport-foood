@@ -2,7 +2,6 @@
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useMainStore } from "~/stores/main";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const schema = yup.object({
@@ -48,7 +47,6 @@ const { value: syncStoreId, errorMessage: syncStoreIdError } =
 
 const mainStore = useMainStore();
 const adminStore = useAdminStore();
-const localitiesStore = useLocalitiesStore();
 const selectRegionMenu = ref(false);
 const { createStore, getCrudStores } = useCrudStoresResponse();
 const { closeTab } = useTabs();
@@ -148,7 +146,7 @@ const onSubmit = handleSubmit(async (values) => {
         select-bg-color="bg-gray-15"
         disable-text-color="text-gray-40"
         disable-bg-color="bg-gray-15"
-        :array="localitiesStore.products ?? []"
+        :array="adminStore.products ?? []"
         :show-menu="productsMenu"
         default-select-text="Товары"
         v-model:model-value="selectedProducts"
@@ -166,7 +164,7 @@ const onSubmit = handleSubmit(async (values) => {
         select-bg-color="bg-gray-15"
         disable-text-color="text-gray-40"
         disable-bg-color="bg-gray-15"
-        :array="localitiesStore.citiesByArea ?? []"
+        :array="adminStore.citiesByArea ?? []"
         :show-menu="citiesMenu"
         default-select-text="Города"
         v-model:model-value="selectedCities"
@@ -185,7 +183,7 @@ const onSubmit = handleSubmit(async (values) => {
         select-bg-color="bg-gray-15"
         disable-text-color="text-gray-40"
         disable-bg-color="bg-gray-15"
-        :array="localitiesStore.stores ?? []"
+        :array="adminStore.stores ?? []"
         :show-menu="storeMenu"
         default-select-text="Магазин для синхронизации"
         v-model:model-value="syncStoreId"

@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 
 const { getCities } = useCrudCitiesResponse();
 const { openNewTab } = useTabs();
 const route = useRoute();
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const selectAreaMenu = ref(false);
 
 const selectArea = (region: number) => {
-  localitiesStore.selectedArea = region;
+  adminStore.selectedArea = region;
   getCities();
 };
 
@@ -17,7 +17,7 @@ const debouncedGetCities = useDebounceFn(() => {
 }, 500);
 
 watch(
-  () => localitiesStore.searchCities,
+  () => adminStore.searchCities,
   () => {
     debouncedGetCities();
   },
@@ -45,15 +45,15 @@ watch(
     <div class="w-full flex-grow h-full flex items-center justify-end gap-5">
       <div class="w-auto h-full flex items-center gap-3 pl-3">
         <UiSelect
-          v-if="localitiesStore.areas"
+          v-if="adminStore.areas"
           main-text-color="text-gray-90"
           select-bg-color="bg-gray-15"
           disable-text-color="text-gray-40"
           disable-bg-color="bg-gray-15"
-          :array="localitiesStore.areas || []"
+          :array="adminStore.areas || []"
           :show-menu="selectAreaMenu"
           default-select-text="Все области"
-          v-model:model-value="localitiesStore.selectedArea"
+          v-model:model-value="adminStore.selectedArea"
           :icon="false"
           value-key="id"
           label-key="name"
@@ -70,7 +70,7 @@ watch(
         class="w-[240px] max-h-[32px] flex items-center justify-center pr-2 bg-gray-15 border border-gray-90 rounded-lg text-gray-90"
       >
         <UiInputIcon
-          v-model:model-value="localitiesStore.searchCities"
+          v-model:model-value="adminStore.searchCities"
           placeholder="Поиск города"
           type="text"
           class="max-w-[240px] px-2"

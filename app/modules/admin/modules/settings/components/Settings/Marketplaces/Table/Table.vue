@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
-import { useLocalitiesStore } from "~/modules/admin/stores/localities";
+import { useAdminStore } from "~/modules/admin/stores/admin";
 import { useMainStore } from "~/stores/main";
 
 const schema = yup.object({
@@ -19,7 +19,7 @@ const { handleSubmit, resetForm } = useForm<ISchemaForm>({
 });
 const { value: name, errorMessage: nameError } = useField<string>("name");
 
-const localitiesStore = useLocalitiesStore();
+const adminStore = useAdminStore();
 const mainStore = useMainStore();
 const editMarketplaceId = ref<number | null>(null);
 const marketplaceEditName = ref("");
@@ -39,7 +39,7 @@ const onDelete = async (id: number) => {
       const confirmed = await mainStore.showConfirm(
         "warning",
         "Внимание",
-        `Вы точно хотите удалить торговую площадку: ${localitiesStore.marketplace?.name}?`
+        `Вы точно хотите удалить торговую площадку: ${adminStore.marketplace?.name}?`
       );
 
       if (confirmed) {
@@ -78,7 +78,7 @@ const onSubmit = handleSubmit(async (values) => {
       await createMarketplace(body);
       name.value = "";
       newMarketplaceActive.value = false;
-      localitiesStore.newMarketplace = null;
+      adminStore.newMarketplace = null;
       await getMarketplaces();
     } catch (error) {
       console.error("Ошибка при изменении торговой площадки: ", error);
@@ -90,13 +90,13 @@ const cancelNewMarketplace = () => {
   newMarketplaceActive.value = false;
   name.value = "";
   resetForm();
-  localitiesStore.newMarketplace = null;
+  adminStore.newMarketplace = null;
 };
 
 watch(
-  () => localitiesStore.newMarketplace,
+  () => adminStore.newMarketplace,
   () => {
-    if (localitiesStore.newMarketplace) {
+    if (adminStore.newMarketplace) {
       newMarketplaceActive.value = true;
     } else {
       newMarketplaceActive.value = false;
@@ -125,9 +125,9 @@ watch(
           </th>
         </tr>
       </thead>
-      <tbody v-if="localitiesStore.marketplaces" class="overflow-auto">
+      <tbody v-if="adminStore.marketplaces" class="overflow-auto">
         <template
-          v-for="marketplace in localitiesStore.marketplaces"
+          v-for="marketplace in adminStore.marketplaces"
           :key="marketplace.id"
         >
           <tr
@@ -267,13 +267,13 @@ watch(
         </tr>
       </tbody>
       <div
-        v-if="!localitiesStore.marketplaces"
+        v-if="!adminStore.marketplaces"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <div class="loader"></div>
       </div>
       <div
-        v-if="localitiesStore.marketplaces?.length == 0"
+        v-if="adminStore.marketplaces?.length == 0"
         class="w-full h-[600px] flex items-center justify-center"
       >
         <span class="text-16-med text-gray-75">
