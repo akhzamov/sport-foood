@@ -1,44 +1,70 @@
 <script lang="ts" setup>
+import * as yup from "yup";
+import { useForm, useField } from "vee-validate";
 import { ref, watch } from "vue";
 import { useAdminLogisticsStore } from "~/modules/admin/modules/logistic/stores/adminLogistics";
 import { useLogisticStore } from "~/modules/admin/stores/logistic";
-
-// Pinia store
-const adminLogisticsStore = useAdminLogisticsStore();
+import type { ISchemaProductAdd } from "../../types/Logistics/schemaForm.type";
 
 // Props
 const props = withDefaults(
   defineProps<{
     showSelectMenu: boolean;
-    showSelectWeight: boolean;
+    showSelectPackage: boolean;
     selectedProduct: number | null;
     products: any;
   }>(),
   {
     showSelectMenu: false,
-    showSelectWeight: false,
     selectedProduct: null,
+    selectedPackage: null,
   }
 );
 
-// Emit
-const emit = defineEmits([
-  "update:selectedProduct",
-  "update:showSelectMenu",
-  "update:showSelectWeightMenu",
-]);
+const schema = yup.object({
+  productId: yup.number().nullable().required("Выберите продукт"),
+  packageId: yup.number().nullable().required("Выберите фасовку"),
+  count: yup
+    .number()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .nullable("Введите количество в цифрах")
+    .required("Введите количество")
+    .min(0, "Количество не может быть минусовой"),
+  price: yup
+    .number()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .nullable("Введите цену в цифрах")
+    .required("Введите цену за кг")
+    .min(0, "Цена не может быть минусовой"),
+});
 
-// Local state to track
+const initialValues: ISchemaProductAdd = {
+  productId: null,
+  packageId: null,
+  count: null,
+  price: null,
+};
+
+const { handleSubmit, resetForm } = useForm<ISchemaProductAdd>({
+  validationSchema: schema,
+  initialValues,
+});
+
+const { value: productId, errorMessage: productIdError } = useField<number | null>("productId");
+const { value: packageId, errorMessage: packageIdError } = useField<number | null>("packageId");
+const { value: count, errorMessage: countError } = useField<number | null>("count");
+const { value: price, errorMessage: priceError } = useField<number | null>("price");
+
+const adminLogisticsStore = useAdminLogisticsStore();
+
+const emit = defineEmits(["update:selectedProduct", "update:showSelectMenu", "update:showSelectWeightMenu"]);
+
 const logisticStore = useLogisticStore();
 const localSelectedProduct = ref(props.selectedProduct);
 const localShowSelectMenu = ref(props.showSelectMenu);
-const localShowSelectWeightMenu = ref(props.showSelectWeight);
-const localPackageId = ref<number | null>(null);
+const localShowSelectWeightMenu = ref(props.showSelectPackage);
 const localPackageName = ref<string>("");
-const localCount = ref<number | null>(null);
-const localPrice = ref<number | null>(null);
 
-// Watchers to sync local state with props
 watch(
   () => props.selectedProduct,
   (newValue) => {
@@ -61,19 +87,20 @@ const closeAddCityModal = () => {
 };
 
 // Update selected city function
-const updateSelectedCity = () => {
+const updateSelectedCity = handleSubmit((values) => {
   const product = {
-    id: localSelectedProduct.value,
-    packageId: localPackageId.value,
+    id: values.productId,
+    packageId: values.packageId,
     packageName: localPackageName.value,
-    quantity: localCount.value,
-    kg_price: localPrice.value,
+    quantity: values.count,
+    kg_price: values.price,
   };
   emit("update:selectedProduct", product);
   adminLogisticsStore.addProductModal = false;
   adminLogisticsStore.showSelectMenuProductModal = false;
   adminLogisticsStore.selectedItemProductModal = null;
-};
+  resetForm();
+});
 
 // Update show select menu function
 const updateShowSelectMenu = (newValue: boolean) => {
@@ -85,7 +112,7 @@ const updateShowSelectWeightMenu = (newValue: boolean) => {
   emit("update:showSelectWeightMenu", newValue);
 };
 const selectPackage = (id: number) => {
-  localPackageId.value = id;
+  packageId.value = id;
 
   const foundPackage = logisticStore.shipmentPackages
     ?.flatMap((item) => item.packages)
@@ -94,8 +121,6 @@ const selectPackage = (id: number) => {
   if (foundPackage) {
     localPackageName.value = foundPackage.value;
   }
-
-  console.log(localPackageName.value);
 };
 </script>
 
@@ -106,14 +131,11 @@ const selectPackage = (id: number) => {
   >
     <div
       @click.stop
-      class="relative w-[400px] h-max bg-dark-gunmental rounded-xl border-[1px] border-gray-15 p-6 flex flex-col items-center justify-center"
+      class="relative w-[500px] h-max bg-dark-gunmental rounded-xl border-[1px] border-gray-15 p-6 flex flex-col items-center justify-center"
     >
       <div class="w-full flex items-center justify-between">
         <h4 class="text-24-bold text-white mb-1 text-center">Товар</h4>
-        <IconClose
-          class="text-gray-75 cursor-pointer"
-          @click="closeAddCityModal()"
-        />
+        <IconClose class="text-gray-75 cursor-pointer" @click="closeAddCityModal()" />
       </div>
       <div class="w-full flex flex-col items-start justify-start mt-4">
         <label class="text-12-reg text-gray-90">Продукт</label>
@@ -126,7 +148,7 @@ const selectPackage = (id: number) => {
             :array="props.products"
             :show-menu="props.showSelectMenu"
             default-select-text="Товар"
-            v-model:model-value="props.selectedProduct"
+            v-model:model-value="productId"
             :icon="false"
             value-key="id"
             label-key="name"
@@ -138,13 +160,16 @@ const selectPackage = (id: number) => {
             class="z-[60] h-[40px] flex-grow"
           />
         </div>
+        <span v-if="productIdError" class="text-14-ext text-error-500 mt-[2px]">
+          {{ productIdError }}
+        </span>
       </div>
-      <div class="w-full flex items-start justify-start mt-4 gap-3">
-        <div>
+      <div class="w-full flex items-start justify-start mt-4 gap-1">
+        <div class="w-[50%]">
           <label class="text-12-reg text-gray-90 mb-1">Фасовка</label>
           <UiSelectCategories
-            v-model:model-value="localPackageId"
-            :show-menu="props.showSelectWeight"
+            v-model:model-value="packageId"
+            :show-menu="props.showSelectPackage"
             :array="logisticStore.shipmentPackages ?? []"
             :icon="false"
             :is-object="false"
@@ -158,23 +183,24 @@ const selectPackage = (id: number) => {
             @update:show-menu="updateShowSelectWeightMenu"
             class="z-[30] h-[40px] flex-grow"
           />
+          <span v-if="packageIdError" class="text-14-ext text-error-500 mt-[2px]">
+            {{ packageIdError }}
+          </span>
         </div>
-        <div>
+        <div class="w-[50%]">
           <label class="text-12-reg text-gray-90 mb-1">Количество</label>
-          <UiInput
-            v-model:model-value="localCount"
-            placeholder="20"
-            type="number"
-          />
+          <UiInput v-model:model-value="count" placeholder="20" type="number" />
+          <span v-if="countError" class="text-14-ext text-error-500 mt-[2px]">
+            {{ countError }}
+          </span>
         </div>
       </div>
       <div class="w-full flex flex-col items-start justify-start mt-4">
         <label class="text-12-reg text-gray-90 mb-1">Цена за кг.</label>
-        <UiInput
-          v-model:model-value="localPrice"
-          placeholder="500 руб."
-          type="number"
-        />
+        <UiInput v-model:model-value="price" placeholder="500 руб." type="number" />
+        <span v-if="priceError" class="text-14-ext text-error-500 mt-[2px]">
+          {{ priceError }}
+        </span>
       </div>
       <div class="w-full flex items-center justify-end gap-2 mt-4">
         <UiButton

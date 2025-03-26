@@ -2,21 +2,25 @@
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
 import { useAdminStore } from "~/modules/admin/stores/admin";
-import type {
-  IPointSchemaFormLogistic,
-  ISchemaFormLogistic,
-} from "../../../types/Logistics/schemaForm.type";
+import type { IPointSchemaFormLogistic, ISchemaFormLogistic } from "../../../types/Logistics/schemaForm.type";
 import { useLogisticStore } from "~/modules/admin/stores/logistic";
 
 const schema = yup.object({
   supplierId: yup.number().nullable().required("Выберите поставщика"),
   driverId: yup.number().nullable().required("Выберите водителя"),
   getDate: yup.date().nullable().required("Выберите дату выезда"),
-  amount: yup.number().nullable().required("Введите сумму закупки (Рубли)"),
+  amount: yup
+    .number()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .nullable("Введите сумму в цифрах")
+    .required("Введите сумму закупки (Рубли)")
+    .min(0, "Сумма не может быть минусовой"),
   driverAmount: yup
     .number()
-    .nullable()
-    .required("Введите сумму поездки (Рубли)"),
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .nullable("Введите сумму в цифрах")
+    .required("Введите сумму поездки (Рубли)")
+    .min(0, "Сумма не может быть минусовой"),
   additional: yup.string(),
   points: yup
     .array()
@@ -25,10 +29,7 @@ const schema = yup.object({
         id: yup.number().required("Выберите город"),
         name: yup.string().required(),
         city_id: yup.number().required(),
-        point_products: yup
-          .array()
-          .nullable()
-          .min(1, "Добавьте хотя бы один товар"),
+        point_products: yup.array().nullable().min(1, "Добавьте хотя бы один товар"),
       })
     )
     .nullable()
@@ -47,26 +48,14 @@ const { handleSubmit, resetForm } = useForm<ISchemaFormLogistic>({
   validationSchema: schema,
   initialValues,
 });
-const { value: supplierId, errorMessage: supplierIdError } = useField<
-  number | null
->("supplierId");
-const { value: driverId, errorMessage: driverIdError } = useField<
-  number | null
->("driverId");
-const { value: getDate, errorMessage: getDateError } = useField<Date | null>(
-  "getDate"
-);
-const { value: amount, errorMessage: amountError } = useField<number | null>(
-  "amount"
-);
-const { value: driverAmount, errorMessage: driverAmountError } = useField<
-  number | null
->("driverAmount");
+const { value: supplierId, errorMessage: supplierIdError } = useField<number | null>("supplierId");
+const { value: driverId, errorMessage: driverIdError } = useField<number | null>("driverId");
+const { value: getDate, errorMessage: getDateError } = useField<Date | null>("getDate");
+const { value: amount, errorMessage: amountError } = useField<number | null>("amount");
+const { value: driverAmount, errorMessage: driverAmountError } = useField<number | null>("driverAmount");
 
-const { value: additional, errorMessage: additionalError } =
-  useField<string>("additional");
-const { value: points, errorMessage: pointsError } =
-  useField<IPointSchemaFormLogistic[]>("points");
+const { value: additional, errorMessage: additionalError } = useField<string>("additional");
+const { value: points, errorMessage: pointsError } = useField<IPointSchemaFormLogistic[]>("points");
 
 const adminStore = useAdminStore();
 const logisticStore = useLogisticStore();
@@ -184,10 +173,7 @@ onMounted(async () => {
             class="h-[40px] flex-grow"
           />
         </div>
-        <span
-          v-if="supplierIdError"
-          class="text-14-ext text-error-500 mt-[2px]"
-        >
+        <span v-if="supplierIdError" class="text-14-ext text-error-500 mt-[2px]">
           {{ supplierIdError }}
         </span>
       </div>
@@ -221,9 +207,7 @@ onMounted(async () => {
     <div class="w-[50%] flex flex-col items-start justify-start mt-3 pr-[7px]">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1">Дата выезда</label>
-        <div
-          class="h-[40px] flex items-center justify-end bg-gray-15 rounded-md px-4"
-        >
+        <div class="h-[40px] flex items-center justify-end bg-gray-15 rounded-md px-4">
           <UiInputIcon
             v-model:model-value="formattedDate"
             placeholder="дд-мм-гггг"
@@ -249,26 +233,15 @@ onMounted(async () => {
     <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Сумма закупки </label>
-        <UiInput
-          v-model:model-value="amount"
-          placeholder="Сумма в рублях"
-          type="number"
-        />
+        <UiInput v-model:model-value="amount" placeholder="Сумма в рублях" type="number" />
         <span v-if="amountError" class="text-14-ext text-error-500 mt-[2px]">
           {{ amountError }}
         </span>
       </div>
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Стоимость поездки </label>
-        <UiInput
-          v-model:model-value="driverAmount"
-          placeholder="Сумма в рублях"
-          type="number"
-        />
-        <span
-          v-if="driverAmountError"
-          class="text-14-ext text-error-500 mt-[2px]"
-        >
+        <UiInput v-model:model-value="driverAmount" placeholder="Сумма в рублях" type="number" />
+        <span v-if="driverAmountError" class="text-14-ext text-error-500 mt-[2px]">
           {{ driverAmountError }}
         </span>
       </div>
@@ -276,19 +249,11 @@ onMounted(async () => {
     <div class="flex items-center justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1">Примечание</label>
-        <UiTextarea
-          v-model:model-value="additional"
-          placeholder="Текст"
-          class="w-full h-[70px]"
-        />
+        <UiTextarea v-model:model-value="additional" placeholder="Текст" class="w-full h-[70px]" />
       </div>
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1">Прикрепить фото</label>
-        <UiSelectPhoto
-          v-model:model-value="photos"
-          :images="images"
-          :length="4"
-        />
+        <UiSelectPhoto v-model:model-value="photos" :images="images" :length="4" />
       </div>
     </div>
     <div class="flex items-center justify-between gap-2 mt-3">
@@ -317,9 +282,7 @@ onMounted(async () => {
         @click="onSubmit"
       />
     </div>
-    <div
-      class="w-full h-[1px] border-b border-dashed border-gray-15 my-3"
-    ></div>
+    <div class="w-full h-[1px] border-b border-dashed border-gray-15 my-3"></div>
     <div class="flex flex-col">
       <LogisticsEditTable :points="points" @update:points="points = $event" />
       <span v-if="pointsError" class="text-14-ext text-error-500 mt-[2px]">

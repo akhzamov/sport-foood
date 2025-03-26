@@ -20,6 +20,7 @@ const onInput = (event: Event) => {
     @input="onInput"
     :placeholder="placeholder"
     :type="type"
+    v-bind:min="type === 'number' ? 0 : undefined"
     class="w-full h-[40px] px-3 bg-gray-15 text-16-ext text-gray-40 outline-none border-1 placeholder:text-gray-40 rounded-lg"
   />
 </template>

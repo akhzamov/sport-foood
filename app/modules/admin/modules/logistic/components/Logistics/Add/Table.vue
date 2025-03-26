@@ -23,9 +23,7 @@ const addCityInTable = (cityId: number) => {
   const numericCityId = Number(cityId);
 
   // Проверяем, есть ли уже этот город в props.points
-  const cityExists = props.points.some(
-    (point) => point.city_id === numericCityId
-  );
+  const cityExists = props.points.some((point) => point.city_id === numericCityId);
   if (cityExists) return; // Если город уже добавлен, выходим из функции
 
   for (const area of Object.values(adminStore.citiesByArea ?? {})) {
@@ -45,12 +43,7 @@ const addCityInTable = (cityId: number) => {
   emit("update:points", props.points);
 };
 
-const addProductInTable = (
-  cityId: number,
-  product: IProductSchemaFormLogistic
-) => {
-  console.log(product);
-
+const addProductInTable = (cityId: number, product: IProductSchemaFormLogistic) => {
   // Находим город в points
   const city = props.points.find((point) => point.id === cityId);
 
@@ -59,9 +52,7 @@ const addProductInTable = (
     return;
   }
 
-  const findProduct = adminStore.products?.find(
-    (item) => item.id == product.id
-  );
+  const findProduct = adminStore.products?.find((item) => item.id == product.id);
 
   // Добавляем новый продукт
   city.point_products.push({
@@ -79,9 +70,7 @@ const deleteProductInTable = (cityId: number, productId: number) => {
   const product = props.points.find((item) => item.id === cityId);
   if (!product) return;
 
-  const productIndex = product.point_products.findIndex(
-    (item) => item.id === productId
-  );
+  const productIndex = product.point_products.findIndex((item) => item.id === productId);
   if (productIndex === -1) return;
 
   product.point_products.splice(productIndex, 1);
@@ -89,9 +78,7 @@ const deleteProductInTable = (cityId: number, productId: number) => {
 };
 
 const deleteCityInTable = () => {
-  const cityIndex = props.points.findIndex(
-    (item) => item.city_id == activeCityTab.value
-  );
+  const cityIndex = props.points.findIndex((item) => item.city_id == activeCityTab.value);
   props.points.splice(cityIndex, 1);
   emit("update:points", props.points);
 };
@@ -105,10 +92,7 @@ onUnmounted(() => {
 });
 
 watchEffect(() => {
-  console.log(activeCityTab.value);
-
   if (!activeCityTab.value) {
-    console.log("tt");
     activeCityTab.value = props.points[0]?.id ?? 0;
   }
 });
@@ -122,25 +106,17 @@ watchEffect(() => {
       :selected-city="adminLogisticsStore.selectedCityAddCityModal"
       :cities="adminStore.citiesByArea"
       @update:selected-city="addCityInTable($event)"
-      @update:show-select-menu="
-        adminLogisticsStore.showSelectMenuAddCityModal = $event
-      "
+      @update:show-select-menu="adminLogisticsStore.showSelectMenuAddCityModal = $event"
     />
     <LogisticsAddProduct
       v-if="adminLogisticsStore.addProductModal"
       :show-select-menu="adminLogisticsStore.showSelectMenuProductModal"
-      :show-select-weight="adminLogisticsStore.showSelectMenuWeightModal"
-      :selected-product="adminLogisticsStore.selectedItemProductModal"
+      :show-select-package="adminLogisticsStore.showSelectMenuWeightModal"
+      :selected-product="null"
       :products="adminStore.products"
-      @update:selected-product="
-        addProductInTable(selectedCityForProduct ?? 0, $event)
-      "
-      @update:show-select-menu="
-        adminLogisticsStore.showSelectMenuProductModal = $event
-      "
-      @update:show-select-weight-menu="
-        adminLogisticsStore.showSelectMenuWeightModal = $event
-      "
+      @update:selected-product="addProductInTable(selectedCityForProduct ?? 0, $event)"
+      @update:show-select-menu="adminLogisticsStore.showSelectMenuProductModal = $event"
+      @update:show-select-weight-menu="adminLogisticsStore.showSelectMenuWeightModal = $event"
     />
   </TransitionGroup>
   <div class="w-full h-max border border-gray-15 rounded-md">
@@ -193,9 +169,7 @@ watchEffect(() => {
       <template v-for="(city, index) in points">
         <div class="w-full h-max flex flex-col" v-if="city.id == activeCityTab">
           <!-- Table top -->
-          <div
-            class="w-full h-[35px] flex items-center justify-between rounded-tr-lg bg-gray-25 px-2"
-          >
+          <div class="w-full h-[35px] flex items-center justify-between rounded-tr-lg bg-gray-25 px-2">
             <div
               class="w-max h-max flex items-center justify-center cursor-pointer gap-2 text-gray-40 hover:text-primary"
               @click="
@@ -213,74 +187,47 @@ watchEffect(() => {
           <table class="w-full h-max bg-gray-15 rounded-b-lg">
             <thead class="w-full h-max">
               <tr class="w-full h-8 flex bg-gray-40 border-b border-gray-15">
-                <th
-                  class="w-[12px] h-full flex items-center justify-start px-3"
-                >
+                <th class="w-[12px] h-full flex items-center justify-start px-3">
                   <span class="text-12-med text-gray-75">№</span>
                 </th>
-                <th
-                  class="w-[212px] flex-grow h-full flex items-center justify-start px-3"
-                >
+                <th class="w-[212px] flex-grow h-full flex items-center justify-start px-3">
                   <span class="text-12-med text-gray-75">Товар</span>
                 </th>
-                <th
-                  class="w-[160px] h-full flex items-center justify-start px-3"
-                >
+                <th class="w-[160px] h-full flex items-center justify-start px-3">
                   <span class="text-12-med text-gray-75">Фасовка</span>
                 </th>
-                <th
-                  class="w-[124px] h-full flex items-center justify-start px-3"
-                >
+                <th class="w-[124px] h-full flex items-center justify-start px-3">
                   <span class="text-12-med text-gray-75">Количество</span>
                 </th>
                 <th class="w-[120px] h-full flex items-center justify-end px-3">
                   <span class="text-12-med text-gray-75">Цена за кг</span>
                 </th>
-                <th
-                  class="w-[40px] h-full flex items-center justify-center"
-                ></th>
+                <th class="w-[40px] h-full flex items-center justify-center"></th>
               </tr>
             </thead>
             <tbody class="w-full h-max rounded-b-lg">
-              <template
-                v-for="(item, index) in city.point_products"
-                :key="item.id"
-              >
+              <template v-for="(item, index) in city.point_products" :key="item.id">
                 <tr class="w-full h-8 flex border-b border-gray-15">
-                  <th
-                    class="w-[12px] h-full flex items-center justify-start px-3"
-                  >
+                  <th class="w-[12px] h-full flex items-center justify-start px-3">
                     <span class="text-12-med text-gray-75">
                       {{ index + 1 }}
                     </span>
                   </th>
-                  <th
-                    class="w-[212px] flex-grow h-full flex items-center justify-start px-3"
-                  >
+                  <th class="w-[212px] flex-grow h-full flex items-center justify-start px-3">
                     <span class="text-12-med text-gray-75">
                       {{ item.name }}
                     </span>
                   </th>
-                  <th
-                    class="w-[160px] h-full flex items-center justify-start px-3"
-                  >
+                  <th class="w-[160px] h-full flex items-center justify-start px-3">
                     <span class="text-12-med text-gray-75">
                       {{ item.packageName }}
                     </span>
                   </th>
-                  <th
-                    class="w-[124px] h-full flex items-center justify-start px-3"
-                  >
-                    <span class="text-12-med text-gray-75">
-                      {{ item.quantity }} шт
-                    </span>
+                  <th class="w-[124px] h-full flex items-center justify-start px-3">
+                    <span class="text-12-med text-gray-75"> {{ item.quantity }} шт </span>
                   </th>
-                  <th
-                    class="w-[120px] h-full flex items-center justify-end px-3"
-                  >
-                    <span class="text-12-med text-gray-75">
-                      {{ item.kg_price }} руб
-                    </span>
+                  <th class="w-[120px] h-full flex items-center justify-end px-3">
+                    <span class="text-12-med text-gray-75"> {{ item.kg_price }} руб </span>
                   </th>
                   <th
                     class="w-[40px] h-full flex items-center justify-center cursor-pointer"
@@ -294,18 +241,10 @@ watchEffect(() => {
                   </th>
                 </tr>
               </template>
-              <tr
-                class="flex items-center justify-center mt-5"
-                v-if="city.point_products.length == 0"
-              >
-                <th class="text-12-med text-gray-75">
-                  У вас пока нет товаров в списке
-                </th>
+              <tr class="flex items-center justify-center mt-5" v-if="city.point_products.length == 0">
+                <th class="text-12-med text-gray-75">У вас пока нет товаров в списке</th>
               </tr>
-              <tr
-                class="flex items-center justify-center mt-2 mb-3"
-                v-if="city.point_products.length == 0"
-              >
+              <tr class="flex items-center justify-center mt-2 mb-3" v-if="city.point_products.length == 0">
                 <th
                   class="text-14-semi text-gray-40 cursor-pointer"
                   @click="
@@ -321,14 +260,9 @@ watchEffect(() => {
         </div>
       </template>
     </div>
-    <div
-      class="w-full h-max flex flex-col justify-start items-center bg-gray-15 py-10 rounded-b-md"
-      v-else
-    >
+    <div class="w-full h-max flex flex-col justify-start items-center bg-gray-15 py-10 rounded-b-md" v-else>
       <div class="flex items-center justify-center">
-        <span class="text-14-bold text-gray-75">
-          Добавьте город для продолжения
-        </span>
+        <span class="text-14-bold text-gray-75"> Добавьте город для продолжения </span>
       </div>
     </div>
   </div>

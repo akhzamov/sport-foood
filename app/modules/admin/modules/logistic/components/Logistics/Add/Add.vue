@@ -11,11 +11,18 @@ const schema = yup.object({
   supplierId: yup.number().nullable().required("Выберите поставщика"),
   driverId: yup.number().nullable().required("Выберите водителя"),
   getDate: yup.date().nullable().required("Выберите дату выезда"),
-  amount: yup.number().nullable().required("Введите сумму закупки (Рубли)"),
+  amount: yup
+    .number()
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .nullable("Введите сумму в цифрах")
+    .required("Введите сумму закупки (Рубли)")
+    .min(0, "Сумма не может быть минусовой"),
   driverAmount: yup
     .number()
-    .nullable()
-    .required("Введите сумму поездки (Рубли)"),
+    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .nullable("Введите сумму в цифрах")
+    .required("Введите сумму поездки (Рубли)")
+    .min(0, "Сумма не может быть минусовой"),
   additional: yup.string(),
   points: yup
     .array()
@@ -150,7 +157,7 @@ watch(
             width="w-full"
             :text-center="false"
             :disable="false"
-            class="h-[40px] flex-grow"
+            class="h-[40px] flex-grow z-[60]"
           />
         </div>
         <span
@@ -179,7 +186,7 @@ watch(
             width="w-full"
             :text-center="false"
             :disable="false"
-            class="h-[40px] flex-grow"
+            class="h-[40px] flex-grow z-[60]"
           />
         </div>
         <span v-if="driverIdError" class="text-14-ext text-error-500 mt-[2px]">

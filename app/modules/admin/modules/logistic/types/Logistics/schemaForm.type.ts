@@ -23,3 +23,10 @@ export interface ISchemaFormLogistic {
   additional: string;
   points: IPointSchemaFormLogistic[];
 }
+
+export interface ISchemaProductAdd {
+  productId: number | null;
+  packageId: number | null;
+  count: number | null;
+  price: number | null;
+}

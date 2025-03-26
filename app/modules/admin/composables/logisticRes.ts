@@ -24,9 +24,7 @@ export const useCrudLogisticResponse = () => {
         per_page: logisticStore.perPage,
       };
       const res = await $crudLogisticRep.getShipments(params);
-      const sortedData: TShipment[] = Object.values(res.data).sort(
-        (a, b) => b.id - a.id
-      );
+      const sortedData: TShipment[] = Object.values(res.data).sort((a, b) => b.id - a.id);
       logisticStore.shipments = sortedData;
       logisticStore.shipmentsPagination = res.pagination;
     } catch (error: any) {
@@ -34,9 +32,7 @@ export const useCrudLogisticResponse = () => {
     }
   }
 
-  function groupPackages(
-    packages: IShipmentPackage[]
-  ): IShipmentPackageGroup[] {
+  function groupPackages(packages: IShipmentPackage[]): IShipmentPackageGroup[] {
     const chunkSize = 50;
     const grouped: IShipmentPackageGroup[] = [];
 
@@ -46,7 +42,7 @@ export const useCrudLogisticResponse = () => {
         value: `${i}-${i + chunkSize - 1}`,
         packages: packages.slice(i, i + chunkSize).map((pkg) => ({
           ...pkg,
-          value: `${pkg.value} ${pkg.unit.toLowerCase()}`,
+          value: `${pkg.value} ${pkg.unit == "GM" ? "гр" : "кг"}`,
         })),
       });
     }
@@ -54,23 +50,19 @@ export const useCrudLogisticResponse = () => {
     return grouped;
   }
 
-  function transformPoints(
-    pointsData: Record<number, TShipmentGetPoint>
-  ): IPointSchemaFormLogistic[] {
+  function transformPoints(pointsData: Record<number, TShipmentGetPoint>): IPointSchemaFormLogistic[] {
     return Object.values(pointsData).map((point) => ({
       id: point.id,
       name: point.name,
       city_id: point.city_id,
-      point_products: Object.values(point.point_products || {}).map(
-        (product) => ({
-          id: product.id,
-          name: product.name,
-          quantity: product.quantity,
-          kg_price: product.kg_price,
-          packageId: 0, // Если packageId нужно получить из другого источника — замени
-          packageName: "", // Если packageName нужно получить из другого источника — замени
-        })
-      ),
+      point_products: Object.values(point.point_products || {}).map((product) => ({
+        id: product.id,
+        name: product.name,
+        quantity: product.quantity,
+        kg_price: product.kg_price,
+        packageId: 0, // Если packageId нужно получить из другого источника — замени
+        packageName: "", // Если packageName нужно получить из другого источника — замени
+      })),
     }));
   }
 
@@ -88,42 +80,28 @@ export const useCrudLogisticResponse = () => {
       logisticStore.shipmentPackages = groupedPackages;
       if (id && res.data.shipment) {
         logisticStore.shipment = res.data.shipment;
-        logisticStore.shipmentArrPoints = transformPoints(
-          res.data.shipment.points
-        );
+        logisticStore.shipmentArrPoints = transformPoints(res.data.shipment.points);
       }
     } catch (error) {}
   }
 
-  async function createShipment(
-    body: ISchemaFormLogistic,
-    images?: Record<number, File>
-  ) {
+  async function createShipment(body: ISchemaFormLogistic, images?: Record<number, File>) {
     const { $crudLogisticRep } = useNuxtApp();
     const mainStore = useMainStore();
     const formData = new FormData();
 
     formData.append("supplier_id", body.supplierId?.toString() ?? "");
     formData.append("driver_id", body.driverId?.toString() ?? "");
-    formData.append(
-      "get_date",
-      body.getDate?.toISOString().slice(0, 19).replace("T", " ") ?? ""
-    );
+    formData.append("get_date", body.getDate?.toISOString().slice(0, 19).replace("T", " ") ?? "");
     formData.append("amount", body.amount?.toString() ?? "");
     formData.append("driver_amount", body.driverAmount?.toString() ?? "");
     formData.append("additional", body.additional ?? "");
 
     body.points.forEach((point, pointIndex) => {
-      formData.append(
-        `point[${pointIndex}][point-city]`,
-        point.city_id.toString()
-      );
+      formData.append(`point[${pointIndex}][point-city]`, point.city_id.toString());
 
       point.point_products.forEach((product, productIndex) => {
-        formData.append(
-          `point[${pointIndex}][product][${productIndex}][product]`,
-          product.id.toString()
-        );
+        formData.append(`point[${pointIndex}][product][${productIndex}][product]`, product.id.toString());
         formData.append(
           `point[${pointIndex}][product][${productIndex}][product-package_id]`,
           product.packageId.toString()
