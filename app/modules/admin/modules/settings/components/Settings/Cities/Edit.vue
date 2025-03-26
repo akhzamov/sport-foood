@@ -134,7 +134,7 @@ onUnmounted(() => {
         <label class="text-12-reg text-gray-90 mb-1"> Название города </label>
         <UiInput
           v-model:model-value="city"
-          placeholder="Москва"
+          placeholder=""
           type="text"
           class="text-gray-90"
         />

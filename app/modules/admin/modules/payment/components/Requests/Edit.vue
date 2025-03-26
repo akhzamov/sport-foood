@@ -11,6 +11,7 @@ const schema = yup.object({
   selectedCity: yup.number().required("Выберите город").nullable(),
   selectedStore: yup.number().required("Выберите магазин").nullable(),
   priority: yup.string().required("Выберите приоритет").nullable(),
+  status: yup.string().required("Выберите статус").nullable(),
   recipient: yup.string().required("Введите получателя"),
 });
 interface ISchemaForm {
@@ -19,6 +20,7 @@ interface ISchemaForm {
   selectedCity: number;
   selectedStore: number;
   priority: string;
+  status: string;
   recipient: string;
 }
 const { handleSubmit } = useForm<ISchemaForm>({
@@ -32,6 +34,8 @@ const { value: selectedStore, errorMessage: selectedStoreError } =
   useField<number>("selectedStore");
 const { value: priority, errorMessage: priorityError } =
   useField<string>("priority");
+const { value: status, errorMessage: statusError } =
+  useField<string>("status");
 const { value: recipient, errorMessage: recipientError } =
   useField<string>("recipient");
 
@@ -78,7 +82,7 @@ const onSubmit = handleSubmit(async (values) => {});
     @submit.prevent="onSubmit"
     class="w-full h-max bg-dark-gunmental rounded-tr-md rounded-b-md p-3"
   >
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Тип заявки </label>
         <UiSelect
@@ -108,7 +112,7 @@ const onSubmit = handleSubmit(async (values) => {});
         <UiInput
           v-model:model-value="amount"
           placeholder="0.00"
-          type="text"
+          type="number"
           class="text-gray-90"
         />
         <span v-if="amountError" class="text-14-ext text-error-500 mt-[2px]">
@@ -116,7 +120,7 @@ const onSubmit = handleSubmit(async (values) => {});
         </span>
       </div>
     </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1">Город</label>
         <div class="flex gap-1">
@@ -171,7 +175,7 @@ const onSubmit = handleSubmit(async (values) => {});
         </span>
       </div>
     </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1">Приоритет</label>
         <UiSelect
@@ -209,7 +213,7 @@ const onSubmit = handleSubmit(async (values) => {});
         </span>
       </div>
     </div>
-    <div class="flex items-center justify-between gap-3 mt-3">
+    <div class="flex items-start justify-between gap-3 mt-3">
       <div class="w-full flex justify-between items-center">
         <div class="w-[50%] flex items-center gap-1">
           <p class="text-16-reg text-gray-75">Накопительный</p>
@@ -248,7 +252,7 @@ const onSubmit = handleSubmit(async (values) => {});
           :array="paymentStore.statuses"
           :show-menu="statusMenuStore"
           default-select-text="Выбрать"
-          v-model:model-value="priority"
+          v-model:model-value="status"
           :icon="false"
           value-key="key"
           label-key="value"
@@ -258,8 +262,8 @@ const onSubmit = handleSubmit(async (values) => {});
           :disable="false"
           class="h-[40px] z-[50]"
         />
-        <span v-if="priorityError" class="text-14-ext text-error-500 mt-[2px]">
-          {{ priorityError }}
+        <span v-if="statusError" class="text-14-ext text-error-500 mt-[2px]">
+          {{ statusError }}
         </span>
       </div>
     </div>

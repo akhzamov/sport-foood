@@ -22,7 +22,8 @@ const profitWidth = (market: any) => {
 
 // Ширина полосы для расходов
 const spendingWidth = (market: any) => {
-  return `${(market.spending / market.sold) * 100}%`;
+  const calc = (market.totalProfit / market.sold) * 60;
+  return `${calc <= 5 ? calc + 2 : calc}%`;
 };
 onMounted(() => {});
 </script>
@@ -47,9 +48,7 @@ onMounted(() => {});
           <div
             class="flex w-[80px] h-full flex-col items-end justify-center bg-dark-charcoal rounded-[4px] border-[0.5px] border-gray-40 p-[2px] mr-[15px]"
           >
-            <span class="text-10-ext text-gray-75 text-right"
-              >Оборот</span
-            >
+            <span class="text-10-ext text-gray-75 text-right">Оборот</span>
             <span class="text-12-reg text-gray-90">
               {{
                 Number(
@@ -137,12 +136,12 @@ onMounted(() => {});
             >
               <!-- Заполненная полоса для оборота -->
               <div
-                class="absolute left-0 top-0 h-full bg-malachite opacity-[48%]"
+                class="absolute left-0 top-0 h-full bg-malachite opacity-[60%]"
                 :style="{ width: profitWidth(market) }"
               ></div>
               <!-- Заполненная полоса для расхода -->
               <div
-                class="absolute right-0 top-0 h-full bg-malachite"
+                class="absolute right-0 top-0 h-full bg-transparent"
                 :style="{ width: spendingWidth(market) }"
               ></div>
             </div>
@@ -151,9 +150,7 @@ onMounted(() => {});
             class="flex w-[116px] h-full flex-col items-end justify-between border-gray-40 mr-1 p-[1px]"
           >
             <div class="flex items-center gap-[4px]">
-              <span class="text-10-ext text-gray-75 text-right">
-                Оборот
-              </span>
+              <span class="text-10-ext text-gray-75 text-right"> Оборот </span>
               <span class="text-10-ext text-success-500">
                 {{ calcSoldPercentage(market.sold).toFixed(0) }}%
               </span>
@@ -182,7 +179,7 @@ onMounted(() => {});
           >
             Расход:
             <span>
-              {{ Number(market.spending.toFixed(1)).toLocaleString("ru-RU") }}
+              {{ Number(market.spending).toLocaleString("ru-RU") }}
             </span>
           </p>
           <div class="w-full h-[1px] block bg-gray-15 my-[3px]"></div>
@@ -191,9 +188,7 @@ onMounted(() => {});
           >
             Чистая прибыль:
             <span>
-              {{
-                Number(market.totalProfit.toFixed(1)).toLocaleString("ru-RU")
-              }}
+              {{ Number(market.totalProfit).toLocaleString("ru-RU") }}
             </span>
           </p>
         </div>

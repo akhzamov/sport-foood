@@ -66,7 +66,7 @@ export default {
         "red-25": "#f0443833",
         "primary": "#f0b61c",
         "mint": "#1abc9c",
-        "malachite": "04ea6f",
+        "malachite": "#04ea6f",
         "dark": {
           "night": "#141414",
           "gunmental": "#2b2f33",

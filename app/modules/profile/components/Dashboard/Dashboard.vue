@@ -212,8 +212,8 @@ watch(date, async (newDate) => {
 
   <div class="w-full grid grid-cols-custom-3-390 gap-6 justify-center mt-4">
     <div class="grid col-span-1">
-      <DashboardChartLoadChart v-if="!salesPlan" />
-      <DashboardChartBarLine v-if="salesPlan" />
+      <DashboardChartLoadChart v-if="!profileStore.salesPlan" />
+      <DashboardChartBarLine v-if="profileStore.salesPlan" />
     </div>
     <div class="grid col-span-1">
       <DashboardBalance />
@@ -223,8 +223,8 @@ watch(date, async (newDate) => {
       <DashboardPurchases v-if="profileStore.purchases" />
     </div>
     <div class="grid col-span-1">
-      <DashboardChartLoadChart v-if="!marketplacesData" />
-      <DashboardRatingMarketplaces v-if="marketplacesData" />
+      <DashboardChartLoadChart v-if="!profileStore.marketplacesData" />
+      <DashboardRatingMarketplaces v-if="profileStore.marketplacesData" />
     </div>
     <div class="grid col-span-1">
       <DashboardChartLoadChart v-if="!profileStore.spending" />
