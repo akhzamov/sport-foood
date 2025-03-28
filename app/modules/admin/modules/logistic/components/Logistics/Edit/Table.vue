@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useLogisticStore } from "~/modules/admin/stores/logistic";
 import { useAdminLogisticsStore } from "../../../stores/adminLogistics";
 import type {
   IPointSchemaFormLogistic,
@@ -16,6 +17,7 @@ const props = withDefaults(
 const emit = defineEmits(["update:points"]);
 const adminLogisticsStore = useAdminLogisticsStore();
 const adminStore = useAdminStore();
+const logisticStore = useLogisticStore();
 const selectedCityForProduct = ref<number | null>(null);
 const activeCityTab = ref<number | null>(null);
 
@@ -57,6 +59,7 @@ const addProductInTable = (cityId: number, product: IProductSchemaFormLogistic) 
   // Добавляем новый продукт
   city.point_products.push({
     id: product.id,
+    productId: findProduct?.id ?? 0,
     name: findProduct?.name ?? "",
     packageId: product.packageId,
     packageName: product.packageName,
@@ -125,6 +128,7 @@ watchEffect(() => {
       <div class="w-max h-full flex items-center justify-center gap-2">
         <div
           class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40 hover:text-primary"
+          v-if="adminStore.activeOpenTab !== `logistics-edit-view-${adminStore.openUser ?? 0}`"
         >
           <IconPlus @click="adminLogisticsStore.addCityModal = true" />
         </div>
@@ -135,6 +139,7 @@ watchEffect(() => {
         </div> -->
         <div
           class="w-[32px] h-[32px] flex items-center justify-center cursor-pointer text-gray-40 hover:text-error-500"
+          v-if="adminStore.activeOpenTab !== `logistics-edit-view-${adminStore.openUser ?? 0}`"
           @click="deleteCityInTable()"
         >
           <IconTrash03 />
@@ -178,8 +183,8 @@ watchEffect(() => {
             "
           >
             <div
-              v-if="adminStore.activeOpenTab !== `logistics-edit-view-${adminStore.openUser ?? 0}`"
               class="w-max h-max flex items-center justify-center cursor-pointer gap-2 text-gray-40 hover:text-primary"
+              v-if="adminStore.activeOpenTab !== `logistics-edit-view-${adminStore.openUser ?? 0}`"
               @click="
                 adminLogisticsStore.addProductModal = true;
                 selectedCityForProduct = city.id;
@@ -190,7 +195,10 @@ watchEffect(() => {
               </div>
               <span class="text-14-bold">Добавить товар</span>
             </div>
-            <div class="flex items-center justify-center gap-2">
+            <div
+              class="flex items-center justify-center gap-2"
+              v-if="adminStore.activeOpenTab !== `logistics-edit-view-${adminStore.openUser ?? 0}`"
+            >
               <UiButton
                 bgColor="bg-gray-15"
                 :border="true"
@@ -214,6 +222,12 @@ watchEffect(() => {
                 type="submit"
                 @click=""
               />
+            </div>
+            <div
+              class="w-max h-[30px] flex items-center px-3 bg-gray-15 rounded-lg"
+              v-if="adminStore.activeOpenTab == `logistics-edit-view-${adminStore.openUser ?? 0}`"
+            >
+              <p class="text-14-reg text-dark-onix">{{ logisticStore.shipment?.status }}</p>
             </div>
           </div>
           <!-- Table data -->

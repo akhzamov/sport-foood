@@ -67,7 +67,7 @@ const checkPeriod = ref(false);
 const photos = ref<Record<number, File> | null>(null);
 const images = reactive<string[]>([]);
 const { closeTab } = useTabs();
-const { createShipment, getShipments, getShipment } = useCrudLogisticResponse();
+const { editShipmentById, getShipments, getShipment, deleteShipmentById } = useCrudLogisticResponse();
 
 const handleCheckPeriod = () => {
   checkPeriod.value = !checkPeriod.value;
@@ -86,28 +86,37 @@ const formatDate = (dateString: Date) => {
 };
 
 const onSubmit = handleSubmit(async (values) => {
-  // try {
-  //   const body: ISchemaFormLogistic = {
-  //     supplierId: values.supplierId,
-  //     driverId: values.driverId,
-  //     getDate: values.getDate,
-  //     amount: values.amount,
-  //     driverAmount: values.driverAmount,
-  //     additional: values.additional,
-  //     points: values.points,
-  //   };
-  //   if (photos.value) {
-  //     await createShipment(body, photos.value);
-  //   } else {
-  //     await createShipment(body);
-  //   }
-  //   photos.value = null;
-  //   formattedDate.value = "";
-  //   resetForm();
-  //   await getShipments();
-  // } catch (error) {
-  //   console.error("Ошибка при создании закупа", error);
-  // }
+  try {
+    const body: ISchemaFormLogistic = {
+      supplierId: values.supplierId,
+      driverId: values.driverId,
+      getDate: values.getDate,
+      amount: values.amount,
+      driverAmount: values.driverAmount,
+      additional: values.additional,
+      points: values.points,
+    };
+    let id = adminStore.openUser ?? 0;
+    if (photos.value) {
+      await editShipmentById(id, body, photos.value);
+    } else {
+      await editShipmentById(id, body);
+    }
+    photos.value = null;
+    formattedDate.value = "";
+    await getShipments();
+  } catch (error) {
+    console.error("Ошибка при изменении закупа", error);
+  }
+});
+
+const onDelete = handleSubmit(async (values) => {
+  try {
+    let id = adminStore.openUser ?? 0;
+    await deleteShipmentById(id);
+  } catch (error) {
+    console.error("Ошибка при удалении закупа", error);
+  }
 });
 
 const getImageSrc = (imageUrl: string) => {
@@ -137,9 +146,11 @@ onMounted(async () => {
     amount.value = logisticStore.shipment.amount;
     driverAmount.value = logisticStore.shipment.driver_amount;
     additional.value = logisticStore.shipment.additional ?? "";
-    logisticStore.shipment.images.forEach((item) => {
-      images.push(getImageSrc(item.path));
-    });
+    if (logisticStore.shipment.images) {
+      logisticStore.shipment.images.forEach((item) => {
+        images.push(getImageSrc(item.path));
+      });
+    }
     points.value = logisticStore.shipmentArrPoints ?? [];
   }
 });
@@ -267,20 +278,37 @@ onMounted(async () => {
         text="Отмена"
         class="w-[93px]"
         type="button"
-        @click="closeTab(`logistics-edit-${adminStore.openUser ?? 0}`)"
+        @click="closeTab(`settings-district-edit-${adminStore.openUser}`)"
       >
       </UiButton>
-      <UiButton
-        bgColor="bg-primary"
-        :border="false"
-        :icon="false"
-        hover="opacity-[0.9]"
-        textColor="text-dark-night"
-        text="Создать"
-        class="w-[93px]"
-        type="submit"
-        @click="onSubmit"
-      />
+      <div class="flex items-center justify-center gap-4">
+        <UiButton
+          bgColor="bg-transparent"
+          :border="false"
+          :icon="true"
+          hover="opacity-[0.9]"
+          textColor="text-error-500"
+          text="Удалить"
+          class="max-w-[120px] px-0"
+          type="submit"
+          @click="onDelete"
+        >
+          <template v-slot:icon>
+            <IconTrash03 class="text-error-500" />
+          </template>
+        </UiButton>
+        <UiButton
+          bgColor="bg-primary"
+          :border="false"
+          :icon="false"
+          hover="opacity-[0.9]"
+          textColor="text-dark-night"
+          text="Сохранить"
+          class="w-[93px]"
+          type="submit"
+          @click="onSubmit"
+        />
+      </div>
     </div>
     <div class="w-full h-[1px] border-b border-dashed border-gray-15 my-3"></div>
     <div class="flex flex-col">

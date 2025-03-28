@@ -57,6 +57,7 @@ const addProductInTable = (cityId: number, product: IProductSchemaFormLogistic) 
   // Добавляем новый продукт
   city.point_products.push({
     id: product.id,
+    productId: findProduct?.id ?? 0,
     name: findProduct?.name ?? "",
     packageId: product.packageId,
     packageName: product.packageName,

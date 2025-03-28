@@ -1,3 +1,4 @@
+import { CrudLogisticRep } from "~/modules/admin/repository/logistic";
 import { useMainStore } from "~/stores/main";
 import type {
   IPointSchemaFormLogistic,
@@ -57,11 +58,12 @@ export const useCrudLogisticResponse = () => {
       city_id: point.city_id,
       point_products: Object.values(point.point_products || {}).map((product) => ({
         id: product.id,
+        productId: product.product_id,
         name: product.name,
         quantity: product.quantity,
         kg_price: product.kg_price,
-        packageId: 0, // Если packageId нужно получить из другого источника — замени
-        packageName: "", // Если packageName нужно получить из другого источника — замени
+        packageId: product.package_id, // Если packageId нужно получить из другого источника — замени
+        packageName: `${product.package.value} ${product.package.unit == "GM" ? "гр" : "кг"}`, // Если packageName нужно получить из другого источника — замени
       })),
     }));
   }
@@ -125,6 +127,7 @@ export const useCrudLogisticResponse = () => {
 
     try {
       const res = await $crudLogisticRep.createShipment(formData);
+
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Закуп успешно создан!";
@@ -151,6 +154,114 @@ export const useCrudLogisticResponse = () => {
 
       mainStore.isLoading = false;
       console.error(error.response?.data);
+      return error;
+    }
+  }
+
+  async function editShipmentById(id: number, body: ISchemaFormLogistic, images?: Record<number, File>) {
+    const { $crudLogisticRep } = useNuxtApp();
+    const mainStore = useMainStore();
+    const formData = new FormData();
+
+    formData.append("supplier_id", body.supplierId?.toString() ?? "");
+    formData.append("driver_id", body.driverId?.toString() ?? "");
+    formData.append("get_date", body.getDate?.toISOString().slice(0, 19).replace("T", " ") ?? "");
+    formData.append("amount", body.amount?.toString() ?? "");
+    formData.append("driver_amount", body.driverAmount?.toString() ?? "");
+    formData.append("additional", body.additional ?? "");
+
+    body.points.forEach((point, pointIndex) => {
+      formData.append(`point[${pointIndex}][id]`, point.id.toString());
+      formData.append(`point[${pointIndex}][point-city]`, point.city_id.toString());
+
+      point.point_products.forEach((product, productIndex) => {
+        formData.append(`point[${pointIndex}][product][${productIndex}][id]`, product.id.toString());
+        formData.append(
+          `point[${pointIndex}][product][${productIndex}][product]`,
+          product.productId.toString()
+        );
+        formData.append(
+          `point[${pointIndex}][product][${productIndex}][product-package_id]`,
+          product.packageId.toString()
+        );
+        formData.append(
+          `point[${pointIndex}][product][${productIndex}][product-count]`,
+          product.quantity.toString()
+        );
+        formData.append(
+          `point[${pointIndex}][product][${productIndex}][price-gm]`,
+          product.kg_price.toString()
+        );
+      });
+    });
+    if (images) {
+      Object.values(images).forEach((file, index) => {
+        formData.append(`images[${index}]`, file);
+      });
+    }
+    try {
+      const res = await $crudLogisticRep.editShipmentById(id, formData);
+
+      mainStore.rightAlertShow = true;
+      mainStore.rightAlertShowType = "success";
+      mainStore.rightAlertShowText = "Закуп успешно изменен!";
+
+      setTimeout(() => {
+        mainStore.rightAlertShow = false;
+        mainStore.rightAlertShowType = "";
+        mainStore.rightAlertShowText = "";
+      }, 3000);
+
+      mainStore.isLoading = false;
+      return res;
+    } catch (error) {
+      mainStore.rightAlertShow = true;
+      mainStore.rightAlertShowType = "error";
+      mainStore.rightAlertShowText = "Не удалось изменить закуп!";
+
+      setTimeout(() => {
+        mainStore.rightAlertShow = false;
+        mainStore.rightAlertShowType = "";
+        mainStore.rightAlertShowText = "";
+      }, 3000);
+
+      mainStore.isLoading = false;
+      console.error(error);
+      return error;
+    }
+  }
+
+  async function deleteShipmentById(id: number) {
+    const { $crudLogisticRep } = useNuxtApp();
+    const mainStore = useMainStore();
+    try {
+      const res = await $crudLogisticRep.deleteShipment(id);
+      mainStore.rightAlertShow = true;
+      mainStore.rightAlertShowType = "success";
+      mainStore.rightAlertShowText = "Закуп успешно удален!";
+
+      setTimeout(() => {
+        mainStore.rightAlertShow = false;
+        mainStore.rightAlertShowType = "";
+        mainStore.rightAlertShowText = "";
+      }, 3000);
+
+      mainStore.isLoading = false;
+      return res;
+    } catch (error) {
+      mainStore.rightAlertShow = true;
+      mainStore.rightAlertShowType = "error";
+      mainStore.rightAlertShowText = "Не получилось удалить закуп!";
+
+      setTimeout(() => {
+        mainStore.rightAlertShow = false;
+        mainStore.rightAlertShowType = "";
+        mainStore.rightAlertShowText = "";
+      }, 3000);
+
+      mainStore.isLoading = false;
+      console.error(error);
+      throw error;
     }
   }
 
@@ -158,5 +269,7 @@ export const useCrudLogisticResponse = () => {
     getShipments,
     getShipment,
     createShipment,
+    editShipmentById,
+    deleteShipmentById,
   };
 };

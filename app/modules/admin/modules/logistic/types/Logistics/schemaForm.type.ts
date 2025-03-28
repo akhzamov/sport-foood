@@ -1,5 +1,6 @@
 export interface IProductSchemaFormLogistic {
   id: number;
+  productId: number;
   name: string;
   quantity: number;
   kg_price: number;

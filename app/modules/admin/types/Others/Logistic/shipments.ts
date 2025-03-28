@@ -12,9 +12,15 @@ export type TShipment = {
 type TShipmentGetPointProduct = {
   id: number;
   name: string;
-  weight: number;
   quantity: number;
   kg_price: number;
+  package_id: number;
+  product_id: number;
+  package: {
+    id: number;
+    unit: string;
+    value: number;
+  };
 };
 
 export type TShipmentGetPoint = {
@@ -63,7 +69,41 @@ export interface IShipmentPackageGroup {
   packages: IShipmentPackage[];
 }
 
-export interface IShipmentResponse {
+export interface IShipmentGetResponse {
   data: { packages: IShipmentPackage[]; shipment?: IShipmentGet };
   success: boolean;
+}
+
+export type TShipmentEdit = {
+  id: number;
+  supplier_id: string;
+  arrived_at: Date;
+  driver_id: string;
+  amount: string;
+  driver_amount: string;
+  additional: null | string;
+  status: string;
+  supplier: {
+    id: number;
+    name: string;
+  };
+  driver: {
+    id: number;
+    name: string;
+  };
+  images: { id: number; path: string }[];
+  points: Record<number, TShipmentGetPoint>;
+};
+
+export interface IShipmentEditResponse {
+  success: boolean;
+  data: TShipmentEdit;
+  message?: string;
+  errors?: {
+    [ket: string]: string[];
+  };
+}
+export interface IShipmentDeleteResponse {
+  success: boolean;
+  message: string;
 }
