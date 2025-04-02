@@ -45,10 +45,13 @@ export const useCrudDistrictsResponse = () => {
 
   async function createDistrict(body: { name: string; city_id: number }) {
     const { $crudDistrictsRep } = useNuxtApp();
+    const { openEditTab, closeTab } = useTabs();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
       const res = await $crudDistrictsRep.createDistrictById(body);
+      openEditTab(res.data?.id ?? 0, `settings-district-edit-${res.data?.id ?? 0}`, "Сотрудник");
+      closeTab("settings-district-add");
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Район успешно создан!";
@@ -77,10 +80,7 @@ export const useCrudDistrictsResponse = () => {
     }
   }
 
-  async function editDistrict(
-    id: number,
-    body: { name: string; city_id: number }
-  ) {
+  async function editDistrict(id: number, body: { name: string; city_id: number }) {
     const { $crudDistrictsRep } = useNuxtApp();
     const mainStore = useMainStore();
     mainStore.isLoading = true;

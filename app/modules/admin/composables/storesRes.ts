@@ -34,6 +34,7 @@ export const useCrudStoresResponse = () => {
 
   async function createStore(body: storeBody, photo?: File) {
     const { $crudStoresRep } = useNuxtApp();
+    const { openEditTab, closeTab } = useTabs();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
@@ -58,6 +59,8 @@ export const useCrudStoresResponse = () => {
       }
 
       const res = await $crudStoresRep.createStore(formData);
+      openEditTab(res.data?.id ?? 0, `settings-store-edit-${res.data?.id ?? 0}`, "Сотрудник");
+      closeTab("settings-store-add");
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Магазин успешно создан!";

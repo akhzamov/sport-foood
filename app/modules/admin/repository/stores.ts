@@ -24,21 +24,17 @@ export class CrudStoresRep {
   ): Promise<ICrudStoreResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<ICrudStoreResponse>(
-      "GET",
-      `${config.public.apiBaseUrl}/api/crud/stores`,
-      {
-        params: {
-          ...params,
-        },
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          ...headers,
-        },
-      }
-    );
+    return await this.request<ICrudStoreResponse>("GET", `${config.public.apiBaseUrl}/api/crud/stores`, {
+      params: {
+        ...params,
+      },
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        ...headers,
+      },
+    });
   }
 
   async getStoreById(
@@ -69,7 +65,7 @@ export class CrudStoresRep {
     formData: FormData,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ICrudStoreCreateResponse | ICrudStoreIdErrorResponse> {
+  ): Promise<ICrudStoreCreateResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -88,7 +84,7 @@ export class CrudStoresRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ICrudStoreIdErrorResponse;
+      throw error.response?.data as ICrudStoreIdErrorResponse;
     }
   }
 
@@ -97,7 +93,7 @@ export class CrudStoresRep {
     formData: FormData,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ICrudStoreCreateResponse | ICrudStoreIdErrorResponse> {
+  ): Promise<ICrudStoreCreateResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -116,14 +112,11 @@ export class CrudStoresRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ICrudStoreIdErrorResponse;
+      throw error.response?.data as ICrudStoreIdErrorResponse;
     }
   }
 
-  async deleteStoreById(
-    id: number,
-    headers?: Record<string, string>
-  ): Promise<ICrudStoreDeleteResponse> {
+  async deleteStoreById(id: number, headers?: Record<string, string>): Promise<ICrudStoreDeleteResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -141,7 +134,7 @@ export class CrudStoresRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ICrudStoreDeleteResponse;
+      throw error.response?.data as ICrudStoreDeleteResponse;
     }
   }
 }

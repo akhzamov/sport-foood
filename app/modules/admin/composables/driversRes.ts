@@ -47,17 +47,16 @@ export const useCrudDriversResponse = () => {
     }
   }
 
-  async function createDriver(data: {
-    name: string;
-    contact: string;
-    city_id: string | number;
-  }) {
+  async function createDriver(data: { name: string; contact: string; city_id: string | number }) {
     const { $driversRep } = useNuxtApp();
+    const { openEditTab, closeTab } = useTabs();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
       const body = data;
       const res = await $driversRep.createDriver(body);
+      openEditTab(res.data?.id ?? 0, `drivers-edit-${res.data?.id ?? 0}`, "Водитель");
+      closeTab("drivers-add");
       await getDrivers();
       mainStore.isLoading = false;
     } catch (error) {

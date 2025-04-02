@@ -31,21 +31,17 @@ export class CrudSuppliersRep {
   ): Promise<ISuppliersResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<ISuppliersResponse>(
-      "GET",
-      `${config.public.apiBaseUrl}/api/crud/suppliers`,
-      {
-        params: {
-          ...params,
-        },
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          ...headers,
-        },
-      }
-    );
+    return await this.request<ISuppliersResponse>("GET", `${config.public.apiBaseUrl}/api/crud/suppliers`, {
+      params: {
+        ...params,
+      },
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        ...headers,
+      },
+    });
   }
 
   async getSupplierById(
@@ -76,7 +72,7 @@ export class CrudSuppliersRep {
     body: Record<string, any>,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ISupplierCreateResponse | ISupplierCreateErrorResponse> {
+  ): Promise<ISupplierCreateResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -95,7 +91,7 @@ export class CrudSuppliersRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ISupplierCreateErrorResponse;
+      throw error.response?.data as ISupplierCreateErrorResponse;
     }
   }
 
@@ -104,7 +100,7 @@ export class CrudSuppliersRep {
     body: Record<string, any>,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ISupplierCreateResponse | ISupplierCreateErrorResponse> {
+  ): Promise<ISupplierCreateResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -123,14 +119,11 @@ export class CrudSuppliersRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ISupplierCreateErrorResponse;
+      throw error.response?.data as ISupplierCreateErrorResponse;
     }
   }
 
-  async deleteSupplierById(
-    id: number,
-    headers?: Record<string, string>
-  ): Promise<IDeleteSupplierResponse> {
+  async deleteSupplierById(id: number, headers?: Record<string, string>): Promise<IDeleteSupplierResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -148,7 +141,7 @@ export class CrudSuppliersRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as IDeleteSupplierResponse;
+      throw error.response?.data as IDeleteSupplierResponse;
     }
   }
 }

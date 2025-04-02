@@ -4,6 +4,7 @@ import { useForm, useField } from "vee-validate";
 import { useAdminStore } from "~/modules/admin/stores/admin";
 import type { IPointSchemaFormLogistic, ISchemaFormLogistic } from "../../../types/Logistics/schemaForm.type";
 import { useLogisticStore } from "~/modules/admin/stores/logistic";
+import { useMainStore } from "~/stores/main";
 
 const schema = yup.object({
   supplierId: yup.number().nullable().required("Выберите поставщика"),
@@ -58,6 +59,7 @@ const { value: additional, errorMessage: additionalError } = useField<string>("a
 const { value: points, errorMessage: pointsError } = useField<IPointSchemaFormLogistic[]>("points");
 
 const adminStore = useAdminStore();
+const mainStore = useMainStore();
 const logisticStore = useLogisticStore();
 const supplierMenu = ref(false);
 const currierMenu = ref(false);
@@ -112,8 +114,25 @@ const onSubmit = handleSubmit(async (values) => {
 
 const onDelete = handleSubmit(async (values) => {
   try {
-    let id = adminStore.openUser ?? 0;
-    await deleteShipmentById(id);
+    const confirmed = await mainStore.showConfirm(
+      "warning",
+      "Внимательно",
+      `Вы точно хотите удалить закуп №: ${logisticStore.shipment?.id}`
+    );
+    if (confirmed) {
+      await deleteShipmentById(adminStore.openUser ?? 0);
+      let index = adminStore.activeOpenTabs.findIndex((item) => item.id == adminStore.activeOpenTab);
+      adminStore.activeOpenTabs.splice(index, 1);
+      adminStore.activeOpenTab = "";
+      adminStore.openUser = null;
+      adminStore.activeOpenTab = adminStore.activeOpenTabs[0]?.id;
+      const match = adminStore.activeOpenTabs[0]?.title.match(/\d+$/);
+      const numId = match ? Number(match[0]) : null;
+      if (numId) {
+        adminStore.openUser = numId;
+      }
+      await getShipments();
+    }
   } catch (error) {
     console.error("Ошибка при удалении закупа", error);
   }

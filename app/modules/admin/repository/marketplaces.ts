@@ -68,7 +68,7 @@ export class CrudMarketplacesRep {
     body: Record<string, any>,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<IMarketplaceByIdResponse | IMarketplaceByIdErrorResponse> {
+  ): Promise<IMarketplaceByIdResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -88,7 +88,7 @@ export class CrudMarketplacesRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as IMarketplaceByIdErrorResponse;
+      throw error.response?.data as IMarketplaceByIdErrorResponse;
     }
   }
 
@@ -97,7 +97,7 @@ export class CrudMarketplacesRep {
     body: Record<string, any>,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<IMarketplaceByIdResponse | IMarketplaceByIdErrorResponse> {
+  ): Promise<IMarketplaceByIdResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -117,7 +117,7 @@ export class CrudMarketplacesRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as IMarketplaceByIdErrorResponse;
+      throw error.response?.data as IMarketplaceByIdErrorResponse;
     }
   }
 
@@ -142,7 +142,7 @@ export class CrudMarketplacesRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as IDeleteMarketplaceResponse;
+      throw error.response?.data as IDeleteMarketplaceResponse;
     }
   }
 }

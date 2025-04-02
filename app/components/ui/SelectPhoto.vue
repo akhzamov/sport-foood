@@ -62,10 +62,7 @@ const previewUrls = computed<Record<number, string>>(() => {
         alt="Selected photo"
         class="w-full h-full object-contain rounded-lg"
       />
-      <div
-        v-else
-        class="w-[40px] h-[40px] flex items-center justify-center rounded-lg bg-gray-15"
-      >
+      <div v-else class="w-[40px] h-[40px] flex items-center justify-center rounded-lg bg-gray-15">
         <IconCamera01 class="text-gray-90" />
       </div>
     </div>

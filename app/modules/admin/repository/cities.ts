@@ -21,27 +21,20 @@ export class CrudCitiesRep {
     });
   }
 
-  async getAreas(
-    params?: Record<string, any>,
-    headers?: Record<string, string>
-  ): Promise<IAreasResponse> {
+  async getAreas(params?: Record<string, any>, headers?: Record<string, string>): Promise<IAreasResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IAreasResponse>(
-      "GET",
-      `${config.public.apiBaseUrl}/api/crud/cities/areas`,
-      {
-        params: {
-          ...params,
-        },
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          ...headers,
-        },
-      }
-    );
+    return await this.request<IAreasResponse>("GET", `${config.public.apiBaseUrl}/api/crud/cities/areas`, {
+      params: {
+        ...params,
+      },
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        ...headers,
+      },
+    });
   }
 
   async getCitiesByArea(
@@ -67,27 +60,20 @@ export class CrudCitiesRep {
     );
   }
 
-  async getCities(
-    params?: Record<string, any>,
-    headers?: Record<string, string>
-  ): Promise<ICitiesResponse> {
+  async getCities(params?: Record<string, any>, headers?: Record<string, string>): Promise<ICitiesResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<ICitiesResponse>(
-      "GET",
-      `${config.public.apiBaseUrl}/api/crud/cities`,
-      {
-        params: {
-          ...params,
-        },
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          ...headers,
-        },
-      }
-    );
+    return await this.request<ICitiesResponse>("GET", `${config.public.apiBaseUrl}/api/crud/cities`, {
+      params: {
+        ...params,
+      },
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        ...headers,
+      },
+    });
   }
 
   async getCityById(
@@ -118,7 +104,7 @@ export class CrudCitiesRep {
     body: Record<string, any>,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ICreateCityResponse | ICreateCityErrorResponse> {
+  ): Promise<ICreateCityResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -138,7 +124,7 @@ export class CrudCitiesRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ICreateCityErrorResponse;
+      throw error.response?.data as ICreateCityErrorResponse;
     }
   }
 
@@ -147,7 +133,7 @@ export class CrudCitiesRep {
     body: Record<string, any>,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ICreateCityResponse | ICreateCityErrorResponse> {
+  ): Promise<ICreateCityResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -167,14 +153,11 @@ export class CrudCitiesRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ICreateCityErrorResponse;
+      throw error.response?.data as ICreateCityErrorResponse;
     }
   }
 
-  async deleteCityById(
-    id: number,
-    headers?: Record<string, string>
-  ): Promise<IDeleteCityResponse | IDeleteCityErrorResponse> {
+  async deleteCityById(id: number, headers?: Record<string, string>): Promise<IDeleteCityResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -192,7 +175,7 @@ export class CrudCitiesRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as IDeleteCityErrorResponse;
+      throw error.response?.data as IDeleteCityErrorResponse;
     }
   }
 }

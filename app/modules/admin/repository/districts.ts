@@ -25,21 +25,17 @@ export class CrudDistrictsRep {
   ): Promise<IDistrictsResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
-    return await this.request<IDistrictsResponse>(
-      "GET",
-      `${config.public.apiBaseUrl}/api/crud/districts`,
-      {
-        params: {
-          ...params,
-        },
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          ...headers,
-        },
-      }
-    );
+    return await this.request<IDistrictsResponse>("GET", `${config.public.apiBaseUrl}/api/crud/districts`, {
+      params: {
+        ...params,
+      },
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        ...headers,
+      },
+    });
   }
 
   async getDistrictById(
@@ -70,7 +66,7 @@ export class CrudDistrictsRep {
     body: Record<string, any>,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ICreateDistrictsResponse | ICreateDistrictsErrorResponse> {
+  ): Promise<ICreateDistrictsResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -90,7 +86,7 @@ export class CrudDistrictsRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ICreateDistrictsErrorResponse;
+      throw error.response?.data as ICreateDistrictsErrorResponse;
     }
   }
 
@@ -99,7 +95,7 @@ export class CrudDistrictsRep {
     body: Record<string, any>,
     params?: Record<string, any>,
     headers?: Record<string, string>
-  ): Promise<ICreateDistrictsResponse | ICreateDistrictsErrorResponse> {
+  ): Promise<ICreateDistrictsResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -119,14 +115,11 @@ export class CrudDistrictsRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as ICreateDistrictsErrorResponse;
+      throw error.response?.data as ICreateDistrictsErrorResponse;
     }
   }
 
-  async deleteDistrictById(
-    id: number,
-    headers?: Record<string, string>
-  ): Promise<IDeleteDistrictsResponse | IDeleteDistrictsErrorResponse> {
+  async deleteDistrictById(id: number, headers?: Record<string, string>): Promise<IDeleteDistrictsResponse> {
     const config = useRuntimeConfig();
     const authToken = process.client ? localStorage.getItem("authToken") : "";
     try {
@@ -144,7 +137,7 @@ export class CrudDistrictsRep {
       );
       return response;
     } catch (error: any) {
-      return error.response?.data as IDeleteDistrictsErrorResponse;
+      throw error.response?.data as IDeleteDistrictsErrorResponse;
     }
   }
 }

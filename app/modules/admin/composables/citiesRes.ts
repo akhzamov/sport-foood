@@ -67,10 +67,13 @@ export const useCrudCitiesResponse = () => {
 
   async function createCity(body: { name: string; area_id: number }) {
     const { $crudCitiesRep } = useNuxtApp();
+    const { openEditTab, closeTab } = useTabs();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
       const res = await $crudCitiesRep.createCityById(body);
+      openEditTab(res.data.id ?? 0, `settings-city-edit-${res.data?.id ?? 0}`, "Сотрудник");
+      closeTab("settings-city-add");
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Город успешно создан!";

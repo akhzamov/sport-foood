@@ -89,6 +89,7 @@ export const useCrudLogisticResponse = () => {
 
   async function createShipment(body: ISchemaFormLogistic, images?: Record<number, File>) {
     const { $crudLogisticRep } = useNuxtApp();
+    const { openEditTab, closeTab } = useTabs();
     const mainStore = useMainStore();
     const formData = new FormData();
 
@@ -127,7 +128,8 @@ export const useCrudLogisticResponse = () => {
 
     try {
       const res = await $crudLogisticRep.createShipment(formData);
-
+      openEditTab(res.data?.id ?? 0, `logistics-edit-view-${res.data?.id ?? 0}`, "Сотрудник");
+      closeTab("logistics-add");
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Закуп успешно создан!";

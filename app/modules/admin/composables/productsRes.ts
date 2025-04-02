@@ -32,6 +32,7 @@ export const useCrudProductsResponse = () => {
     photo?: File
   ) {
     const { $crudProductsRep } = useNuxtApp();
+    const { openEditTab, closeTab } = useTabs();
     const mainStore = useMainStore();
     mainStore.isLoading = true;
     try {
@@ -49,6 +50,8 @@ export const useCrudProductsResponse = () => {
       }
 
       const res = await $crudProductsRep.createProductById(formData);
+      openEditTab(res.data?.id ?? 0, `settings-product-edit-${res.data?.id ?? 0}`, "Сотрудник");
+      closeTab("settings-product-add");
       mainStore.rightAlertShow = true;
       mainStore.rightAlertShowType = "success";
       mainStore.rightAlertShowText = "Продукт успешно создан!";

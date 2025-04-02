@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useAdminStore } from "~/modules/admin/stores/admin";
-import { getUserById, editUserById } from "./employees.data";
 import { useProfileStore } from "~/modules/profile/stores/profile";
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
@@ -8,19 +7,10 @@ import { useMainStore } from "~/stores/main";
 import { usePersonalStore } from "~/modules/admin/stores/personal";
 
 const schema = yup.object({
-  username: yup
-    .string()
-    .required("Введите имя пользователя")
-    .min(4, "Не должно быть меньше 4-и символов"),
+  username: yup.string().required("Введите имя пользователя").min(4, "Не должно быть меньше 4-и символов"),
   contact: yup.string().min(6, "Не должно быть меньше 6-и символов"),
-  selectedStores: yup
-    .array()
-    .required("Выберите магазины")
-    .min(1, "Выберите хотя бы один магазин"),
-  selectedPermissions: yup
-    .array()
-    .required("Выберите доступ")
-    .min(1, "Выберите хотя бы один доступ"),
+  selectedStores: yup.array().required("Выберите магазины").min(1, "Выберите хотя бы один магазин"),
+  selectedPermissions: yup.array().required("Выберите доступ").min(1, "Выберите хотя бы один доступ"),
   selectedRole: yup.string().required("Выберите роль"),
   selectedStatus: yup.number().nullable().required("Выберите статус"),
 });
@@ -44,19 +34,15 @@ const { handleSubmit } = useForm<ISchemaForm>({
   validationSchema: schema,
   initialValues,
 });
-const { value: username, errorMessage: usernameError } =
-  useField<string>("username");
-const { value: contact, errorMessage: contactError } =
-  useField<string>("contact");
-const { value: selectedStores, errorMessage: selectedStoresError } =
-  useField<number[]>("selectedStores");
+const { value: username, errorMessage: usernameError } = useField<string>("username");
+const { value: contact, errorMessage: contactError } = useField<string>("contact");
+const { value: selectedStores, errorMessage: selectedStoresError } = useField<number[]>("selectedStores");
 const { value: selectedPermissions, errorMessage: selectedPermissionsError } =
   useField<string[]>("selectedPermissions");
-const { value: selectedRole, errorMessage: selectedRoleError } =
-  useField<string>("selectedRole");
-const { value: selectedStatus, errorMessage: selectedStatusError } = useField<
-  number | null
->("selectedStatus");
+const { value: selectedRole, errorMessage: selectedRoleError } = useField<string>("selectedRole");
+const { value: selectedStatus, errorMessage: selectedStatusError } = useField<number | null>(
+  "selectedStatus"
+);
 
 const adminStore = useAdminStore();
 const profileStore = useProfileStore();
@@ -82,6 +68,7 @@ const statuses = reactive([
   { id: 5, name: "Отсутствует" },
   { id: 6, name: "Уволен" },
 ]);
+const { getUserById, editUserById } = usePersonalEmployeesResponse();
 
 const togglePermission = (permissionName: string, isChecked: boolean) => {
   if (personalStore.employee) {
@@ -94,10 +81,9 @@ const togglePermission = (permissionName: string, isChecked: boolean) => {
     }
     // Если чекбокс снят (isChecked = false), удаляем право
     else {
-      personalStore.employee.permissions =
-        personalStore.employee.permissions.filter(
-          (perm) => perm !== permissionName
-        );
+      personalStore.employee.permissions = personalStore.employee.permissions.filter(
+        (perm) => perm !== permissionName
+      );
       const index = selectedPermissions.value.indexOf(permissionName);
       if (index !== -1) {
         selectedPermissions.value.slice(index, 1);
@@ -260,29 +246,17 @@ onUnmounted(() => {
     <div class="w-full h-max flex items-start justify-between gap-[2%] mt-3">
       <div class="w-[49%] h-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Имя пользователя </label>
-        <UiInput
-          v-model:model-value="username"
-          placeholder=""
-          type="text"
-          class="text-gray-90"
-        />
+        <UiInput v-model:model-value="username" placeholder="" type="text" class="text-gray-90" />
         <span v-if="usernameError" class="text-14-ext text-error-500 mt-[2px]">
           {{ usernameError }}
         </span>
       </div>
       <div class="w-[49%] h-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Контакт </label>
-        <UiInput
-          :modelValue="contact"
-          placeholder=""
-          type="text"
-          class="text-gray-90"
-        />
+        <UiInput :modelValue="contact" placeholder="" type="text" class="text-gray-90" />
       </div>
     </div>
-    <div
-      class="w-full h-max flex items-start justify-between gap-[2%] mt-3"
-    ></div>
+    <div class="w-full h-max flex items-start justify-between gap-[2%] mt-3"></div>
     <div class="w-full h-max flex items-start justify-between gap-3 mt-3">
       <div class="w-full h-full flex flex-col">
         <label class="text-12-reg text-gray-90 mb-1"> Роль </label>
@@ -305,10 +279,7 @@ onUnmounted(() => {
           :disable="false"
           class="h-[40px] z-[60]"
         />
-        <span
-          v-if="selectedRoleError"
-          class="text-14-ext text-error-500 mt-[2px]"
-        >
+        <span v-if="selectedRoleError" class="text-14-ext text-error-500 mt-[2px]">
           {{ selectedRoleError }}
         </span>
       </div>
@@ -333,28 +304,19 @@ onUnmounted(() => {
           :disable="false"
           class="h-[40px] z-[60]"
         />
-        <span
-          v-if="selectedStatusError"
-          class="text-14-ext text-error-500 mt-[2px]"
-        >
+        <span v-if="selectedStatusError" class="text-14-ext text-error-500 mt-[2px]">
           {{ selectedStatusError }}
         </span>
       </div>
     </div>
-    <div
-      class="w-full h-[1px] block mt-3 border border-dashed border-gray-40"
-    ></div>
+    <div class="w-full h-[1px] block mt-3 border border-dashed border-gray-40"></div>
     <div class="w-full flex flex-col mt-3">
       <p class="text-12-reg text-gray-90">Магазины</p>
-      <div
-        class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15 mt-2"
-      >
+      <div class="w-full h-max flex flex-col gap-1 px-2 py-1 rounded-[4px] bg-gray-15 mt-2">
         <div class="w-full h-8 flex items-center justify-between">
           <p class="text-16-reg text-gray-75">Выбор магазина</p>
         </div>
-        <div
-          class="w-full h-max flex flex-col px-2 rounded-lg bg-dark-gunmental select-none"
-        >
+        <div class="w-full h-max flex flex-col px-2 rounded-lg bg-dark-gunmental select-none">
           <div
             class="w-full h-8 flex items-center justify-between cursor-pointer"
             @click="openStoresList = !openStoresList"
@@ -362,10 +324,7 @@ onUnmounted(() => {
             <p class="text-16-reg text-gray-75">Открыть список</p>
             <IconChevronDown class="text-gray-75" />
           </div>
-          <div
-            class="w-full h-max flex flex-col gap-1 mt-4 pb-1"
-            v-if="openStoresList"
-          >
+          <div class="w-full h-max flex flex-col gap-1 mt-4 pb-1" v-if="openStoresList">
             <template v-for="store in mainStore.stores">
               <div
                 class="w-full h-8 flex items-center justify-between px-2 rounded cursor-pointer hover:bg-dark-onix"
@@ -374,19 +333,13 @@ onUnmounted(() => {
                 <span class="text-14-med text-gray-75">
                   {{ store.name }}
                 </span>
-                <UiCheckbox
-                  v-model:model-value="store.checked"
-                  @click="toggleStoreChecked(store.id)"
-                />
+                <UiCheckbox v-model:model-value="store.checked" @click="toggleStoreChecked(store.id)" />
               </div>
             </template>
           </div>
         </div>
       </div>
-      <span
-        v-if="selectedStoresError"
-        class="text-14-ext text-error-500 mt-[2px]"
-      >
+      <span v-if="selectedStoresError" class="text-14-ext text-error-500 mt-[2px]">
         {{ selectedStoresError }}
       </span>
     </div>
@@ -404,9 +357,7 @@ onUnmounted(() => {
           <p class="text-16-reg text-gray-75">{{ key }}</p>
           <IconChevronDown
             class="text-gray-75"
-            :class="[
-              openPermissionGroup.includes(key.toString()) ? 'rotate-180' : '',
-            ]"
+            :class="[openPermissionGroup.includes(key.toString()) ? 'rotate-180' : '']"
           />
         </div>
         <template v-for="(permission, permissionKey) in permissionGroup">
@@ -420,11 +371,7 @@ onUnmounted(() => {
             </p>
             <IconChevronDown
               class="text-gray-75"
-              :class="[
-                openPermissionSubGroup.includes(permissionKey)
-                  ? 'rotate-180'
-                  : '',
-              ]"
+              :class="[openPermissionSubGroup.includes(permissionKey) ? 'rotate-180' : '']"
             />
           </div>
           <template v-for="(permissionValue, permissionValueKey) in permission">
@@ -438,22 +385,14 @@ onUnmounted(() => {
                 </p>
                 <UiToggle
                   v-model:model-value="permissionValue.checked"
-                  @update:model-value="
-                    togglePermission(
-                      permissionValue.name,
-                      permissionValue.checked
-                    )
-                  "
+                  @update:model-value="togglePermission(permissionValue.name, permissionValue.checked)"
                 />
               </div>
             </div>
           </template>
         </template>
       </div>
-      <span
-        v-if="selectedPermissionsError"
-        class="text-14-ext text-error-500 mt-[2px]"
-      >
+      <span v-if="selectedPermissionsError" class="text-14-ext text-error-500 mt-[2px]">
         {{ selectedPermissionsError }}
       </span>
     </div>

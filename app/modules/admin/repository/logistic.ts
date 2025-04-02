@@ -137,7 +137,7 @@ export class CrudLogisticRep {
     try {
       const response = await this.request<IShipmentDeleteResponse>(
         "DELETE",
-        `${config.public.apiBaseUrl}/api/crud/shipments/${id}/delete`,
+        `${config.public.apiBaseUrl}/api/logistic/shipments/${id}/delete`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
